@@ -100,6 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             BankBook(
               title: '통장 이름',
+              bankBookNum: '123-1234-12345',
+              bankBookMoney: 123123000,
             )
           ],
         ),
