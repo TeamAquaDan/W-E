@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/bank_book.dart';
+import 'package:frontend/widgets/pin_money.dart';
 
 void main() {
   runApp(const MyApp());
@@ -98,10 +99,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            BankBook(
+            const BankBook(
               title: '통장 이름',
               bankBookNum: '123-1234-12345',
               bankBookMoney: 123123000,
+            ),
+            const PinMoney(
+              PinMoneyDay: 16,
+              PinMoneyMoney: 100000,
             )
           ],
         ),

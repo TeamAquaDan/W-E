@@ -24,9 +24,9 @@ class _BankBook extends State<BankBook> {
         borderRadius: BorderRadius.circular(12),
       ),
       color: const Color(0xFFA0CAFD),
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(16),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
