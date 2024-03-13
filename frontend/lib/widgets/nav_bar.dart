@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/my_home_page.dart';
+import 'package:frontend/screens/my_mission_page.dart';
 import 'package:frontend/screens/statistics_page.dart';
 
 class NavBar extends StatefulWidget {
@@ -13,11 +14,12 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     MyHomePage(title: 'Whale 서비스명'),
     StatisticsPage(),
     AlarmPage(),
     MenuPage(),
+    MyMissionPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -52,6 +54,11 @@ class _NavBarState extends State<NavBar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: '전체 메뉴',
+            // backgroundColor: Colors.pink,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.note),
+            label: '미션 페이지',
             // backgroundColor: Colors.pink,
           ),
         ],

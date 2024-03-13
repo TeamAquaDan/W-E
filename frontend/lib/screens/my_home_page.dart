@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/bank_book.dart';
+import 'package:frontend/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
 import 'package:frontend/widgets/saving_goal.dart';
 import 'package:frontend/widgets/saving_goal_none.dart';
@@ -37,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SavingGoal(),
               SavingGoalNone(),
+              MissionNone(),
             ],
           ),
         ),
