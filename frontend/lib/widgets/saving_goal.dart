@@ -12,17 +12,14 @@ class _SavingGoal extends State<SavingGoal> {
     return Column(
       children: [
         Container(
-          // width: 330,
-          // height: 123,
           decoration: ShapeDecoration(
-            color: Color(0xFF97D8FF), // 배경색 변경
+            color: Color(0xFF97D8FF),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
           ),
           padding: EdgeInsets.symmetric(horizontal: 26, vertical: 18),
           margin: const EdgeInsets.all(16),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,7 +34,7 @@ class _SavingGoal extends State<SavingGoal> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(width: 10), // 아이콘과 텍스트 사이의 간격
+                  SizedBox(width: 10),
                   Text(
                     '갤럭시 탭 S9',
                     style: TextStyle(
@@ -100,7 +97,7 @@ class _SavingGoal extends State<SavingGoal> {
               Stack(
                 children: [
                   Container(
-                    width: 282,
+                    width: 350, // 전체 길이
                     height: 5,
                     decoration: BoxDecoration(
                       color: Color(0xFFF4F9FB),
@@ -108,7 +105,7 @@ class _SavingGoal extends State<SavingGoal> {
                     ),
                   ),
                   Container(
-                    width: 218, // 진행 상태에 따라 변경 가능
+                    width: 350 / 100 * 70, // 진행 백분율 길이
                     height: 5,
                     decoration: BoxDecoration(
                       color: Color(0xFF46A1F5),
