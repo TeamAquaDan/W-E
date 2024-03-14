@@ -35,7 +35,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                 });
               }),
         ),
-        SizedBox(
+        const SizedBox(
           height: 4,
         ),
         Row(
@@ -46,7 +46,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
               child: Container(
                 width: 12.0,
                 height: 12.0,
-                margin: EdgeInsets.symmetric(vertical: 0, horizontal: 4.0),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 4.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (Theme.of(context).brightness == Brightness.dark

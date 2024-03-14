@@ -47,7 +47,7 @@ class _BankBook extends State<BankBook> {
             Center(
               child: Text(
                 moneyFormat.format(widget.bankBookMoney),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
                 ),

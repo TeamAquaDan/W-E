@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/parents_page/parents_children.dart';
 import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
 import 'package:frontend/widgets/mission_none.dart';
@@ -7,6 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class ParentsHomePage extends StatelessWidget {
   const ParentsHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,13 +51,52 @@ class ParentsHomePage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              CarouselWithIndicator(
-                height: 144,
-                itemList: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '자녀 용돈 목록',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        toParentsChildren(context);
+                      },
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text(
+                        '+ 더보기',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Column(
+                children: [
                   PinMoney(
                     PinMoneyDay: 16,
                     PinMoneyMoney: 100000,
-                    childName: '아들1',
+                    childName: '김자녀',
+                  ),
+                  PinMoney(
+                    PinMoneyDay: 16,
+                    PinMoneyMoney: 50000,
+                    childName: '김막내',
                   )
                 ],
               ),
@@ -77,7 +118,9 @@ class ParentsHomePage extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        toParentsChildren(context);
+                      },
                       style: TextButton.styleFrom(
                         minimumSize: Size.zero,
                         padding: EdgeInsets.zero,
@@ -100,6 +143,13 @@ class ParentsHomePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void toParentsChildren(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ParentsChildren()),
     );
   }
 }
