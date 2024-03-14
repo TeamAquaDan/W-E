@@ -1,4 +1,4 @@
-package org.example.backend.backend;
+package org.whalebank.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
