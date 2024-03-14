@@ -50,6 +50,7 @@ class ParentsHomePage extends StatelessWidget {
               PinMoney(
                 PinMoneyDay: 16,
                 PinMoneyMoney: 100000,
+                childName: '아들1',
               ),
             ],
           ),

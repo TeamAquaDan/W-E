@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class PinMoney extends StatefulWidget {
-  const PinMoney(
-      {super.key, required this.PinMoneyDay, required this.PinMoneyMoney});
+  const PinMoney({
+    super.key,
+    required this.PinMoneyDay,
+    required this.PinMoneyMoney,
+    required this.childName,
+  });
   final int PinMoneyDay;
   final int PinMoneyMoney;
+  final String childName;
   @override
   State<PinMoney> createState() => _PinMoney();
 }
@@ -27,22 +33,46 @@ class _PinMoney extends State<PinMoney> {
           vertical: 20,
           horizontal: 24,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  '${widget.childName} 용돈',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 Text(
                   dateFormat.format(widget.PinMoneyDay),
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 24,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const Spacer(),
+                Text(
+                  moneyFormat.format(widget.PinMoneyMoney),
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
                 TextButton(
                   onPressed: () {},
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: const Text(
                     '수정하기',
                     style: TextStyle(
@@ -52,19 +82,9 @@ class _PinMoney extends State<PinMoney> {
                     ),
                   ),
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  moneyFormat.format(widget.PinMoneyMoney),
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                  ),
+                SizedBox(
+                  height: 32,
                 ),
-                Spacer(),
                 FilledButton(
                   style: ButtonStyle(
                     backgroundColor:

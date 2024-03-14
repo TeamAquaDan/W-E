@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
               PinMoney(
                 PinMoneyDay: 16,
                 PinMoneyMoney: 100000,
+                childName: '아들1',
               ),
               SavingGoal(),
               SavingGoalNone(),
