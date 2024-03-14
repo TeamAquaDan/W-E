@@ -3,7 +3,8 @@ import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/my_home_page.dart';
 import 'package:frontend/screens/my_mission_page.dart';
-import 'package:frontend/screens/statistics_page.dart';
+import 'package:frontend/screens/parents_home_page.dart';
+// import 'package:frontend/screens/statistics_page.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -16,7 +17,8 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     MyHomePage(title: 'Whale 서비스명'),
-    StatisticsPage(),
+    // StatisticsPage(),
+    ParentsHomePage(),
     AlarmPage(),
     MenuPage(),
     MyMissionPage(),
