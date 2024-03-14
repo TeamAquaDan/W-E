@@ -7,4 +7,5 @@ import org.whalebank.whalebank.domain.auth.AuthEntity;
 @Repository
 public interface AuthRepository extends JpaRepository<AuthEntity, String> {
 
+  AuthEntity findByCi(String userCi);
 }

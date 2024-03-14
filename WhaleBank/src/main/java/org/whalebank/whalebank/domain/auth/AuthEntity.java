@@ -33,4 +33,7 @@ public class AuthEntity {
   private LocalDateTime createdDtm;
 
   private String userCi;
+
+  private String refreshToken;
+
 }
