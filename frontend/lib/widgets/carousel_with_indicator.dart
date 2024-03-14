@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/widgets/bank_book.dart';
 
 class CarouselWithIndicator extends StatefulWidget {
-  const CarouselWithIndicator({super.key, required this.itemList});
+  const CarouselWithIndicator(
+      {super.key, required this.itemList, required this.height});
   final List<Widget> itemList;
+  final double height;
   @override
   State<StatefulWidget> createState() {
     return _CarouselWithIndicatorState();
@@ -23,7 +25,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           items: widget.itemList,
           carouselController: _controller,
           options: CarouselOptions(
-              aspectRatio: 1.97,
+              height: widget.height,
+              // aspectRatio: 1.97,
               autoPlay: false,
               viewportFraction: 1,
               onPageChanged: (index, reason) {
@@ -31,6 +34,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                   _current = index;
                 });
               }),
+        ),
+        SizedBox(
+          height: 4,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

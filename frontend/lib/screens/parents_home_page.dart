@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
+import 'package:frontend/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -20,12 +21,13 @@ class ParentsHomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              CarouselWithIndicator(
+              const CarouselWithIndicator(
+                height: 176,
                 itemList: [
                   BankBook(
                     title: '통장 이름1',
@@ -44,14 +46,56 @@ class ParentsHomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
-              PinMoney(
-                PinMoneyDay: 16,
-                PinMoneyMoney: 100000,
-                childName: '아들1',
+              CarouselWithIndicator(
+                height: 144,
+                itemList: [
+                  PinMoney(
+                    PinMoneyDay: 16,
+                    PinMoneyMoney: 100000,
+                    childName: '아들1',
+                  )
+                ],
               ),
+              const SizedBox(
+                height: 16,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '진행 중인 미션',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text(
+                        '+ 더보기',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              MissionNone(),
             ],
           ),
         ),

@@ -27,7 +27,7 @@ class _PinMoney extends State<PinMoney> {
         borderRadius: BorderRadius.circular(20),
       ),
       color: const Color(0xFF7A97FF),
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 20,
@@ -57,7 +57,7 @@ class _PinMoney extends State<PinMoney> {
                 ),
                 Text(
                   moneyFormat.format(widget.PinMoneyMoney),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
                   ),
@@ -82,7 +82,7 @@ class _PinMoney extends State<PinMoney> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
                 FilledButton(
