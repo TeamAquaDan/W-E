@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/parents_page/children_page/child_info.dart';
 import 'package:frontend/screens/parents_page/widgets/child_button.dart';
-import 'package:frontend/screens/parents_page/widgets/tab_bar.dart';
 
-class ParentsChildren extends StatefulWidget {
-  const ParentsChildren({super.key});
+class ParentsChildrenPage extends StatefulWidget {
+  const ParentsChildrenPage({super.key});
 
   @override
-  State<ParentsChildren> createState() => _ParentsChildren();
+  State<ParentsChildrenPage> createState() => _ParentsChildrenPage();
 }
 
-class _ParentsChildren extends State<ParentsChildren> {
+class _ParentsChildrenPage extends State<ParentsChildrenPage> {
   int _selectedIndex = 0;
   static List _widgetOptions = ['김자녀', '김막내'];
 
@@ -21,34 +21,48 @@ class _ParentsChildren extends State<ParentsChildren> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('내 자녀 조회'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
+    return DefaultTabController(
+      length: 3,
+      initialIndex: 0,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('내 자녀 조회'),
+          bottom: const TabBar(tabs: [
+            Tab(
+              child: ChildrenTap(
+                name: '첫째',
+              ),
+            ),
+            Tab(
+              child: ChildrenTap(
+                name: '둘째',
+              ),
+            ),
+            Tab(
+              child: ChildrenTap(
+                name: '막내',
+              ),
+            ),
+          ]),
+        ),
+        body: const TabBarView(
           children: [
             //자녀 목록 조회 DATA
-            Row(
-              children: [
-                ChildrenButton(
-                  name: '김자녀',
-                ),
-                ChildrenButton(
-                  name: '김막내',
-                ),
-              ],
-            ),
+            ChildInfo(name: '첫째'),
+            ChildInfo(name: '둘째'),
+            ChildInfo(name: '막내'),
+            // ChildrenTabBar(),
+            //자녀 상세 조회
+
+            //미션 목록 조회
           ],
-          //자녀 상세 조회
-          //미션 목록 조회
         ),
       ),
     );
   }
 }
 
-/*
+/*58
 "{
   ""status"": 200,
   ""message"": ""자녀 목록 조회 성공"", 

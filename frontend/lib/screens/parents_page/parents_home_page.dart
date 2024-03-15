@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/parents_page/parents_children.dart';
+import 'package:frontend/screens/parents_page/children_page/parents_children_page.dart';
 import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
 import 'package:frontend/widgets/mission_none.dart';
@@ -149,7 +149,7 @@ class ParentsHomePage extends StatelessWidget {
   void toParentsChildren(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ParentsChildren()),
+      MaterialPageRoute(builder: (context) => const ParentsChildrenPage()),
     );
   }
 }
