@@ -27,7 +27,7 @@ class _PinMoney extends State<PinMoney> {
         borderRadius: BorderRadius.circular(20),
       ),
       color: const Color(0xFF7A97FF),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 20,
