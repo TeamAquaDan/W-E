@@ -13,7 +13,10 @@ public enum ResponseCode {
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), "UnAuthorized"),
   CONFLICT(HttpStatus.CONFLICT.value(), "conflict"),
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "internal server error"),
-  NOT_FOUND(HttpStatus.NOT_FOUND.value(), "not found");
+  NOT_FOUND(HttpStatus.NOT_FOUND.value(), "not found"),
+
+  // 유저
+  INVALID_BIRTHDATE(HttpStatus.BAD_REQUEST.value(), "6자리의 생년월일을 입력해주세요");
 
   private final int code;
   private final String message;
