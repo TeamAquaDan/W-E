@@ -8,4 +8,6 @@ public interface AuthRepository extends JpaRepository<UserEntity, Integer> {
 
   Optional<UserEntity> findByLoginId(String loginId);
 
+  Optional<UserEntity> findByPhoneNumAndUserName(String phoneNum, String username);
+
 }
