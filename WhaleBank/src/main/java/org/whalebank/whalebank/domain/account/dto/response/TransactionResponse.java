@@ -24,6 +24,9 @@ public class TransactionResponse {
   @Setter
   public static class Transaction {
 
+    private int rsp_code;
+    private String rsp_message;
+    
     private String trans_dtime; // 거래일시
     private int trans_no; // 거래번호
     private int trans_type; // 거래유형 출금(2), 입금(3)
