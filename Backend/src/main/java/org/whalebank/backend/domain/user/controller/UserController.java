@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto;
+import org.whalebank.backend.domain.user.dto.response.VerifyResponseDto;
 import org.whalebank.backend.domain.user.service.UserService;
 import org.whalebank.backend.global.response.ApiResponse;
 
@@ -27,6 +29,12 @@ public class UserController {
   public ApiResponse<ProfileResponseDto> getUserProfile(@RequestBody Map<String, Integer> reqDto, @AuthenticationPrincipal UserDetails loginUser) {
     String loginId = loginUser.getUsername(); // 로그인한 사람
     return ApiResponse.ok("프로필 조회 성공", service.getProfile(reqDto.get("user_id"), loginId));
+  }
+
+  @Operation(summary="실명 인증", description = "전화번호, 이름으로 실명 인증")
+  @PostMapping("/verify")
+  public ApiResponse<VerifyResponseDto> verifyUserWithPhoneNumAndName(@RequestBody VerifyRequestDto reqDto) {
+    return ApiResponse.ok("실명 인증 성공", service.verifyUser(reqDto));
   }
 
 }

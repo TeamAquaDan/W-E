@@ -3,7 +3,9 @@ package org.whalebank.backend.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto;
+import org.whalebank.backend.domain.user.dto.response.VerifyResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.response.ResponseCode;
@@ -28,6 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     return ProfileResponseDto.of(user, editable);
+  }
+
+  public VerifyResponseDto verifyUser(VerifyRequestDto reqDto) {
+    UserEntity user = repository.findByPhoneNumAndUserName(reqDto.getPhone_num(), reqDto.getUsername())
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    return VerifyResponseDto.of(user.getUserId(), user.getUserName());
   }
 
 }
