@@ -23,6 +23,11 @@ class Mission extends StatelessWidget {
     return DateFormat('yy.MM.dd').format(dateTime);
   }
 
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,###');
+    return formatter.format(number);
+  }
+
   @override
   Widget build(BuildContext context) {
     // deadline_date를 DateTime 객체로 파싱
@@ -50,7 +55,7 @@ class Mission extends StatelessWidget {
                   mission_name,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w700,
                   ),
@@ -63,7 +68,7 @@ class Mission extends StatelessWidget {
                         Text(
                           'D-$dDay ',
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 22,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w700,
                           ),
@@ -72,7 +77,7 @@ class Mission extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          formatDeadlineDate(deadline_date),
+                          '~${formatDeadlineDate(deadline_date)}',
                           style: TextStyle(
                             color: Color(0xFF555555),
                             fontSize: 16,
@@ -83,7 +88,7 @@ class Mission extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      '$mission_reward원',
+                      '${formatNumber(mission_reward)}원',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -116,7 +121,7 @@ class Mission extends StatelessWidget {
                   mission_name,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w700,
                   ),
@@ -134,7 +139,7 @@ class Mission extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '$mission_reward원',
+                      '${formatNumber(mission_reward)}원',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,

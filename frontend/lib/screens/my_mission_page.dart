@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/mission.dart';
+import 'package:intl/intl.dart';
 
 class MyMissionPage extends StatefulWidget {
   const MyMissionPage({super.key});
@@ -64,7 +65,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 645,
         "mission_name": "동영상 시청 새 제품",
         "mission_reward": 82355,
-        "deadline_date": "2024-03-17",
+        "deadline_date": "2024-03-28",
         "status": 0,
         "user_name": "정지아"
       },
@@ -72,7 +73,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 975,
         "mission_name": "리뷰 작성 서비스",
         "mission_reward": 74259,
-        "deadline_date": "2024-03-19",
+        "deadline_date": "2024-03-30",
         "status": 1,
         "user_name": "박예진"
       },
@@ -109,6 +110,11 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "user_name": "최서연"
       }
     ];
+  }
+
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,###');
+    return formatter.format(number);
   }
 
   @override
@@ -177,7 +183,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
                   child: Text(
-                    '미션으로 $totalOngoingMissionReward원을 얻을 수 있어요!',
+                    '미션으로 ${formatNumber(totalOngoingMissionReward)}원을 얻을 수 있어요!',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -206,7 +212,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
                   child: Text(
-                    '지금까지 미션으로 $totalCompletedMissionReward원을 얻었어요!',
+                    '지금까지 미션으로 ${formatNumber(totalCompletedMissionReward)}원을 얻었어요!',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
