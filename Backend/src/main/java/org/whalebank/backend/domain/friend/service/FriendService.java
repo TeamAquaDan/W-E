@@ -7,4 +7,6 @@ public interface FriendService {
 
   List<FriendResponseDto> findAllMyFriends(String loginId);
 
+  List<FriendResponseDto> findFriendsByName(String loginId, String name);
+
 }

@@ -29,4 +29,12 @@ public class FriendServiceImpl implements FriendService {
         .collect(Collectors.toList());
   }
 
+  @Override
+  public List<FriendResponseDto> findFriendsByName(String loginId, String name) {
+    List<FriendResponseDto> friendList = this.findAllMyFriends(loginId);
+
+    return friendList.stream()
+        .filter(friend -> friend.getFriend_name().contains(name))
+        .collect(Collectors.toList());
+  }
 }
