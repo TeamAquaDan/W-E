@@ -18,10 +18,10 @@ public class AuthServiceImpl implements AuthService {
   private final AuthRepository authRepository;
   @Override
   public AuthResponse getPhonenum(String userCi) {
-    Optional<AuthEntity> auth = authRepository.findByCi(userCi);
-    if(auth != null){
+    try {
+      Optional<AuthEntity> auth = authRepository.findByUserCi(userCi);
       return new AuthResponse(auth.get().getPhoneNum());
-    } else {
+    } catch (Exception e) {
       return null;
     }
   }

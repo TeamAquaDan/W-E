@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AuthRequest {
-  public String user_ci;
+    public String user_ci;
 }

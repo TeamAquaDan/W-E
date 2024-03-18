@@ -1,18 +1,14 @@
 package org.whalebank.whalebank.domain.auth.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.whalebank.whalebank.domain.auth.AuthEntity;
 import org.whalebank.whalebank.domain.auth.dto.request.AuthRequest;
 import org.whalebank.whalebank.domain.auth.dto.request.ReissueRequest;
 import org.whalebank.whalebank.domain.auth.dto.response.AuthResponse;
@@ -26,24 +22,24 @@ import org.whalebank.whalebank.domain.auth.service.AuthService;
 @RequiredArgsConstructor
 public class AuthController {
 
-  private final TokenProvider tokenProvider;
-  private final AuthService authService;
+    private final TokenProvider tokenProvider;
+    private final AuthService authService;
 
-  @GetMapping("/authorize")
-  public ResponseEntity<AuthResponse> getAuth(
-      @RequestBody AuthRequest authRequest) {
-    return new ResponseEntity<>(authService.getPhonenum(authRequest.getUser_ci()), HttpStatus.OK);
-  }
+    @GetMapping("/authorize")
+    public ResponseEntity<AuthResponse> getAuth(
+            @RequestBody AuthRequest authRequest) {
+        return new ResponseEntity<>(authService.getPhonenum(authRequest.getUser_ci()), HttpStatus.OK);
+    }
 
-  @PostMapping("/token")
-  public ResponseEntity<? extends TokenResponse> getRefreshToken(
-      HttpServletRequest request) {
-    return new ResponseEntity<>(tokenProvider.createRefreshToken(request), HttpStatus.OK);
-  }
+    @PostMapping("/token")
+    public ResponseEntity<TokenResponse> getRefreshToken(
+            HttpServletRequest request) {
+        return new ResponseEntity<>(tokenProvider.generateToken(request), HttpStatus.OK);
+    }
 
-  @PostMapping("/reissue")
-  public ResponseEntity<? extends ReissueResponse> getAccessToken(
-      @RequestBody ReissueRequest reissueRequest){
-    return new ResponseEntity<>(tokenProvider.reissueAccessToken(reissueRequest), HttpStatus.OK);
-  }
+    @PostMapping("/reissue")
+    public ResponseEntity<? extends ReissueResponse> getAccessToken(
+            @RequestBody ReissueRequest reissueRequest) {
+        return new ResponseEntity<>(tokenProvider.reissueAccessToken(reissueRequest), HttpStatus.OK);
+    }
 }

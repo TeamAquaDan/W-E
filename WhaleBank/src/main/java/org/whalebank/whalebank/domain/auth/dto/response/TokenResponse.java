@@ -13,8 +13,8 @@ import lombok.Setter;
 @Builder
 public class TokenResponse {
 
-  private String token_type = "Bearer";
-  private String access_token;
-  private String refresh_token;
+    private String token_type = "Bearer";
+    private String access_token;
+    private String refresh_token;
 
 }
