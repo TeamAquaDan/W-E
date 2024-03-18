@@ -3,12 +3,16 @@ package org.whalebank.backend.domain.user.service;
 import java.time.LocalDate;
 import java.time.Period;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.domain.user.dto.request.LoginRequestDto;
 import org.whalebank.backend.domain.user.dto.request.SignUpRequestDto;
+import org.whalebank.backend.domain.user.dto.response.LoginResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
+import org.whalebank.backend.domain.user.security.JwtService;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.response.ResponseCode;
 
@@ -18,6 +22,7 @@ public class AuthServiceImpl implements AuthService {
 
   private final AuthRepository repository;
   private final BCryptPasswordEncoder encoder;
+  private final JwtService jwtService;
 
   public void signUp(SignUpRequestDto dto) {
     String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
@@ -39,6 +44,18 @@ public class AuthServiceImpl implements AuthService {
     // 유저 엔티티 생성
     UserEntity entity = dto.of(encoder.encode(dto.getPassword()), userCI, role, birthDate);
     repository.save(entity);
+  }
+
+  @Override
+  public LoginResponseDto login(LoginRequestDto dto) {
+    UserEntity user = repository.findByLoginId(dto.getLogin_id())
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    if (!encoder.matches(dto.getPassword(), user.getLoginPassword())) {
+      throw new CustomException(ResponseCode.USER_NOT_FOUND);
+    }
+
+    return jwtService.generateToken(user);
   }
 
   /**

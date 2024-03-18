@@ -16,7 +16,8 @@ public enum ResponseCode {
   NOT_FOUND(HttpStatus.NOT_FOUND.value(), "not found"),
 
   // 유저
-  INVALID_BIRTHDATE(HttpStatus.BAD_REQUEST.value(), "6자리의 생년월일을 입력해주세요");
+  INVALID_BIRTHDATE(HttpStatus.BAD_REQUEST.value(), "6자리의 생년월일을 입력해주세요"),
+  USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "유저가 존재하지 않습니다");
 
   private final int code;
   private final String message;
