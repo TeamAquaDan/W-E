@@ -1,12 +1,11 @@
 package org.whalebank.backend.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.springdoc.core.models.GroupedOpenApi;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,12 +15,6 @@ import org.springframework.context.annotation.Configuration;
         description = "WE API 명세",
         version = "v1"
     )
-)
-@SecurityScheme(
-    name = "Bearer Authentication",
-    type = SecuritySchemeType.HTTP,
-    bearerFormat = "JWT",
-    scheme = "bearer"
 )
 @Configuration
 public class SwaggerConfig {
@@ -38,8 +31,17 @@ public class SwaggerConfig {
 
   @Bean
   public OpenAPI openAPI() {
+    SecurityRequirement securityRequirement = new SecurityRequirement().addList("JWT");
+    Components components = new Components()
+        .addSecuritySchemes("JWT", new SecurityScheme()
+            .name("JWT")
+            .type(SecurityScheme.Type.HTTP)
+            .scheme("Bearer")
+            .bearerFormat("JWT"));
+
     return new OpenAPI()
-        .components(new Components())
+        .addSecurityItem(securityRequirement)
+        .components(components)
         .info(new io.swagger.v3.oas.models.info.Info()
             .title("WE API")
             .description("WE API 명세서"));
