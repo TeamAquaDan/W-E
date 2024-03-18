@@ -22,24 +22,23 @@ import org.whalebank.whalebank.domain.auth.service.AuthService;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final TokenProvider tokenProvider;
-    private final AuthService authService;
+  private final TokenProvider tokenProvider;
+  private final AuthService authService;
 
-    @GetMapping("/authorize")
-    public ResponseEntity<AuthResponse> getAuth(
-            @RequestBody AuthRequest authRequest) {
-        return new ResponseEntity<>(authService.getPhonenum(authRequest.getUser_ci()), HttpStatus.OK);
-    }
+  @GetMapping("/authorize")
+  public ResponseEntity<AuthResponse> getAuth(
+      @RequestBody AuthRequest authRequest) {
+    return new ResponseEntity<>(authService.getPhonenum(authRequest.getUser_ci()), HttpStatus.OK);
+  }
 
-    @PostMapping("/token")
-    public ResponseEntity<TokenResponse> getRefreshToken(
-            HttpServletRequest request) {
-        return new ResponseEntity<>(tokenProvider.generateToken(request), HttpStatus.OK);
-    }
+  @PostMapping("/token")
+  public ResponseEntity<TokenResponse> getRefreshToken(HttpServletRequest request) {
+    return new ResponseEntity<>(tokenProvider.generateToken(request), HttpStatus.OK);
+  }
 
-    @PostMapping("/reissue")
-    public ResponseEntity<? extends ReissueResponse> getAccessToken(
-            @RequestBody ReissueRequest reissueRequest) {
-        return new ResponseEntity<>(tokenProvider.reissueAccessToken(reissueRequest), HttpStatus.OK);
-    }
+  @PostMapping("/reissue")
+  public ResponseEntity<? extends ReissueResponse> getAccessToken(
+      @RequestBody ReissueRequest reissueRequest) {
+    return new ResponseEntity<>(tokenProvider.reissueAccessToken(reissueRequest), HttpStatus.OK);
+  }
 }
