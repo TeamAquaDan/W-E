@@ -11,7 +11,7 @@ class ParentsChildrenPage extends StatefulWidget {
 
 class _ParentsChildrenPage extends State<ParentsChildrenPage> {
   int _selectedIndex = 0;
-  static List _widgetOptions = ['김자녀', '김막내'];
+  static final List _widgetOptions = ['김자녀', '김막내'];
 
   void _onItemTapped(int index) {
     setState(() {

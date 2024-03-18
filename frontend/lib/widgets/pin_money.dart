@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class PinMoney extends StatefulWidget {
@@ -87,11 +86,11 @@ class _PinMoney extends State<PinMoney> {
                 ),
                 FilledButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF3F62DE)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF3F62DE)),
                   ),
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     '이체',
                   ),
                 ),

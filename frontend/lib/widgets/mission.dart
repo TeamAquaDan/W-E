@@ -9,12 +9,12 @@ class Mission extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Color(0xFF7A97FF),
+            color: const Color(0xFF7A97FF),
             borderRadius: BorderRadius.circular(20),
           ),
-          margin: EdgeInsets.all(16),
-          padding: EdgeInsets.symmetric(horizontal: 19, vertical: 17),
-          child: Column(
+          margin: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 17),
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(

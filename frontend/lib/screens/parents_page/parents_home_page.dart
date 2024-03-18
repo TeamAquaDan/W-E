@@ -4,7 +4,6 @@ import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
 import 'package:frontend/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class ParentsHomePage extends StatelessWidget {
   const ParentsHomePage({super.key});
@@ -19,7 +18,7 @@ class ParentsHomePage extends StatelessWidget {
               'assets/images/whale.png',
               height: 32,
             ),
-            Text('Whale 부모 페이지'),
+            const Text('Whale 부모 페이지'),
           ],
         ),
       ),
@@ -138,7 +137,7 @@ class ParentsHomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              MissionNone(),
+              const MissionNone(),
             ],
           ),
         ),

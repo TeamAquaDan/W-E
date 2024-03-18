@@ -8,16 +8,16 @@ class SavingGoalNone extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.fromLTRB(26, 18, 26, 12),
+          padding: const EdgeInsets.fromLTRB(26, 18, 26, 12),
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Color(0xFF97D8FF),
+            color: const Color(0xFF97D8FF),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center, // 세로 중앙 정렬
             children: [
-              Text(
+              const Text(
                 '아직 저축 목표가 없어요!',
                 style: TextStyle(
                   color: Colors.black,
@@ -27,7 +27,7 @@ class SavingGoalNone extends StatelessWidget {
                 ),
                 overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 경우 생략
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -49,13 +49,13 @@ class SavingGoalNone extends StatelessWidget {
                       print('목표 등록하러 가기 클릭됨');
                     },
                     style: TextButton.styleFrom(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 12,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    child: Text('목표 등록하러 가기 >'),
+                    child: const Text('목표 등록하러 가기 >'),
                   ),
                 ),
               ),

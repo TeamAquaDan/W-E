@@ -4,6 +4,6 @@ class AlarmPage extends StatelessWidget {
   const AlarmPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Text('알림 페이지');
+    return const Text('알림 페이지');
   }
 }

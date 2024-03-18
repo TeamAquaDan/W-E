@@ -15,13 +15,13 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    MyHomePage(title: 'Whale 서비스명'),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const MyHomePage(title: 'Whale 서비스명'),
     // StatisticsPage(),
-    ParentsHomePage(),
-    AlarmPage(),
-    MenuPage(),
-    MyMissionPage(),
+    const ParentsHomePage(),
+    const AlarmPage(),
+    const MenuPage(),
+    const MyMissionPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -65,8 +65,8 @@ class _NavBarState extends State<NavBar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF3F62DE),
-        unselectedItemColor: Color(0xFF7A97FF),
+        selectedItemColor: const Color(0xFF3F62DE),
+        unselectedItemColor: const Color(0xFF7A97FF),
         onTap: _onItemTapped,
       ),
     );
