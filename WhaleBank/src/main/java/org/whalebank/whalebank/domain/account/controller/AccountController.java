@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.whalebank.domain.account.dto.request.ParkingRequest;
+import org.whalebank.whalebank.domain.account.dto.request.TransactionRequest;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse;
 import org.whalebank.whalebank.domain.account.dto.response.DetailResponse;
 import org.whalebank.whalebank.domain.account.dto.response.ParkingResponse;
@@ -62,9 +63,9 @@ public class AccountController {
 
   @GetMapping("/deposit/transactions")
   public ResponseEntity<TransactionResponse> getTransactions(HttpServletRequest request,
-      @RequestBody Map<String, String> searchTimestamp) {
+      @RequestBody TransactionRequest transactionRequest) {
     return new ResponseEntity<>(
-        accountService.getTransactions(request, searchTimestamp.get("search_timestamp")),
+        accountService.getTransactions(request, transactionRequest),
         HttpStatus.OK);
   }
 }

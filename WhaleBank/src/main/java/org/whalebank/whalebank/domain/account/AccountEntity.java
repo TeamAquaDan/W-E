@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse.Account;
 import org.whalebank.whalebank.domain.auth.AuthEntity;
+import org.whalebank.whalebank.domain.transfer.TransferEntity;
 
 @Entity
 @Table(name = "account")
@@ -63,6 +65,10 @@ public class AccountEntity {
 
   @ManyToMany(mappedBy = "accountList")
   private List<AuthEntity> userList = new ArrayList<>();
+
+  @OneToMany
+  @JoinColumn(name = "account_id")
+  private List<TransferEntity> transferList = new ArrayList<>();
 
   public void depositParking(int depositAmt) {
 
