@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.whalebank.whalebank.domain.account.AccountEntity;
 import org.whalebank.whalebank.domain.account.dto.request.ParkingRequest;
+import org.whalebank.whalebank.domain.account.dto.request.TransactionRequest;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse.Account;
 import org.whalebank.whalebank.domain.account.dto.response.DetailResponse;
@@ -18,6 +19,8 @@ import org.whalebank.whalebank.domain.account.dto.response.TransactionResponse;
 import org.whalebank.whalebank.domain.account.repository.AccountRepository;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
+import org.whalebank.whalebank.domain.transfer.TransferEntity;
+import org.whalebank.whalebank.domain.transfer.repository.TransferRepository;
 
 @Service
 @Transactional
@@ -28,6 +31,7 @@ public class AccountServiceImpl implements AccountService {
   private final AuthRepository authRepository;
   private final TokenProvider tokenProvider;
   private final AccountRepository accountRepository;
+  private final TransferRepository transferRepository;
 
   @Override
   public AccountResponse getAccounts(HttpServletRequest request) {
@@ -61,12 +65,12 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public DetailResponse getAccount(HttpServletRequest request, String accountNum) {
+  public DetailResponse getAccount(HttpServletRequest request, int accountId) {
 
     String token = request.getHeader("Authorization").replace("Bearer ", "");
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    AccountEntity account = accountRepository.findByAccountNum(accountNum);
+    Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
     if (account == null) {
       return DetailResponse
@@ -80,12 +84,12 @@ public class AccountServiceImpl implements AccountService {
         .builder()
         .rsp_code(200)
         .rsp_message("계좌 조회 성공")
-        .account_num(accountNum)
-        .balance_amt(account.getBalanceAmt())
-        .withdrawable_amt(account.getWithdrawableAmt())
-        .account_type(account.getAccountType())
-        .account_id(account.getAccountId())
-        .account_name(account.getAccountName())
+        .account_num(account.get().getAccountNum())
+        .balance_amt(account.get().getBalanceAmt())
+        .withdrawable_amt(account.get().getWithdrawableAmt())
+        .account_type(account.get().getAccountType())
+        .account_id(account.get().getAccountId())
+        .account_name(account.get().getAccountName())
         .build();
   }
 
@@ -98,7 +102,7 @@ public class AccountServiceImpl implements AccountService {
     int accountId = parkingRequest.getAccount_id();
     int depositAmt = parkingRequest.getParking_amt();
 
-    AccountEntity account = accountRepository.findByAccountId(accountId);
+    Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
     if (account == null) {
       return ParkingResponse
@@ -108,21 +112,21 @@ public class AccountServiceImpl implements AccountService {
           .build();
     }
 
-    if (account.getBalanceAmt() < depositAmt) {
+    if (account.get().getBalanceAmt() < depositAmt) {
       return ParkingResponse
           .builder()
           .rsp_code(402)
           .rsp_message("계좌의 잔액이 부족합니다.")
           .build();
     } else {
-      account.depositParking(depositAmt);
+      account.get().depositParking(depositAmt);
     }
 
     return ParkingResponse
         .builder()
         .rsp_code(200)
         .rsp_message("파킹통장에 저금이 되었습니다.")
-        .parking_balance_amt(account.getParkingBalanceAmt())
+        .parking_balance_amt(account.get().getParkingBalanceAmt())
         .build();
   }
 
@@ -133,7 +137,7 @@ public class AccountServiceImpl implements AccountService {
     String token = request.getHeader("Authorization").replace("Bearer ", "");
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    AccountEntity account = accountRepository.findByAccountId(accountId);
+    Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
     if (account == null) {
       return ParkingResponse
@@ -143,13 +147,13 @@ public class AccountServiceImpl implements AccountService {
           .build();
     }
 
-    account.withdrawParking();
+    account.get().withdrawParking();
 
     return ParkingResponse
         .builder()
         .rsp_code(200)
         .rsp_message("파킹통장 잔액이 전액 출금 되었습니다.")
-        .parking_balance_amt(account.getParkingBalanceAmt())
+        .parking_balance_amt(account.get().getParkingBalanceAmt())
         .build();
   }
 
@@ -159,7 +163,7 @@ public class AccountServiceImpl implements AccountService {
     String token = request.getHeader("Authorization").replace("Bearer ", "");
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    AccountEntity account = accountRepository.findByAccountId(accountId);
+    Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
     if (account == null) {
       return ParkingResponse
@@ -173,12 +177,42 @@ public class AccountServiceImpl implements AccountService {
         .builder()
         .rsp_code(200)
         .rsp_message("파킹통장 잔액이 조회되었습니다.")
-        .parking_balance_amt(account.getParkingBalanceAmt())
+        .parking_balance_amt(account.get().getParkingBalanceAmt())
         .build();
   }
 
   @Override
-  public TransactionResponse getTransactions(HttpServletRequest request, String searchTimestamp) {
-    return null;
+  public TransactionResponse getTransactions(HttpServletRequest request,
+      TransactionRequest transactionRequest) {
+
+    String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+    String userId = tokenProvider.getUserId(token).get("sub", String.class);
+
+    int accountId = transactionRequest.getAccount_id();
+
+    if (transferRepository.findById(String.valueOf(accountId)) == null) {
+      return TransactionResponse
+          .builder()
+          .rsp_code(404)
+          .rsp_message("계좌가 존재하지 않습니다")
+          .build();
+    }
+
+    List<TransferEntity> findTransactions = accountRepository.findById(String.valueOf(accountId)).get().getTransferList();
+
+//    List<TransferEntity> transactions = findTransactions.stream()
+//        .map(t -> new )
+//    List<Account> accounts = findAccounts.stream()
+//        .map(a -> new Account(a.getAccountId(), a.getAccountType(), a.getAccountNum(),
+//            a.getAccountName()))
+//        .collect(Collectors.toList());
+
+    return TransactionResponse
+        .builder()
+        .rsp_code(200)
+        .rsp_message("거래내역이 조회되었습니다.")
+
+        .build();
   }
 }
