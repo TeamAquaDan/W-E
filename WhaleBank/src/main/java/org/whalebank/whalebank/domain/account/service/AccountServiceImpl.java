@@ -30,6 +30,14 @@ public class AccountServiceImpl implements AccountService {
 
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
+    if(authRepository.findById(userId).get().getAccountList()==null){
+      return AccountResponse
+          .builder()
+          .rsp_code(404)
+          .rsp_message("계좌가 존재하지 않습니다")
+          .build();
+    }
+
     List<AccountEntity> findAccounts = authRepository.findById(userId).get().getAccountList();
 
     List<Account> accounts = findAccounts.stream()
@@ -38,6 +46,8 @@ public class AccountServiceImpl implements AccountService {
 
     return AccountResponse
         .builder()
+        .rsp_code(200)
+        .rsp_message("계좌 목록 조회 성공")
         .account_cnt(findAccounts.size())
         .account_list(accounts)
         .build();

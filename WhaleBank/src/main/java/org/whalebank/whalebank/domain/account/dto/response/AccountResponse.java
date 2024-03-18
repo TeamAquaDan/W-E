@@ -14,6 +14,9 @@ import lombok.Setter;
 @Builder
 public class AccountResponse {
 
+  private int rsp_code; // 응답코드
+
+  private String rsp_message; // 응답메세지
 
   private int account_cnt;
 
