@@ -56,6 +56,14 @@ class _ParentsMissionList extends State<ParentsMissionList> {
       mission_reward: 10000,
       user_name: '김아들',
     ),
+    MissionData(
+      mission_id: 3,
+      status: 0,
+      deadline_date: '24-06-03',
+      mission_name: '무사고 100일',
+      mission_reward: 10000,
+      user_name: '김아들',
+    ),
   ];
 
   void _openAddMissionOverlay() {
@@ -73,46 +81,48 @@ class _ParentsMissionList extends State<ParentsMissionList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                '미션',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  '미션',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              // 미션 등록 35
-              ElevatedButton(
-                  onPressed: _openAddMissionOverlay,
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF3F62DE)),
-                  child: const Text(
-                    '미션 추가',
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
+                // 미션 등록 35
+                ElevatedButton(
+                    onPressed: _openAddMissionOverlay,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF3F62DE)),
+                    child: const Text(
+                      '미션 추가',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            ),
           ),
-        ),
 
-        SingleChildScrollView(
-          child: Expanded(
+          Container(
+            height: 400,
             child: ListView.builder(
-                shrinkWrap: true,
+                // shrinkWrap: true,
                 itemCount: _registeredMissions.length,
                 itemBuilder: (ctx, index) {
                   return MissionCard(_registeredMissions[index]);
                 }),
           ),
-        )
-        // 미션 목록 조회 37
-        // MissionCard(_registeredMissions[0]),
-      ],
+
+          // 미션 목록 조회 37
+          // MissionCard(_registeredMissions[0]),
+        ],
+      ),
     );
   }
 }
