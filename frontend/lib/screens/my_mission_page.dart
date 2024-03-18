@@ -9,7 +9,7 @@ class MyMissionPage extends StatefulWidget {
 }
 
 class _MyMissionPageState extends State<MyMissionPage> {
-  late List<dynamic> missions; // 여기에 API 응답 데이터를 저장합니다.
+  late List<dynamic> missions = []; // 여기에 API 응답 데이터를 저장합니다.
 
   @override
   void initState() {
@@ -27,14 +27,12 @@ class _MyMissionPageState extends State<MyMissionPage> {
   }
 
   Future<List<dynamic>> fetchMissionsFromAPI() async {
-    // 이 함수는 실제 API 요청 로직을 구현해야 합니다.
-    // 임시로 빈 리스트를 반환하도록 설정합니다.
     return [
       {
         "mission_id": 635,
         "mission_name": "사진 촬영 새 제품",
         "mission_reward": 81100,
-        "deadline_date": "2024-03-28 07:36:20",
+        "deadline_date": "2024-03-28",
         "status": 1,
         "user_name": "정예진"
       },
@@ -42,7 +40,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 534,
         "mission_name": "설문 참여 음식점",
         "mission_reward": 99623,
-        "deadline_date": "2024-04-09 07:36:20",
+        "deadline_date": "2024-04-09",
         "status": 1,
         "user_name": "이서연"
       },
@@ -50,7 +48,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 88,
         "mission_name": "리뷰 작성 새 제품",
         "mission_reward": 58258,
-        "deadline_date": "2024-04-13 07:36:20",
+        "deadline_date": "2024-04-13",
         "status": 0,
         "user_name": "이예진"
       },
@@ -58,7 +56,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 593,
         "mission_name": "사진 촬영 앱",
         "mission_reward": 58413,
-        "deadline_date": "2024-03-30 07:36:20",
+        "deadline_date": "2024-03-30",
         "status": 0,
         "user_name": "김민준"
       },
@@ -66,7 +64,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 645,
         "mission_name": "동영상 시청 새 제품",
         "mission_reward": 82355,
-        "deadline_date": "2024-03-17 07:36:20",
+        "deadline_date": "2024-03-17",
         "status": 0,
         "user_name": "정지아"
       },
@@ -74,7 +72,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 975,
         "mission_name": "리뷰 작성 서비스",
         "mission_reward": 74259,
-        "deadline_date": "2024-03-19 07:36:20",
+        "deadline_date": "2024-03-19",
         "status": 1,
         "user_name": "박예진"
       },
@@ -82,7 +80,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 570,
         "mission_name": "리뷰 작성 영화",
         "mission_reward": 39895,
-        "deadline_date": "2024-04-12 07:36:20",
+        "deadline_date": "2024-04-12",
         "status": 0,
         "user_name": "김서연"
       },
@@ -90,7 +88,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 24,
         "mission_name": "설문 참여 영화",
         "mission_reward": 18670,
-        "deadline_date": "2024-03-23 07:36:20",
+        "deadline_date": "2024-03-23",
         "status": 2,
         "user_name": "김민준"
       },
@@ -98,7 +96,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 929,
         "mission_name": "리뷰 작성 음식점",
         "mission_reward": 6332,
-        "deadline_date": "2024-03-29 07:36:20",
+        "deadline_date": "2024-03-29",
         "status": 0,
         "user_name": "김서연"
       },
@@ -106,7 +104,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
         "mission_id": 172,
         "mission_name": "데이터 입력 음식점",
         "mission_reward": 89635,
-        "deadline_date": "2024-04-02 07:36:20",
+        "deadline_date": "2024-04-02",
         "status": 0,
         "user_name": "최서연"
       }
@@ -115,6 +113,24 @@ class _MyMissionPageState extends State<MyMissionPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 진행 중인 미션들만 필터링
+    List<dynamic> ongoingMissions =
+        missions.where((mission) => mission['status'] == 0).toList();
+    // 완료된 미션들만 필터링
+    List<dynamic> completedMissions = missions
+        .where((mission) => mission['status'] == 1 || mission['status'] == 2)
+        .toList();
+    // 진행 중인 미션들의 총 금액 계산
+    int totalOngoingMissionReward = ongoingMissions.fold<int>(0,
+        (int sum, dynamic mission) => sum + (mission['mission_reward'] as int));
+
+    // 완료된 미션들의 총 금액 계산
+    int totalCompletedMissionReward = completedMissions.fold<int>(
+        0,
+        (int sum, dynamic mission) =>
+            sum +
+            (mission['status'] > 0 ? mission['mission_reward'] as int : 0));
+
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -134,22 +150,86 @@ class _MyMissionPageState extends State<MyMissionPage> {
             indicatorColor: Colors.transparent,
             tabs: [
               Tab(
-                child: Text('진행 중'),
+                child: Text(
+                  '진행 중',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               Tab(
-                child: Text('완료 됨'),
+                child: Text(
+                  '완료 됨',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Center(
-              child: Column(
-                children: [Mission()],
-              ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                  child: Text(
+                    '미션으로 $totalOngoingMissionReward원을 얻을 수 있어요!',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: ongoingMissions.length,
+                    itemBuilder: (context, index) {
+                      final mission = ongoingMissions[index];
+                      return Mission(
+                        mission_status: mission['status'],
+                        mission_name: mission['mission_name'],
+                        mission_reward: mission['mission_reward'],
+                        deadline_date: mission['deadline_date'],
+                        user_name: mission['user_name'],
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-            Center(child: Text('두 번째 탭')),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                  child: Text(
+                    '지금까지 미션으로 $totalCompletedMissionReward원을 얻었어요!',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: completedMissions.length,
+                    itemBuilder: (context, index) {
+                      final mission = completedMissions[index];
+                      return Mission(
+                        mission_status: mission['status'],
+                        mission_name: mission['mission_name'],
+                        mission_reward: mission['mission_reward'],
+                        deadline_date: mission['deadline_date'],
+                        user_name: mission['user_name'],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
