@@ -32,9 +32,9 @@ public class AccountController {
   @GetMapping("/deposit/detail")
   public ResponseEntity<DetailResponse> getAccount(
       HttpServletRequest request,
-      @RequestBody Map<String, String> accountNum
+      @RequestBody Map<String, Integer> accountId
   ) {
-    return new ResponseEntity<>(accountService.getAccount(request, accountNum.get("account_num")),
+    return new ResponseEntity<>(accountService.getAccount(request, accountId.get("account_id")),
         HttpStatus.OK);
   }
 

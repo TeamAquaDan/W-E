@@ -61,12 +61,12 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public DetailResponse getAccount(HttpServletRequest request, String accountNum) {
+  public DetailResponse getAccount(HttpServletRequest request, int accountId) {
 
     String token = request.getHeader("Authorization").replace("Bearer ", "");
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    AccountEntity account = accountRepository.findByAccountNum(accountNum);
+    AccountEntity account = accountRepository.findByAccountId(accountId);
 
     if (account == null) {
       return DetailResponse
@@ -80,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
         .builder()
         .rsp_code(200)
         .rsp_message("계좌 조회 성공")
-        .account_num(accountNum)
+        .account_num(account.getAccountNum())
         .balance_amt(account.getBalanceAmt())
         .withdrawable_amt(account.getWithdrawableAmt())
         .account_type(account.getAccountType())

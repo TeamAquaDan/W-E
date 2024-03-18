@@ -11,7 +11,7 @@ public interface AccountService {
 
   AccountResponse getAccounts(HttpServletRequest request);
 
-  DetailResponse getAccount(HttpServletRequest request, String accountNum);
+  DetailResponse getAccount(HttpServletRequest request, int accountId);
 
   ParkingResponse depositParking(HttpServletRequest request, ParkingRequest parkingRequest);
 
