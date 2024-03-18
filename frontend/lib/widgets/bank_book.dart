@@ -59,21 +59,21 @@ class _BankBook extends State<BankBook> {
                 FilledButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF264CB2)),
+                        MaterialStateProperty.all<Color>(const Color(0xFF264CB2)),
                   ),
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     '내역',
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 FilledButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF264CB2)),
+                        MaterialStateProperty.all<Color>(const Color(0xFF264CB2)),
                   ),
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     '이체',
                   ),
                 ),

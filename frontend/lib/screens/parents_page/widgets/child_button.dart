@@ -6,7 +6,7 @@ class ChildrenTap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
           CircleAvatar(
@@ -15,7 +15,13 @@ class ChildrenTap extends StatelessWidget {
               height: 32,
             ),
           ),
-          Text(name),
+          Text(
+            name,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ],
       ),
     );

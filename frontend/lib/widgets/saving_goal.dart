@@ -13,17 +13,17 @@ class _SavingGoal extends State<SavingGoal> {
       children: [
         Container(
           decoration: ShapeDecoration(
-            color: Color(0xFF97D8FF),
+            color: const Color(0xFF97D8FF),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
           margin: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 children: [
                   Text(
                     '💻',
@@ -46,8 +46,8 @@ class _SavingGoal extends State<SavingGoal> {
                   ),
                 ],
               ),
-              SizedBox(height: 40), // 제목과 진행 바 사이의 간격
-              Row(
+              const SizedBox(height: 40), // 제목과 진행 바 사이의 간격
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -70,7 +70,7 @@ class _SavingGoal extends State<SavingGoal> {
                   ),
                 ],
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -93,14 +93,14 @@ class _SavingGoal extends State<SavingGoal> {
                   ),
                 ],
               ),
-              SizedBox(height: 10), // 진행 바 상단의 간격
+              const SizedBox(height: 10), // 진행 바 상단의 간격
               Stack(
                 children: [
                   Container(
                     width: 350, // 전체 길이
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Color(0xFFF4F9FB),
+                      color: const Color(0xFFF4F9FB),
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
@@ -108,14 +108,14 @@ class _SavingGoal extends State<SavingGoal> {
                     width: 350 / 100 * 70, // 진행 백분율 길이
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Color(0xFF46A1F5),
+                      color: const Color(0xFF46A1F5),
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 5), // 진행 바와 백분율 사이의 간격
-              Align(
+              const SizedBox(height: 5), // 진행 바와 백분율 사이의 간격
+              const Align(
                 alignment: Alignment.centerRight,
                 child: Text(
                   '70%',

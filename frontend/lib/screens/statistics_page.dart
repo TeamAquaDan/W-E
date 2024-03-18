@@ -4,6 +4,6 @@ class StatisticsPage extends StatelessWidget {
   const StatisticsPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Text('통계 페이지');
+    return const Text('통계 페이지');
   }
 }

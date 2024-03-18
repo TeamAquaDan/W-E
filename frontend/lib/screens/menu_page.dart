@@ -4,6 +4,6 @@ class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Text('메뉴 ');
+    return const Text('메뉴 ');
   }
 }
