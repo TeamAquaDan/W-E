@@ -35,7 +35,6 @@ public class AccountServiceImpl implements AccountService {
     private final AuthRepository authRepository;
     private final TokenProvider tokenProvider;
     private final AccountRepository accountRepository;
-    private final TransferRepository transferRepository;
 
     @Override
     public AccountResponse getAccounts(HttpServletRequest request) {
