@@ -26,7 +26,7 @@ public class AccountResponse {
   public static class Account {
 
     private int account_id;
-    // private int account_type;
+    private int account_type;
     private String account_num;
     private String account_name;
 

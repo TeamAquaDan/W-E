@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     List<AccountEntity> findAccounts = authRepository.findById(userId).get().getAccountList();
 
     List<Account> accounts = findAccounts.stream()
-        .map(a -> new Account(a.getAccountId(), a.getAccountNum(), a.getAccountName()))
+        .map(a -> new Account(a.getAccountId(), a.getAccountType(), a.getAccountNum(), a.getAccountName()))
         .collect(Collectors.toList());
 
     return AccountResponse
