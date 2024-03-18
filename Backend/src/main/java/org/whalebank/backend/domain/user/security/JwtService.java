@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.dto.response.LoginResponseDto;
+import org.whalebank.backend.domain.user.dto.response.ReissueResponseDto;
+import org.whalebank.backend.global.exception.CustomException;
+import org.whalebank.backend.global.response.ResponseCode;
 
 @Component
 @RequiredArgsConstructor
@@ -103,6 +106,22 @@ public class JwtService {
     return resDto;
   }
 
+  public ReissueResponseDto reissueToken(UserEntity user, String refreshToken) {
+    // redis에서 login id를 기반으로 저장된 refresh token 값 가져옴
+    String refreshTokenfromRedis = (String)redisTemplate.opsForValue().get("RT:"+user.getLoginId());
+    if(!refreshToken.equals(refreshTokenfromRedis)) {
+      throw new CustomException(ResponseCode.DIFFERENT_REFRESH_TOKEN);
+    }
 
+    // 토큰 재생성
+    refreshToken = generateRefreshToken(user.getLoginId());
+    String accessToken = generateAccessToken(user.getLoginId());
+
+    // redis 업데이트
+    redisTemplate.opsForValue().set("RT:"+user.getLoginId(), refreshToken, refreshTokenExpirationDate,
+        TimeUnit.MILLISECONDS);
+
+    return new ReissueResponseDto(accessToken, refreshToken);
+  }
 
 }

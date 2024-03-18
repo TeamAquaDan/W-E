@@ -11,6 +11,7 @@ import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.dto.request.LoginRequestDto;
 import org.whalebank.backend.domain.user.dto.request.SignUpRequestDto;
 import org.whalebank.backend.domain.user.dto.response.LoginResponseDto;
+import org.whalebank.backend.domain.user.dto.response.ReissueResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.domain.user.security.JwtService;
 import org.whalebank.backend.global.exception.CustomException;
@@ -56,6 +57,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     return jwtService.generateToken(user);
+  }
+
+  @Override
+  public ReissueResponseDto reissue(String refreshToken) {
+
+    if(!jwtService.validateToken(refreshToken)) {
+      throw new CustomException(ResponseCode.INVALID_REFRESH_TOKEN);
+    }
+    String loginId = jwtService.getLoginId(refreshToken); // 리프레시 토큰에서 유저 아이디 가져옴
+
+    UserEntity user = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    return jwtService.reissueToken(user, refreshToken);
   }
 
   /**
