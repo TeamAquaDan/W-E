@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse.Account;
 import org.whalebank.whalebank.domain.auth.AuthEntity;
 
@@ -40,16 +41,20 @@ public class AccountEntity {
 
   private int balanceAmt; // 현재잔액
 
-  private int dayLimitAmt;  // 1일 한도
+  @ColumnDefault("5000000")
+  private int dayLimitAmt;  // 1일 한도 (5,000,000)
 
-  private int onceLimitAmt; // 1회 한도
+  @ColumnDefault("1000000")
+  private int onceLimitAmt; // 1회 한도 (1,000,000)
 
-  private int withdrawableAmt;  // 출금가능액
+  @ColumnDefault("1000000")
+  private int withdrawableAmt;  // 출금가능액 ( = 1일 한도)
 
   private String accountPassword; // 비밀번호
 
   private int AccountType; // 모임통장(0), 개인통장(1)
 
+  @ColumnDefault("0")
   private int parkingAmt; // 파킹통장 잔액
 
   private LocalDateTime issueDate; // yyyyMMdd
