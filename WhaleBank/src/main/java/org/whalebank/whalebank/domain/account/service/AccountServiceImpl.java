@@ -11,6 +11,7 @@ import org.whalebank.whalebank.domain.account.AccountEntity;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse.Account;
 import org.whalebank.whalebank.domain.account.dto.response.DetailResponse;
+import org.whalebank.whalebank.domain.account.dto.response.TransactionResponse;
 import org.whalebank.whalebank.domain.account.repository.AccountRepository;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
@@ -83,5 +84,9 @@ public class AccountServiceImpl implements AccountService {
         .account_id(account.getAccountId())
         .account_name(account.getAccountName())
         .build();
+  }
+
+  public TransactionResponse getTransactions(HttpServletRequest request, String searchTimestamp){
+    return null;
   }
 }

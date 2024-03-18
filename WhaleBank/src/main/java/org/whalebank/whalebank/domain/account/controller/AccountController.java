@@ -31,11 +31,13 @@ public class AccountController {
       HttpServletRequest request,
       @RequestBody Map<String, String> accountNum
   ) {
-    return new ResponseEntity<>(accountService.getAccount(request, accountNum.get("account_num")), HttpStatus.OK);
+    return new ResponseEntity<>(accountService.getAccount(request, accountNum.get("account_num")),
+        HttpStatus.OK);
   }
 
-//  @GetMapping("/deposit/transactions")
-//  public ResponseEntity<TransactionResponse> getTransactions(HttpServletRequest request) {
-//    return new ResponseEntity<>(accountService.getTransactions(request), HttpStatus.OK);
-//  }
+  @GetMapping("/deposit/transactions")
+  public ResponseEntity<TransactionResponse> getTransactions(HttpServletRequest request,
+      @RequestBody Map<String, String> searchTimestamp) {
+    return new ResponseEntity<>(accountService.getTransactions(request, searchTimestamp.get("search_timestamp")), HttpStatus.OK);
+  }
 }
