@@ -152,3 +152,19 @@ class ParentsHomePage extends StatelessWidget {
     );
   }
 }
+
+/*자녀 목록 조회 
+"{
+  ""status"": 200,
+  ""message"": ""자녀 목록 조회 성공"", 
+  ""data"": [
+     {
+         ""user_id"" ; int, 자녀 아이디,
+         ""group_id"" : int, 그룹 아이디
+         ""profile_image"": ""string, 자녀 프로필이미지"", 
+         ""group_nickname"": ""string, 그룹 별칭""
+     },
+  ]
+}"
+
+*/
