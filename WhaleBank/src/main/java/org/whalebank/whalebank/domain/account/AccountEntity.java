@@ -55,7 +55,7 @@ public class AccountEntity {
   private int AccountType; // 모임통장(0), 개인통장(1)
 
   @ColumnDefault("0")
-  private int parkingAmt; // 파킹통장 잔액
+  private int parkingBalanceAmt; // 파킹통장 잔액
 
   private LocalDateTime issueDate; // yyyyMMdd
 
@@ -64,4 +64,17 @@ public class AccountEntity {
   @ManyToMany(mappedBy = "accountList")
   private List<AuthEntity> userList = new ArrayList<>();
 
+  public void depositParking(int depositAmt) {
+
+    this.balanceAmt -= depositAmt;
+    this.parkingBalanceAmt += depositAmt;
+
+  }
+
+  public void withdrawParking() {
+
+    this.balanceAmt += this.parkingBalanceAmt;
+    this.parkingBalanceAmt = 0;
+
+  }
 }
