@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/account_list_data.dart';
+import 'package:intl/intl.dart';
 
 class BankHistoryCard extends StatelessWidget {
-  const BankHistoryCard({super.key, required this.data});
+  BankHistoryCard({super.key, required this.data});
   final AccountHistoryData data;
+  var moneyFormat = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,7 +35,7 @@ class BankHistoryCard extends StatelessWidget {
                 ),
                 Spacer(),
                 Text(
-                  data.trans_amt.toString(),
+                  moneyFormat.format(data.trans_amt),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -45,7 +47,7 @@ class BankHistoryCard extends StatelessWidget {
               children: [
                 Spacer(),
                 Text(
-                  data.balance_amt.toString(),
+                  moneyFormat.format(data.balance_amt),
                   style: TextStyle(fontSize: 20, color: Colors.black54),
                 ),
               ],
