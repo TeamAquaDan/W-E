@@ -24,4 +24,8 @@ public class FriendEntity {
     return entity;
   }
 
+  public void updateNickname(String nickname) {
+    this.friendNickname = nickname;
+  }
+
 }
