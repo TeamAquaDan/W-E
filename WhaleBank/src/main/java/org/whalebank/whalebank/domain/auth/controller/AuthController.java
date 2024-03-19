@@ -25,7 +25,7 @@ public class AuthController {
   private final TokenProvider tokenProvider;
   private final AuthService authService;
 
-  @GetMapping("/authorize")
+  @PostMapping("/authorize")
   public ResponseEntity<AuthResponse> getAuth(
       @RequestBody AuthRequest authRequest) {
     return new ResponseEntity<>(authService.getPhonenum(authRequest.getUser_ci()), HttpStatus.OK);
