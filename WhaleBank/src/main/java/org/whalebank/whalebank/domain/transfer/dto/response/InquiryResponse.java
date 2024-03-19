@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReceiveResponse {
+public class InquiryResponse {
 
     private int rsp_code;
     private String rsp_message;

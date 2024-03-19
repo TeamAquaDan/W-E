@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.whalebank.domain.transfer.dto.request.DepositRequest;
-import org.whalebank.whalebank.domain.transfer.dto.request.ReceiveRequest;
+import org.whalebank.whalebank.domain.transfer.dto.request.InquiryRequest;
 import org.whalebank.whalebank.domain.transfer.dto.request.WithdrawRequest;
 import org.whalebank.whalebank.domain.transfer.dto.response.WithdrawResponse;
 
@@ -18,23 +18,23 @@ import org.whalebank.whalebank.domain.transfer.dto.response.WithdrawResponse;
 public class TransferController {
 
     @PostMapping("/transfer/withdraw")
-    public ResponseEntity<WithdrawResponse> doWithdraw(
+    public ResponseEntity<WithdrawResponse> withdrawTransfer(
             HttpServletRequest request,
             @RequestBody WithdrawRequest withdrawRequest) {
         return null;
     }
 
     @PostMapping("/transfer/deposit")
-    public ResponseEntity<WithdrawResponse> doDeposit(
+    public ResponseEntity<WithdrawResponse> depositTransfer(
             HttpServletRequest request,
             @RequestBody DepositRequest depositRequest) {
         return null;
     }
 
     @PostMapping("/inquiry/receive")
-    public ResponseEntity<WithdrawResponse> getReceive(
+    public ResponseEntity<WithdrawResponse> inquiryReceive(
             HttpServletRequest request,
-            @RequestBody ReceiveRequest receiveRequest) {
+            @RequestBody InquiryRequest receiveRequest) {
         return null;
     }
 }

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ReceiveRequest {
+public class InquiryRequest {
 
     private String bank_code_std;   // 입금은행 표준코드
     private int tran_amt;   // 거래금액
