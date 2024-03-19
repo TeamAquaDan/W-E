@@ -38,13 +38,14 @@ public class TransferController {
     return new ResponseEntity<>(transferService.withdrawTransfer(request, withdrawRequest),
         HttpStatus.OK);
   }
-//
-//  @PostMapping("/transfer/deposit")
-//  public ResponseEntity<DepositResponse> depositTransfer(
-//      HttpServletRequest request,
-//      @RequestBody DepositRequest depositRequest) {
-//    return null;
-//  }
+
+  @PostMapping("/transfer/deposit")
+  public ResponseEntity<DepositResponse> depositTransfer(
+      HttpServletRequest request,
+      @RequestBody DepositRequest depositRequest) {
+    return new ResponseEntity<>(transferService.depositTransfer(request, depositRequest),
+        HttpStatus.OK);
+  }
 
 
 }

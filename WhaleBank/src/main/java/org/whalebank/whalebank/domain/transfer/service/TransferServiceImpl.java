@@ -14,8 +14,10 @@ import org.whalebank.whalebank.domain.auth.AuthEntity;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
 import org.whalebank.whalebank.domain.transfer.TransferEntity;
+import org.whalebank.whalebank.domain.transfer.dto.request.DepositRequest;
 import org.whalebank.whalebank.domain.transfer.dto.request.InquiryRequest;
 import org.whalebank.whalebank.domain.transfer.dto.request.WithdrawRequest;
+import org.whalebank.whalebank.domain.transfer.dto.response.DepositResponse;
 import org.whalebank.whalebank.domain.transfer.dto.response.InquiryResponse;
 import org.whalebank.whalebank.domain.transfer.dto.response.WithdrawResponse;
 import org.whalebank.whalebank.domain.transfer.repository.TransferRepository;
@@ -155,7 +157,7 @@ public class TransferServiceImpl implements TransferService {
     transferRepository.save(transfer);
 
     reqAccount.addTransfer(transfer);
-    
+
     return WithdrawResponse
         .builder()
         .rsp_code(200)
@@ -171,6 +173,61 @@ public class TransferServiceImpl implements TransferService {
         .wd_limit_remain_amt(reqAccount.getWithdrawableAmt())
         .balance_amt(reqAccount.getBalanceAmt())
         .trans_memo(withdrawRequest.getReq_trans_memo())
+        .build();
+  }
+
+  @Override
+  public DepositResponse depositTransfer(HttpServletRequest request,
+      DepositRequest depositRequest) {
+
+    String token = request.getHeader("Authorization").replace("Bearer ", "");
+    String userId = tokenProvider.getUserId(token).get("sub", String.class);
+
+    // 요청은행명
+    String reqBankName = codeRepository.findById(depositRequest.getReq_client_bank_code()).get()
+        .getBankName();
+
+    // 수취은행명
+    String recvBankName = codeRepository.findById(depositRequest.getRecv_client_bank_code()).get()
+        .getBankName();
+
+    // 요청계좌
+    AccountEntity reqAccount = accountRepository.findByBankCodeAndAccountNum(
+        depositRequest.getReq_client_bank_code(), depositRequest.getReq_client_account_num());
+
+    // 수취계좌
+    AccountEntity recvAccount = accountRepository.findByBankCodeAndAccountNum(
+        depositRequest.getRecv_client_bank_code(), depositRequest.getRecv_client_account_num());
+
+    // 현재 잔액 = 현재잔액 + 이체금액
+    recvAccount.setBalanceAmt(recvAccount.getBalanceAmt() + depositRequest.getTrans_amt());
+
+    TransferEntity transfer = TransferEntity.createTransfer(depositRequest,
+        reqAccount.getBalanceAmt());
+
+    transferRepository.save(transfer);
+
+    reqAccount.addTransfer(transfer);
+
+    return DepositResponse
+        .builder()
+        .rsp_code(200)
+        .rsp_message("입금이체 등록에 성공했습니다.")
+        .api_tran_id(transfer.getTransId())
+        .api_tran_dtm(transfer.getTransDtm())
+        .wd_bank_code_std(reqAccount.getBankCode())
+        .wd_bank_name(reqBankName)
+        .wd_account_num_masked(reqAccount.getAccountNum())
+        .wd_account_holder_name(depositRequest.getReq_client_name())
+        .bank_tran_date(transfer.getTransDate())
+        .account_name(recvAccount.getAccountName())
+        .bank_code_std(depositRequest.getRecv_client_bank_code())
+        .bank_name(recvBankName)
+        .account_num_masked(depositRequest.getRecv_client_account_num())
+        .account_holder_name(depositRequest.getRecv_client_name())
+        .tran_amt(depositRequest.getTrans_amt())
+        .balance_amt(recvAccount.getBalanceAmt())
+        .trans_memo(depositRequest.getRecv_trans_memo())
         .build();
   }
 

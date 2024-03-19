@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.whalebank.whalebank.domain.transfer.dto.request.DepositRequest;
 import org.whalebank.whalebank.domain.transfer.dto.request.WithdrawRequest;
 
 @Entity
@@ -60,6 +61,21 @@ public class TransferEntity {
         .recvClientName(withdrawRequest.getRecv_client_name())
         .recvClientAccountNum(withdrawRequest.getRecv_client_account_num())
         .recvClientBankCode(withdrawRequest.getRecv_client_bank_code())
+        .build();
+  }
+
+  public static TransferEntity createTransfer(DepositRequest depositRequest, int balanceAmt) {
+    return TransferEntity
+        .builder()
+        .transType(3)
+        .transAmt(depositRequest.getTrans_amt())
+        .balanceAmt(balanceAmt)
+        .transMemo(depositRequest.getRecv_trans_memo())
+        .transDtm(LocalDateTime.now())
+        .transDate(LocalDate.now())
+        .recvClientName(depositRequest.getRecv_client_name())
+        .recvClientAccountNum(depositRequest.getRecv_client_account_num())
+        .recvClientBankCode(depositRequest.getRecv_client_bank_code())
         .build();
   }
 }
