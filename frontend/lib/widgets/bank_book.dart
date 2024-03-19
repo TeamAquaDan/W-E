@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/bank_history_page/bank_history_page.dart';
 import 'package:intl/intl.dart';
 
 class BankBook extends StatefulWidget {
@@ -58,10 +59,12 @@ class _BankBook extends State<BankBook> {
               children: [
                 FilledButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(const Color(0xFF264CB2)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF264CB2)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    toBankHistoryPage(context);
+                  },
                   child: const Text(
                     '내역',
                   ),
@@ -69,8 +72,8 @@ class _BankBook extends State<BankBook> {
                 const SizedBox(width: 12),
                 FilledButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(const Color(0xFF264CB2)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF264CB2)),
                   ),
                   onPressed: () {},
                   child: const Text(
@@ -78,10 +81,20 @@ class _BankBook extends State<BankBook> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  void toBankHistoryPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BankHistoryPage(
+                title: widget.title,
+              )),
     );
   }
 }
