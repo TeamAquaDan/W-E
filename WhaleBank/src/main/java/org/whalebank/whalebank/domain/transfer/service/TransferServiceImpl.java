@@ -2,6 +2,7 @@ package org.whalebank.whalebank.domain.transfer.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,11 @@ import org.whalebank.whalebank.domain.account.repository.AccountRepository;
 import org.whalebank.whalebank.domain.auth.AuthEntity;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
+import org.whalebank.whalebank.domain.transfer.TransferEntity;
 import org.whalebank.whalebank.domain.transfer.dto.request.InquiryRequest;
+import org.whalebank.whalebank.domain.transfer.dto.request.WithdrawRequest;
 import org.whalebank.whalebank.domain.transfer.dto.response.InquiryResponse;
+import org.whalebank.whalebank.domain.transfer.dto.response.WithdrawResponse;
 import org.whalebank.whalebank.domain.transfer.repository.TransferRepository;
 import org.whalebank.whalebank.global.bank.CodeRepository;
 
@@ -25,24 +29,22 @@ public class TransferServiceImpl implements TransferService {
 
   private final TokenProvider tokenProvider;
   private final AccountRepository accountRepository;
-  private final TransferRepository transferRepository;
   private final CodeRepository codeRepository;
   private final AuthRepository authRepository;
+  private final TransferRepository transferRepository;
 
   @Override
   public InquiryResponse inquiryReceive(HttpServletRequest request, InquiryRequest inquiryRequest) {
 
     // 로그인 유저 확인
-
     String token = request.getHeader("Authorization").replace("Bearer ", "");
-
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    // 입금은행
+    // 수취은행
     String bankName = codeRepository.findById(inquiryRequest.getBank_code_std()).get()
         .getBankName();
 
-    // 출금은행
+    // 요청은행
     String reqBankName = codeRepository.findById(inquiryRequest.getReq_client_bank_code()).get()
         .getBankName();
 
@@ -87,6 +89,7 @@ public class TransferServiceImpl implements TransferService {
         .rsp_code(200)
         .rsp_message("수취인 조회에 성공했습니다.")
         .api_tran_dtm(LocalDateTime.now())
+        .req_client_name(inquiryRequest.getReq_client_name())
         .bank_code_std(inquiryRequest.getBank_code_std())
         .bank_name(bankName)
         .account_num(inquiryRequest.getAccount_num())
@@ -96,4 +99,79 @@ public class TransferServiceImpl implements TransferService {
         .tran_amt(inquiryRequest.getTran_amt())
         .build();
   }
+
+  @Override
+  public WithdrawResponse withdrawTransfer(HttpServletRequest request,
+      WithdrawRequest withdrawRequest) {
+
+    // 로그인 유저 확인
+    String token = request.getHeader("Authorization").replace("Bearer ", "");
+    String userId = tokenProvider.getUserId(token).get("sub", String.class);
+
+    // 수취은행
+    String recvBankName = codeRepository.findById(withdrawRequest.getReq_client_bank_code()).get()
+        .getBankName();
+
+    // 요청계좌
+    AccountEntity reqAccount = accountRepository.findByBankCodeAndAccountNum(
+        withdrawRequest.getReq_client_bank_code(), withdrawRequest.getReq_client_account_num());
+
+    // 계좌 비밀번호가 틀렸을 때
+    if (!reqAccount.getAccountPassword().equals(withdrawRequest.getAccount_password())) {
+      return WithdrawResponse
+          .builder()
+          .rsp_code(400)
+          .rsp_message("계좌 비밀번호가 틀렸습니다.")
+          .build();
+    }
+
+    // 잔액 부족
+    if (reqAccount.getBalanceAmt() < withdrawRequest.getTran_amt()) {
+      return WithdrawResponse
+          .builder()
+          .rsp_code(400)
+          .rsp_message("잔액이 부족합니다.")
+          .build();
+    }
+
+    // 1회 이체 한도 초과
+    if (reqAccount.getOnceLimitAmt() < withdrawRequest.getTran_amt()) {
+      return WithdrawResponse
+          .builder()
+          .rsp_code(400)
+          .rsp_message("이체 한도가 초과되었습니다.")
+          .build();
+    }
+
+    // 현재 잔액 = 현재잔액 - 이체금액
+    reqAccount.setBalanceAmt(reqAccount.getBalanceAmt() - withdrawRequest.getTran_amt());
+
+    // 출금가능액 = 출금가능액 - 이체금액
+    reqAccount.setWithdrawableAmt(reqAccount.getWithdrawableAmt() - withdrawRequest.getTran_amt());
+
+    TransferEntity transfer = TransferEntity.createTransfer(withdrawRequest,
+        reqAccount.getBalanceAmt());
+
+    transferRepository.save(transfer);
+
+    reqAccount.addTransfer(transfer);
+    
+    return WithdrawResponse
+        .builder()
+        .rsp_code(200)
+        .rsp_message("출금이체 등록에 성공했습니다.")
+        .api_tran_id(transfer.getTransId())
+        .api_tran_dtm(transfer.getTransDtm())
+        .dps_bank_code_std(withdrawRequest.getReq_client_bank_code())
+        .dps_bank_name(recvBankName)
+        .dps_account_num_masked(withdrawRequest.getRecv_client_account_num())
+        .dps_account_holder_name(withdrawRequest.getRecv_client_name())
+        .account_holder_name(withdrawRequest.getReq_client_name())
+        .tran_amt(withdrawRequest.getTran_amt())
+        .wd_limit_remain_amt(reqAccount.getWithdrawableAmt())
+        .balance_amt(reqAccount.getBalanceAmt())
+        .trans_memo(withdrawRequest.getReq_trans_memo())
+        .build();
+  }
+
 }

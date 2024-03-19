@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.whalebank.whalebank.domain.transfer.dto.request.WithdrawRequest;
 
 @Entity
 @Table(name = "transfer")
@@ -47,5 +48,18 @@ public class TransferEntity {
   private String recvClientBankCode; // 최종수취고객계좌 개설기관 표준코드
 
 
-
+  public static TransferEntity createTransfer(WithdrawRequest withdrawRequest, int balanceAmt) {
+    return TransferEntity
+        .builder()
+        .transType(2)
+        .transAmt(withdrawRequest.getTran_amt())
+        .balanceAmt(balanceAmt)
+        .transMemo(withdrawRequest.getReq_trans_memo())
+        .transDtm(LocalDateTime.now())
+        .transDate(LocalDate.now())
+        .recvClientName(withdrawRequest.getRecv_client_name())
+        .recvClientAccountNum(withdrawRequest.getRecv_client_account_num())
+        .recvClientBankCode(withdrawRequest.getRecv_client_bank_code())
+        .build();
+  }
 }

@@ -49,7 +49,7 @@ public class AccountEntity {
   @ColumnDefault("1000000")
   private int onceLimitAmt; // 1회 한도 (1,000,000)
 
-  @ColumnDefault("1000000")
+  @ColumnDefault("5000000")
   private int withdrawableAmt;  // 출금가능액 ( = 1일 한도)
 
   private String accountPassword; // 비밀번호
@@ -84,5 +84,9 @@ public class AccountEntity {
     this.balanceAmt += this.parkingBalanceAmt;
     this.parkingBalanceAmt = 0;
 
+  }
+
+  public void addTransfer(TransferEntity transfer){
+    this.transferList.add(transfer);
   }
 }

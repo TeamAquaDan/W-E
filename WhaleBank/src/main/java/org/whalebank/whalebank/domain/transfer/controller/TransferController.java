@@ -23,12 +23,21 @@ public class TransferController {
 
   private final TransferService transferService;
 
-//  @PostMapping("/transfer/withdraw")
-//  public ResponseEntity<WithdrawResponse> withdrawTransfer(
-//      HttpServletRequest request,
-//      @RequestBody WithdrawRequest withdrawRequest) {
-//    return null;
-//  }
+  @PostMapping("/inquiry/receive")
+  public ResponseEntity<InquiryResponse> inquiryReceive(
+      HttpServletRequest request,
+      @RequestBody InquiryRequest inquiryRequest) {
+    return new ResponseEntity<>(transferService.inquiryReceive(request, inquiryRequest),
+        HttpStatus.OK);
+  }
+
+  @PostMapping("/transfer/withdraw")
+  public ResponseEntity<WithdrawResponse> withdrawTransfer(
+      HttpServletRequest request,
+      @RequestBody WithdrawRequest withdrawRequest) {
+    return new ResponseEntity<>(transferService.withdrawTransfer(request, withdrawRequest),
+        HttpStatus.OK);
+  }
 //
 //  @PostMapping("/transfer/deposit")
 //  public ResponseEntity<DepositResponse> depositTransfer(
@@ -37,11 +46,5 @@ public class TransferController {
 //    return null;
 //  }
 
-  @PostMapping("/inquiry/receive")
-  public ResponseEntity<InquiryResponse> inquiryReceive(
-      HttpServletRequest request,
-      @RequestBody InquiryRequest inquiryRequest) {
-    return new ResponseEntity<>(transferService.inquiryReceive(request, inquiryRequest),
-        HttpStatus.OK);
-  }
+
 }
