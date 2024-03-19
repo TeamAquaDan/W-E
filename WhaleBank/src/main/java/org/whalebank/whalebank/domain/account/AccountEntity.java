@@ -63,6 +63,8 @@ public class AccountEntity {
 
   private LocalDateTime closingDate;  // 계좌해지일자
 
+  private String bankCode;  // 기관코드
+
   @ManyToMany(mappedBy = "accountList")
   private List<AuthEntity> userList = new ArrayList<>();
 
