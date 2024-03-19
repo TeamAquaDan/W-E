@@ -44,6 +44,7 @@ public class UserEntity {
   // 은행 접근 토큰
 
   // fcm 토큰
+  private String fcmToken;
 
   // 부모/자녀
   @Enumerated(EnumType.STRING)
