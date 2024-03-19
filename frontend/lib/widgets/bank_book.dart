@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/bank_history_page.dart';
 import 'package:intl/intl.dart';
 
 class BankBook extends StatefulWidget {
-  const BankBook(
-      {super.key,
-      required this.title,
-      required this.bankBookNum,
-      required this.bankBookMoney});
-  final String title;
-  final String bankBookNum;
-  final int bankBookMoney;
+  const BankBook({super.key, required this.bankData});
+
+  final AccountListData bankData;
   @override
   State<BankBook> createState() => _BankBook();
 }
@@ -32,14 +28,14 @@ class _BankBook extends State<BankBook> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.title,
+              widget.bankData.account_name,
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w700),
             ),
             Text(
-              widget.bankBookNum,
+              widget.bankData.account_num,
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -47,7 +43,7 @@ class _BankBook extends State<BankBook> {
             ),
             Center(
               child: Text(
-                moneyFormat.format(widget.bankBookMoney),
+                moneyFormat.format(widget.bankData.balance_amt),
                 style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
@@ -93,7 +89,7 @@ class _BankBook extends State<BankBook> {
       context,
       MaterialPageRoute(
           builder: (context) => BankHistoryPage(
-                title: widget.title,
+                bankData: widget.bankData,
               )),
     );
   }

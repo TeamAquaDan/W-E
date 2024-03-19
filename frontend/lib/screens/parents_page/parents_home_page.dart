@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/screens/parents_page/children_page/parents_children_page.dart';
 import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
@@ -6,8 +7,30 @@ import 'package:frontend/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
 
 class ParentsHomePage extends StatelessWidget {
-  const ParentsHomePage({super.key});
-
+  ParentsHomePage({super.key});
+  final List<AccountListData> _accountListData = [
+    AccountListData(
+      account_id: 1,
+      account_name: 'bank Book 1',
+      account_num: '111-1234-12345',
+      balance_amt: 112000,
+      account_type: 0,
+    ),
+    AccountListData(
+      account_id: 2,
+      account_name: '계좌명 2',
+      account_num: '222-1234-12345',
+      balance_amt: 222000,
+      account_type: 0,
+    ),
+    AccountListData(
+      account_id: 3,
+      account_name: '은행 통장 3',
+      account_num: '333-1234-12345',
+      balance_amt: 3333000,
+      account_type: 0,
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,24 +50,14 @@ class ParentsHomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const CarouselWithIndicator(
+              CarouselWithIndicator(
                 height: 176,
                 itemList: [
-                  BankBook(
-                    title: '통장 이름1',
-                    bankBookNum: '111-1234-12345',
-                    bankBookMoney: 112000,
-                  ),
-                  BankBook(
-                    title: '통장 이름2',
-                    bankBookNum: '222-1234-12345',
-                    bankBookMoney: 223000,
-                  ),
-                  BankBook(
-                    title: '통장 이름3',
-                    bankBookNum: '222-1234-12345',
-                    bankBookMoney: 323000,
-                  ),
+                  //계좌 목록 조회 17
+                  for (int i = 0; i < _accountListData.length; i++)
+                    BankBook(
+                      bankData: _accountListData[i],
+                    ),
                 ],
               ),
               const SizedBox(

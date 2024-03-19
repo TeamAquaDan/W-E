@@ -27,11 +27,11 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              BankBook(
-                title: '통장 이름',
-                bankBookNum: '123-1234-12345',
-                bankBookMoney: 123123000,
-              ),
+              // BankBook(
+              //   title: '통장 이름',
+              //   bankBookNum: '123-1234-12345',
+              //   bankBookMoney: 123123000,
+              // ),
               PinMoney(
                 PinMoneyDay: 16,
                 PinMoneyMoney: 100000,
