@@ -196,11 +196,11 @@ class _MyMissionPageState extends State<MyMissionPage> {
                     itemBuilder: (context, index) {
                       final mission = ongoingMissions[index];
                       return Mission(
-                        mission_status: mission['status'],
-                        mission_name: mission['mission_name'],
-                        mission_reward: mission['mission_reward'],
-                        deadline_date: mission['deadline_date'],
-                        user_name: mission['user_name'],
+                        missionStatus: mission['status'],
+                        missionName: mission['mission_name'],
+                        missionReward: mission['mission_reward'],
+                        deadlineDate: mission['deadline_date'],
+                        userName: mission['user_name'],
                       );
                     },
                   ),
@@ -225,11 +225,11 @@ class _MyMissionPageState extends State<MyMissionPage> {
                     itemBuilder: (context, index) {
                       final mission = completedMissions[index];
                       return Mission(
-                        mission_status: mission['status'],
-                        mission_name: mission['mission_name'],
-                        mission_reward: mission['mission_reward'],
-                        deadline_date: mission['deadline_date'],
-                        user_name: mission['user_name'],
+                        missionStatus: mission['status'],
+                        missionName: mission['mission_name'],
+                        missionReward: mission['mission_reward'],
+                        deadlineDate: mission['deadline_date'],
+                        userName: mission['user_name'],
                       );
                     },
                   ),

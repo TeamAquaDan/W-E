@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class IncreaseSalaryFormPage extends StatefulWidget {
-  const IncreaseSalaryFormPage({super.key});
+class SalaryIncreaseFormPage extends StatefulWidget {
+  const SalaryIncreaseFormPage({super.key});
 
   @override
-  State<IncreaseSalaryFormPage> createState() => _IncreaseSalaryFormPageState();
+  State<SalaryIncreaseFormPage> createState() => _SalaryIncreaseFormPageState();
 }
 
-class _IncreaseSalaryFormPageState extends State<IncreaseSalaryFormPage> {
+class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

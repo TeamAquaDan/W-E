@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Mission extends StatelessWidget {
-  const Mission(
-      {super.key,
-      required this.mission_status,
-      required this.mission_name,
-      required this.mission_reward,
-      required this.deadline_date,
-      required this.user_name});
+  const Mission({
+    super.key,
+    required this.missionStatus,
+    required this.missionName,
+    required this.missionReward,
+    required this.deadlineDate,
+    required this.userName,
+  });
 
-  final int mission_status;
-  final String mission_name;
-  final int mission_reward;
-  final String deadline_date;
-  final String user_name;
+  final int missionStatus;
+  final String missionName;
+  final int missionReward;
+  final String deadlineDate;
+  final String userName;
 
   String formatDeadlineDate(String deadlineDate) {
     // 문자열을 DateTime 객체로 파싱합니다.
@@ -31,14 +32,14 @@ class Mission extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // deadline_date를 DateTime 객체로 파싱
-    DateTime deadline = DateTime.parse(deadline_date);
+    DateTime deadline = DateTime.parse(deadlineDate);
     // 현재 날짜
     DateTime now = DateTime.now();
     // D-Day 계산
     int dDay =
         deadline.difference(DateTime(now.year, now.month, now.day)).inDays;
 
-    if (mission_status == 0) {
+    if (missionStatus == 0) {
       return Column(
         children: [
           Container(
@@ -52,7 +53,7 @@ class Mission extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  mission_name,
+                  missionName,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -77,7 +78,7 @@ class Mission extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          '~${formatDeadlineDate(deadline_date)}',
+                          '~${formatDeadlineDate(deadlineDate)}',
                           style: TextStyle(
                             color: Color(0xFF555555),
                             fontSize: 16,
@@ -88,7 +89,7 @@ class Mission extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      '${formatNumber(mission_reward)}원',
+                      '${formatNumber(missionReward)}원',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -104,7 +105,7 @@ class Mission extends StatelessWidget {
         ],
       );
     } else {
-      Color mission_color = mission_status == 1 ? Colors.green : Colors.red;
+      Color mission_color = missionStatus == 1 ? Colors.green : Colors.red;
       return Column(
         children: [
           Container(
@@ -118,7 +119,7 @@ class Mission extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  mission_name,
+                  missionName,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -130,7 +131,7 @@ class Mission extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      formatDeadlineDate(deadline_date),
+                      formatDeadlineDate(deadlineDate),
                       style: TextStyle(
                         color: Color(0xFF555555),
                         fontSize: 16,
@@ -139,7 +140,7 @@ class Mission extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${formatNumber(mission_reward)}원',
+                      '${formatNumber(missionReward)}원',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
