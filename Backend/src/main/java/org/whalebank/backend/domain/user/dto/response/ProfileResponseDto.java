@@ -12,6 +12,7 @@ import org.whalebank.backend.domain.user.UserEntity;
 public class ProfileResponseDto {
 
   public int user_id;
+  public String login_id;
   public String username;
   public String profile_img;
   public String birthdate;
@@ -20,6 +21,7 @@ public class ProfileResponseDto {
   public static ProfileResponseDto of(UserEntity user, boolean editable) {
     return ProfileResponseDto.builder()
         .user_id(user.getUserId())
+        .login_id(user.getLoginId())
         .username(user.getUserName())
         .profile_img(user.getProfileImage())
         .birthdate(user.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
