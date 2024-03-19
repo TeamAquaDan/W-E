@@ -15,17 +15,4 @@ public class BackendApplication {
     SpringApplication.run(BackendApplication.class, args);
   }
 
-  @Bean
-  public WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
-      public void addCorsMapping(CorsRegistry registry) {
-        registry.addMapping("/**")
-            .allowedOrigins("*")
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-            .allowedHeaders("*")
-            .maxAge(3000);
-      }
-    };
-  }
-
 }
