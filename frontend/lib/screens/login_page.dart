@@ -20,20 +20,28 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() async {
     // 실제 로그인 로직 대신 임시로 로그인 성공 처리
-    // String loginId = loginIdController.text;
-    // String password = passwordController.text;
+    String loginId = loginIdController.text;
+    String password = passwordController.text;
 
     // AuthService 인스턴스를 통한 login 메소드 호출 및 로그인 성공 여부 검사를 임시로 생략
-    // bool loginSuccess = await _authService.login(loginId, password);
+    bool loginSuccess = await _authService.login(loginId, password);
 
     developer.log('아이디: ${loginIdController.text}', name: 'signup.data');
     developer.log('비밀번호: ${passwordController.text}', name: 'signup.data');
 
     // 로그인 성공 시, MyHomePage로 넘어갑니다.
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const NavBar()),
-    );
+    if (loginSuccess) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NavBar(),
+        ),
+      );
+    }
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const NavBar()),
+    // );
 
     // 실제 로그인 실패 처리 로직도 임시로 생략
     // else {
@@ -64,18 +72,45 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _navigateToPinLoginPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PinLoginPage()),
-    );
+  // void _navigateToPinLoginPage() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => PinLoginPage()),
+  //   );
+  // }
+
+  // void _navigatedToPinSetting() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => SetPinPage()),
+  //   );
+  // }
+  void _navigateToPinLoginPage() async {
+    bool hasLoginInfo = await _authService.hasLoginInfo();
+    if (hasLoginInfo) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PinLoginPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+      );
+    }
   }
 
-  void _navigatedToPinSetting() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SetPinPage()),
-    );
+  void _navigatedToPinSetting() async {
+    bool hasLoginInfo = await _authService.hasLoginInfo();
+    if (hasLoginInfo) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SetPinPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+      );
+    }
   }
 
   @override
