@@ -13,7 +13,7 @@ class ParentsHomePage extends StatelessWidget {
       account_id: 1,
       account_name: 'bank Book 1',
       account_num: '111-1234-12345',
-      balance_amt: 112000,
+      balance_amt: 3630000,
       account_type: 0,
     ),
     AccountListData(

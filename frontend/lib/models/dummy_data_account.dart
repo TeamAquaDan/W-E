@@ -4,8 +4,8 @@ import 'package:frontend/models/account_list_data.dart';
 List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
-      trans_amt: 50000,
-      balance_amt: 150000,
+      trans_amt: 150000,
+      balance_amt: 3630000,
       trans_memo: "식료품 구매",
       trans_dtm: "2024-03-19 09:23:45",
       trans_date: "2024-03-19",
@@ -16,8 +16,8 @@ List<AccountHistoryData> dummyDataList = [
       recv_client_bank_code: "004"),
   AccountHistoryData(
       trans_type: 3,
-      trans_amt: 100000,
-      balance_amt: 50000,
+      trans_amt: 3000000,
+      balance_amt: 3780000,
       trans_memo: "월급 수령",
       trans_dtm: "2024-03-18 15:30:00",
       trans_date: "2024-03-18",
@@ -29,7 +29,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 30000,
-      balance_amt: 20000,
+      balance_amt: 780000,
       trans_memo: "카페에서 커피 구매",
       trans_dtm: "2024-03-17 11:45:22",
       trans_date: "2024-03-17",
@@ -41,7 +41,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 80000,
-      balance_amt: 100000,
+      balance_amt: 810000,
       trans_memo: "통신비 납부",
       trans_dtm: "2024-03-16 14:20:10",
       trans_date: "2024-03-16",
@@ -53,7 +53,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 20000,
-      balance_amt: 20000,
+      balance_amt: 890000,
       trans_memo: "도서 구매",
       trans_dtm: "2024-03-15 16:55:33",
       trans_date: "2024-03-15",
@@ -65,7 +65,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 120000,
-      balance_amt: 150000,
+      balance_amt: 910000,
       trans_memo: "임대료 지불",
       trans_dtm: "2024-03-14 08:10:05",
       trans_date: "2024-03-14",
@@ -77,7 +77,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 60000,
-      balance_amt: 30000,
+      balance_amt: 1030000,
       trans_memo: "점심 식사",
       trans_dtm: "2024-03-13 12:30:15",
       trans_date: "2024-03-13",
@@ -89,7 +89,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 50000,
-      balance_amt: 90000,
+      balance_amt: 1090000,
       trans_memo: "카드 대금 지불",
       trans_dtm: "2024-03-12 17:45:50",
       trans_date: "2024-03-12",
@@ -101,7 +101,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 70000,
-      balance_amt: 140000,
+      balance_amt: 1140000,
       trans_memo: "의류 매입",
       trans_dtm: "2024-03-11 10:20:40",
       trans_date: "2024-03-11",
@@ -113,7 +113,7 @@ List<AccountHistoryData> dummyDataList = [
   AccountHistoryData(
       trans_type: 2,
       trans_amt: 90000,
-      balance_amt: 210000,
+      balance_amt: 1210000,
       trans_memo: "이월 금액 입금",
       trans_dtm: "2024-03-10 09:00:00",
       trans_date: "2024-03-10",

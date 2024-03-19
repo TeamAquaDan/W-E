@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/models/dummy_data_account.dart';
+import 'package:frontend/screens/bank_history_page/widgets/bank_history_card.dart';
 import 'package:frontend/screens/bank_history_page/widgets/trans_type_button.dart';
 import 'package:intl/intl.dart';
 
@@ -62,7 +63,7 @@ class BankHistoryPage extends StatelessWidget {
               Spacer(),
             ]),
             for (int i = 0; i < dummyDataList.length; i++)
-              Text(dummyDataList[i].trans_title)
+              BankHistoryCard(data: dummyDataList[i])
           ],
         ),
       ),
