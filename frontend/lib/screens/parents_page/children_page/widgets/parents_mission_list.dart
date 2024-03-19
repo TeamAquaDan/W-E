@@ -109,18 +109,9 @@ class _ParentsMissionList extends State<ParentsMissionList> {
             ),
           ),
 
-          Container(
-            height: 400,
-            child: ListView.builder(
-                // shrinkWrap: true,
-                itemCount: _registeredMissions.length,
-                itemBuilder: (ctx, index) {
-                  return MissionCard(_registeredMissions[index]);
-                }),
-          ),
-
           // 미션 목록 조회 37
-          // MissionCard(_registeredMissions[0]),
+          for (int i = 0; i < _registeredMissions.length; i++)
+            MissionCard(_registeredMissions[i])
         ],
       ),
     );
