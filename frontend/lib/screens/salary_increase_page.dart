@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/screens/salary_increase_form_page.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class IncreaseSalaryPage extends StatefulWidget {
-  const IncreaseSalaryPage({super.key});
+class SalaryIncreasePage extends StatefulWidget {
+  const SalaryIncreasePage({super.key});
 
   @override
-  State<IncreaseSalaryPage> createState() => _IncreaseSalaryPageState();
+  State<SalaryIncreasePage> createState() => _SalaryIncreasePageState();
 }
 
-class _IncreaseSalaryPageState extends State<IncreaseSalaryPage> {
+class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
   final TextEditingController _controller = TextEditingController();
   final NumberFormat _numberFormat = NumberFormat.decimalPattern();
 
@@ -150,7 +152,9 @@ class _IncreaseSalaryPageState extends State<IncreaseSalaryPage> {
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.fromLTRB(20, 10, 20, 10)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   child: Text(
                     '취소',
                     style: TextStyle(
@@ -171,6 +175,7 @@ class _IncreaseSalaryPageState extends State<IncreaseSalaryPage> {
                   ),
                   onPressed: () {
                     print(_controller.text.replaceAll(',', ''));
+                    Get.to(() => SalaryIncreaseFormPage());
                   }, // api 요청
                   child: Text(
                     '확인',
