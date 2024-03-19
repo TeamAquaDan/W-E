@@ -43,17 +43,17 @@ request body
   ""message"": ""거래 내역 조회 성공"", 
   ""data"": [
     {
-      ""trans_type"": ""int, 거래유형"", 
-      ""trans_amt"": ""int, 거래금액"",
-      ""balance_amt"": ""int, 거래 후 잔액"", 
-      ""trans_memo"": ""string, 적요"",
-      ""trans_dtm"": ""string, 거래일시"",
-      ""trans_date"": ""string, 거래일자"", 
-      ""trans_title"": ""string, 거래제목"",
-      ""recv_client_name"": ""string, 수취고객성명"",
-      ""recv_client_account_num"": ""string, 최종수취고객계좌번호"",
-      ""recv_client_bank"" : ""string, 최종수취고객계좌 개설기관 이름""
-      ""recv_client_bank_code"": ""string, 최종수취고객계좌 개설기관 표준코드""
+      "trans_type": "int, 거래유형",  2번 출금 3번 입금
+      "trans_amt": "int, 거래금액",
+      "balance_amt": "int, 거래 후 잔액", 
+      "trans_memo": "string, 적요",
+      "trans_dtm": "string, 거래일시",
+      "trans_date": "string, 거래일자", 
+      "trans_title": "string, 거래제목",
+      "recv_client_name": "string, 수취고객성명",
+      "recv_client_account_num": "string, 최종수취고객계좌번호",
+      "recv_client_bank" : "string, 최종수취고객계좌 개설기관 이름",
+      "recv_client_bank_code": "string, 최종수취고객계좌 개설기관 표준코드"
     }
   ]
 }"

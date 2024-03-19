@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/account_list_data.dart';
-import 'package:frontend/screens/bank_history_page/trans_type_button.dart';
-import 'package:frontend/widgets/bank_book.dart';
+import 'package:frontend/models/dummy_data_account.dart';
+import 'package:frontend/screens/bank_history_page/widgets/trans_type_button.dart';
 import 'package:intl/intl.dart';
 
 class BankHistoryPage extends StatelessWidget {
@@ -56,15 +56,13 @@ class BankHistoryPage extends StatelessWidget {
                 ],
               ),
             ),
-            // BankBook(
-            //   bankData: bankData,
-            // ),
-            Row(
-              children: [
-                DropdownButtonExample(),
-                Spacer(),
-              ],
-            )
+            Row(children: [
+              SizedBox(width: 20),
+              DropdownButtonHistory(),
+              Spacer(),
+            ]),
+            for (int i = 0; i < dummyDataList.length; i++)
+              Text(dummyDataList[i].trans_title)
           ],
         ),
       ),
