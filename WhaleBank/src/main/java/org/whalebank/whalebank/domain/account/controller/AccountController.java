@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class AccountController {
     return new ResponseEntity<>(accountService.getAccounts(request), HttpStatus.OK);
   }
 
-  @GetMapping("/deposit/detail")
+  @PostMapping("/deposit/detail")
   public ResponseEntity<DetailResponse> getAccount(
       HttpServletRequest request,
       @RequestBody Map<String, Integer> accountId
@@ -50,18 +51,20 @@ public class AccountController {
   @PatchMapping("/parking/withdraw")
   public ResponseEntity<ParkingResponse> withdrawParking(HttpServletRequest request,
       @RequestBody Map<String, Integer> accountId) {
-    return new ResponseEntity<>(accountService.withdrawParking(request, accountId.get("account_id")),
+    return new ResponseEntity<>(
+        accountService.withdrawParking(request, accountId.get("account_id")),
         HttpStatus.OK);
   }
 
-  @GetMapping("/parking")
+  @PostMapping("/parking")
   public ResponseEntity<ParkingResponse> getParking(HttpServletRequest request,
       @RequestBody Map<String, Integer> parkingRequest) {
-    return new ResponseEntity<>(accountService.getParking(request, parkingRequest.get("account_id")),
+    return new ResponseEntity<>(
+        accountService.getParking(request, parkingRequest.get("account_id")),
         HttpStatus.OK);
   }
 
-  @GetMapping("/deposit/transactions")
+  @PostMapping("/deposit/transactions")
   public ResponseEntity<TransactionResponse> getTransactions(HttpServletRequest request,
       @RequestBody TransactionRequest transactionRequest) {
     return new ResponseEntity<>(
