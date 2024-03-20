@@ -6,6 +6,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,14 @@ public class UserController {
   @PostMapping("/verify")
   public ApiResponse<VerifyResponseDto> verifyUserWithPhoneNumAndName(@RequestBody VerifyRequestDto reqDto) {
     return ApiResponse.ok("실명 인증 성공", service.verifyUser(reqDto));
+  }
+
+  @Operation(summary="주계좌 등록", description="계좌 목록 조회 api로 받아온 계좌 중 하나를 주 계좌로 등록한다")
+  @PatchMapping("/main-ccount")
+  public ApiResponse<?> registerMainAccount(@AuthenticationPrincipal UserDetails loginUser,
+      @RequestBody Map<String, Integer> requestBody) {
+    service.updateMainAccount(loginUser.getUsername(), requestBody.get("account_id"));
+    return ApiResponse.ok("주계좌 등록 성공");
   }
 
 }

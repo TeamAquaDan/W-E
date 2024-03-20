@@ -10,4 +10,5 @@ public interface UserService {
 
   public VerifyResponseDto verifyUser(VerifyRequestDto reqDto);
 
+  void updateMainAccount(String loginId, Integer accountId);
 }

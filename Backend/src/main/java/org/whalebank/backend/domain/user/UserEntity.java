@@ -80,4 +80,7 @@ public class UserEntity {
     this.cardAccessToken = token;
   }
 
+  public void updateMainAccount(int accountId) {
+    this.accountId = accountId;
+  }
 }
