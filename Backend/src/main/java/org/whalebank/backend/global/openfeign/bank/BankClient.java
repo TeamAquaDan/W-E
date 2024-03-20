@@ -10,6 +10,7 @@ import org.whalebank.backend.global.config.OpenFeignConfig;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
+import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
@@ -17,6 +18,7 @@ import org.whalebank.backend.global.openfeign.bank.response.AccountDetailRespons
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.DepositResponse;
+import org.whalebank.backend.global.openfeign.bank.response.InquiryResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 
@@ -63,6 +65,12 @@ public interface BankClient {
       @RequestBody DepositRequest requestDto
   );
 
+  // 수취조회
+  @PostMapping("/inquiry/receive")
+  ResponseEntity<InquiryResponse> inquiry(
+      @RequestHeader("Authorization") String token,
+      @RequestBody InquiryRequest request
+  );
 
 
 

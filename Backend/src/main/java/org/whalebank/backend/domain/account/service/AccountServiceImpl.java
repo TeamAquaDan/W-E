@@ -5,16 +5,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.account.dto.request.InquiryRequestDto;
 import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
 import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
 import org.whalebank.backend.domain.account.dto.response.AccountInfoResponseDto;
+import org.whalebank.backend.domain.account.dto.response.InquiryResponseDto;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
+import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.InquiryResponse;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 
@@ -45,6 +49,16 @@ public class AccountServiceImpl implements AccountService {
     UserEntity currentUser = getCurrentUser(loginId);
 
     return AccountDetailResponseDto.from(bankAccessUtil.getAccountDetail(currentUser.getBankAccessToken(), accountId));
+  }
+
+  @Override
+  public InquiryResponseDto inquiryReceiver(String loginId, InquiryRequestDto reqDto) {
+    UserEntity user = getCurrentUser(loginId);
+
+    InquiryResponse resFromBank = bankAccessUtil.inquiry(user.getBankAccessToken(),
+        InquiryRequest.from(reqDto));
+
+    return InquiryResponseDto.from(resFromBank);
   }
 
   @Override

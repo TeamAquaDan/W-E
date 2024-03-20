@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whalebank.backend.domain.account.dto.request.InquiryRequestDto;
 import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
 import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
 import org.whalebank.backend.domain.account.dto.response.AccountInfoResponseDto;
+import org.whalebank.backend.domain.account.dto.response.InquiryResponseDto;
 import org.whalebank.backend.domain.account.service.AccountService;
 import org.whalebank.backend.global.response.ApiResponse;
 
@@ -37,6 +39,14 @@ public class AccountController {
   public ApiResponse<AccountDetailResponseDto> getAccountDetail(
       @AuthenticationPrincipal UserDetails loginUser, @RequestBody Map<String, Integer> reqDto) {
     return ApiResponse.ok("계좌 상세 조회 성공", service.getAccountDetail(loginUser.getUsername(), reqDto.get("account_id")));
+  }
+
+  @PostMapping("/transfer/inquiry/receive")
+  @Operation(summary = "수취인 조회", description = "송금 전 수취인의 계좌번호가 유효한지 확인한다")
+  public ApiResponse<InquiryResponseDto> inquiry(
+      @AuthenticationPrincipal UserDetails loginUser, @RequestBody InquiryRequestDto requestDto
+  ) {
+    return ApiResponse.ok("수취인 조회 성공", service.inquiryReceiver(loginUser.getUsername(), requestDto));
   }
 
   @PostMapping("/transfer/withdraw")

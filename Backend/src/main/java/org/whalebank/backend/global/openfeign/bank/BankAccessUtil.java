@@ -8,6 +8,7 @@ import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
+import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
@@ -15,6 +16,7 @@ import org.whalebank.backend.global.openfeign.bank.response.AccountDetailRespons
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.DepositResponse;
+import org.whalebank.backend.global.openfeign.bank.response.InquiryResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 import org.whalebank.backend.global.response.ResponseCode;
@@ -63,6 +65,17 @@ public class BankAccessUtil {
   public DepositResponse deposit(String bankAccessToken, DepositRequest req) {
     return bankClient.deposit(bankAccessToken, req)
         .getBody();
+  }
+
+  // 수취인조회
+  public InquiryResponse inquiry(String bankAccessToken, InquiryRequest req) {
+    InquiryResponse res = bankClient.inquiry(bankAccessToken, req)
+        .getBody();
+
+    if(res.getRsp_code()==404) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
+    }
+    return res;
   }
 
   /**
