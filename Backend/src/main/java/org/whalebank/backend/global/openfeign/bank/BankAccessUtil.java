@@ -105,4 +105,16 @@ public class BankAccessUtil {
         .getBody();
   }
 
+  // 파킹통장 저금
+  public ParkingBalanceResponse depositParking(String token, ParkingRequest request) {
+    ParkingBalanceResponse res = bankClient.depositParking(token, request)
+        .getBody();
+    if(res.getRsp_code()==404) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
+    } else if(res.getRsp_code()==402) { // 잔액 부족
+      throw new CustomException(ResponseCode.INSUFFICIENT_BALANCE);
+    }
+    return res;
+  }
+
 }
