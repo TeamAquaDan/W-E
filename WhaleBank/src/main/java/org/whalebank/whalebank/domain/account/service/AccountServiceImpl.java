@@ -1,10 +1,10 @@
 package org.whalebank.whalebank.domain.account.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transaction;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +24,6 @@ import org.whalebank.whalebank.domain.account.repository.AccountRepository;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
 import org.whalebank.whalebank.domain.transfer.TransferEntity;
-import org.whalebank.whalebank.domain.transfer.repository.TransferRepository;
 
 @Service
 @Transactional
@@ -75,7 +74,7 @@ public class AccountServiceImpl implements AccountService {
 
     Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
-    if (account == null) {
+    if (account.isEmpty()) {
       return DetailResponse
           .builder()
           .rsp_code(404)
@@ -93,6 +92,9 @@ public class AccountServiceImpl implements AccountService {
         .account_type(account.get().getAccountType())
         .account_id(account.get().getAccountId())
         .account_name(account.get().getAccountName())
+        .issue_date(account.get().getIssueDate().format(DateTimeFormatter.ofPattern("yyyyDDmm")))
+        .day_limit_amt(account.get().getDayLimitAmt())
+        .once_limit_amt(account.get().getOnceLimitAmt())
         .build();
   }
 
@@ -107,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
 
     Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
-    if (account == null) {
+    if (account.isEmpty()) {
       return ParkingResponse
           .builder()
           .rsp_code(404)
@@ -142,7 +144,7 @@ public class AccountServiceImpl implements AccountService {
 
     Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
-    if (account == null) {
+    if (account.isEmpty()) {
       return ParkingResponse
           .builder()
           .rsp_code(404)
@@ -168,7 +170,7 @@ public class AccountServiceImpl implements AccountService {
 
     Optional<AccountEntity> account = accountRepository.findById(String.valueOf(accountId));
 
-    if (account == null) {
+    if (account.isEmpty()) {
       return ParkingResponse
           .builder()
           .rsp_code(404)

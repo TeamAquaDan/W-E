@@ -1,5 +1,6 @@
 package org.whalebank.whalebank.domain.account.dto.response;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class DetailResponse {
 
   private int rsp_code; // 응답코드
 
-  private String rsp_message; // 응답메세지f
+  private String rsp_message; // 응답메세지
 
   private String account_num; // 계좌번호
 
@@ -28,5 +29,11 @@ public class DetailResponse {
   private int account_id; // 계좌 고유 번호
 
   private String account_name;  // 계좌명
+
+  private String issue_date;  // 개설일자
+
+  private int day_limit_amt;  // 1일 한도
+
+  private int once_limit_amt; // 1회 한도
 
 }
