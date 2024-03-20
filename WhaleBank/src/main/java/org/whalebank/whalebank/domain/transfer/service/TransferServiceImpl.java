@@ -122,7 +122,7 @@ public class TransferServiceImpl implements TransferService {
     if (!reqAccount.getAccountPassword().equals(withdrawRequest.getAccount_password())) {
       return WithdrawResponse
           .builder()
-          .rsp_code(400)
+          .rsp_code(401)
           .rsp_message("계좌 비밀번호가 틀렸습니다.")
           .build();
     }
@@ -131,7 +131,7 @@ public class TransferServiceImpl implements TransferService {
     if (reqAccount.getBalanceAmt() < withdrawRequest.getTran_amt()) {
       return WithdrawResponse
           .builder()
-          .rsp_code(400)
+          .rsp_code(402)
           .rsp_message("잔액이 부족합니다.")
           .build();
     }
@@ -140,7 +140,7 @@ public class TransferServiceImpl implements TransferService {
     if (reqAccount.getOnceLimitAmt() < withdrawRequest.getTran_amt()) {
       return WithdrawResponse
           .builder()
-          .rsp_code(400)
+          .rsp_code(403)
           .rsp_message("이체 한도가 초과되었습니다.")
           .build();
     }
