@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
+import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.response.ResponseCode;
 
@@ -16,6 +17,11 @@ public class BankAccessUtil {
 
   private final BankClient bankClient;
 
+  /**
+   *
+   * @param userCI
+   * @return 은행에 userCI값을 가진 유저가 존재한다면 은행에서 전화번호를 받아옴
+   */
   public String getUserInfo(String userCI) {
     CheckUserResponseDto userResponseDto = bankClient.getUser(new CheckUserRequestDto(userCI))
         .getBody();
@@ -26,6 +32,11 @@ public class BankAccessUtil {
     }
 
     return userResponseDto.getPhone_num();
+  }
+
+  public AccessTokenResponseDto generateToken(String userCI) {
+    return bankClient.generateToken(userCI)
+        .getBody();
   }
 
 }

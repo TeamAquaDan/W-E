@@ -17,6 +17,7 @@ import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.domain.user.security.JwtService;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
+import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Transactional
   public void signUp(SignUpRequestDto dto) {
-    String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
+    String userCI = "1234";//createCI(dto.getBirthDate(), dto.getPersonal_num());
 
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
@@ -49,12 +50,19 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
+  @Transactional
   public LoginResponseDto login(LoginRequestDto dto) {
     UserEntity user = repository.findByLoginId(dto.getLogin_id())
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     if (!encoder.matches(dto.getPassword(), user.getLoginPassword())) {
       throw new CustomException(ResponseCode.USER_NOT_FOUND);
+    }
+
+    if(user.getCardAccessToken()==null || user.getBankAccessToken()==null) {
+      AccessTokenResponseDto responseDto = bankAccessUtil.generateToken(user.getUserCi());
+      user.updateBankAccessToken(responseDto.getAccess_token());
+      // TODO: 카드사 접근토큰 저장
     }
 
     return jwtService.generateToken(user);
