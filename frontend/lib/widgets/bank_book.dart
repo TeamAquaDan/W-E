@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/bank_history_page.dart';
+import 'package:frontend/api/test_html.dart';
+import 'package:frontend/screens/transfer_page/transfer_page.dart';
 import 'package:intl/intl.dart';
 
 class BankBook extends StatefulWidget {
@@ -71,7 +73,9 @@ class _BankBook extends State<BankBook> {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         const Color(0xFF264CB2)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    toTransferPage(context);
+                  },
                   child: const Text(
                     '이체',
                   ),
@@ -92,5 +96,16 @@ class _BankBook extends State<BankBook> {
                 bankData: widget.bankData,
               )),
     );
+  }
+
+  void toTransferPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => TransferPage(
+                bankData: widget.bankData,
+              )),
+    );
+    // request();
   }
 }
