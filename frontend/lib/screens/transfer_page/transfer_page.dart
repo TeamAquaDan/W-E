@@ -3,41 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/screens/transfer_page/widgets/bank_code_button.dart';
 import 'package:frontend/screens/transfer_page/widgets/input_format.dart';
-
-import 'package:get/get.dart';
-
-const List<String> bankCodeList = <String>[
-  '웨일뱅크',
-  '경남은행',
-  '광주은행',
-  '부산은행',
-  '신한은행',
-  '씨티은행',
-  '우리은행',
-  '제주은행',
-  '카카오뱅크',
-  '토스뱅크',
-  '하나은행',
-  'KB국민은행',
-  'DGB대구은행',
-  'NH농협은행',
-];
-const List<String> bankCodeListInt = <String>[
-  "103",
-  "039",
-  "034",
-  "032",
-  "088",
-  "027",
-  "020",
-  "037",
-  "090",
-  "092",
-  "081",
-  "004",
-  "031",
-  "011",
-];
+import 'package:frontend/models/bank_code.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key, required this.bankData});
@@ -59,6 +25,7 @@ class TransferPageState extends State<TransferPage> {
     }
   }
 
+  String bank_code_name = '웨일뱅크';
   String bank_code_std = '103';
   String account_num = '';
   int tran_amt = 0;
@@ -72,10 +39,13 @@ class TransferPageState extends State<TransferPage> {
     });
   }
 
-  void _setBankCode(String newValue) {
-    setState(() {
-      bank_code_std = newValue!;
-    });
+  void _setBankCode(String? newValue) {
+    if (newValue is String) {
+      setState(() {
+        bank_code_name = newValue;
+        bank_code_std = bankCodeObj[newValue]!;
+      });
+    }
   }
 
   @override
@@ -95,9 +65,7 @@ class TransferPageState extends State<TransferPage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   BankCodeButton(
-                    bankCodeList: bankCodeList,
-                    dropdownValue: dropdownValue,
-                  ),
+                      bankCode: bank_code_name, setBankCode: _setBankCode),
                   Expanded(
                     child: TextFormField(
                         decoration: InputDecoration(labelText: '계좌번호'),
@@ -189,6 +157,7 @@ class TransferPageState extends State<TransferPage> {
               ),
               Column(
                 children: [
+                  Text('bank_code_std : $bank_code_name'),
                   Text('bank_code_std : $bank_code_std'),
                   Text('account_num : $account_num'),
                   Text('tran_amt : $tran_amt'),
