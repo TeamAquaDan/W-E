@@ -6,5 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReissueRequest {
-  public String user_ci;
+
+  public String refresh_token;
+
 }
