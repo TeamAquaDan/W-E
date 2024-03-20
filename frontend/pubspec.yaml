@@ -41,6 +41,8 @@ dependencies:
   json_annotation: ^4.8.1
   carousel_slider: ^4.2.1
   uuid: ^4.3.3
+  permission_handler: ^11.3.0
+  contacts_service: ^0.6.3
 
 dev_dependencies:
   flutter_test:
