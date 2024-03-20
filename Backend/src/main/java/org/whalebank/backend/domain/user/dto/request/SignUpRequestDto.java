@@ -17,7 +17,7 @@ public class SignUpRequestDto {
   String birthDate;
   String personal_num;
 
-  public UserEntity of(String encryptedPassword, String userCI, Role role, String BirthDate) {
+  public UserEntity of(String encryptedPassword, String userCI, Role role, String BirthDate, String phoneNumber) {
     // create a formatter
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -29,7 +29,7 @@ public class SignUpRequestDto {
         .loginPassword(encryptedPassword)
         .role(role)
         .isDeleted(false)
-        // 전화번호
+        .phoneNum(phoneNumber)
         // 카드사 access token
         // 은행 access token
         // fcm 토큰

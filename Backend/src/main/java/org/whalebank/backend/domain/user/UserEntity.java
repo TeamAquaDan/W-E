@@ -40,8 +40,10 @@ public class UserEntity {
   private LocalDate birthDate;
 
   // 카드사 접근 토큰
+  private String cardAccessToken;
 
   // 은행 접근 토큰
+  private String bankAccessToken;
 
   // fcm 토큰
   private String fcmToken;
@@ -70,4 +72,15 @@ public class UserEntity {
 
   private String loginPassword;
 
+  public void updateBankAccessToken(String token) {
+    this.bankAccessToken = token;
+  }
+
+  public void updateCardAccessToken(String token) {
+    this.cardAccessToken = token;
+  }
+
+  public void updateMainAccount(int accountId) {
+    this.accountId = accountId;
+  }
 }

@@ -1,5 +1,6 @@
 package org.whalebank.backend.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.user.UserEntity;
@@ -39,4 +40,12 @@ public class UserServiceImpl implements UserService {
     return VerifyResponseDto.of(user.getUserId(), user.getUserName());
   }
 
+  @Override
+  @Transactional
+  public void updateMainAccount(String loginId, Integer accountId) {
+    UserEntity user = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    user.updateMainAccount(accountId);
+  }
 }
