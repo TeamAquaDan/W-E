@@ -15,7 +15,6 @@ public class AccountDetailResponse {
   public int account_type; // 모임통장(0), 개인통장(1)
   public int account_id; // 계좌 고유번호
   public String account_name; // 계좌명
-  public int parking_balance_amt; // 파킹통장 잔액
   public String issue_date; // 개설일자
   public int day_limit_amt;  // 1일 한도
   public int once_limit_amt; // 1회 한도

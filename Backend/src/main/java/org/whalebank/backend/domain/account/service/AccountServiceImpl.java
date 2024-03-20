@@ -1,5 +1,6 @@
 package org.whalebank.backend.domain.account.service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,10 @@ import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
+import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -45,12 +48,15 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
+  @Transactional
   public void withdraw(String loginId, WithdrawRequestDto reqDto) {
     UserEntity currentUser = getCurrentUser(loginId);
     // 송금인 -> 출금 이체 호출
-    bankAccessUtil.withdraw(currentUser.getBankAccessToken(),
+    WithdrawResponse res = bankAccessUtil.withdraw(currentUser.getBankAccessToken(),
         WithdrawRequest.of(currentUser.getUserName(), reqDto));
     // 수신인 -> 입금 이체 호출
+    bankAccessUtil.deposit(currentUser.getBankAccessToken(),
+        DepositRequest.of(currentUser.getUserName(), reqDto, res));
   }
 
   private UserEntity getCurrentUser(String loginId) {
