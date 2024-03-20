@@ -27,7 +27,8 @@ public enum ResponseCode {
   FRIEND_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "친구 관계가 아닙니다"),
 
   // 은행
-  BANK_USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "은행 고객이 아닙니다");
+  BANK_USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "은행 고객이 아닙니다"),
+  ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "계좌가 존재하지 않습니다");
 
   private final int code;
   private final String message;

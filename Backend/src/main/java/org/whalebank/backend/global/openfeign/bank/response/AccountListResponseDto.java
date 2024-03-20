@@ -15,12 +15,14 @@ public class AccountListResponseDto {
 
   @Getter
   @Setter
-  static class AccountInfo {
+  public static class AccountInfo {
 
     public int account_id;
     public int account_type;
     public String account_num;
     public String account_name;
+    public int balance_amt;
+
   }
 
 }
