@@ -35,9 +35,6 @@ public class TokenProvider {
   @Value("${spring.jwt.refreshTokenExperation}")
   private long refreshTokenExpirationDate;
 
-  private SecretKey accessKey;
-  private SecretKey refreshKey;
-
   @Autowired
   private AuthRepository authRepository;
 
@@ -121,13 +118,9 @@ public class TokenProvider {
   public ReissueResponse reissueAccessToken(ReissueRequest reissueRequest) {
     String refreshToken = reissueRequest.getRefresh_token();
 
-    // System.out.println("액세스 토큰 접근");
-
     try {
       if (validateToken(refreshToken)) {
         String userId = getUserId(refreshToken).get("sub", String.class);
-
-        // System.out.println(userId);
 
         AuthEntity auth = authRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));

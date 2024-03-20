@@ -86,7 +86,7 @@ public class AccountEntity {
 
   }
 
-  public void addTransfer(TransferEntity transfer){
+  public void addTransfer(TransferEntity transfer) {
     this.transferList.add(transfer);
   }
 }
