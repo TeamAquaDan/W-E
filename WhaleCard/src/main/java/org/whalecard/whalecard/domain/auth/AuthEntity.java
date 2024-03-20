@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.whalecard.whalecard.domain.card.CardEntity;
 
 @Entity
 @Table(name = "user")
@@ -26,6 +27,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class AuthEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -43,11 +45,11 @@ public class AuthEntity {
 
   private String refreshToken;
 
-//  @ManyToMany
-//  @JoinTable(
-//      name = "owner",
-//      joinColumns = @JoinColumn(name = "user_id"),
-//      inverseJoinColumns = @JoinColumn(name = "account_id")
-//  )
-//  private List<AccountEntity> accountList = new ArrayList<>();
+  @ManyToMany
+  @JoinTable(
+      name = "owner",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "card_id")
+  )
+  private List<CardEntity> cardList = new ArrayList<>();
 }
