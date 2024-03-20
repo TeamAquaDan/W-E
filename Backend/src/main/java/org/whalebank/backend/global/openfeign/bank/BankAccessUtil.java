@@ -2,12 +2,16 @@ package org.whalebank.backend.global.openfeign.bank;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -16,6 +20,13 @@ import org.whalebank.backend.global.response.ResponseCode;
 public class BankAccessUtil {
 
   private final BankClient bankClient;
+
+  public AccountListResponseDto getAccountInfo(String bankAccessToken) {
+    return bankClient.getAccountList(
+        "Bearer " + bankAccessToken
+    ).getBody();
+
+  }
 
   /**
    *
@@ -36,6 +47,11 @@ public class BankAccessUtil {
 
   public AccessTokenResponseDto generateToken(String userCI) {
     return bankClient.generateToken(userCI)
+        .getBody();
+  }
+
+  public ReissueResponseDto reissueToken(String refreshToken) {
+    return bankClient.reissueToken(ReissueRequestDto.from(refreshToken))
         .getBody();
   }
 
