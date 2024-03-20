@@ -142,4 +142,14 @@ public class BankAccessUtil {
     return res;
   }
 
+  // 파킹통장 잔액 조회
+  public ParkingBalanceResponse getParkingBalance(String token, AccountIdRequestDto request) {
+    ParkingBalanceResponse res = bankClient.getParking(token, request)
+        .getBody();
+    if(res.getRsp_code()==404) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
+    }
+    return res;
+  }
+
 }

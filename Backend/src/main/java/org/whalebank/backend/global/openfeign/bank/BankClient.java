@@ -99,4 +99,11 @@ public interface BankClient {
       @RequestBody ParkingRequest request
   );
 
+  // 파킹통장 잔액 조회
+  @PostMapping("/accounts/parking")
+  ResponseEntity<ParkingBalanceResponse> getParking(
+      @RequestHeader("Authorization") String token,
+      @RequestBody AccountIdRequestDto request
+  );
+
 }
