@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
 import org.whalebank.backend.domain.account.dto.response.AccountInfoResponseDto;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
@@ -32,7 +33,14 @@ public class AccountServiceImpl implements AccountService {
     } else {
       throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
     }
-  };
+  }
+
+  @Override
+  public AccountDetailResponseDto getAccountDetail(String loginId, int accountId) {
+    UserEntity currentUser = getCurrentUser(loginId);
+
+    return AccountDetailResponseDto.from(bankAccessUtil.getAccountDetail(currentUser.getBankAccessToken(), accountId));
+  }
 
   private UserEntity getCurrentUser(String loginId) {
     return userRepository.findByLoginId(loginId)

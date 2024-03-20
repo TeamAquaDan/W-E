@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.global.exception.CustomException;
+import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
@@ -26,6 +27,17 @@ public class BankAccessUtil {
         "Bearer " + bankAccessToken
     ).getBody();
 
+  }
+
+  public AccountDetailResponse getAccountDetail(String bankAccountToken, int accountId) {
+    try {
+      AccountDetailResponse res = bankClient.getAccountDetail(bankAccountToken,
+              new AccountIdRequestDto(accountId))
+          .getBody();
+      return res;
+    } catch(Exception e) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
+    }
   }
 
   /**
