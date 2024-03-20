@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/my_friends_page.dart';
+import 'package:get/get.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -98,6 +100,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
                   onPressed: () {
                     // 내친구관리 버튼 액션
+                    Get.to(() => MyFriendsPage());
                   },
                   child: Text(
                     '내친구관리',
