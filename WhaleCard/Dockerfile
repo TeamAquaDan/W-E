@@ -17,5 +17,5 @@ COPY --from=build /app/build/libs/*.jar /app/
 RUN ls -al /app
 
 # 포트 노출 및 애플리케이션 실행
-EXPOSE 58938
+EXPOSE 62347
 ENTRYPOINT ["java","-jar","/app/WhaleCard-0.0.1-SNAPSHOT.jar"]
