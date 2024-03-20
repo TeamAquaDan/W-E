@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/screens/transfer_page/widgets/bank_code_button.dart';
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:frontend/screens/transfer_page/widgets/input_format.dart';
+
+import 'package:get/get.dart';
 
 const List<String> bankCodeList = <String>[
   '웨일뱅크',
@@ -44,16 +45,39 @@ class TransferPage extends StatefulWidget {
 
   @override
   State<TransferPage> createState() {
-    return _TransferPage();
+    return TransferPageState();
   }
 }
 
-class _TransferPage extends State<TransferPage> {
-  final _form = GlobalKey<FormState>();
+class TransferPageState extends State<TransferPage> {
+  final formKey = GlobalKey<FormState>();
   String dropdownValue = bankCodeList.first;
-  void _submitTransferData() {}
+  void _submitTransferData() async {
+    if (formKey.currentState != null && formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      // Get.snackbar('제출함', '제출완료');
+    }
+  }
 
-  final myController = TextEditingController();
+  String bank_code_std = '103';
+  String account_num = '';
+  int tran_amt = 0;
+  String input_tran_amt = '';
+  String req_trans_memo = '';
+  String recv_trans_memo = '';
+
+  void _setTranAmt(int? newValue) {
+    setState(() {
+      tran_amt = newValue!;
+    });
+  }
+
+  void _setBankCode(String newValue) {
+    setState(() {
+      bank_code_std = newValue!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +85,7 @@ class _TransferPage extends State<TransferPage> {
         title: Text('송금하기'),
       ),
       body: Form(
-        key: _form,
+        key: formKey,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -77,31 +101,77 @@ class _TransferPage extends State<TransferPage> {
                   Expanded(
                     child: TextFormField(
                         decoration: InputDecoration(labelText: '계좌번호'),
+                        onSaved: (newValue) {
+                          setState(() => account_num = newValue!);
+                        },
                         keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return '입력해 주세요';
+                          }
+                          return null;
+                        },
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ]),
                   ),
                 ],
               ),
-              Text(myController.text),
               TextFormField(
-                controller: myController,
                 decoration: InputDecoration(labelText: '송금 금액'),
+                onSaved: (newValue) {
+                  setState(() {
+                    input_tran_amt = newValue!;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    input_tran_amt = value;
+                  });
+                },
+                autovalidateMode: AutovalidateMode.always,
                 keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return '입력';
+                  }
+                  return null;
+                },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  CurrencyFormatter()
+                  CurrencyFormatter(_setTranAmt)
                 ],
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: '내 거래내역에 표기할 메모'),
+                onSaved: (newValue) {
+                  setState(() {
+                    req_trans_memo = newValue!;
+                  });
+                },
                 keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value == null) {
+                    return '입력';
+                  }
+                  return null;
+                },
                 maxLength: 20,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: '상대방 거래내역에 표기할 메모'),
+                onSaved: (newValue) {
+                  setState(() {
+                    recv_trans_memo = newValue!;
+                  });
+                },
                 keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value == null) {
+                    return '입력';
+                  }
+                  return null;
+                },
                 maxLength: 20,
               ),
               Row(
@@ -117,6 +187,16 @@ class _TransferPage extends State<TransferPage> {
                       onPressed: _submitTransferData, child: const Text('송금')),
                 ],
               ),
+              Column(
+                children: [
+                  Text('bank_code_std : $bank_code_std'),
+                  Text('account_num : $account_num'),
+                  Text('tran_amt : $tran_amt'),
+                  Text('input_tran_amt : $input_tran_amt'),
+                  Text('req_trans_memo : $req_trans_memo'),
+                  Text('recv_trans_memo : $recv_trans_memo')
+                ],
+              )
             ],
           ),
         ),

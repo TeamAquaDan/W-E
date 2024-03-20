@@ -2,7 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class CurrencyFormatter extends TextInputFormatter {
-  CurrencyFormatter();
+  CurrencyFormatter(this.setTranAmt);
+  final void Function(int?) setTranAmt;
 
   @override
   TextEditingValue formatEditUpdate(
@@ -15,7 +16,8 @@ class CurrencyFormatter extends TextInputFormatter {
     // 새로 입력된 값을 포멧
     final int parsedValue = int.parse(
         newValue.text); // NumberFormat은 숫자 값만 받을 수 있기 때문에 문자를 숫자로 먼저 변환
-    final formatter = NumberFormat('###,###,###,### 원');
+    setTranAmt(parsedValue);
+    final formatter = NumberFormat('###,###,###,###,###,###,###,### 원');
     // .simpleCurrency(locale: 'ko'); // 천단위로 콤마를 표시하고 숫자 앞에 화폐 기호 표시하는 패턴 설정
     String newText = formatter.format(parsedValue); // 입력된 값을 지정한 패턴으로 포멧
     return newValue.copyWith(

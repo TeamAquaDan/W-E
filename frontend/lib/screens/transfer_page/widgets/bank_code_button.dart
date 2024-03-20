@@ -1,5 +1,22 @@
 import 'package:flutter/material.dart';
 
+const Map<String, String> bankCodeObj = {
+  '웨일뱅크': "103",
+  '경남은행': "039",
+  '광주은행': "034",
+  '부산은행': "032",
+  '신한은행': "088",
+  '씨티은행': "027",
+  '우리은행': "020",
+  '제주은행': "037",
+  '카카오뱅크': "090",
+  '토스뱅크': "092",
+  '하나은행': "081",
+  'KB국민은행': "004",
+  'DGB대구은행': "031",
+  'NH농협은행': "011",
+};
+
 class BankCodeButton extends StatefulWidget {
   BankCodeButton(
       {super.key, required this.bankCodeList, required this.dropdownValue});
