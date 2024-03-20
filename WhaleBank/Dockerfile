@@ -14,6 +14,7 @@ FROM openjdk:17
 
 # 이전 단계에서 빌드된 JAR 파일을 복사
 COPY --from=build /app/build/libs/*.jar /app/
+RUN ls -al /app
 
 # 포트 노출 및 애플리케이션 실행
 EXPOSE 58938
