@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class WithdrawResponse {
 
-  public String rsp_code;
+  public int rsp_code;
   public String rsp_message;
   public int api_tran_id; // 거래 고유 번호
   public LocalDateTime api_tran_dtm; // 거래일시

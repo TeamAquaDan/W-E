@@ -51,11 +51,11 @@ public class BankAccessUtil {
     WithdrawResponse res = bankClient.withdraw(bankAccessToken, req
     ).getBody();
 
-    if(res.getRsp_code().equals("401")) {
+    if(res.getRsp_code()==401) {
       throw new CustomException(ResponseCode.WRONG_ACCOUNT_PASSWORD);
-    } else if(res.getRsp_code().equals("402")) {
+    } else if(res.getRsp_code()==402) {
       throw new CustomException(ResponseCode.INSUFFICIENT_BALANCE);
-    } else if(res.getRsp_code().equals("403")) {
+    } else if(res.getRsp_code()==403) {
       throw new CustomException(ResponseCode.TRANSFER_LIMIT_EXCEEDED);
     }
     return res;
