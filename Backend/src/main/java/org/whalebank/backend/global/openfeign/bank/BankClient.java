@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.whalebank.backend.global.config.OpenFeignConfig;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.DepositResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 
@@ -52,6 +54,13 @@ public interface BankClient {
   ResponseEntity<WithdrawResponse> withdraw(
       @RequestHeader("Authorization") String token,
       @RequestBody WithdrawRequest requestDto
+  );
+
+  // 입금이체
+  @PostMapping("/transfer/deposit")
+  ResponseEntity<DepositResponse> deposit(
+      @RequestHeader("Authorization") String token,
+      @RequestBody DepositRequest requestDto
   );
 
 
