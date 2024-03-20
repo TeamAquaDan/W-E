@@ -92,5 +92,11 @@ public interface BankClient {
       @RequestBody ParkingRequest request
   );
 
+  // 파킹통장 출금
+  @PatchMapping("/accounts/parking/withdraw")
+  ResponseEntity<ParkingBalanceResponse> withdrawParking(
+      @RequestHeader("Authorization") String token,
+      @RequestBody ParkingRequest request
+  );
 
 }

@@ -9,7 +9,9 @@ import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
 import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
+import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.TransactionRequest;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
@@ -17,7 +19,9 @@ import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseD
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.DepositResponse;
 import org.whalebank.backend.global.openfeign.bank.response.InquiryResponse;
+import org.whalebank.backend.global.openfeign.bank.response.ParkingBalanceResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 
@@ -78,6 +82,17 @@ public class BankAccessUtil {
     return res;
   }
 
+  // 수신계좌 거래내역 조회
+  public TransactionResponse getTransactionHistory(String bankAccessToken, TransactionRequest request) {
+    TransactionResponse res = bankClient.getTransaction(bankAccessToken, request)
+        .getBody();
+
+    if(res.getRsp_code()==404) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
+    }
+    return res;
+  }
+
   /**
    *
    * @param userCI
@@ -113,6 +128,16 @@ public class BankAccessUtil {
       throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
     } else if(res.getRsp_code()==402) { // 잔액 부족
       throw new CustomException(ResponseCode.INSUFFICIENT_BALANCE);
+    }
+    return res;
+  }
+
+  // 파킹통장 출금
+  public ParkingBalanceResponse withdrawParking(String token, ParkingRequest request) {
+    ParkingBalanceResponse res = bankClient.withdrawParking(token, request)
+        .getBody();
+    if(res.getRsp_code()==404) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
     }
     return res;
   }
