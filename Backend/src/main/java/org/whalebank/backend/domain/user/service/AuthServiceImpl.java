@@ -19,6 +19,7 @@ import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.response.ResponseCode;
+import org.whalebank.backend.global.utils.EncryptionUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Transactional
   public void signUp(SignUpRequestDto dto) {
-    String userCI = "1234";//createCI(dto.getBirthDate(), dto.getPersonal_num());
-
+    String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 
@@ -88,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
    * @return ci값
    */
   public String createCI(String birthDate, String rrNumber) {
-    return encoder.encode(birthDate+rrNumber);
+    return EncryptionUtils.encryptSHA256(birthDate+rrNumber);
   }
 
   public static String convertToEightDigits(String sixDigitDate) {
