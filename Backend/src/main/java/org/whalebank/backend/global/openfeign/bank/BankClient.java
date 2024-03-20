@@ -10,11 +10,13 @@ import org.whalebank.backend.global.config.OpenFeignConfig;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 
 @FeignClient(name = "whalebank", url = "http://localhost:58937/whale/bank", configuration = OpenFeignConfig.class)
 public interface BankClient {
@@ -43,6 +45,13 @@ public interface BankClient {
   ResponseEntity<AccountDetailResponse> getAccountDetail(
       @RequestHeader("Authorization") String token,
       @RequestBody AccountIdRequestDto requestDto
+  );
+
+  // 출금이체
+  @PostMapping("/transfer/withdraw")
+  ResponseEntity<WithdrawResponse> withdraw(
+      @RequestHeader("Authorization") String token,
+      @RequestBody WithdrawRequest requestDto
   );
 
 

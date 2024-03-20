@@ -8,11 +8,13 @@ import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.CheckUserResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -38,6 +40,21 @@ public class BankAccessUtil {
     } catch(Exception e) {
       throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
     }
+  }
+
+  // 출금이체
+  public WithdrawResponse withdraw(String bankAccessToken, WithdrawRequest req) {
+    WithdrawResponse res = bankClient.withdraw(bankAccessToken, req
+    ).getBody();
+
+    if(res.getRsp_code().equals("400_1")) {
+      throw new CustomException(ResponseCode.WRONG_ACCOUNT_PASSWORD);
+    } else if(res.getRsp_code().equals("400_2")) {
+      throw new CustomException(ResponseCode.INSUFFICIENT_BALANCE);
+    } else if(res.getRsp_code().equals("400_3")) {
+      throw new CustomException(ResponseCode.TRANSFER_LIMIT_EXCEEDED);
+    }
+    return res;
   }
 
   /**

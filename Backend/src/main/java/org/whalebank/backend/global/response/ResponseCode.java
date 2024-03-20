@@ -28,7 +28,11 @@ public enum ResponseCode {
 
   // 은행
   BANK_USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "은행 고객이 아닙니다"),
-  ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "계좌가 존재하지 않습니다");
+  ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "계좌가 존재하지 않습니다"),
+  WRONG_ACCOUNT_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "계좌 비밀번호가 올바르지 않습니다"),
+  INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST.value(),"잔액이 부족합니다"),
+  TRANSFER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST.value(), "이체 한도가 초과되었습니다")
+  ;
 
   private final int code;
   private final String message;
