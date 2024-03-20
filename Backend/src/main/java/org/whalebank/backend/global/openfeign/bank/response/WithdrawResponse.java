@@ -20,7 +20,7 @@ public class WithdrawResponse {
   public int tran_amt; // 거래 금액
   public int wd_limit_remain_amt; // 출금한도 잔여 금액
   public int balance_amt; // 거래 후 잔액
-  public int trans_memo; // 적요
+  public String trans_memo; // 적요
 
 
 }

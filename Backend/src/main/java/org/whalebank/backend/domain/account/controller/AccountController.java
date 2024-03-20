@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
 import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
 import org.whalebank.backend.domain.account.dto.response.AccountInfoResponseDto;
 import org.whalebank.backend.domain.account.service.AccountService;
@@ -37,6 +39,14 @@ public class AccountController {
     return ApiResponse.ok("계좌 상세 조회 성공", service.getAccountDetail(loginUser.getUsername(), reqDto.get("account_id")));
   }
 
+  @PostMapping("/transfer/withdraw")
+  @Operation(summary = "송금", description = "수취인 조회가 성공한다면 송금")
+  public ApiResponse<?> withdraw(
+      @AuthenticationPrincipal UserDetails loginUser, @RequestBody WithdrawRequestDto reqDto
+  ) {
+    service.withdraw(loginUser.getUsername(), reqDto);
+    return ApiResponse.ok("송금 성공");
+  }
 
 
 }
