@@ -4,7 +4,7 @@ import 'dart:developer' as developer;
 
 class AuthService {
   final Dio _dio = Dio();
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   Future<bool> signUp(String login_id, String password, String username,
       String birthdate, String personal_num) async {
@@ -39,6 +39,16 @@ class AuthService {
       if (response.statusCode == 200) {
         await _storage.write(key: 'login_id', value: login_id);
         await _storage.write(key: 'password', value: password);
+        // JWT 토큰 저장
+        var data = response.data['data'];
+        String accessToken = data['access_token'];
+        String refreshToken = data['refresh_token'];
+        await _storage.write(key: 'access_token', value: accessToken);
+        await _storage.write(key: 'refresh_token', value: refreshToken);
+        String? check_accesstoken = await _storage.read(key: 'access_token');
+        String? check_refreshtoken = await _storage.read(key: 'refresh_token');
+        developer.log('access: ${check_accesstoken}', name: 'check_accesstoken');
+        developer.log('refresh: ${check_refreshtoken}', name: 'check_refreshtoken');
         return true;
       }
       return false;
@@ -69,6 +79,16 @@ class AuthService {
     String? login_id = await _storage.read(key: 'login_id');
     String? password = await _storage.read(key: 'password');
     return login_id != null && password != null;
+  }
+
+  // 액세스 토큰 접근용 메서드
+  Future<String?> getAccessToken() async {
+    return await _storage.read(key: 'access_token');
+  }
+
+  // 리프레시 토큰 접근용 메서드
+  Future<String?> getRefreshToken() async {
+    return await _storage.read(key: 'refresh_token');
   }
 }
 
