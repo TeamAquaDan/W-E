@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Transactional
   public void signUp(SignUpRequestDto dto) {
-    String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
+    String userCI = createCI(dto.getBirthdate(), dto.getPersonal_num());
 
     log.info("userCI: " + userCI);
     // 은행 db에 있는 회원인지?
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
 
     // 20세 이하면 자녀, 20세 이상이면 부모
     Role role = null;
-    String birthDate = convertToEightDigits(dto.getBirthDate());
+    String birthDate = convertToEightDigits(dto.getBirthdate());
 
     System.out.println(birthDate);
 
