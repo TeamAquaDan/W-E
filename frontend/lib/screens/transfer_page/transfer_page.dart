@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/api/transfer_api.dart';
-import 'package:frontend/models/account_list_data.dart';
-import 'package:frontend/models/transfer_data.dart';
+import 'package:frontend/api/account/transfer_api.dart';
+import 'package:frontend/models/account/account_list_data.dart';
+import 'package:frontend/models/account/transfer_data.dart';
 import 'package:frontend/screens/transfer_page/widgets/bank_code_button.dart';
 import 'package:frontend/screens/transfer_page/widgets/input_format.dart';
-import 'package:frontend/models/bank_code.dart';
+import 'package:frontend/models/account/bank_code.dart';
 import 'package:frontend/screens/transfer_page/widgets/transfet_password_form.dart';
 import 'package:get/get.dart';
 

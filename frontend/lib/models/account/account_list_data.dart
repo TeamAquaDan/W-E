@@ -35,7 +35,9 @@ class AccountListData {
 /* 계좌 거래 내역 조회
 request body
 "{
-  ""account_id"": ""int, 계좌고유번호""
+  ""account_id"": ""int, 계좌고유번호"",
+  ""start_date"": string, 거래 조회 시작일 yyyy-mm-dd,
+  ""end_date"" string,거래 조회 마지막일: yyyy-mm-dd 
 }"
 
 "{
@@ -48,16 +50,28 @@ request body
       "balance_amt": "int, 거래 후 잔액", 
       "trans_memo": "string, 적요",
       "trans_dtm": "string, 거래일시",
-      "trans_date": "string, 거래일자", 
-      "trans_title": "string, 거래제목",
-      "recv_client_name": "string, 수취고객성명",
-      "recv_client_account_num": "string, 최종수취고객계좌번호",
-      "recv_client_bank" : "string, 최종수취고객계좌 개설기관 이름",
-      "recv_client_bank_code": "string, 최종수취고객계좌 개설기관 표준코드"
+      // "trans_date": "string, 거래일자", 
+      // "trans_title": "string, 거래제목",
+      // "recv_client_name": "string, 수취고객성명",
+      // "recv_client_account_num": "string, 최종수취고객계좌번호",
+      // "recv_client_bank" : "string, 최종수취고객계좌 개설기관 이름",
+      // "recv_client_bank_code": "string, 최종수취고객계좌 개설기관 표준코드"
     }
   ]
 }"
 */
+class AccountHistoryBody {
+  AccountHistoryBody({
+    required this.account_id,
+    required this.start_date,
+    required this.end_date,
+  });
+
+  final int account_id;
+  final String start_date;
+  final String end_date;
+}
+
 class AccountHistoryData {
   AccountHistoryData({
     required this.trans_type,
@@ -65,12 +79,12 @@ class AccountHistoryData {
     required this.balance_amt,
     required this.trans_memo,
     required this.trans_dtm,
-    required this.trans_date,
-    required this.trans_title,
-    required this.recv_client_name,
-    required this.recv_client_account_num,
-    required this.recv_client_bank,
-    required this.recv_client_bank_code,
+    // required this.trans_date,
+    // required this.trans_title,
+    // required this.recv_client_name,
+    // required this.recv_client_account_num,
+    // required this.recv_client_bank,
+    // required this.recv_client_bank_code,
   });
 
   final int trans_type;
@@ -78,10 +92,10 @@ class AccountHistoryData {
   final int balance_amt;
   final String trans_memo;
   final String trans_dtm;
-  final String trans_date;
-  final String trans_title;
-  final String recv_client_name;
-  final String recv_client_account_num;
-  final String recv_client_bank;
-  final String recv_client_bank_code;
+  // final String trans_date;
+  // final String trans_title;
+  // final String recv_client_name;
+  // final String recv_client_account_num;
+  // final String recv_client_bank;
+  // final String recv_client_bank_code;
 }

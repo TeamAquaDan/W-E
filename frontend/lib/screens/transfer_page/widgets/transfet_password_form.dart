@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/api/transfer_api.dart';
-import 'package:frontend/models/transfer_data.dart';
+import 'package:frontend/api/account/transfer_api.dart';
+import 'package:frontend/models/account/transfer_data.dart';
 import 'package:get/get.dart';
 
 class TransferPasswordForm extends StatefulWidget {

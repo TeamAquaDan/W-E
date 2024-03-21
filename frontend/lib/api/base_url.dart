@@ -1,1 +1,1 @@
-const baseURL = 'http://j10e103.p.ssafy.io:56143/';
+const baseURL = 'https://j10e103.p.ssafy.io/';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/bank_code.dart';
+import 'package:frontend/models/account/bank_code.dart';
 
 class BankCodeButton extends StatefulWidget {
   const BankCodeButton(

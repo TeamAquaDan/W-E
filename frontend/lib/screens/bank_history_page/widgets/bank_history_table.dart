@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/dummy_data_account.dart';
+import 'package:frontend/models/account/account_list_data.dart';
+import 'package:frontend/models/account/dummy_data_account.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_history_card.dart';
 import 'package:frontend/screens/bank_history_page/widgets/trans_type_button.dart';
 
@@ -15,6 +16,34 @@ class BankHistoryTable extends StatefulWidget {
 
 class _BankHistoryTable extends State<BankHistoryTable> {
   String dropdownValue = trans_type_list.first;
+  List<AccountHistoryData> filteredDataList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filterDataList(); // 페이지가 렌더링되면 초기 필터링을 수행합니다.
+  }
+
+  void setDropDownValue(String value) {
+    setState(() {
+      dropdownValue = value;
+      filterDataList();
+    });
+  }
+
+  void filterDataList() {
+    setState(() {
+      if (dropdownValue == '전체') {
+        filteredDataList = dummyDataList;
+      } else if (dropdownValue == '지출') {
+        filteredDataList =
+            dummyDataList.where((data) => data.trans_type == 2).toList();
+      } else if (dropdownValue == '수입') {
+        filteredDataList =
+            dummyDataList.where((data) => data.trans_type == 3).toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +54,13 @@ class _BankHistoryTable extends State<BankHistoryTable> {
           DropdownButtonHistory(
             trans_type_list: trans_type_list,
             dropdownValue: dropdownValue,
+            setDropDownValue: setDropDownValue,
           ),
           Spacer(),
           Text(dropdownValue)
         ]),
-        for (int i = 0; i < dummyDataList.length; i++)
-          BankHistoryCard(data: dummyDataList[i])
+        for (int i = 0; i < filteredDataList.length; i++)
+          BankHistoryCard(data: filteredDataList[i])
       ],
     );
   }
