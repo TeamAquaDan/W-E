@@ -61,6 +61,8 @@ class AuthService {
   Future<void> logout() async {
     await _storage.delete(key: 'login_id');
     await _storage.delete(key: 'password');
+    await _storage.delete(key: 'access_token');
+    await _storage.delete(key: 'refresh_token');
   }
 
   Future<bool> tryAutoLogin() async {
