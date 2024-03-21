@@ -5,7 +5,7 @@ List<AccountHistoryData> dummyDataList = [
     trans_type: 2,
     trans_amt: 150000,
     balance_amt: 3630000,
-    trans_memo: "식료품 구매",
+    trans_memo: "프론트 더미 데이터: 통신 에러",
     trans_dtm: "2024-03-19 09:23",
     // trans_date: "2024-03-19",
     // trans_title: "마트에서 식료품 구매",

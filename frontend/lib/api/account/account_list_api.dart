@@ -25,7 +25,7 @@ Future<List<AccountListData>?> getAccountListData(String accessToken) async {
   }
 }
 
-Future<AccountHistoryData?> getAccountHistoryData(
+Future<List<AccountHistoryData>?> getAccountHistoryData(
     String accessToken, AccountHistoryBody body) async {
   try {
     Dio dio = Dio();

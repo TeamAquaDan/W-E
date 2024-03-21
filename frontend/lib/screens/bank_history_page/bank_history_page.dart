@@ -21,7 +21,7 @@ class BankHistoryPage extends StatelessWidget {
         child: Column(
           children: [
             BankTopContainer(bankData: bankData),
-            BankHistoryTable(),
+            BankHistoryTable(account_id: bankData.account_id),
           ],
         ),
       ),

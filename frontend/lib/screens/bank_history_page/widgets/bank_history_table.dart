@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/account/account_list_api.dart';
 import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/models/account/dummy_data_account.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_history_card.dart';
 import 'package:frontend/screens/bank_history_page/widgets/trans_type_button.dart';
+import 'package:intl/intl.dart';
 
 const List<String> trans_type_list = <String>['전체', '지출', '수입'];
 
 class BankHistoryTable extends StatefulWidget {
-  const BankHistoryTable({super.key});
+  const BankHistoryTable({
+    super.key,
+    required this.account_id,
+  });
+  final int account_id;
   @override
   State<StatefulWidget> createState() {
     return _BankHistoryTable();
@@ -15,20 +21,53 @@ class BankHistoryTable extends StatefulWidget {
 }
 
 class _BankHistoryTable extends State<BankHistoryTable> {
+  bool _isLoading = true;
   String dropdownValue = trans_type_list.first;
   List<AccountHistoryData> filteredDataList = [];
 
   @override
   void initState() {
     super.initState();
-    filterDataList(); // 페이지가 렌더링되면 초기 필터링을 수행합니다.
+    _fetchAccountListData(); // 페이지가 렌더링되면 초기 필터링을 수행합니다.
   }
 
   void setDropDownValue(String value) {
     setState(() {
       dropdownValue = value;
-      filterDataList();
+      _fetchAccountListData();
     });
+  }
+
+  Future<void> _fetchAccountListData() async {
+    try {
+      // 비동기 작업을 시작하기 전에 로딩 상태를 true로 설정합니다.
+      setState(() {
+        _isLoading = true;
+      });
+      DateTime currentDate = DateTime.now();
+      DateTime startDateDateTime =
+          DateTime(currentDate.year, currentDate.month - 1, currentDate.day);
+      final startDate = DateFormat('yyyy-MM-dd').format(startDateDateTime);
+      final endDate = DateFormat('yyyy-MM-dd').format(currentDate);
+      final body = AccountHistoryBody(
+          account_id: widget.account_id,
+          start_date: startDate,
+          end_date: endDate);
+      var res = await getAccountHistoryData('accessToken', body);
+      setState(() {
+        if (res == null) {
+          filterDataList();
+        } else {
+          filteredDataList = res;
+        }
+      });
+    } catch (error) {
+      print('Error: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void filterDataList() {
@@ -47,21 +86,23 @@ class _BankHistoryTable extends State<BankHistoryTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(children: [
-          SizedBox(width: 20),
-          DropdownButtonHistory(
-            trans_type_list: trans_type_list,
-            dropdownValue: dropdownValue,
-            setDropDownValue: setDropDownValue,
-          ),
-          Spacer(),
-          Text(dropdownValue)
-        ]),
-        for (int i = 0; i < filteredDataList.length; i++)
-          BankHistoryCard(data: filteredDataList[i])
-      ],
-    );
+    return _isLoading
+        ? Center(child: CircularProgressIndicator()) // 로딩 화면을 표시합니다.
+        : Column(
+            children: [
+              Row(children: [
+                SizedBox(width: 20),
+                DropdownButtonHistory(
+                  trans_type_list: trans_type_list,
+                  dropdownValue: dropdownValue,
+                  setDropDownValue: setDropDownValue,
+                ),
+                Spacer(),
+                Text(dropdownValue)
+              ]),
+              for (int i = 0; i < filteredDataList.length; i++)
+                BankHistoryCard(data: filteredDataList[i])
+            ],
+          );
   }
 }
