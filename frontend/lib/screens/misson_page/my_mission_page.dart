@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/mission.dart';
+import 'package:frontend/screens/misson_page/widgets/mission.dart';
 import 'package:intl/intl.dart';
 
 class MyMissionPage extends StatefulWidget {

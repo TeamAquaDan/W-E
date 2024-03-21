@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/my_friends_page.dart';
-import 'package:frontend/screens/my_profile_page.dart';
 import 'package:frontend/screens/parents_page/future_test.dart';
-import 'package:frontend/screens/salary_increase_form_page.dart';
-import 'package:frontend/screens/salary_list_page.dart';
 import 'package:get/get.dart';
-import 'package:frontend/screens/salary_increase_page.dart';
 import 'package:frontend/api/test_html.dart';
+import 'package:frontend/screens/friends_page/my_friends_page.dart';
+import 'package:frontend/screens/profile_page/my_profile_page.dart';
+import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
+import 'package:frontend/screens/salary_page/salary_increase_form_page.dart';
+import 'package:frontend/screens/salary_page/salary_list_page.dart';
+import 'package:get/get.dart';
+import 'package:frontend/screens/salary_page/salary_increase_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -65,11 +67,17 @@ class MenuPage extends StatelessWidget {
             child: Text('get요청 테스트'),
           ),
           Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => MyStatelessWidget());
+                  },
+                  child: Text('FutureBuilder 테스트'))),
+          Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => MyStatelessWidget());
+                Get.to(() => MySavingGoalPage());
               },
-              child: Text('FutureBuilder 테스트'),
+              child: Text('My Saving Page'),
             ),
           ),
         ],
