@@ -3,7 +3,7 @@ import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/models/account/transfer_data.dart';
 import '../base_url.dart';
 
-Future<AccountListData?> getAccountListData(String accessToken) async {
+Future<List<AccountListData>?> getAccountListData(String accessToken) async {
   try {
     Dio dio = Dio();
 
