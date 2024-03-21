@@ -3,6 +3,7 @@ import '../services/auth_service.dart';
 import '../widgets/nav_bar.dart';
 import 'package:frontend/screens/login_page.dart';
 import 'dart:developer' as developer;
+import 'pin_setting_page.dart';
 
 class PinLoginPage extends StatefulWidget {
   @override
@@ -26,6 +27,34 @@ class _PinLoginPageState extends State<PinLoginPage> {
     }
   }
 
+  void _navigateToPinLoginPage() async {
+    bool hasLoginInfo = await _authService.hasLoginInfo();
+    if (hasLoginInfo) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PinLoginPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+      );
+    }
+  }
+
+  void _navigatedToPinSetting() async {
+    bool hasLoginInfo = await _authService.hasLoginInfo();
+    if (hasLoginInfo) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SetPinPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +72,10 @@ class _PinLoginPageState extends State<PinLoginPage> {
             ElevatedButton(
               onPressed: _checkPin,
               child: const Text('로그인'),
+            ),
+            TextButton(
+              onPressed: _navigatedToPinSetting,
+              child: const Text('PIN 설정'),
             ),
             ElevatedButton(
               onPressed: () async {
