@@ -18,6 +18,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3F62DE)),
         primarySwatch: Colors.blue,
+        // 텍스트 필드의 스타일을 정의합니다.
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(fontSize: 20), // labelText의 크기를 크게 설정합니다.
+          border: OutlineInputBorder(), // 외곽에 테두리를 추가합니다.
+          // 추가적으로 테두리의 스타일이나 색상을 조정할 수 있습니다.
+          // border: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue, width: 2.0)),
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        ),
       ),
       home: FutureBuilder(
         future: _authService.tryAutoLogin(),
