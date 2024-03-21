@@ -32,7 +32,7 @@ public class AccountResponse {
     private int account_type;
     private String account_num;
     private String account_name;
-    private int balancee_amt;
+    private int balance_amt;
 
   }
 }
