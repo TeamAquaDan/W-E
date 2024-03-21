@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/account/account_list_data.dart';
+import 'package:frontend/screens/transfer_page/transfer_page.dart';
 import 'package:intl/intl.dart';
 
 class BankTopContainer extends StatelessWidget {
@@ -29,7 +30,9 @@ class BankTopContainer extends StatelessWidget {
               TextButton(
                 style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8)),
-                onPressed: () {},
+                onPressed: () {
+                  toTransferPage(context);
+                },
                 child: const Text(
                   '이체',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
@@ -39,6 +42,16 @@ class BankTopContainer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void toTransferPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => TransferPage(
+                bankData: bankData,
+              )),
     );
   }
 }

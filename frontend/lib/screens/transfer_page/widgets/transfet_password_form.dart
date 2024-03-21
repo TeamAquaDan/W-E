@@ -67,7 +67,7 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                         var res =
                             await postTransfer('accessToken', widget.data);
                         if (res == null) {
-                          Get.snackbar('에러', 'server');
+                          Get.snackbar('송금 에러', 'server');
                         } else {
                           Get.snackbar(widget.data.recv_client_name,
                               widget.data.req_account_password);

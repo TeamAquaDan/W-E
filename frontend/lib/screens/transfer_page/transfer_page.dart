@@ -52,6 +52,7 @@ class TransferPageState extends State<TransferPage> {
           },
         );
       } else {
+        Get.snackbar('수취인이 없어요', '해당 수취인을 찾을 수 가 없습니다.');
         transferData = TransferPost(
             tran_amt: tran_amt,
             req_account_id: widget.bankData.account_id,
@@ -126,14 +127,18 @@ class TransferPageState extends State<TransferPage> {
                       bankCode: bank_code_name, setBankCode: _setBankCode),
                   Expanded(
                     child: TextFormField(
-                        decoration: InputDecoration(labelText: '계좌번호'),
+                        decoration: InputDecoration(
+                          labelText: '계좌번호',
+                          labelStyle: TextStyle(fontSize: 16),
+                          border: OutlineInputBorder(),
+                        ),
                         onSaved: (newValue) {
                           setState(() => account_num = newValue!);
                         },
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return '입력해 주세요';
+                            return '계좌번호를 입력해 주세요';
                           }
                           return null;
                         },
@@ -143,6 +148,7 @@ class TransferPageState extends State<TransferPage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(labelText: '송금 금액'),
                 onSaved: (newValue) {
@@ -159,7 +165,7 @@ class TransferPageState extends State<TransferPage> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return '입력';
+                    return '보낼 금액을 입력해 주세요';
                   }
                   return null;
                 },
@@ -168,6 +174,7 @@ class TransferPageState extends State<TransferPage> {
                   CurrencyFormatter(_setTranAmt)
                 ],
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(labelText: '내 거래내역에 표기할 메모'),
                 onSaved: (newValue) {
@@ -184,6 +191,7 @@ class TransferPageState extends State<TransferPage> {
                 },
                 maxLength: 20,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(labelText: '상대방 거래내역에 표기할 메모'),
                 onSaved: (newValue) {
@@ -200,6 +208,7 @@ class TransferPageState extends State<TransferPage> {
                 },
                 maxLength: 20,
               ),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   const Spacer(),
@@ -213,17 +222,17 @@ class TransferPageState extends State<TransferPage> {
                       onPressed: _submitTransferData, child: const Text('송금')),
                 ],
               ),
-              Column(
-                children: [
-                  Text('bank_code_std : $bank_code_name'),
-                  Text('recv_client_bank_code : $recv_client_bank_code'),
-                  Text('account_num : $account_num'),
-                  Text('tran_amt : $tran_amt'),
-                  Text('input_tran_amt : $input_tran_amt'),
-                  Text('req_trans_memo : $req_trans_memo'),
-                  Text('recv_trans_memo : $recv_trans_memo')
-                ],
-              )
+              // Column(
+              //   children: [
+              //     Text('bank_code_std : $bank_code_name'),
+              //     Text('recv_client_bank_code : $recv_client_bank_code'),
+              //     Text('account_num : $account_num'),
+              //     Text('tran_amt : $tran_amt'),
+              //     Text('input_tran_amt : $input_tran_amt'),
+              //     Text('req_trans_memo : $req_trans_memo'),
+              //     Text('recv_trans_memo : $recv_trans_memo')
+              //   ],
+              // )
             ],
           ),
         ),
