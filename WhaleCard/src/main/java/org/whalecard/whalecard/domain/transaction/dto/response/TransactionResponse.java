@@ -26,7 +26,7 @@ public class TransactionResponse {
   @AllArgsConstructor
   @Getter
   @Setter
-  public static class Transaction {
+  public static class Transaction implements Comparable<Transaction>{
 
     private int trans_id;  // 거래 고유 번호
     private String card_no;  // 카드번호
@@ -36,6 +36,11 @@ public class TransactionResponse {
     private String member_store_type; // 가맹점 업종
     private LocalDateTime transaction_dtm;  // 결제일시
 
+
+    @Override
+    public int compareTo(Transaction t) {
+      return t.transaction_dtm.compareTo(transaction_dtm);
+    }
 
   }
 

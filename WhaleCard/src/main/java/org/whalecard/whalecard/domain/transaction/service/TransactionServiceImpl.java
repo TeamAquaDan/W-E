@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,8 @@ public class TransactionServiceImpl implements TransactionService {
       // 최종 반환할 리스트에 내역 추가
       transactions.addAll(cardTransactions);
     }
+
+    Collections.sort(transactions);
 
     return TransactionResponse
         .builder()
