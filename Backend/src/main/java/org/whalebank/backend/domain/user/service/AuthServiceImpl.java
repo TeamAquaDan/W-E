@@ -33,6 +33,9 @@ public class AuthServiceImpl implements AuthService {
   @Transactional
   public void signUp(SignUpRequestDto dto) {
     String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
+
+    System.out.println(userCI);
+
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 
