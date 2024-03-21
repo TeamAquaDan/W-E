@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/account_list_data.dart';
+import 'package:frontend/models/account/account_list_data.dart';
 import 'package:intl/intl.dart';
 
 class BankTopContainer extends StatelessWidget {

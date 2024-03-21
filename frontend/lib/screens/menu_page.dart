@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/my_friends_page.dart';
 import 'package:frontend/screens/my_profile_page.dart';
+import 'package:frontend/screens/parents_page/future_test.dart';
 import 'package:frontend/screens/salary_increase_form_page.dart';
 import 'package:frontend/screens/salary_list_page.dart';
 import 'package:get/get.dart';
 import 'package:frontend/screens/salary_increase_page.dart';
+import 'package:frontend/api/test_html.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -53,6 +55,21 @@ class MenuPage extends StatelessWidget {
                 Get.to(() => MyFriendsPage());
               },
               child: Text('My Friends Page'),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              var res = await request();
+              Get.snackbar('통신 테스트 결과', res);
+            },
+            child: Text('get요청 테스트'),
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Get.to(() => MyStatelessWidget());
+              },
+              child: Text('FutureBuilder 테스트'),
             ),
           ),
         ],

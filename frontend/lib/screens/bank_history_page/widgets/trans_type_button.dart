@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 class DropdownButtonHistory extends StatefulWidget {
   DropdownButtonHistory(
-      {super.key, required this.trans_type_list, required this.dropdownValue});
+      {super.key,
+      required this.trans_type_list,
+      required this.dropdownValue,
+      required this.setDropDownValue});
   final List<String> trans_type_list;
   String dropdownValue;
+  Function setDropDownValue;
   @override
   State<DropdownButtonHistory> createState() => _DropdownButtonHistoryState();
 }
@@ -22,9 +26,7 @@ class _DropdownButtonHistoryState extends State<DropdownButtonHistory> {
       //   color: Colors.deepPurpleAccent,
       // ),
       onChanged: (String? value) {
-        setState(() {
-          widget.dropdownValue = value!;
-        });
+        widget.setDropDownValue(value);
       },
       items:
           widget.trans_type_list.map<DropdownMenuItem<String>>((String value) {

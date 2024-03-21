@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/account_list_data.dart';
+import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_history_table.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_top_container.dart';
 

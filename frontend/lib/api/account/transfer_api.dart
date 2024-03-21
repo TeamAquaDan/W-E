@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/models/transfer_data.dart';
-import 'base_url.dart';
+import 'package:frontend/models/account/transfer_data.dart';
+import '../base_url.dart';
 
 Future<TransferReceiveResponse?> postTransferReceive(
     String accessToken, TransferReceivePost body) async {

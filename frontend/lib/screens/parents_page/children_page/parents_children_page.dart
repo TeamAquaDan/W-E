@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/parents_page/children_page/child_info.dart';
-import 'package:frontend/screens/parents_page/widgets/child_button.dart';
+import 'package:frontend/screens/parents_page/children_page/widgets/child_button.dart';
 
 class ParentsChildrenPage extends StatefulWidget {
   const ParentsChildrenPage({super.key});

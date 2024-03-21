@@ -3,12 +3,22 @@ import 'base_url.dart';
 
 final dio = Dio();
 
-void request() async {
+Future<String> request() async {
   print('${baseURL}test/hello');
   Response response;
-  // response = await dio.get('http://j10e103.p.ssafy.io:56143/test/hello');
-  response = await dio.get('${baseURL}test/hello');
+  // response = await dio.get('https://j10e103.p.ssafy.io/api/hello');
+  response = await dio.get('${baseURL}api/hello');
   print(response.data.toString());
+
+  return response.data; // hello world
+}
+
+void request1() async {
+  print('${baseURL}test/hello');
+  Response response;
+  // response = await dio.get('https://j10e103.p.ssafy.io/api/insert-test');
+  response = await dio.post('${baseURL}api/insert-test');
+  print(response);
   // The below request is the same as above.
   // response = await dio.get(
   //   '/test',

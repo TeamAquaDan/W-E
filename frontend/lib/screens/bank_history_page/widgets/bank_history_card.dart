@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/account_list_data.dart';
+import 'package:frontend/models/account/account_list_data.dart';
 import 'package:intl/intl.dart';
 
 class BankHistoryCard extends StatelessWidget {
@@ -30,7 +30,7 @@ class BankHistoryCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  data.trans_title,
+                  data.trans_memo,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
                 Spacer(),

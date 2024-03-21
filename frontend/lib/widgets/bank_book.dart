@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/account_list_data.dart';
+import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/bank_history_page.dart';
-import 'package:frontend/api/test_html.dart';
 import 'package:frontend/screens/transfer_page/transfer_page.dart';
 import 'package:intl/intl.dart';
 
@@ -106,6 +105,5 @@ class _BankBook extends State<BankBook> {
                 bankData: widget.bankData,
               )),
     );
-    // request();
   }
 }
