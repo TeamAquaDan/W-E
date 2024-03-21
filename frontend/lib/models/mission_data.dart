@@ -16,7 +16,6 @@
 처리상태 0(진행중), 1(성공), 2(실패)"
  */
 
-import 'package:flutter/material.dart';
 //flutter pub add uuid
 import 'package:uuid/uuid.dart';
 //flutter pub add intl

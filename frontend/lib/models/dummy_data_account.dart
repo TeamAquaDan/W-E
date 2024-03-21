@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:frontend/models/account_list_data.dart';
 
 List<AccountHistoryData> dummyDataList = [
