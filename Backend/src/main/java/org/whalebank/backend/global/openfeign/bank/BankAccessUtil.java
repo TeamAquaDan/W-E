@@ -102,11 +102,12 @@ public class BankAccessUtil {
     CheckUserResponseDto userResponseDto = bankClient.getUser(new CheckUserRequestDto(userCI))
         .getBody();
 
-    log.info(String.valueOf(userResponseDto));
 
     if(userResponseDto == null) {
       // 은행에 유저가 존재하지 않음
       throw new CustomException(ResponseCode.BANK_USER_NOT_FOUND);
+    } else {
+      log.info(userResponseDto.toString());
     }
 
     return userResponseDto.getPhone_num();
