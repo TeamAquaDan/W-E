@@ -203,11 +203,11 @@ public class TransferServiceImpl implements TransferService {
     recvAccount.setBalanceAmt(recvAccount.getBalanceAmt() + depositRequest.getTrans_amt());
 
     TransferEntity transfer = TransferEntity.createTransfer(depositRequest,
-        reqAccount.getBalanceAmt());
+        recvAccount.getBalanceAmt());
 
     transferRepository.save(transfer);
 
-    reqAccount.addTransfer(transfer);
+    recvAccount.addTransfer(transfer);
 
     return DepositResponse
         .builder()
