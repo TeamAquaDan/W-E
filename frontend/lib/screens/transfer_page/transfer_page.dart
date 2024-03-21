@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/api/transfer_api.dart';
 import 'package:frontend/models/account_list_data.dart';
+import 'package:frontend/models/transfer_data.dart';
 import 'package:frontend/screens/transfer_page/widgets/bank_code_button.dart';
 import 'package:frontend/screens/transfer_page/widgets/input_format.dart';
 import 'package:frontend/models/bank_code.dart';
+import 'package:frontend/screens/transfer_page/widgets/transfet_password_form.dart';
+import 'package:get/get.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key, required this.bankData});
@@ -21,18 +25,72 @@ class TransferPageState extends State<TransferPage> {
   void _submitTransferData() async {
     if (formKey.currentState != null && formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      // Get.snackbar('제출함', '제출완료');
+      // Get.snackbar(recv_client_bank_code, account_num);
+      receiveData = TransferReceivePost(
+          bank_code_std: recv_client_bank_code, account_num: account_num);
+      responseTransferReceive =
+          await postTransferReceive('accessToken', receiveData);
+      if (responseTransferReceive != null) {
+        transferData = TransferPost(
+            tran_amt: tran_amt,
+            req_account_id: widget.bankData.account_id,
+            req_account_num: widget.bankData.account_num,
+            req_account_password: '',
+            req_trans_memo: req_trans_memo,
+            recv_client_name: responseTransferReceive!.account_holder_name[0],
+            recv_client_bank_code: recv_client_bank_code,
+            recv_client_account_num: account_num,
+            recv_trans_memo: recv_trans_memo);
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return TransferPasswordForm(
+              data: transferData,
+              bank_code_name: bank_code_name,
+              input_tran_amt: input_tran_amt,
+            );
+          },
+        );
+      } else {
+        transferData = TransferPost(
+            tran_amt: tran_amt,
+            req_account_id: widget.bankData.account_id,
+            req_account_num: widget.bankData.account_num,
+            req_account_password: '',
+            req_trans_memo: req_trans_memo,
+            recv_client_name: 'Fail',
+            recv_client_bank_code: recv_client_bank_code,
+            recv_client_account_num: account_num,
+            recv_trans_memo: recv_trans_memo);
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return TransferPasswordForm(
+              data: transferData,
+              bank_code_name: bank_code_name,
+              input_tran_amt: input_tran_amt,
+            );
+          },
+        );
+      }
     }
   }
 
-  String bank_code_name = '웨일뱅크';
-  String bank_code_std = '103';
-  String account_num = '';
+  String input_tran_amt = ''; //
   int tran_amt = 0;
-  String input_tran_amt = '';
+  // int req_account_id = widget.bankData.account_id;
+  // String req_account_num = widget.bankData.account_num;
+  String req_account_password = '';
+  String bank_code_name = '웨일뱅크'; //
+  String recv_client_bank_code = '103'; // 수취인 조회
+  String account_num = ''; // 수취인 조회
+  // String recv_client_account_num = account_num;
+  // String recv_client_name 수취인 조회 결과
   String req_trans_memo = '';
   String recv_trans_memo = '';
-
+  late TransferReceivePost receiveData;
+  late TransferPost transferData;
+  late TransferReceiveResponse? responseTransferReceive;
   void _setTranAmt(int? newValue) {
     setState(() {
       tran_amt = newValue!;
@@ -43,7 +101,7 @@ class TransferPageState extends State<TransferPage> {
     if (newValue is String) {
       setState(() {
         bank_code_name = newValue;
-        bank_code_std = bankCodeObj[newValue]!;
+        recv_client_bank_code = bankCodeObj[newValue]!;
       });
     }
   }
@@ -158,7 +216,7 @@ class TransferPageState extends State<TransferPage> {
               Column(
                 children: [
                   Text('bank_code_std : $bank_code_name'),
-                  Text('bank_code_std : $bank_code_std'),
+                  Text('recv_client_bank_code : $recv_client_bank_code'),
                   Text('account_num : $account_num'),
                   Text('tran_amt : $tran_amt'),
                   Text('input_tran_amt : $input_tran_amt'),
@@ -178,14 +236,18 @@ class TransferPageState extends State<TransferPage> {
   ""bank_code_std"" : ""string, 입금 은행 표준 코드"",
   ""account_num' : ""string, 입금 계좌번호""
 }"
-"{
-  ""tran_amt"" : ""int, 거래금액"",
-  ""bank_code_std"" : ""string, 입금 은행 표준 코드"",
-  ""account_num' : ""string, 입금 계좌번호"", 상대
-  ""account_id"" : ""int, 계좌고유번호(출금 계좌)"", 나
-  ""account_password"": ""String"",
+
+{
+  ""tran_amt"": ""int, 거래금액"",
+  ""req_account_id"": int, 계좌 고유 번호(출금 계좌),
+  ""req_account_num"": ""string, 출금 계좌 번호"",
+  ""req_account_password"" : ""string, 요청고객 계좌 비밀번호"",
+  ""recv_client_bank_code"": ""string, 최종수취고객계좌 개설기관 표준코드"",
+  ""recv_client_account_num"": ""string, 최종수취고객 계좌번호"", 
+  ""recv_client_name"": string, 수취인 성명
   ""req_trans_memo"" : ""string, 내 거래내역에 표기할 메모"",
   ""recv_trans_memo"": ""string, 상대방 거래내역에 표기할 메모""
-}"
+}
 
+계좌번호 ""-"" 포함 x"
 */

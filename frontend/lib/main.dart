@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/screens/login_page.dart';
-import 'package:frontend/widgets/nav_bar.dart';
 import 'package:frontend/screens/pin_login_page.dart';
 import 'package:get/get.dart';
-
 
 void main() {
   runApp(MyApp());
