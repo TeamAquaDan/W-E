@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/my_home_page.dart';
-import 'package:frontend/screens/my_mission_page.dart';
+import 'package:frontend/screens/misson_page/my_mission_page.dart';
 import 'package:frontend/screens/parents_page/parents_home_page.dart';
 import 'package:frontend/screens/statistics_page.dart';
 // import 'package:frontend/screens/statistics_page.dart';

@@ -4,7 +4,7 @@ import 'package:frontend/screens/login_page.dart';
 import 'package:frontend/widgets/nav_bar.dart';
 import 'package:frontend/screens/pin_login_page.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,6 +35,13 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ko', ''), // Korean, no country code
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:frontend/widgets/friends_request_modal.dart';
+import 'package:frontend/screens/friends_page/widgets/friends_request_modal.dart';
 
 class ContactsModal extends StatefulWidget {
   @override

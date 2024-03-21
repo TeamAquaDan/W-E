@@ -3,7 +3,7 @@ import 'package:frontend/models/account_list_data.dart';
 import 'package:frontend/screens/parents_page/children_page/parents_children_page.dart';
 import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
-import 'package:frontend/widgets/mission_none.dart';
+import 'package:frontend/screens/misson_page/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
 
 class ParentsHomePage extends StatelessWidget {

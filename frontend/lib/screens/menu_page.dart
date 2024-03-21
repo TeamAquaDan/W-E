@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/my_friends_page.dart';
-import 'package:frontend/screens/my_profile_page.dart';
-import 'package:frontend/screens/salary_increase_form_page.dart';
-import 'package:frontend/screens/salary_list_page.dart';
+import 'package:frontend/screens/friends_page/my_friends_page.dart';
+import 'package:frontend/screens/profile_page/my_profile_page.dart';
+import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
+import 'package:frontend/screens/salary_page/salary_increase_form_page.dart';
+import 'package:frontend/screens/salary_page/salary_list_page.dart';
 import 'package:get/get.dart';
-import 'package:frontend/screens/salary_increase_page.dart';
+import 'package:frontend/screens/salary_page/salary_increase_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -53,6 +54,14 @@ class MenuPage extends StatelessWidget {
                 Get.to(() => MyFriendsPage());
               },
               child: Text('My Friends Page'),
+            ),
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Get.to(() => MySavingGoalPage());
+              },
+              child: Text('My Saving Page'),
             ),
           ),
         ],

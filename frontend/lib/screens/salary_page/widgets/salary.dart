@@ -1,5 +1,4 @@
-import 'dart:ffi';
-import 'package:frontend/screens/salary_increase_page.dart';
+import 'package:frontend/screens/salary_page/salary_increase_page.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
