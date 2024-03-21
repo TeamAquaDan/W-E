@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/account_list_data.dart';
-import 'package:frontend/models/dummy_data_account.dart';
+import 'package:frontend/models/account/account_list_data.dart';
+import 'package:frontend/models/account/dummy_data_account.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_history_card.dart';
 import 'package:frontend/screens/bank_history_page/widgets/trans_type_button.dart';
 
@@ -17,6 +17,13 @@ class BankHistoryTable extends StatefulWidget {
 class _BankHistoryTable extends State<BankHistoryTable> {
   String dropdownValue = trans_type_list.first;
   List<AccountHistoryData> filteredDataList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filterDataList(); // 페이지가 렌더링되면 초기 필터링을 수행합니다.
+  }
+
   void setDropDownValue(String value) {
     setState(() {
       dropdownValue = value;

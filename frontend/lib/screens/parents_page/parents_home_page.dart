@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/account_list_data.dart';
+import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/parents_page/children_page/parents_children_page.dart';
 import 'package:frontend/widgets/bank_book.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
