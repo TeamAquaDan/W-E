@@ -6,10 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.goal.GoalEntity;
 import org.whalebank.backend.domain.goal.dto.request.GoalRequestDto;
+import org.whalebank.backend.domain.goal.dto.request.GoalSaveRequestDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalDetailResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto.Goal;
 import org.whalebank.backend.domain.goal.dto.response.GoalResponseDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalSaveResponseDto;
 import org.whalebank.backend.domain.goal.repository.GoalRepository;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
@@ -119,6 +121,19 @@ public class GoalServiceImpl implements GoalService {
         .percentage(percentage)
         .saved_amt(savedAmt)
         .build();
+  }
+
+  @Override
+  public GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId) {
+
+    // 로그인 유저
+    UserEntity user = authRepository.findByLoginId(loginId).get();
+
+    GoalEntity goal = goalRepository.getById(String.valueOf(saveRequest.getGoalId()));
+
+
+
+    return null;
   }
 
 }

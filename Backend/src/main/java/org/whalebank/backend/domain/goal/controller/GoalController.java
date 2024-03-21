@@ -8,9 +8,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.whalebank.backend.domain.goal.dto.request.GoalRequestDto;
+import org.whalebank.backend.domain.goal.dto.request.GoalSaveRequestDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalDetailResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalResponseDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalSaveResponseDto;
 import org.whalebank.backend.domain.goal.service.GoalService;
 import org.whalebank.backend.global.response.ApiResponse;
 
@@ -51,4 +53,13 @@ public class GoalController {
     return ApiResponse.ok("저축 목표 상세 조회 성공", goalService.getGoal(loginId, goalId));
   }
 
+  @Operation(summary = "목표 금액 저금하기")
+  @PatchMapping("/save")
+  public ApiResponse<GoalSaveResponseDto> saveMoney(
+      @RequestBody GoalSaveRequestDto saveRequest,
+      @AuthenticationPrincipal UserDetails loginUser) {
+    String loginId = loginUser.getUsername();
+
+    return ApiResponse.ok("저금 성공", goalService.saveMoney(saveRequest, loginId));
+  }
 }
