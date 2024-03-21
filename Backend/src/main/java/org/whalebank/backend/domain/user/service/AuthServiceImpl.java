@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import org.whalebank.backend.global.utils.EncryptionUtils;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
   private final AuthRepository repository;
@@ -34,8 +36,7 @@ public class AuthServiceImpl implements AuthService {
   public void signUp(SignUpRequestDto dto) {
     String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
 
-    System.out.println(userCI);
-
+    log.info("userCI: "+userCI);
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 
@@ -67,6 +68,10 @@ public class AuthServiceImpl implements AuthService {
       user.updateBankAccessToken(responseDto.getAccess_token());
       // TODO: 카드사 접근토큰 저장
     }
+    user.updateFcmToken(dto.getFcm_token()); // fcm 토큰 저장
+    // TODO: 카드 내역 조회
+    // user.getLastCardHistoryFetchTime() 시간 이후로 생성된 카드 내역 조회. null이면 현재 시간까지 생성된 모든 카드 내역 조회
+    user.updateCardFetchTime();
 
     return jwtService.generateToken(user);
   }

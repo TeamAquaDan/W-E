@@ -17,10 +17,12 @@ public class TransactionRequest {
   public LocalDate to_date;
 
   public static TransactionRequest from(TransactionHistoryRequestDto reqDto) {
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     return TransactionRequest.builder()
         .account_id(reqDto.getAccount_id())
-        .from_date(LocalDate.parse(reqDto.getStart_date(), DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-        .to_date(LocalDate.parse(reqDto.getEnd_date(), DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+        .from_date(LocalDate.parse(reqDto.getStart_date(), format))
+        .to_date(LocalDate.parse(reqDto.getEnd_date(), format))
         .build();
   }
 
