@@ -8,6 +8,8 @@ void myFunction() {
 }
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -26,7 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_passwordController.text != _confirmPasswordController.text) {
       // 사용자에게 경고 메시지 표시
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.')),
+        const SnackBar(content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.')),
       );
       return; // 함수 실행 중단
     }
@@ -66,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => const LoginPage(),
       ),
     );
   }

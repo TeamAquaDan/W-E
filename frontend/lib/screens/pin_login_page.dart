@@ -6,6 +6,8 @@ import 'dart:developer' as developer;
 import 'pin_setting_page.dart';
 
 class PinLoginPage extends StatefulWidget {
+  const PinLoginPage({super.key});
+
   @override
   _PinLoginPageState createState() => _PinLoginPageState();
 }
@@ -18,7 +20,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
   void _checkPin() async {
     String? savedPin = await _securityService.getPin();
     if (savedPin == _pinController.text) {
-      developer.log('PIN: ${savedPin}', name: 'saved_pin');
+      developer.log('PIN: $savedPin', name: 'saved_pin');
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => const NavBar()));
     } else {
@@ -32,11 +34,11 @@ class _PinLoginPageState extends State<PinLoginPage> {
     if (hasLoginInfo) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PinLoginPage()),
+        MaterialPageRoute(builder: (context) => const PinLoginPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+        const SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
       );
     }
   }
@@ -46,11 +48,11 @@ class _PinLoginPageState extends State<PinLoginPage> {
     if (hasLoginInfo) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SetPinPage()),
+        MaterialPageRoute(builder: (context) => const SetPinPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+        const SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
       );
     }
   }
@@ -86,7 +88,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                       builder: (context) =>
-                          LoginPage()), // LoginPage는 로그인 페이지의 클래스 이름입니다. 실제 앱에 맞게 조정해야 합니다.
+                          const LoginPage()), // LoginPage는 로그인 페이지의 클래스 이름입니다. 실제 앱에 맞게 조정해야 합니다.
                 );
               },
               child: const Text('로그아웃'),

@@ -4,6 +4,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:frontend/screens/friends_page/widgets/friends_request_modal.dart';
 
 class ContactsModal extends StatefulWidget {
+  const ContactsModal({super.key});
+
   @override
   _ContactsModalState createState() => _ContactsModalState();
 }
@@ -43,7 +45,7 @@ class _ContactsModalState extends State<ContactsModal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("연락처"),
+        title: const Text("연락처"),
       ),
       body: _contacts.isNotEmpty
           ? ListView.builder(
@@ -85,7 +87,7 @@ class _ContactsModalState extends State<ContactsModal> {
                 );
               },
             )
-          : Center(
+          : const Center(
               child: Text(
                 '저장된 연락처가 없습니다.',
                 style: TextStyle(

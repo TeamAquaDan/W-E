@@ -8,17 +8,17 @@ class FriendsRequestModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('친구 요청'),
+      title: const Text('친구 요청'),
       content: Text('$friendName님에게 친구 요청을 하시겠습니까?'),
       actions: <Widget>[
         TextButton(
-          child: Text('아니오'),
+          child: const Text('아니오'),
           onPressed: () {
             Navigator.of(context).pop(false); // 다이얼로그를 닫고, false 반환
           },
         ),
         TextButton(
-          child: Text('예'),
+          child: const Text('예'),
           onPressed: () {
             Navigator.of(context).pop(true); // 다이얼로그를 닫고, true 반환
           },

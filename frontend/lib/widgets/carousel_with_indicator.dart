@@ -91,7 +91,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? Container(
+        ? const SizedBox(
             height: 192,
             child: Center(child: CircularProgressIndicator())) // 로딩 화면을 표시합니다.
         : Column(

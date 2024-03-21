@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/models/mission_data.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/add_mission_sheet.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/mission_card.dart';
@@ -100,7 +98,7 @@ class _ParentsMissionList extends State<ParentsMissionList> {
                 ElevatedButton(
                     onPressed: _openAddMissionOverlay,
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF3F62DE)),
+                        backgroundColor: const Color(0xFF3F62DE)),
                     child: const Text(
                       '미션 추가',
                       style: TextStyle(color: Colors.white),

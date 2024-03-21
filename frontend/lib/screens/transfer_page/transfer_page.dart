@@ -37,7 +37,7 @@ class TransferPageState extends State<TransferPage> {
             req_account_num: widget.bankData.account_num,
             req_account_password: '',
             req_trans_memo: req_trans_memo,
-            recv_client_name: responseTransferReceive!.account_holder_name[0],
+            recv_client_name: responseTransferReceive!,
             recv_client_bank_code: recv_client_bank_code,
             recv_client_account_num: account_num,
             recv_trans_memo: recv_trans_memo);
@@ -53,26 +53,26 @@ class TransferPageState extends State<TransferPage> {
         );
       } else {
         Get.snackbar('수취인이 없어요', '해당 수취인을 찾을 수 가 없습니다.');
-        transferData = TransferPost(
-            tran_amt: tran_amt,
-            req_account_id: widget.bankData.account_id,
-            req_account_num: widget.bankData.account_num,
-            req_account_password: '',
-            req_trans_memo: req_trans_memo,
-            recv_client_name: 'Fail',
-            recv_client_bank_code: recv_client_bank_code,
-            recv_client_account_num: account_num,
-            recv_trans_memo: recv_trans_memo);
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return TransferPasswordForm(
-              data: transferData,
-              bank_code_name: bank_code_name,
-              input_tran_amt: input_tran_amt,
-            );
-          },
-        );
+        // transferData = TransferPost(
+        //     tran_amt: tran_amt,
+        //     req_account_id: widget.bankData.account_id,
+        //     req_account_num: widget.bankData.account_num,
+        //     req_account_password: '',
+        //     req_trans_memo: req_trans_memo,
+        //     recv_client_name: 'Fail',
+        //     recv_client_bank_code: recv_client_bank_code,
+        //     recv_client_account_num: account_num,
+        //     recv_trans_memo: recv_trans_memo);
+        // showModalBottomSheet(
+        //   context: context,
+        //   builder: (BuildContext context) {
+        //     return TransferPasswordForm(
+        //       data: transferData,
+        //       bank_code_name: bank_code_name,
+        //       input_tran_amt: input_tran_amt,
+        //     );
+        //   },
+        // );
       }
     }
   }
@@ -91,7 +91,7 @@ class TransferPageState extends State<TransferPage> {
   String recv_trans_memo = '';
   late TransferReceivePost receiveData;
   late TransferPost transferData;
-  late TransferReceiveResponse? responseTransferReceive;
+  late String? responseTransferReceive;
   void _setTranAmt(int? newValue) {
     setState(() {
       tran_amt = newValue!;
@@ -111,7 +111,7 @@ class TransferPageState extends State<TransferPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('송금하기'),
+        title: const Text('송금하기'),
       ),
       body: Form(
         key: formKey,
@@ -127,7 +127,7 @@ class TransferPageState extends State<TransferPage> {
                       bankCode: bank_code_name, setBankCode: _setBankCode),
                   Expanded(
                     child: TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: '계좌번호',
                           labelStyle: TextStyle(fontSize: 16),
                           border: OutlineInputBorder(),
@@ -150,7 +150,7 @@ class TransferPageState extends State<TransferPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: '송금 금액'),
+                decoration: const InputDecoration(labelText: '송금 금액'),
                 onSaved: (newValue) {
                   setState(() {
                     input_tran_amt = newValue!;
@@ -176,7 +176,7 @@ class TransferPageState extends State<TransferPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: '내 거래내역에 표기할 메모'),
+                decoration: const InputDecoration(labelText: '내 거래내역에 표기할 메모'),
                 onSaved: (newValue) {
                   setState(() {
                     req_trans_memo = newValue!;
@@ -193,7 +193,8 @@ class TransferPageState extends State<TransferPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: '상대방 거래내역에 표기할 메모'),
+                decoration:
+                    const InputDecoration(labelText: '상대방 거래내역에 표기할 메모'),
                 onSaved: (newValue) {
                   setState(() {
                     recv_trans_memo = newValue!;

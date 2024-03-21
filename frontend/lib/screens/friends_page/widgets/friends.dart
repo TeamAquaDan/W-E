@@ -20,8 +20,8 @@ class Friends extends StatelessWidget {
       children: [
         Container(
           height: 50,
-          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          color: Color.fromARGB(255, 255, 255, 255),
+          margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+          color: const Color.fromARGB(255, 255, 255, 255),
           child: Row(
             children: [
               Padding(
@@ -47,17 +47,17 @@ class Friends extends StatelessWidget {
                   children: [
                     Text(
                       friendNickname,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text(
                       '($friendName)',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontFamily: 'Roboto',
@@ -69,14 +69,14 @@ class Friends extends StatelessWidget {
               ),
               Text(
                 '@$friendLoginId',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromARGB(255, 101, 92, 92),
                   fontSize: 12,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(width: 24), // 오른쪽 여백 조정
+              const SizedBox(width: 24), // 오른쪽 여백 조정
             ],
           ),
         ),

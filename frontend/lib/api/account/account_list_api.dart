@@ -4,14 +4,14 @@ import 'package:frontend/services/dio_service.dart';
 import '../base_url.dart';
 
 Future<List<AccountListData>?> getAccountListData(String accessToken) async {
-  final DioService _dioService = DioService();
+  final DioService dioService = DioService();
   try {
     // Dio dio = Dio();
 
     // dio.options.headers['Authorization'] = 'Bearer $accessToken';
 
     // Make POST request
-    Response response = await _dioService.dio.get(
+    Response response = await dioService.dio.get(
       '${baseURL}api/account',
     );
 
@@ -31,26 +31,28 @@ Future<List<AccountListData>?> getAccountListData(String accessToken) async {
 
 Future<List<AccountHistoryData>?> getAccountHistoryData(
     String accessToken, AccountHistoryBody body) async {
-  final DioService _dioService = DioService();
-  // print('body status: $body');
+  final DioService dioService = DioService();
   try {
-    // Dio dio = Dio();
-
-    // dio.options.headers['Authorization'] = 'Bearer $accessToken';
-
-    // Make POST request
-    Response response = await _dioService.dio.get(
+    Response response = await dioService.dio.get(
       '${baseURL}api/account/history',
-      data: body,
+      data: body.toMap(),
     );
 
-    // Handle response
     print('Response status: ${response.statusCode}');
     print('Response data: ${response.data}');
-    return response.data;
+
+    // Check if response data contains 'data' field and if it's not null
+    if (response.data.containsKey('data') && response.data['data'] != null) {
+      List<AccountHistoryData> accountList = (response.data['data'] as List)
+          .map((item) => AccountHistoryData.fromJson(item))
+          .toList();
+      return accountList;
+    } else {
+      print('Error: No data field or null data in response');
+      return null;
+    }
   } catch (error) {
     print('body status: $body');
-    // Handle error
     print('Error sending POST request: $error');
     return null;
   }

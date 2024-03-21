@@ -11,10 +11,10 @@ class BankHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFA0CAFD),
+        backgroundColor: const Color(0xFFA0CAFD),
         title: Text(
           bankData.account_name,
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: const TextStyle(fontWeight: FontWeight.w700),
         ),
       ),
       body: SingleChildScrollView(

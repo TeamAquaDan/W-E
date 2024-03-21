@@ -12,6 +12,8 @@ void main() {
 class MyApp extends StatelessWidget {
   final AuthService _authService = AuthService();
 
+  MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -35,9 +37,9 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator(); // 로딩 인디케이터 표시
           } else {
             if (snapshot.data == true) {
-              return PinLoginPage(); // 자동 로그인 성공 시 간편 로그인 페이지로 이동
+              return const PinLoginPage(); // 자동 로그인 성공 시 간편 로그인 페이지로 이동
             } else {
-              return LoginPage(); // 로그인 정보 없음 또는 실패 시 로그인 페이지로 이동
+              return const LoginPage(); // 로그인 정보 없음 또는 실패 시 로그인 페이지로 이동
             }
           }
         },

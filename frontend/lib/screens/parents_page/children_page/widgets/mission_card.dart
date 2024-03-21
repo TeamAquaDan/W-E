@@ -19,7 +19,7 @@ class MissionCard extends StatelessWidget {
     var moneyFormat = NumberFormat('###,###,###,### 원');
 
     return Card(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       color: const Color(0xFF7A97FF),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 8),
@@ -71,7 +71,7 @@ class MissionCard extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 131, 220, 183),
+                            backgroundColor: const Color.fromARGB(255, 131, 220, 183),
                           ),
                           child: const Text(
                             '성공',
@@ -85,7 +85,7 @@ class MissionCard extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 220, 131, 131),
+                            backgroundColor: const Color.fromARGB(255, 220, 131, 131),
                           ),
                           child: const Text(
                             '실패',

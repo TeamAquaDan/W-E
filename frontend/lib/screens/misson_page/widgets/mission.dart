@@ -44,17 +44,17 @@ class Mission extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Color(0xFF7A97FF),
+              color: const Color(0xFF7A97FF),
               borderRadius: BorderRadius.circular(20),
             ),
-            margin: EdgeInsets.fromLTRB(16, 18, 16, 0),
-            padding: EdgeInsets.symmetric(horizontal: 19, vertical: 17),
+            margin: const EdgeInsets.fromLTRB(16, 18, 16, 0),
+            padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 17),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   missionName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,
                     fontFamily: 'Roboto',
@@ -68,18 +68,18 @@ class Mission extends StatelessWidget {
                       children: [
                         Text(
                           'D-$dDay ',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 22,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
                           '~${formatDeadlineDate(deadlineDate)}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xFF555555),
                             fontSize: 16,
                             fontFamily: 'Roboto',
@@ -90,7 +90,7 @@ class Mission extends StatelessWidget {
                     ),
                     Text(
                       '${formatNumber(missionReward)}원',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
                         fontFamily: 'Roboto',
@@ -105,22 +105,22 @@ class Mission extends StatelessWidget {
         ],
       );
     } else {
-      Color mission_color = missionStatus == 1 ? Colors.green : Colors.red;
+      Color missionColor = missionStatus == 1 ? Colors.green : Colors.red;
       return Column(
         children: [
           Container(
             decoration: BoxDecoration(
-              color: mission_color,
+              color: missionColor,
               borderRadius: BorderRadius.circular(20),
             ),
-            margin: EdgeInsets.fromLTRB(16, 18, 16, 0),
-            padding: EdgeInsets.symmetric(horizontal: 19, vertical: 17),
+            margin: const EdgeInsets.fromLTRB(16, 18, 16, 0),
+            padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 17),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   missionName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,
                     fontFamily: 'Roboto',
@@ -132,7 +132,7 @@ class Mission extends StatelessWidget {
                   children: [
                     Text(
                       formatDeadlineDate(deadlineDate),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF555555),
                         fontSize: 16,
                         fontFamily: 'Roboto',
@@ -141,7 +141,7 @@ class Mission extends StatelessWidget {
                     ),
                     Text(
                       '${formatNumber(missionReward)}원',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
                         fontFamily: 'Roboto',

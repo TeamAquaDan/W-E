@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class MySavingGoalForm extends StatefulWidget {
@@ -16,7 +13,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
   final TextEditingController _amountController = TextEditingController();
   DateTime? _selectedDate;
   String? _selectedAccount;
-  List<String> _accounts = ['계좌 A', '계좌 B', '계좌 C']; // 예시 계좌 목록
+  final List<String> _accounts = ['계좌 A', '계좌 B', '계좌 C']; // 예시 계좌 목록
   String? _selectedCategoryCode; // 선택된 카테고리 코드
   final NumberFormat _numberFormat = NumberFormat.decimalPattern('ko');
 
@@ -97,18 +94,18 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                   flex: 2, // 목표명 필드에 더 많은 공간을 할당
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: '목표명',
                     ),
                   ),
                 ),
-                SizedBox(width: 10), // 필드 사이의 간격
+                const SizedBox(width: 10), // 필드 사이의 간격
                 Expanded(
                   flex: 1, // 카테고리 드롭다운에 할당된 공간
                   child: DropdownButton<String>(
                     isExpanded: true,
                     value: _selectedCategoryCode,
-                    hint: Text('카테고리 선택'),
+                    hint: const Text('카테고리 선택'),
                     onChanged: (newValue) {
                       setState(() {
                         _selectedCategoryCode = newValue;
@@ -129,26 +126,26 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: <Widget>[
                 Expanded(
                   flex: 2,
                   child: TextField(
                     controller: _amountController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: '금액',
                     ),
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   flex: 1,
                   child: DropdownButton<String>(
                     value: _selectedAccount,
                     isExpanded: true,
-                    hint: Text('출금계좌 선택'),
+                    hint: const Text('출금계좌 선택'),
                     items: _accounts.map((account) {
                       return DropdownMenuItem(
                         value: account,
@@ -164,7 +161,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -175,11 +172,11 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                 ),
                 TextButton(
                   onPressed: _presentDatePicker,
-                  child: Text('날짜 선택'),
+                  child: const Text('날짜 선택'),
                 ),
               ],
             ),
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -187,7 +184,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('취소'),
+                  child: const Text('취소'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -195,7 +192,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
 
                     Navigator.pop(context);
                   },
-                  child: Text('등록'),
+                  child: const Text('등록'),
                 ),
               ],
             ),

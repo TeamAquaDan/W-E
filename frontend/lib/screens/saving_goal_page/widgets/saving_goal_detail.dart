@@ -56,7 +56,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
         goalDetails[0]['goal_amt'] - goalDetails[0]['saved_amt'];
     return Scaffold(
       appBar: AppBar(
-        title: Text('목표 상세'),
+        title: const Text('목표 상세'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 20.0),
@@ -65,34 +65,34 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
           children: [
             Text(
               '${goalDetails[0]["goal_name"]} 까지',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               '${formatNumber(toSaveAmount)}원',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text('${goalDetails[0]['percentage']}%',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
               ],
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             LinearProgressIndicator(
               value: goalDetails[0]["percentage"] / 100, // 70% 진행
-              backgroundColor: Color.fromARGB(255, 135, 146, 150),
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
+              backgroundColor: const Color.fromARGB(255, 135, 146, 150),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
               minHeight: 5,
             ),
           ],

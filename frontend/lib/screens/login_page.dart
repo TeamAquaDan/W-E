@@ -7,6 +7,8 @@ import '../widgets/nav_bar.dart';
 import 'dart:developer' as developer;
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -21,9 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     String loginId = loginIdController.text;
     String password = passwordController.text;
-    String fcm_token = "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
+    String fcmToken = "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
 
-    bool loginSuccess = await _authService.login(loginId, password, fcm_token);
+    bool loginSuccess = await _authService.login(loginId, password, fcmToken);
 
     developer.log('아이디: ${loginIdController.text}', name: 'signup.data');
     developer.log('비밀번호: ${passwordController.text}', name: 'signup.data');
@@ -33,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => NavBar(),
+          builder: (context) => const NavBar(),
         ),
       );
     }
@@ -42,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToRegistrationPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignUpPage()),
+      MaterialPageRoute(builder: (context) => const SignUpPage()),
     );
   }
 
@@ -51,11 +53,11 @@ class _LoginPageState extends State<LoginPage> {
     if (hasLoginInfo) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PinLoginPage()),
+        MaterialPageRoute(builder: (context) => const PinLoginPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+        const SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
       );
     }
   }
@@ -65,11 +67,11 @@ class _LoginPageState extends State<LoginPage> {
     if (hasLoginInfo) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SetPinPage()),
+        MaterialPageRoute(builder: (context) => const SetPinPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
+        const SnackBar(content: Text('로그인 정보가 없습니다. 먼저 로그인 해주세요.')),
       );
     }
   }

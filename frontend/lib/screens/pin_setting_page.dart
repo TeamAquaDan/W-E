@@ -3,6 +3,8 @@ import '../services/auth_service.dart';
 import '../screens/pin_login_page.dart';
 
 class SetPinPage extends StatefulWidget {
+  const SetPinPage({super.key});
+
   @override
   _SetPinPageState createState() => _SetPinPageState();
 }
@@ -17,10 +19,10 @@ class _SetPinPageState extends State<SetPinPage> {
       await _securityService.setPin(_pinController.text);
       // PIN 설정 후 로직, 예를 들어 홈 화면으로 이동
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => PinLoginPage()));
+          context, MaterialPageRoute(builder: (_) => const PinLoginPage()));
     } else {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: const Text('PIN이 일치하지 않습니다. 다시 시도해주세요.')));
+          .showSnackBar(const SnackBar(content: Text('PIN이 일치하지 않습니다. 다시 시도해주세요.')));
     }
   }
 

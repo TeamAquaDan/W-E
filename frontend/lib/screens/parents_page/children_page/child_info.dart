@@ -16,7 +16,7 @@ class ChildInfo extends StatelessWidget {
             PinMoneyMoney: 100000,
             childName: name,
           ),
-          ParentsMissionList(),
+          const ParentsMissionList(),
         ],
       ),
     );

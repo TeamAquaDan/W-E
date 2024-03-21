@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_detail.dart';
-import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none_noadd.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_plus.dart';
 import 'package:get/get.dart';
@@ -180,7 +179,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
 
     // 진행중 목표 비었을 시 widget 추가
     if (currentGoals.isEmpty) {
-      currentGoalWidgets.add(SavingGoalNoneNoadd());
+      currentGoalWidgets.add(const SavingGoalNoneNoadd());
     }
 
     List<Widget> completedGoalWidgets = completedGoals.map<Widget>((goal) {
@@ -199,7 +198,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
 
     // 완료된 목표 없으면 추가 위젯 추가.
     if (completedGoals.isEmpty) {
-      completedGoalWidgets.add(SavingGoalPlus());
+      completedGoalWidgets.add(const SavingGoalPlus());
     }
 
     return DefaultTabController(
@@ -241,7 +240,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
             ListView(
               children: [
                 ...currentGoalWidgets,
-                SavingGoalPlus(),
+                const SavingGoalPlus(),
               ],
             ),
             ListView(

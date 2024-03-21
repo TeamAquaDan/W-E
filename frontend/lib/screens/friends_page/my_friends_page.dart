@@ -5,7 +5,7 @@ import 'package:frontend/screens/friends_page/widgets/friends.dart';
 import 'package:get/get.dart';
 
 class MyFriendsPage extends StatefulWidget {
-  const MyFriendsPage({Key? key}) : super(key: key);
+  const MyFriendsPage({super.key});
 
   @override
   _MyFriendsPageState createState() => _MyFriendsPageState();
@@ -31,18 +31,18 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
   }
 
   void filterFriends(String query) {
-    List<dynamic> _tempList = [];
+    List<dynamic> tempList = [];
     if (query.isNotEmpty) {
-      _tempList.addAll(myFriendsList.where((friend) =>
+      tempList.addAll(myFriendsList.where((friend) =>
           friend['friend_name'].toLowerCase().contains(query.toLowerCase()) ||
           friend['friend_nickname']
               .toLowerCase()
               .contains(query.toLowerCase())));
     } else {
-      _tempList = List.from(myFriendsList); // 검색어가 비어있으면 모든 친구 목록을 보여줌
+      tempList = List.from(myFriendsList); // 검색어가 비어있으면 모든 친구 목록을 보여줌
     }
     setState(() {
-      filteredFriendsList = _tempList;
+      filteredFriendsList = tempList;
     });
   }
 
@@ -72,7 +72,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('친구 목록'),
+        title: const Text('친구 목록'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -85,41 +85,41 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                     controller: searchController,
                     onChanged: filterFriends, // 사용자 입력이 바뀔 때마다 필터링
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
                       filled: true,
-                      fillColor: Color.fromARGB(255, 206, 202, 202),
+                      fillColor: const Color.fromARGB(255, 206, 202, 202),
                       border: InputBorder.none,
                       hintText: '이름으로 검색',
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(25.7),
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(25.7),
                       ),
-                      contentPadding: EdgeInsets.all(15),
+                      contentPadding: const EdgeInsets.all(15),
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 IconButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return Dialog(
+                        return const Dialog(
                           child: ContactsModal(),
                         );
                       },
                     );
                   },
-                  icon: Icon(Icons.person_add),
+                  icon: const Icon(Icons.person_add),
                   iconSize: 35,
                 ),
               ],
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredFriendsList.length, // 필터링된 목록 사용
@@ -131,7 +131,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                       // 여기에 원하는 작업을 수행하세요. 예: 상세 페이지로 이동
                       print('${friend['friend_name']} 클릭됨');
                       // 예를 들어, 친구 상세 페이지로 네비게이트하는 코드를 추가할 수 있습니다.
-                      Get.to(() => MyProfilePage());
+                      Get.to(() => const MyProfilePage());
                     },
                     child: Friends(
                       friendLoginId: friend['friend_loginid'],

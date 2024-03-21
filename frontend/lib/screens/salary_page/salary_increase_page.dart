@@ -37,7 +37,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('용돈 인상 신청'),
+        title: const Text('용돈 인상 신청'),
       ),
       body: Center(
         child: Column(
@@ -52,8 +52,8 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                 ),
               ],
             ),
-            SizedBox(height: 19),
-            Text.rich(
+            const SizedBox(height: 19),
+            const Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
@@ -89,12 +89,12 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   width: _controller.text.replaceAll(',', '').length * 12.25 +
                       40.0,
                   height: 48.0,
@@ -105,13 +105,13 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                       setState(() {}); // 입력이 변경될 때마다 위젯 재구성
                     },
                     keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
+                        const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                       border: UnderlineInputBorder(),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 20,
                       fontFamily: 'Roboto',
@@ -119,7 +119,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   '원을',
                   style: TextStyle(
                     color: Colors.black,
@@ -130,8 +130,8 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                 ),
               ],
             ),
-            SizedBox(height: 4),
-            Text(
+            const SizedBox(height: 4),
+            const Text(
               '요청할래요!',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -141,21 +141,21 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 202, 203, 208)),
+                        const Color.fromARGB(255, 202, 203, 208)),
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                        const EdgeInsets.fromLTRB(20, 10, 20, 10)),
                   ),
                   onPressed: () {
                     Get.back();
                   },
-                  child: Text(
+                  child: const Text(
                     '취소',
                     style: TextStyle(
                       color: Colors.black,
@@ -165,19 +165,19 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 162, 172, 219)),
+                        const Color.fromARGB(255, 162, 172, 219)),
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                        const EdgeInsets.fromLTRB(20, 10, 20, 10)),
                   ),
                   onPressed: () {
                     print(_controller.text.replaceAll(',', ''));
-                    Get.to(() => SalaryIncreaseFormPage());
+                    Get.to(() => const SalaryIncreaseFormPage());
                   }, // api 요청
-                  child: Text(
+                  child: const Text(
                     '확인',
                     style: TextStyle(
                       color: Colors.black,

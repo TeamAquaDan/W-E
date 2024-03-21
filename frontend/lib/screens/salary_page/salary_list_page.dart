@@ -108,13 +108,13 @@ class _SalaryListPageState extends State<SalaryListPage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('용돈 내역'),
+        title: const Text('용돈 내역'),
       ),
       body: Column(
         children: [
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 17, 17, 17),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(30, 17, 17, 17),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(

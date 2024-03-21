@@ -22,18 +22,18 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
           Text(
               '${widget.bank_code_name} ${widget.data.recv_client_account_num}'),
           Text(
             '${widget.data.recv_client_name}님에게',
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
           Text(
             '${widget.input_tran_amt}을 보내요',
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
           Form(
             key: _formKey,
@@ -42,7 +42,7 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -67,14 +67,15 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                         var res =
                             await postTransfer('accessToken', widget.data);
                         if (res == null) {
-                          Get.snackbar('송금 에러', 'server');
+                          Get.snackbar('송금 에러', '송금 에러');
                         } else {
-                          Get.snackbar(widget.data.recv_client_name,
-                              widget.data.req_account_password);
+                          Navigator.pop(context);
+                          Get.snackbar('송금완료',
+                              '${widget.data.recv_client_name}님에게 ${widget.data.tran_amt} 원 입금 원료');
                         }
                       }
                     },
-                    child: Text('송금하기'),
+                    child: const Text('송금하기'),
                   ),
                 ),
               ],

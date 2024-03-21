@@ -7,7 +7,6 @@ import 'package:frontend/screens/profile_page/my_profile_page.dart';
 import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
 import 'package:frontend/screens/salary_page/salary_increase_form_page.dart';
 import 'package:frontend/screens/salary_page/salary_list_page.dart';
-import 'package:get/get.dart';
 import 'package:frontend/screens/salary_page/salary_increase_page.dart';
 
 class MenuPage extends StatelessWidget {
@@ -22,41 +21,41 @@ class MenuPage extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => SalaryIncreasePage());
+                Get.to(() => const SalaryIncreasePage());
               },
-              child: Text('Increase Salary Page'),
+              child: const Text('Increase Salary Page'),
             ),
           ),
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => SalaryIncreaseFormPage());
+                Get.to(() => const SalaryIncreaseFormPage());
               },
-              child: Text('Increase Salary Form Page'),
+              child: const Text('Increase Salary Form Page'),
             ),
           ),
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => SalaryListPage());
+                Get.to(() => const SalaryListPage());
               },
-              child: Text('Salary List Page'),
+              child: const Text('Salary List Page'),
             ),
           ),
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => MyProfilePage());
+                Get.to(() => const MyProfilePage());
               },
-              child: Text('My Profile Page'),
+              child: const Text('My Profile Page'),
             ),
           ),
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => MyFriendsPage());
+                Get.to(() => const MyFriendsPage());
               },
-              child: Text('My Friends Page'),
+              child: const Text('My Friends Page'),
             ),
           ),
           ElevatedButton(
@@ -64,20 +63,20 @@ class MenuPage extends StatelessWidget {
               var res = await request();
               Get.snackbar('통신 테스트 결과', res);
             },
-            child: Text('get요청 테스트'),
+            child: const Text('get요청 테스트'),
           ),
           Center(
               child: ElevatedButton(
                   onPressed: () {
-                    Get.to(() => MyStatelessWidget());
+                    Get.to(() => const MyStatelessWidget());
                   },
-                  child: Text('FutureBuilder 테스트'))),
+                  child: const Text('FutureBuilder 테스트'))),
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => MySavingGoalPage());
+                Get.to(() => const MySavingGoalPage());
               },
-              child: Text('My Saving Page'),
+              child: const Text('My Saving Page'),
             ),
           ),
         ],

@@ -9,11 +9,11 @@ class BankHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 255, 255, 255),
+      color: const Color.fromARGB(255, 255, 255, 255),
       surfaceTintColor: Colors.white,
       elevation: 3,
       shape:
-          BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
+          const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -22,18 +22,18 @@ class BankHistoryCard extends StatelessWidget {
               children: [
                 Text(
                   data.trans_dtm,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
             Row(
               children: [
                 Text(
                   data.trans_memo,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   moneyFormat.format(data.trans_amt),
                   style: TextStyle(
@@ -45,10 +45,10 @@ class BankHistoryCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 Text(
                   moneyFormat.format(data.balance_amt),
-                  style: TextStyle(fontSize: 20, color: Colors.black54),
+                  style: const TextStyle(fontSize: 20, color: Colors.black54),
                 ),
               ],
             )

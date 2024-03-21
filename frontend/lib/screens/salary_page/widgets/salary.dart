@@ -49,11 +49,11 @@ class Salary extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Color(0xFF7A97FF),
+            color: const Color(0xFF7A97FF),
             borderRadius: BorderRadius.circular(20),
           ),
-          margin: EdgeInsets.fromLTRB(16, 18, 16, 0),
-          padding: EdgeInsets.fromLTRB(30, 17, 17, 17),
+          margin: const EdgeInsets.fromLTRB(16, 18, 16, 0),
+          padding: const EdgeInsets.fromLTRB(30, 17, 17, 17),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -63,7 +63,7 @@ class Salary extends StatelessWidget {
                   isMonthly == true
                       ? Text(
                           '매달 $paymentDate일',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 19,
                             fontFamily: 'Roboto',
@@ -72,19 +72,19 @@ class Salary extends StatelessWidget {
                         )
                       : Text(
                           '매주 ${getWeekdayName(paymentDate)}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 19,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
                     groupNickname,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
@@ -92,7 +92,7 @@ class Salary extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
@@ -100,7 +100,7 @@ class Salary extends StatelessWidget {
                 children: [
                   Text(
                     '${formatNumber(allowanceAmt)}원',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 26,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
@@ -109,16 +109,16 @@ class Salary extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       Get.to(
-                        () => SalaryIncreasePage(),
+                        () => const SalaryIncreasePage(),
                         arguments: {},
                       );
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color(0xFFFFEF83),
+                      backgroundColor: const Color(0xFFFFEF83),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     ),
-                    child: Text(
+                    child: const Text(
                       '인상요청',
                       style: TextStyle(
                         color: Colors.black,

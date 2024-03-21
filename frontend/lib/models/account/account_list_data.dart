@@ -80,6 +80,14 @@ class AccountHistoryBody {
   final int account_id;
   final String start_date;
   final String end_date;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'account_id': account_id,
+      'start_date': start_date,
+      'end_date': end_date,
+    };
+  }
 }
 
 class AccountHistoryData {
@@ -108,4 +116,14 @@ class AccountHistoryData {
   // final String recv_client_account_num;
   // final String recv_client_bank;
   // final String recv_client_bank_code;
+
+  factory AccountHistoryData.fromJson(Map<String, dynamic> json) {
+    return AccountHistoryData(
+      trans_type: json['trans_type'],
+      trans_amt: json['trans_amt'],
+      balance_amt: json['balance_amt'],
+      trans_memo: json['trans_memo'],
+      trans_dtm: json['trans_dtm'],
+    );
+  }
 }

@@ -18,6 +18,15 @@ class TransferReceiveResponse {
   final String bank_name;
   final String account_num;
   final List<String> account_holder_name;
+
+  factory TransferReceiveResponse.fromJson(Map<String, dynamic> json) {
+    return TransferReceiveResponse(
+      bank_name: json['data']['bank_name'],
+      account_num: json['data']['account_num'],
+      account_holder_name:
+          List<String>.from(json['data']['account_holder_name']),
+    );
+  }
 }
 
 class TransferPost {
@@ -42,6 +51,20 @@ class TransferPost {
   final String recv_client_name;
   final String req_trans_memo;
   final String recv_trans_memo;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'tran_amt': tran_amt,
+      'req_account_id': req_account_id,
+      'req_account_num': req_account_num,
+      'req_account_password': req_account_password,
+      'recv_client_bank_code': recv_client_bank_code,
+      'recv_client_account_num': recv_client_account_num,
+      'recv_client_name': recv_client_name,
+      'req_trans_memo': req_trans_memo,
+      'recv_trans_memo': recv_trans_memo,
+    };
+  }
 }
 /*
 "{
@@ -75,15 +98,15 @@ class TransferPost {
 */
 /* 
 {
-  ""tran_amt"": ""int, 거래금액"",
-  ""req_account_id"": int, 계좌 고유 번호(출금 계좌),
-  ""req_account_num"": ""string, 출금 계좌 번호"",
-  ""req_account_password"" : ""string, 요청고객 계좌 비밀번호"",
-  ""recv_client_bank_code"": ""string, 최종수취고객계좌 개설기관 표준코드"",
-  ""recv_client_account_num"": ""string, 최종수취고객 계좌번호"", 
-  ""recv_client_name"": string, 수취인 성명
-  ""req_trans_memo"" : ""string, 내 거래내역에 표기할 메모"",
-  ""recv_trans_memo"": ""string, 상대방 거래내역에 표기할 메모""
+  "tran_amt": int, 거래금액,
+  "req_account_id": int, 계좌 고유 번호(출금 계좌),
+  "req_account_num": string, 출금 계좌 번호,
+  "req_account_password" : string, 요청고객 계좌 비밀번호,
+  "recv_client_bank_code": string, 최종수취고객계좌 개설기관 표준코드,
+  "recv_client_account_num": string, 최종수취고객 계좌번호, 
+  "recv_client_name": string, 수취인 성명
+  "req_trans_memo" : string, 내 거래내역에 표기할 메모,
+  "recv_trans_memo": string, 상대방 거래내역에 표기할 메모
 }
 
 계좌번호 ""-"" 포함 x"

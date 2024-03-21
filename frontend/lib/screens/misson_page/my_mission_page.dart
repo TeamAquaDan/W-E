@@ -184,7 +184,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
                   child: Text(
                     '미션으로 ${formatNumber(totalOngoingMissionReward)}원을 얻을 수 있어요!',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -213,7 +213,7 @@ class _MyMissionPageState extends State<MyMissionPage> {
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
                   child: Text(
                     '지금까지 미션으로 ${formatNumber(totalCompletedMissionReward)}원을 얻었어요!',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

@@ -87,17 +87,17 @@ class _BankHistoryTable extends State<BankHistoryTable> {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? Center(child: CircularProgressIndicator()) // 로딩 화면을 표시합니다.
+        ? const Center(child: CircularProgressIndicator()) // 로딩 화면을 표시합니다.
         : Column(
             children: [
               Row(children: [
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 DropdownButtonHistory(
                   trans_type_list: trans_type_list,
                   dropdownValue: dropdownValue,
                   setDropDownValue: setDropDownValue,
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(dropdownValue)
               ]),
               for (int i = 0; i < filteredDataList.length; i++)

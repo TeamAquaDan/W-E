@@ -32,9 +32,9 @@ class SavingGoal extends StatelessWidget {
 
   Color formatColor(int status) {
     if (status == 1) {
-      return Color.fromARGB(255, 104, 178, 101);
+      return const Color.fromARGB(255, 104, 178, 101);
     } else {
-      return Color.fromARGB(255, 211, 106, 106);
+      return const Color.fromARGB(255, 211, 106, 106);
     }
   }
 
@@ -45,7 +45,7 @@ class SavingGoal extends StatelessWidget {
             children: [
               Container(
                 decoration: ShapeDecoration(
-                  color: Color(0xff97d8ff),
+                  color: const Color(0xff97d8ff),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -60,7 +60,7 @@ class SavingGoal extends StatelessWidget {
                       children: [
                         Text(
                           goalName,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                             fontFamily: 'Roboto',
@@ -73,7 +73,7 @@ class SavingGoal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '현재 금액',
                           style: TextStyle(
                             color: Colors.black,
@@ -84,7 +84,7 @@ class SavingGoal extends StatelessWidget {
                         ),
                         Text(
                           '${formatNumber(savedAmt)} 원',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,
                             fontFamily: 'Roboto',
@@ -96,7 +96,7 @@ class SavingGoal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '목표 금액',
                           style: TextStyle(
                             color: Colors.black,
@@ -107,7 +107,7 @@ class SavingGoal extends StatelessWidget {
                         ),
                         Text(
                           '${formatNumber(goalAmt)} 원',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,
                             fontFamily: 'Roboto',
@@ -121,7 +121,7 @@ class SavingGoal extends StatelessWidget {
                       value: percentage / 100, // 70% 진행
                       backgroundColor: const Color(0xFFF4F9FB),
                       valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
+                          const AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
                       minHeight: 5,
                     ),
                     const SizedBox(height: 5), // 진행 바와 백분율 사이의 간격
@@ -129,7 +129,7 @@ class SavingGoal extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: Text(
                         '$percentage%',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 12,
                           fontFamily: 'Roboto',
@@ -159,7 +159,7 @@ class SavingGoal extends StatelessWidget {
                   children: [
                     Text(
                       goalName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                         fontFamily: 'Roboto',
@@ -169,7 +169,7 @@ class SavingGoal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '인출 금액',
                           style: TextStyle(
                             color: Colors.black,
@@ -180,7 +180,7 @@ class SavingGoal extends StatelessWidget {
                         ),
                         Text(
                           '$savedAmt 원',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,
                             fontFamily: 'Roboto',
@@ -192,7 +192,7 @@ class SavingGoal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '목표 금액',
                           style: TextStyle(
                             color: Colors.black,
@@ -203,7 +203,7 @@ class SavingGoal extends StatelessWidget {
                         ),
                         Text(
                           '$goalAmt 원',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,
                             fontFamily: 'Roboto',
@@ -215,7 +215,7 @@ class SavingGoal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '인출 날짜',
                           style: TextStyle(
                             color: Colors.black,
@@ -226,7 +226,7 @@ class SavingGoal extends StatelessWidget {
                         ),
                         Text(
                           withdrawDate,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,
                             fontFamily: 'Roboto',

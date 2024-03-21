@@ -12,7 +12,7 @@ class SavingGoalPlus extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(26, 18, 26, 12),
           margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 88, 163, 209),
+            color: const Color.fromARGB(255, 88, 163, 209),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -40,11 +40,11 @@ class SavingGoalPlus extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         builder: (BuildContext context) {
-                          return MySavingGoalForm(); // BottomSheet로 MySavingGoalForm을 표시
+                          return const MySavingGoalForm(); // BottomSheet로 MySavingGoalForm을 표시
                         },
                       );
                     },
-                    icon: Icon(Icons.add_circle_rounded),
+                    icon: const Icon(Icons.add_circle_rounded),
                     color: Colors.black54,
                     iconSize: 45,
                   )
