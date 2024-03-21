@@ -20,15 +20,7 @@ import org.whalebank.backend.global.response.ApiResponse;
 @RequestMapping("/api/goal")
 public class GoalController {
 
-  private GoalService goalService;
-
-//  @Operation(summary="프로필 조회", description="프로필 조회(유저 아이디, 유저 이름, 프로필 사진, 생년월일, 프로필 수정 가능 여부). 내 프로필일 경우 editable이 true")
-//  @PostMapping("/profile")
-//  public ApiResponse<ProfileResponseDto> getUserProfile(@RequestBody Map<String, Integer> reqDto,
-//  @AuthenticationPrincipal UserDetails loginUser) {
-//    String loginId = loginUser.getUsername(); // 로그인한 사람
-//    return ApiResponse.ok("프로필 조회 성공", service.getProfile(reqDto.get("user_id"), loginId));
-//  }
+  private final GoalService goalService;
 
   @Operation(summary = "저축 목표 등록")
   @PostMapping("")
