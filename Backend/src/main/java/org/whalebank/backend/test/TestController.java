@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/test")
+@RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
 public class TestController {
