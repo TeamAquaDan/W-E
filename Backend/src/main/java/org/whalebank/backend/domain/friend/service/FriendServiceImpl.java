@@ -1,6 +1,7 @@
 package org.whalebank.backend.domain.friend.service;
 
 import jakarta.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,9 @@ public class FriendServiceImpl implements FriendService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     return friendRepository.findByUser(user)
-        .stream().map(FriendResponseDto::from)
+        .stream()
+        .sorted(Comparator.comparing(friendEntity -> friendEntity.getFriendId().getFriend().getUserName())) // UserEntity의 이름으로 정렬
+        .map(FriendResponseDto::from)
         .collect(Collectors.toList());
   }
 

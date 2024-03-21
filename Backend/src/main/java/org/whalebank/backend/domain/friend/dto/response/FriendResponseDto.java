@@ -15,6 +15,7 @@ public class FriendResponseDto {
   String friend_nickname;
   String friend_profileImg;
   String friend_name;
+  String friend_loginid;
 
   public static FriendResponseDto from(FriendEntity friendEntity) {
     UserEntity friend = friendEntity.friendId.getFriend();
@@ -23,6 +24,7 @@ public class FriendResponseDto {
         .friend_nickname(friendEntity.getFriendNickname())
         .friend_profileImg(friend.getProfileImage())
         .friend_name(friend.getUserName())
+        .friend_loginid(friend.getLoginId())
         .build();
   }
 
