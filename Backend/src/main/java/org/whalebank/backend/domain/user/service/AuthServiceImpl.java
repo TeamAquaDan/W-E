@@ -68,6 +68,9 @@ public class AuthServiceImpl implements AuthService {
       // TODO: 카드사 접근토큰 저장
     }
     user.updateFcmToken(dto.getFcm_token()); // fcm 토큰 저장
+    // TODO: 카드 내역 조회
+    // user.getLastCardHistoryFetchTime() 시간 이후로 생성된 카드 내역 조회. null이면 현재 시간까지 생성된 모든 카드 내역 조회
+    user.updateCardFetchTime();
 
     return jwtService.generateToken(user);
   }

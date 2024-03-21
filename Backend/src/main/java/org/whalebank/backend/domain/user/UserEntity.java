@@ -72,6 +72,8 @@ public class UserEntity {
 
   private String loginPassword;
 
+  private LocalDateTime lastCardHistoryFetchTime;
+
   public void updateBankAccessToken(String token) {
     this.bankAccessToken = token;
   }
@@ -86,5 +88,9 @@ public class UserEntity {
 
   public void updateFcmToken(String fcmToken) {
     this.fcmToken = fcmToken;
+  }
+
+  public void updateCardFetchTime() {
+    this.lastCardHistoryFetchTime = LocalDateTime.now();
   }
 }
