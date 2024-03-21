@@ -1,10 +1,13 @@
 package org.whalebank.backend.domain.goal.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.goal.GoalEntity;
 import org.whalebank.backend.domain.goal.dto.request.GoalRequestDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto.Goal;
 import org.whalebank.backend.domain.goal.dto.response.GoalResponseDto;
 import org.whalebank.backend.domain.goal.repository.GoalRepository;
 import org.whalebank.backend.domain.user.UserEntity;
@@ -28,11 +31,12 @@ public class GoalServiceImpl implements GoalService {
     UserEntity user = authRepository.findByLoginId(loginId).get();
 
     // 파킹통장 잔액
-    ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(user.getBankAccessToken(),
+    ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(
+        user.getBankAccessToken(),
         new AccountIdRequestDto(goalRequest.getAccount_id()));
 
     // 새로운 목표 생성
-    GoalEntity goal = GoalEntity.createGoal(goalRequest, LocalDate.now());
+    GoalEntity goal = GoalEntity.createGoal(goalRequest, user, LocalDate.now());
 
     goalRepository.save(goal);
 
@@ -48,6 +52,41 @@ public class GoalServiceImpl implements GoalService {
         .start_date(String.valueOf(goal.getStartDate()))
         .goal_date(String.valueOf(goal.getGoalDate()))
         .percentage(parkingBalance.getParking_balance_amt())
+        .build();
+  }
+
+  @Override
+  public GoalListResponseDto getGoals(String loginId) {
+
+    // 로그인 유저
+    UserEntity user = authRepository.findByLoginId(loginId).get();
+
+    // 사용자가 등록한 모든 목표
+    List<GoalEntity> findGoals = authRepository.findById(user.getUserId()).get().getGoalList();
+
+    // 달성률 : (출금한 금액 / 목표 금액) * 100
+
+    List<Goal> goals = findGoals.stream()
+        .map(g -> {
+          String withdrawDate =
+              g.getWithdrawDate() != null ? g.getWithdrawDate().toString() : null;
+          return new Goal(
+              g.getGoalID(),
+              g.getGoalName(),
+              g.getGoalAmt(),
+              g.getStatus(),
+              g.getStartDate().toString(),
+              withdrawDate,
+              g.getGoalDate().toString(),
+              g.getWithdrawAmt() / g.getGoalAmt() * 100,
+              g.getWithdrawAmt()
+          );
+        })
+        .toList();
+
+    return GoalListResponseDto
+        .builder()
+        .goal_list(goals)
         .build();
   }
 }
