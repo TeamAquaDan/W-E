@@ -2,11 +2,13 @@ package org.whalebank.backend.domain.goal.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.whalebank.backend.domain.goal.dto.request.GoalRequestDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalDetailResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalResponseDto;
 import org.whalebank.backend.domain.goal.service.GoalService;
@@ -21,7 +23,7 @@ public class GoalController {
   private final GoalService goalService;
 
   @Operation(summary = "저축 목표 등록")
-  @PostMapping("")
+  @PostMapping
   public ApiResponse<GoalResponseDto> createGoal(
       @RequestBody GoalRequestDto goalRequest,
       @AuthenticationPrincipal UserDetails loginUser) {
@@ -30,7 +32,6 @@ public class GoalController {
     return ApiResponse.ok("저축 목표 등록 성공", goalService.createGoal(goalRequest, loginId));
   }
 
-
   @Operation(summary = "저축 목표 목록 조회")
   @GetMapping("/search")
   public ApiResponse<GoalListResponseDto> getGoals(
@@ -38,6 +39,16 @@ public class GoalController {
     String loginId = loginUser.getUsername();
 
     return ApiResponse.ok("저축 목표 목록 조회 성공", goalService.getGoals(loginId));
+  }
+
+  @Operation(summary = "저축 목표 상세 조회")
+  @GetMapping("/{goal_id}")
+  public ApiResponse<GoalDetailResponseDto> getGoal(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @PathVariable(name = "goal_id") int goalId) {
+    String loginId = loginUser.getUsername();
+
+    return ApiResponse.ok("저축 목표 상세 조회 성공", goalService.getGoal(loginId, goalId));
   }
 
 }

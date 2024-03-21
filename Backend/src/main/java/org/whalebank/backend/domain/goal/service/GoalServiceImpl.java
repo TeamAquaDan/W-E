@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.goal.GoalEntity;
 import org.whalebank.backend.domain.goal.dto.request.GoalRequestDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalDetailResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto.Goal;
 import org.whalebank.backend.domain.goal.dto.response.GoalResponseDto;
@@ -78,7 +79,7 @@ public class GoalServiceImpl implements GoalService {
               g.getStartDate().toString(),
               withdrawDate,
               g.getGoalDate().toString(),
-              g.getWithdrawAmt() / g.getGoalAmt() * 100,
+              (g.getWithdrawAmt() / g.getGoalAmt()) * 100,
               g.getWithdrawAmt()
           );
         })
@@ -89,4 +90,35 @@ public class GoalServiceImpl implements GoalService {
         .goal_list(goals)
         .build();
   }
+
+  @Override
+  public GoalDetailResponseDto getGoal(String loginId, int goalId) {
+
+    // 로그인 유저
+    UserEntity user = authRepository.findByLoginId(loginId).get();
+
+    GoalEntity goal = goalRepository.getById(String.valueOf(goalId));
+
+    // 파킹통장 잔액
+    ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(
+        user.getBankAccessToken(),
+        new AccountIdRequestDto(goal.getAccountId()));
+
+    int savedAmt = parkingBalance.getParking_balance_amt();
+
+    int percentage = savedAmt / goal.getGoalAmt() * 100;
+
+    return GoalDetailResponseDto
+        .builder()
+        .goal_id(goalId)
+        .goal_name(goal.getGoalName())
+        .goal_amt(goal.getGoalAmt())
+        .status(goal.getStatus())
+        .start_date(String.valueOf(goal.getStartDate()))
+        .goal_date(String.valueOf(goal.getGoalDate()))
+        .percentage(percentage)
+        .saved_amt(savedAmt)
+        .build();
+  }
+
 }
