@@ -30,6 +30,16 @@ class AccountListData {
   final String account_num;
   final int balance_amt;
   final int account_type;
+
+  factory AccountListData.fromJson(Map<String, dynamic> json) {
+    return AccountListData(
+      account_id: json['account_id'] as int,
+      account_name: json['account_name'] as String,
+      account_num: json['account_num'] as String,
+      balance_amt: json['balance_amt'] as int,
+      account_type: json['account_type'] as int,
+    );
+  }
 }
 
 /* 계좌 거래 내역 조회

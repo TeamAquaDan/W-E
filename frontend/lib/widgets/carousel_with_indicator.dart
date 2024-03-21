@@ -57,6 +57,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       });
 
       var res = await getAccountListData('accessToken');
+      print('통신결과: $res');
       setState(() {
         if (res == null) {
           itemList = [
