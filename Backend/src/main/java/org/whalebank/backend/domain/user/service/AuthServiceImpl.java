@@ -40,9 +40,14 @@ public class AuthServiceImpl implements AuthService {
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 
+    System.out.println(phoneNumber);
+
     // 20세 이하면 자녀, 20세 이상이면 부모
     Role role = null;
     String birthDate = convertToEightDigits(dto.getBirthDate());
+
+    System.out.println(birthDate);
+
     if (calculateAge(birthDate) <= 20) {
       role = Role.CHILD;
     } else {
@@ -54,6 +59,9 @@ public class AuthServiceImpl implements AuthService {
     // 유저 엔티티 생성
     UserEntity entity = dto.of(encoder.encode(dto.getPassword()), userCI, role, birthDate,
         phoneNumber);
+
+    System.out.println(entity.getLoginId());
+
     repository.save(entity);
 
     System.out.println("유저 등록 완료");
