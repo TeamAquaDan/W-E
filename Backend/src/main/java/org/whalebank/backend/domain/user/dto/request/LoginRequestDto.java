@@ -9,5 +9,6 @@ public class LoginRequestDto {
 
   public String login_id;
   public String password;
+  public String fcm_token;
 
 }

@@ -83,4 +83,8 @@ public class UserEntity {
   public void updateMainAccount(int accountId) {
     this.accountId = accountId;
   }
+
+  public void updateFcmToken(String fcmToken) {
+    this.fcmToken = fcmToken;
+  }
 }
