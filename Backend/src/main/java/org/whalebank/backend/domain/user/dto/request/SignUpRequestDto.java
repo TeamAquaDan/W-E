@@ -14,7 +14,7 @@ public class SignUpRequestDto {
   String login_id;
   String password;
   String username;
-  String birthDate;
+  String birthdate;
   String personal_num;
 
   public UserEntity of(String encryptedPassword, String userCI, Role role, String BirthDate, String phoneNumber) {
