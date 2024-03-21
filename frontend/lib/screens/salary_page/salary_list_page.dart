@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/salary.dart';
+import 'package:frontend/screens/salary_page/widgets/salary.dart';
 
 class SalaryListPage extends StatefulWidget {
   const SalaryListPage({super.key});
