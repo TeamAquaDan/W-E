@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/my_friends_page.dart';
+import 'package:frontend/screens/friends_page/my_friends_page.dart';
 import 'package:get/get.dart';
 
 class MyProfilePage extends StatefulWidget {

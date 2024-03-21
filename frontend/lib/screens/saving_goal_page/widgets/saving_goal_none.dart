@@ -9,7 +9,7 @@ class SavingGoalNone extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.fromLTRB(26, 18, 26, 12),
-          margin: const EdgeInsets.all(16),
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           decoration: BoxDecoration(
             color: const Color(0xFF97D8FF),
             borderRadius: BorderRadius.circular(20),

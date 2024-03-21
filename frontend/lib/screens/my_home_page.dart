@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/bank_book.dart';
-import 'package:frontend/widgets/mission_none.dart';
+import 'package:frontend/screens/misson_page/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
-import 'package:frontend/widgets/saving_goal.dart';
-import 'package:frontend/widgets/saving_goal_none.dart';
+import 'package:frontend/screens/saving_goal_page/widgets/saving_goal.dart';
+import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -37,7 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 PinMoneyMoney: 100000,
                 childName: '아들1',
               ),
-              SavingGoal(),
               SavingGoalNone(),
               MissionNone(),
             ],

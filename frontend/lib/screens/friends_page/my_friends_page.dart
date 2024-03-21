@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/my_profile_page.dart';
-import 'package:frontend/widgets/contacts_modal.dart';
-import 'package:frontend/widgets/friends.dart';
+import 'package:frontend/screens/profile_page/my_profile_page.dart';
+import 'package:frontend/screens/friends_page/widgets/contacts_modal.dart';
+import 'package:frontend/screens/friends_page/widgets/friends.dart';
 import 'package:get/get.dart';
 
 class MyFriendsPage extends StatefulWidget {
