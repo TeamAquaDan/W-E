@@ -19,18 +19,16 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
 
   void _login() async {
-    // 실제 로그인 로직 대신 임시로 로그인 성공 처리
     String loginId = loginIdController.text;
     String password = passwordController.text;
     String fcm_token = "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
 
-    // AuthService 인스턴스를 통한 login 메소드 호출 및 로그인 성공 여부 검사를 임시로 생략
     bool loginSuccess = await _authService.login(loginId, password, fcm_token);
 
     developer.log('아이디: ${loginIdController.text}', name: 'signup.data');
     developer.log('비밀번호: ${passwordController.text}', name: 'signup.data');
 
-    // 로그인 성공 시, MyHomePage로 넘어갑니다.
+    // 로그인 성공 시, Page로 넘어갑니다.
     if (loginSuccess) {
       Navigator.pushReplacement(
         context,
@@ -39,31 +37,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const NavBar()),
-    // );
-
-    // 실제 로그인 실패 처리 로직도 임시로 생략
-    // else {
-    //   showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: const Text('로그인 실패'),
-    //         content: const Text('아이디 또는 비밀번호를 확인해주세요.'),
-    //         actions: <Widget>[
-    //           TextButton(
-    //             child: const Text('닫기'),
-    //             onPressed: () {
-    //               Navigator.of(context).pop();
-    //             },
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
-    // }
   }
 
   void _navigateToRegistrationPage() {
@@ -73,19 +46,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // void _navigateToPinLoginPage() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => PinLoginPage()),
-  //   );
-  // }
-
-  // void _navigatedToPinSetting() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => SetPinPage()),
-  //   );
-  // }
   void _navigateToPinLoginPage() async {
     bool hasLoginInfo = await _authService.hasLoginInfo();
     if (hasLoginInfo) {
