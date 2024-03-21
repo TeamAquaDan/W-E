@@ -36,20 +36,24 @@ public class AuthServiceImpl implements AuthService {
   public void signUp(SignUpRequestDto dto) {
     String userCI = createCI(dto.getBirthDate(), dto.getPersonal_num());
 
-    log.info("userCI: "+userCI);
+    log.info("userCI: " + userCI);
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 
     // 20세 이하면 자녀, 20세 이상이면 부모
     Role role = null;
     String birthDate = convertToEightDigits(dto.getBirthDate());
-    if(calculateAge(birthDate)<=20) {
+    if (calculateAge(birthDate) <= 20) {
       role = Role.CHILD;
     } else {
       role = Role.ADULT;
     }
+
+    System.out.println(role);
+
     // 유저 엔티티 생성
-    UserEntity entity = dto.of(encoder.encode(dto.getPassword()), userCI, role, birthDate, phoneNumber);
+    UserEntity entity = dto.of(encoder.encode(dto.getPassword()), userCI, role, birthDate,
+        phoneNumber);
     repository.save(entity);
 
     System.out.println("유저 등록 완료");
@@ -65,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
       throw new CustomException(ResponseCode.USER_NOT_FOUND);
     }
 
-    if(user.getCardAccessToken()==null || user.getBankAccessToken()==null) {
+    if (user.getCardAccessToken() == null || user.getBankAccessToken() == null) {
       AccessTokenResponseDto responseDto = bankAccessUtil.generateToken(user.getUserCi());
       user.updateBankAccessToken(responseDto.getAccess_token());
       // TODO: 카드사 접근토큰 저장
@@ -81,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public ReissueResponseDto reissue(String refreshToken) {
 
-    if(!jwtService.validateToken(refreshToken)) {
+    if (!jwtService.validateToken(refreshToken)) {
       throw new CustomException(ResponseCode.INVALID_REFRESH_TOKEN);
     }
     String loginId = jwtService.getLoginId(refreshToken); // 리프레시 토큰에서 유저 아이디 가져옴
@@ -98,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
    * @return ci값
    */
   public String createCI(String birthDate, String rrNumber) {
-    return EncryptionUtils.encryptSHA256(birthDate+rrNumber);
+    return EncryptionUtils.encryptSHA256(birthDate + rrNumber);
   }
 
   public static String convertToEightDigits(String sixDigitDate) {
