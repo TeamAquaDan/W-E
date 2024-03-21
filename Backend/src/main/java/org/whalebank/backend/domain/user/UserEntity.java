@@ -35,6 +35,7 @@ public class UserEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "user_id")
   private int userId;
 
   private String userName;
@@ -74,11 +75,9 @@ public class UserEntity {
 
   private String loginPassword;
 
-
   private LocalDateTime lastCardHistoryFetchTime;
 
-  @OneToMany
-  @JoinColumn(name = "goal_id")
+  @OneToMany(mappedBy = "user")
   private List<GoalEntity> goalList = new ArrayList<>();
 
   public void updateBankAccessToken(String token) {
@@ -102,6 +101,7 @@ public class UserEntity {
   }
 
   public void addGoal(GoalEntity goal) {
+    goal.setUser(this);
     this.goalList.add(goal);
   }
 
