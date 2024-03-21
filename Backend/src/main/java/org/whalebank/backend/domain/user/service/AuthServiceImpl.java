@@ -19,6 +19,7 @@ import org.whalebank.backend.domain.user.security.JwtService;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
+import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
 import org.whalebank.backend.global.response.ResponseCode;
 import org.whalebank.backend.global.utils.EncryptionUtils;
 
@@ -31,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
   private final BCryptPasswordEncoder encoder;
   private final JwtService jwtService;
   private final BankAccessUtil bankAccessUtil;
+  private final CardAccessUtil cardAccessUtil;
 
   @Transactional
   public void signUp(SignUpRequestDto dto) {
@@ -80,7 +82,8 @@ public class AuthServiceImpl implements AuthService {
     if (user.getCardAccessToken() == null || user.getBankAccessToken() == null) {
       AccessTokenResponseDto responseDto = bankAccessUtil.generateToken(user.getUserCi());
       user.updateBankAccessToken(responseDto.getAccess_token());
-      // TODO: 카드사 접근토큰 저장
+      AccessTokenResponseDto cardResponseDto = cardAccessUtil.generateToken(user.getUserCi());
+      user.updateCardAccessToken(cardResponseDto.getAccess_token());
     }
     user.updateFcmToken(dto.getFcm_token()); // fcm 토큰 저장
     // TODO: 카드 내역 조회
