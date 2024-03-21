@@ -27,7 +27,7 @@ import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 
-@FeignClient(name = "whalebank", url = "http://localhost:58937/whale/bank", configuration = OpenFeignConfig.class)
+@FeignClient(name = "whalebank", url = "http://j10e103.p.ssafy.io:58938/whale/bank", configuration = OpenFeignConfig.class)
 public interface BankClient {
 
   @PostMapping("/oauth/2.0/authorize")

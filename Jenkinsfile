@@ -7,16 +7,16 @@ pipeline {
 
     stages {
         // 빌드
-//         stage('Build Service') {
-//             steps {
-//                 echo 'Building Service'
-//                 // 백엔드 소스코드가 있는 경로로 이동
-//                 dir('Backend') {
-//                     // Docker 이미지 빌드 명령어
-//                     sh 'docker build -t service .'
-//                 }
-//             }
-//         }
+        stage('Build Service') {
+            steps {
+                echo 'Building Service'
+                // 백엔드 소스코드가 있는 경로로 이동
+                dir('Backend') {
+                    // Docker 이미지 빌드 명령어
+                    sh 'docker build -t service .'
+                }
+            }
+        }
         stage('Build WhaleBank') {
             steps {
                 echo 'Building WhaleBank'
@@ -49,17 +49,17 @@ pipeline {
 
 
         // 배포
-//         stage('Deploy Service') {
-//             steps {
-//                 // 배포 관련 작업을 여기에 추가
-//                 echo 'Deploying Service...'
-//                 // 빌드가 진행되면 기존의 컨테이너 중지 및 제거 & 컨테이너가 없어도 실패하지 않고계속 수행
-//                 sh 'docker stop service || true'
-//                 sh 'docker rm service || true'
-//                 // 백엔드 이미지 실행
-//                 sh 'docker run -d -p 56143:8080 --name service service'
-//             }
-//         }
+        stage('Deploy Service') {
+            steps {
+                // 배포 관련 작업을 여기에 추가
+                echo 'Deploying Service...'
+                // 빌드가 진행되면 기존의 컨테이너 중지 및 제거 & 컨테이너가 없어도 실패하지 않고계속 수행
+                sh 'docker stop service || true'
+                sh 'docker rm service || true'
+                // 백엔드 이미지 실행
+                sh 'docker run -d -p 56143:8080 --name service service'
+            }
+        }
         stage('Deploy Bank') {
             steps {
                 // 배포 관련 작업을 여기에 추가
