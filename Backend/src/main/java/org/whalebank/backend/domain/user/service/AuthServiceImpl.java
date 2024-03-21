@@ -51,6 +51,8 @@ public class AuthServiceImpl implements AuthService {
     // 유저 엔티티 생성
     UserEntity entity = dto.of(encoder.encode(dto.getPassword()), userCI, role, birthDate, phoneNumber);
     repository.save(entity);
+
+    System.out.println("유저 등록 완료");
   }
 
   @Override
