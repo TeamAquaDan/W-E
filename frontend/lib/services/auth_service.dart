@@ -6,49 +6,46 @@ class AuthService {
   final Dio _dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  Future<bool> signUp(String login_id, String password, String confirmpassword,
-      String username, String birthdate, String rr_number) async {
+  Future<bool> signUp(String login_id, String password, String username,
+      String birthdate, String personal_num) async {
     try {
       final response = await _dio.post(
-        'https://your-server.com/signup',
+        'https://j10e103.p.ssafy.io/api/auth/signup',
         data: {
           'login_id': login_id,
           'password': password,
-          'confirmpassword': confirmpassword,
           'username': username,
           'birthdate': birthdate,
-          'rr_number': rr_number,
+          'personal_num': personal_num,
         },
       );
       return response.statusCode == 200;
     } catch (e) {
-      print(e);
+      print('에러 : ${e}');
       return false;
     }
   }
 
-  Future<bool> login(String login_id, String password) async {
-    // try {
-    //   final response = await _dio.post(
-    //     'https://your-server.com/login',
-    //     data: {
-    //       'login_id': login_id,
-    //       'password': password,
-    //     },
-    //   );
-    //   if (response.statusCode == 200) {
-    //     await _storage.write(key: 'login_id', value: login_id);
-    //     await _storage.write(key: 'password', value: password);
-    //     return true;
-    //   }
-    //   return false;
-    // } catch (e) {
-    //   print(e);
-    //   return false;
-    // }
-    await _storage.write(key: 'login_id', value: login_id);
-    await _storage.write(key: 'password', value: password);
-    return true;
+  Future<bool> login(String login_id, String password, String fcm_token) async {
+    try {
+      final response = await _dio.post(
+        'https://j10e103.p.ssafy.io/api/auth/login',
+        data: {
+          'login_id': login_id,
+          'password': password,
+          'fcm_token': fcm_token
+        },
+      );
+      if (response.statusCode == 200) {
+        await _storage.write(key: 'login_id', value: login_id);
+        await _storage.write(key: 'password', value: password);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Future<void> logout() async {
@@ -59,10 +56,11 @@ class AuthService {
   Future<bool> tryAutoLogin() async {
     String? login_id = await _storage.read(key: 'login_id');
     String? password = await _storage.read(key: 'password');
+    String? fcm_token = 'fcm_token';
     if (login_id != null && password != null) {
       developer.log('아이디: ${login_id}', name: 'saved_id');
       developer.log('비밀번호: ${password}', name: 'saved_password');
-      return await login(login_id, password);
+      return await login(login_id, password, fcm_token);
     }
     return false;
   }

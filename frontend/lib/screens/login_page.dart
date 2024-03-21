@@ -22,9 +22,10 @@ class _LoginPageState extends State<LoginPage> {
     // 실제 로그인 로직 대신 임시로 로그인 성공 처리
     String loginId = loginIdController.text;
     String password = passwordController.text;
+    String fcm_token = "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
 
     // AuthService 인스턴스를 통한 login 메소드 호출 및 로그인 성공 여부 검사를 임시로 생략
-    bool loginSuccess = await _authService.login(loginId, password);
+    bool loginSuccess = await _authService.login(loginId, password, fcm_token);
 
     developer.log('아이디: ${loginIdController.text}', name: 'signup.data');
     developer.log('비밀번호: ${passwordController.text}', name: 'signup.data');

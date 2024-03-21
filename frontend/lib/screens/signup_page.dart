@@ -22,10 +22,17 @@ class _SignUpPageState extends State<SignUpPage> {
   final AuthService _authService = AuthService();
 
   Future<void> _signUp() async {
+    // 비밀번호와 비밀번호 확인이 같은지 확인
+    if (_passwordController.text != _confirmPasswordController.text) {
+      // 사용자에게 경고 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.')),
+      );
+      return; // 함수 실행 중단
+    }
     bool success = await _authService.signUp(
       _loginIdController.text,
       _passwordController.text,
-      _confirmPasswordController.text,
       _usernameController.text,
       _birthdateController.text,
       _rrNumberController.text,
@@ -41,18 +48,18 @@ class _SignUpPageState extends State<SignUpPage> {
     developer.log('비밀번호 확인: ${_confirmPasswordController.text}',
         name: 'signup.data');
 
-    _navigateToLoginScreen();
-    // if (success) {
-    //   // 회원가입 성공
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('회원가입 성공!')),
-    //   );
-    // } else {
-    //   // 회원가입 실패
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('회원가입 실패. 다시 시도해주세요.')),
-    //   );
-    // }
+    if (success) {
+      // 회원가입 성공
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('회원가입 성공!')),
+      );
+      _navigateToLoginScreen();
+    } else {
+      // 회원가입 실패
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('회원가입 실패. 다시 시도해주세요.')),
+      );
+    }
   }
 
   void _navigateToLoginScreen() {
