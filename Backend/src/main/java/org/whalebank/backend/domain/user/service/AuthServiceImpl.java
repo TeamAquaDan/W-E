@@ -106,13 +106,7 @@ public class AuthServiceImpl implements AuthService {
       throw new CustomException(ResponseCode.USER_NOT_FOUND);
     }
 
-    if (user.getCardAccessToken() == null || user.getBankAccessToken() == null) {
-      AccessTokenResponseDto responseDto = bankAccessUtil.generateToken(user.getUserCi());
-      user.updateBankAccessToken(responseDto.getAccess_token());
-      AccessTokenResponseDto cardResponseDto = cardAccessUtil.generateToken(user.getUserCi());
-      user.updateCardAccessToken(cardResponseDto.getAccess_token());
-    }
-    user.updateFcmToken(dto.getFcm_token()); // fcm 토큰 저장
+    updateToken(dto, user);
     // 카드 내역 저장
     accountBookService.saveCardHistory(user);
     user.updateCardFetchTime();
@@ -141,6 +135,20 @@ public class AuthServiceImpl implements AuthService {
    */
   public String createCI(String birthDate, String rrNumber) {
     return EncryptionUtils.encryptSHA256(birthDate + rrNumber);
+  }
+
+  private void updateToken(LoginRequestDto dto, UserEntity user) {
+    // 은행, 카드 접근 토큰 저장
+    if (user.getCardAccessToken() == null || user.getBankAccessToken() == null) {
+      AccessTokenResponseDto responseDto = bankAccessUtil.generateToken(user.getUserCi());
+      user.updateBankAccessToken(responseDto.getAccess_token());
+      AccessTokenResponseDto cardResponseDto = cardAccessUtil.generateToken(user.getUserCi());
+      user.updateCardAccessToken(cardResponseDto.getAccess_token());
+    }
+    // fcm 토큰 저장
+    if(user.getFcmToken()==null || !dto.getFcm_token().equals(user.getFcmToken())) {
+      user.updateFcmToken(dto.getFcm_token());
+    }
   }
 
 }
