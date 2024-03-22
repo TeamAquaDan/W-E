@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -215,6 +216,8 @@ public class AccountServiceImpl implements AccountService {
         .map(t -> new TransactionResponse.Transaction(t.getTransDtm(), t.getTransId(),
             t.getTransType(), t.getTransAmt(), t.getBalanceAmt(), t.getTransMemo()))
         .collect(Collectors.toList());
+
+    Collections.sort(transactions);
 
     return TransactionResponse
         .builder()
