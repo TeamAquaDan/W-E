@@ -53,6 +53,10 @@ dependencies {
     // https://mvnrepository.com/artifact/io.github.openfeign/feign-okhttp
     implementation group: 'io.github.openfeign', name: 'feign-okhttp', version: '13.1'
 
+    // S3 bucket
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.529')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+
 }
 
 tasks.named('test') {

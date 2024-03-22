@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.user.ProfileEntity;
 import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.dto.request.LoginRequestDto;
@@ -40,13 +41,9 @@ public class AuthServiceImpl implements AuthService {
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 
-    System.out.println(phoneNumber);
-
     // 20세 이하면 자녀, 20세 이상이면 부모
     Role role = null;
     String birthDate = convertToEightDigits(dto.getBirthdate());
-
-    System.out.println(birthDate);
 
     if (calculateAge(birthDate) <= 20) {
       role = Role.CHILD;
@@ -54,13 +51,17 @@ public class AuthServiceImpl implements AuthService {
       role = Role.ADULT;
     }
 
-    System.out.println(role);
-
     // 유저 엔티티 생성
     UserEntity entity = dto.of(encoder.encode(dto.getPassword()), userCI, role, birthDate,
         phoneNumber);
 
-    System.out.println(entity.getLoginId());
+    // 프로필 엔티티 생성
+    ProfileEntity profile = new ProfileEntity();
+    // 프로필 엔티티 설정
+    profile.setUser(entity); // 유저 엔티티와 연결
+
+    // 유저 엔티티에 프로필 엔티티 설정
+    entity.setProfile(profile);
 
     repository.save(entity);
 

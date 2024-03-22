@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.whalebank.backend.domain.friend.FriendEntity;
@@ -26,6 +28,7 @@ import org.whalebank.backend.domain.goal.GoalEntity;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -79,6 +82,9 @@ public class UserEntity {
 
   @OneToMany(mappedBy = "user")
   private List<GoalEntity> goalList = new ArrayList<>();
+
+  @OneToOne(mappedBy = "user")
+  private ProfileEntity profile;
 
   public void updateBankAccessToken(String token) {
     this.bankAccessToken = token;
