@@ -45,6 +45,10 @@ dependencies:
   uuid: ^4.3.3
   permission_handler: ^11.3.0
   contacts_service: ^0.6.3
+  firebase_core: ^2.27.1
+  firebase_messaging: ^14.7.20
+  flutter_local_notifications: ^17.0.0
+  firebase_database: ^10.4.10
 
 dev_dependencies:
   flutter_test:
