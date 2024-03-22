@@ -70,6 +70,7 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                           Get.snackbar('송금 에러', '송금 에러');
                         } else {
                           Navigator.pop(context);
+                          Navigator.pop(context);
                           Get.snackbar('송금완료',
                               '${widget.data.recv_client_name}님에게 ${widget.data.tran_amt} 원 입금 원료');
                         }

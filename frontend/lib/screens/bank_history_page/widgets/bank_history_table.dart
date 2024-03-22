@@ -58,7 +58,8 @@ class _BankHistoryTable extends State<BankHistoryTable> {
         if (res == null) {
           filterDataList();
         } else {
-          filteredDataList = res;
+          dummyDataList = res;
+          filterDataList();
         }
       });
     } catch (error) {
