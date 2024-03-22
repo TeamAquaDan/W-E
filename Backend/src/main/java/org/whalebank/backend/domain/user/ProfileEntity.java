@@ -37,10 +37,6 @@ public class ProfileEntity {
 
   private String sentence;
 
-  private String originName;
-
-  private String storedName;
-
   // 이미지 파일의 확장자를 추출하는 메소드
   public String extractExtension(String originName) {
     int index = originName.lastIndexOf('.');

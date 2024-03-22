@@ -36,10 +36,19 @@ public class UserController {
       @RequestParam("Content-Type") MultipartFile file) {
     String loginId = loginUser.getUsername();
 
-    System.out.println("컨트롤ㄹㅓ 실행");
-
     return ApiResponse.ok("프로필 사진 등록 성공", service.updateProfileImage(loginId, file));
   }
+
+  @Operation(summary = "한줄소개 등록")
+  @PatchMapping("/profile/sentence")
+  public ApiResponse<?> updateSentence(@AuthenticationPrincipal UserDetails loginUser,
+      @RequestBody Map<String, String> request) {
+    String loginId = loginUser.getUsername();
+
+    service.updateSentence(loginId, request.get("sentence"));
+    return ApiResponse.ok("한줄소개 등록 성공");
+  }
+
 
   @Operation(summary = "프로필 조회", description = "프로필 조회(유저 아이디, 유저 이름, 프로필 사진, 생년월일, 프로필 수정 가능 여부). 내 프로필일 경우 editable이 true")
   @PostMapping("/profile")
