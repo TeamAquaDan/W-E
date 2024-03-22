@@ -32,9 +32,7 @@ public class ProfileEntity {
   @MapsId
   @JoinColumn(name = "user_id")
   private UserEntity user;
-
   private String profileImage;
-
   private String sentence;
 
   // 이미지 파일의 확장자를 추출하는 메소드
