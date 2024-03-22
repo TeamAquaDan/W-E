@@ -2,6 +2,7 @@ package org.whalebank.backend.domain.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
@@ -18,8 +19,8 @@ import lombok.Setter;
 @Table(name = "profile")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProfileEntity {
 
@@ -27,7 +28,7 @@ public class ProfileEntity {
   @Column(name = "user_id", nullable = false)
   private int userId;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.EAGER)
   @MapsId
   @JoinColumn(name = "user_id")
   private UserEntity user;

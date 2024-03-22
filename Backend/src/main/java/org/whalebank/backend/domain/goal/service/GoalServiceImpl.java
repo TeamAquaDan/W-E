@@ -17,10 +17,12 @@ import org.whalebank.backend.domain.goal.dto.response.GoalStatusResponseDto;
 import org.whalebank.backend.domain.goal.repository.GoalRepository;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
+import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
 import org.whalebank.backend.global.openfeign.bank.response.ParkingBalanceResponse;
+import org.whalebank.backend.global.response.ResponseCode;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +37,11 @@ public class GoalServiceImpl implements GoalService {
 
     // 로그인 유저
     UserEntity user = authRepository.findByLoginId(loginId).get();
+
+    // 이미 목표가 진행 중인 계좌면 에러
+    if (goalRepository.findByAccountIdAndStatus(goalRequest.getAccount_id(), 0)) {
+      throw new CustomException(ResponseCode.ALREADY_EXIST);
+    }
 
     // 파킹통장 잔액
     ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(
