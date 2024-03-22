@@ -72,6 +72,6 @@ public class GoalController {
       @AuthenticationPrincipal UserDetails loginUser) {
     String loginId = loginUser.getUsername();
 
-    return ApiResponse.ok("저금 성공", goalService.updateStatus(statusRequest, loginId));
+    return ApiResponse.ok("출금 성공", goalService.updateStatus(statusRequest, loginId));
   }
 }
