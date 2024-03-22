@@ -22,7 +22,7 @@ class SavingGoal extends StatelessWidget {
   final String startDate;
   final String withdrawDate;
   final String endDate;
-  final int percentage;
+  final double percentage;
   final int savedAmt;
 
   String formatNumber(int number) {
@@ -120,8 +120,8 @@ class SavingGoal extends StatelessWidget {
                     LinearProgressIndicator(
                       value: percentage / 100, // 70% 진행
                       backgroundColor: const Color(0xFFF4F9FB),
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xFF46A1F5)),
                       minHeight: 5,
                     ),
                     const SizedBox(height: 5), // 진행 바와 백분율 사이의 간격

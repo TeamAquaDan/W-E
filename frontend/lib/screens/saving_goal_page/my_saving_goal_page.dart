@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/save/goal_list_api.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_detail.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none_noadd.dart';
@@ -25,8 +26,14 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
     // 여기에 REST API 요청을 수행하는 코드를 작성합니다.
     // 예시로, 다음은 가상의 데이터 로딩 함수입니다.
     var fetchedSavingGoals = await fetchSavingGoalsFromAPI();
+    var goalList = await getGoalList(3);
     setState(() {
-      mySavingGoals = fetchedSavingGoals; // API로부터 받아온 데이터를 상태에 저장합니다.
+      if (goalList != null) {
+        mySavingGoals = goalList;
+        // API로부터 받아온 데이터를 상태에 저장합니다.
+      } else {
+        mySavingGoals = fetchedSavingGoals;
+      }
     });
   }
 
@@ -169,7 +176,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
           goalAmt: goal['goal_amt'],
           status: goal['status'],
           startDate: goal['start_date'],
-          withdrawDate: goal['withdraw_date'],
+          withdrawDate: goal['withdraw_date'] ?? '',
           endDate: goal['end_date'],
           percentage: goal['percentage'],
           savedAmt: goal['saved_amt'],

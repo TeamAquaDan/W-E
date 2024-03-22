@@ -6,18 +6,13 @@ import '../base_url.dart';
 Future<List<AccountListData>?> getAccountListData(String accessToken) async {
   final DioService dioService = DioService();
   try {
-    // Dio dio = Dio();
-
-    // dio.options.headers['Authorization'] = 'Bearer $accessToken';
-
-    // Make POST request
     Response response = await dioService.dio.get(
       '${baseURL}api/account',
     );
 
     // Handle response
     print('Response status: ${response.statusCode}');
-    print('Response dataㄹㄹ: ${response.data}');
+    print('Response data: ${response.data}');
     List<AccountListData> accountList = (response.data['data'] as List)
         .map((item) => AccountListData.fromJson(item))
         .toList();

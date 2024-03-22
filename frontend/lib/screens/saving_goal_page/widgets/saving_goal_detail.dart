@@ -11,7 +11,18 @@ class SavingGoalDetail extends StatefulWidget {
 }
 
 class _SavingGoalDetailState extends State<SavingGoalDetail> {
-  late List<dynamic> goalDetails = []; // 여기에 API 응답 데이터를 저장합니다.
+  late Map<dynamic, dynamic> goalDetails = {
+    "goal_id": 1,
+    "goal_name": "더미 데이터",
+    "goal_amt": 5000000,
+    "status": 0,
+    "start_date": "2024.01.01",
+    "withdraw_date": "2024.06.01",
+    "end_date": "2024.12.31",
+    "percentage": 40,
+    "saved_amt": 2000000,
+    "category": "여행"
+  }; // 여기에 API 응답 데이터를 저장합니다.
 
   @override
   void initState() {
@@ -28,21 +39,19 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
     });
   }
 
-  Future<List<dynamic>> fetchGoalDetailsFromAPI() async {
-    return [
-      {
-        "goal_id": 1,
-        "goal_name": "여행 기금",
-        "goal_amt": 5000000,
-        "status": 0,
-        "start_date": "2024.01.01",
-        "withdraw_date": "2024.06.01",
-        "end_date": "2024.12.31",
-        "percentage": 40,
-        "saved_amt": 2000000,
-        "category": "여행"
-      },
-    ];
+  Future<Map> fetchGoalDetailsFromAPI() async {
+    return {
+      "goal_id": 1,
+      "goal_name": "여행 기금",
+      "goal_amt": 5000000,
+      "status": 0,
+      "start_date": "2024.01.01",
+      "withdraw_date": "2024.06.01",
+      "end_date": "2024.12.31",
+      "percentage": 40,
+      "saved_amt": 2000000,
+      "category": "여행"
+    };
   }
 
   String formatNumber(int number) {
@@ -53,7 +62,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
   @override
   Widget build(BuildContext context) {
     final int toSaveAmount =
-        goalDetails[0]['goal_amt'] - goalDetails[0]['saved_amt'];
+        (goalDetails['goal_amt'] ?? 0) - (goalDetails['saved_amt'] ?? 0);
     return Scaffold(
       appBar: AppBar(
         title: const Text('목표 상세'),
@@ -64,7 +73,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${goalDetails[0]["goal_name"]} 까지',
+              '${goalDetails["goal_name"]} 까지',
               style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -81,7 +90,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('${goalDetails[0]['percentage']}%',
+                Text('${goalDetails['percentage']}%',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -90,9 +99,10 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
             ),
             const SizedBox(height: 5),
             LinearProgressIndicator(
-              value: goalDetails[0]["percentage"] / 100, // 70% 진행
+              value: goalDetails["percentage"] / 100, // 70% 진행
               backgroundColor: const Color.fromARGB(255, 135, 146, 150),
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
               minHeight: 5,
             ),
           ],

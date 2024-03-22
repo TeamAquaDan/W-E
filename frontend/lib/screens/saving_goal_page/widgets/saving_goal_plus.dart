@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/saving_goal_page/goal_add_form.dart';
 import 'package:frontend/screens/saving_goal_page/my_saving_goal_form.dart';
 
 class SavingGoalPlus extends StatelessWidget {
@@ -40,7 +41,8 @@ class SavingGoalPlus extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         builder: (BuildContext context) {
-                          return const MySavingGoalForm(); // BottomSheet로 MySavingGoalForm을 표시
+                          // return const MySavingGoalForm(); // BottomSheet로 MySavingGoalForm을 표시
+                          return GoalAddForm();
                         },
                       );
                     },
