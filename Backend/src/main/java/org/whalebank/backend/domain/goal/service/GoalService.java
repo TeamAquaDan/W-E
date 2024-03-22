@@ -16,5 +16,5 @@ public interface GoalService {
 
   GoalDetailResponseDto getGoal(String loginId, int goalId);
 
-//  GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId);
+  GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId);
 }

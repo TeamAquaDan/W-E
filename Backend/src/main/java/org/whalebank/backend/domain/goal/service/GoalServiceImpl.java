@@ -17,6 +17,7 @@ import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
 import org.whalebank.backend.global.openfeign.bank.response.ParkingBalanceResponse;
 
 @RequiredArgsConstructor
@@ -82,7 +83,7 @@ public class GoalServiceImpl implements GoalService {
               g.getStartDate().toString(),
               withdrawDate,
               g.getGoalDate().toString(),
-              (g.getWithdrawAmt() / g.getGoalAmt()) * 100,
+              (g.getWithdrawAmt() * 1.0 / g.getGoalAmt()) * 100,
               g.getWithdrawAmt(),
               g.getCategory()
           );
@@ -126,17 +127,22 @@ public class GoalServiceImpl implements GoalService {
         .build();
   }
 
-//  @Override
-//  public GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId) {
-//
-//    // 로그인 유저
-//    UserEntity user = authRepository.findByLoginId(loginId).get();
-//
-//    GoalEntity goal = goalRepository.getById(String.valueOf(saveRequest.getGoalId()));
-//
-//
-//
-//    return null;
-//  }
+  @Override
+  public GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId) {
 
+    // 로그인 유저
+    UserEntity user = authRepository.findByLoginId(loginId).get();
+
+    GoalEntity goal = goalRepository.getById(String.valueOf(saveRequest.getGoal_id()));
+
+    // 파킹통장에 저금
+    ParkingBalanceResponse depositParking = bankAccessUtil.depositParking(
+        user.getBankAccessToken(),
+        new ParkingRequest(goal.getAccountId(), saveRequest.getSave_amt()));
+
+    return GoalSaveResponseDto
+        .builder()
+        .saved_amt(depositParking.getParking_balance_amt())
+        .build();
+  }
 }
