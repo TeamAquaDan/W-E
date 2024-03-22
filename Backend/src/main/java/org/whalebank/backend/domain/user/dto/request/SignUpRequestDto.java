@@ -1,6 +1,7 @@
 package org.whalebank.backend.domain.user.dto.request;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +31,7 @@ public class SignUpRequestDto {
         .role(role)
         .isDeleted(false)
         .phoneNum(phoneNumber)
-        // 카드사 access token
-        // 은행 access token
-        // fcm 토큰
+        .lastCardHistoryFetchTime(LocalDateTime.of(2000,1,1,0,0))
         .build();
   }
 }

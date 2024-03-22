@@ -54,11 +54,11 @@ public class TransactionServiceImpl implements TransactionService {
 
 
       // 최종시각 이후로 결제된 내역을 리스트에 추가한다.
-      List<TransactionResponse.Transaction> cardTransactions  = findTransactions.stream()
+      List<TransactionResponse.Transaction> cardTransactions = findTransactions.stream()
           .filter(t -> t.getTransactionDtm().isAfter(lastSearch))
           .map(t -> new TransactionResponse.Transaction(t.getTransId(), card.getCardNo(),
               card.getCardName(), t.getTransAmt(),
-              t.getMemberStoreType(), t.getMemberStoreName(), t.getTransactionDtm()))
+              t.getMemberStoreName(), t.getMemberStoreType(), t.getTransactionDtm()))
           .toList();
 
       // 최종 반환할 리스트에 내역 추가
