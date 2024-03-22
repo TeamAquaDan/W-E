@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.goal.GoalEntity;
 import org.whalebank.backend.domain.goal.dto.request.GoalRequestDto;
 import org.whalebank.backend.domain.goal.dto.request.GoalSaveRequestDto;
+import org.whalebank.backend.domain.goal.dto.request.GoalStatusRequestDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalDetailResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalListResponseDto.Goal;
 import org.whalebank.backend.domain.goal.dto.response.GoalResponseDto;
 import org.whalebank.backend.domain.goal.dto.response.GoalSaveResponseDto;
+import org.whalebank.backend.domain.goal.dto.response.GoalStatusResponseDto;
 import org.whalebank.backend.domain.goal.repository.GoalRepository;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
@@ -143,6 +145,39 @@ public class GoalServiceImpl implements GoalService {
     return GoalSaveResponseDto
         .builder()
         .saved_amt(depositParking.getParking_balance_amt())
+        .build();
+  }
+
+  @Override
+  public GoalStatusResponseDto updateStatus(GoalStatusRequestDto statusRequest, String loginId) {
+
+    // 로그인 유저
+    UserEntity user = authRepository.findByLoginId(loginId).get();
+
+    GoalEntity goal = goalRepository.getById(String.valueOf(statusRequest.getGoal_id()));
+
+    // 파킹통장 잔액
+    ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(
+        user.getBankAccessToken(),
+        new AccountIdRequestDto(goal.getAccountId()));
+
+    // status 변경
+    goal.setStatus(statusRequest.getStatus());
+    // 종료 날짜 저장
+    goal.setWithdrawDate(LocalDate.now());
+    // 출금 금액 저장
+    goal.setWithdrawAmt(parkingBalance.getParking_balance_amt());
+
+    goalRepository.save(goal);
+
+    // 파킹통장 전액 출금
+    ParkingBalanceResponse withdrawParking = bankAccessUtil.withdrawParking(
+        user.getBankAccessToken(),
+        new ParkingRequest(goal.getAccountId(), parkingBalance.getParking_balance_amt()));
+
+    return GoalStatusResponseDto
+        .builder()
+        .status(statusRequest.getStatus())
         .build();
   }
 }
