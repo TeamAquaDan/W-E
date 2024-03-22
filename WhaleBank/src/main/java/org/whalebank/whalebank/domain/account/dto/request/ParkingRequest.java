@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParkingRequest {
 
-  private int account_id;
-  private int parking_amt;
+  public int account_id;
+  public int parking_amt;
 
 }
