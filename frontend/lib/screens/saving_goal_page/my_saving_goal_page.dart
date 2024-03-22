@@ -14,7 +14,7 @@ class MySavingGoalPage extends StatefulWidget {
 }
 
 class _MySavingGoalPageState extends State<MySavingGoalPage> {
-  late List<dynamic> mySavingGoals = []; // 여기에 API 응답 데이터를 저장합니다.
+  late List<Map<String, dynamic>> mySavingGoals = []; // 여기에 API 응답 데이터를 저장합니다.
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
     });
   }
 
-  Future<List<dynamic>> fetchSavingGoalsFromAPI() async {
+  Future<List<Map<String, dynamic>>> fetchSavingGoalsFromAPI() async {
     return [
       {
         "goal_id": 1,
@@ -47,7 +47,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.01.03",
         "withdraw_date": "2024.01.26",
         "end_date": "2024.10.19",
-        "percentage": 30,
+        "percentage": 30.0,
         "saved_amt": 243800
       },
       {
@@ -58,7 +58,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.03.07",
         "withdraw_date": "2024.05.18",
         "end_date": "2024.07.30",
-        "percentage": 99,
+        "percentage": 99.0,
         "saved_amt": 793507
       },
       {
@@ -69,7 +69,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.01.08",
         "withdraw_date": "2024.01.27",
         "end_date": "2024.11.05",
-        "percentage": 1,
+        "percentage": 1.0,
         "saved_amt": 12700
       },
       {
@@ -80,7 +80,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.01.09",
         "withdraw_date": "2024.06.30",
         "end_date": "2024.10.07",
-        "percentage": 100,
+        "percentage": 100.0,
         "saved_amt": 300000
       },
       {
@@ -91,7 +91,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2023.12.20",
         "withdraw_date": "2024.02.11",
         "end_date": "2024.07.07",
-        "percentage": 100,
+        "percentage": 100.0,
         "saved_amt": 600000
       },
       {
@@ -102,7 +102,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.02.08",
         "withdraw_date": "2024.04.24",
         "end_date": "2024.12.15",
-        "percentage": 100,
+        "percentage": 100.0,
         "saved_amt": 800000
       },
       {
@@ -113,7 +113,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.02.21",
         "withdraw_date": "2024.10.01",
         "end_date": "2024.11.23",
-        "percentage": 100,
+        "percentage": 100.0,
         "saved_amt": 200000
       },
       {
@@ -124,7 +124,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.01.25",
         "withdraw_date": "2024.10.08",
         "end_date": "2024.09.11",
-        "percentage": 25,
+        "percentage": 25.0,
         "saved_amt": 176971
       },
       {
@@ -135,7 +135,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2024.02.09",
         "withdraw_date": "2024.09.01",
         "end_date": "2024.08.21",
-        "percentage": 99,
+        "percentage": 99.0,
         "saved_amt": 497718
       },
       {
@@ -146,7 +146,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "start_date": "2023.12.23",
         "withdraw_date": "2024.11.11",
         "end_date": "2024.10.14",
-        "percentage": 26,
+        "percentage": 26.0,
         "saved_amt": 78564
       }
     ];
