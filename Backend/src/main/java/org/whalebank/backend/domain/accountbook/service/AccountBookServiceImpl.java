@@ -41,6 +41,8 @@ public class AccountBookServiceImpl implements AccountBookService {
   public List<CardHistoryResponseDto> getCardHistory(String loginId, int year, int month) {
     UserEntity currentUser = userRepository.findByLoginId(loginId)
             .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+    
+    if(month<1 || month>12) throw new CustomException(ResponseCode.INVALID_TIME_FORMAT);
 
     // 주어진 연도와 월로 YearMonth 객체 생성
     YearMonth yearMonth = YearMonth.of(year, month);
