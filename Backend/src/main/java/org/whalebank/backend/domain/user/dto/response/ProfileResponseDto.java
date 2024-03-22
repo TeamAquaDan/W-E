@@ -16,6 +16,7 @@ public class ProfileResponseDto {
   public String username;
   public String profile_img;
   public String birthdate;
+  public String sentence; // 한줄소개
   public boolean editable; // 본인 프로필일 경우 editable: true
 
   public static ProfileResponseDto of(UserEntity user, boolean editable) {
@@ -25,6 +26,7 @@ public class ProfileResponseDto {
         .username(user.getUserName())
         .profile_img(user.getProfileImage())
         .birthdate(user.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+        .sentence(user.getProfile().getSentence())
         .editable(editable)
         .build();
   }

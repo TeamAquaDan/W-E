@@ -15,4 +15,6 @@ public interface UserService {
   void updateMainAccount(String loginId, Integer accountId);
 
   ProfileImageResponseDto updateProfileImage(String loginId, MultipartFile file);
+
+  void updateSentence(String loginId, String sentence);
 }

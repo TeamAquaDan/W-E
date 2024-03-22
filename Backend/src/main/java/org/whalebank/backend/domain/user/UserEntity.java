@@ -86,6 +86,10 @@ public class UserEntity {
   @OneToOne(mappedBy = "user")
   private ProfileEntity profile;
 
+  public void updateSentence(String sentence) {
+    this.profile.setSentence(sentence);
+  }
+
   public void updateBankAccessToken(String token) {
     this.bankAccessToken = token;
   }

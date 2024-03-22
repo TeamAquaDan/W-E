@@ -19,15 +19,14 @@ import lombok.Setter;
 @Table(name = "profile")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProfileEntity {
 
   @Id
   @Column(name = "user_id", nullable = false)
   private int userId;
-
 
   @OneToOne(fetch = FetchType.EAGER)
   @MapsId
@@ -37,10 +36,6 @@ public class ProfileEntity {
   private String profileImage;
 
   private String sentence;
-
-  private String originName;
-
-  private String storedName;
 
   // 이미지 파일의 확장자를 추출하는 메소드
   public String extractExtension(String originName) {

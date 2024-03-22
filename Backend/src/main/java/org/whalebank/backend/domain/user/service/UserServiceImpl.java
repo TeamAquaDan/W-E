@@ -73,6 +73,16 @@ public class UserServiceImpl implements UserService {
         .build();
   }
 
+  @Override
+  @Transactional
+  public void updateSentence(String loginId, String sentence) {
+    UserEntity user = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    user.updateSentence(sentence);
+  }
+
+
   public ProfileResponseDto getProfile(int userId, String loginId) {
     boolean editable = true;
     // 현재 로그인한 사용자
