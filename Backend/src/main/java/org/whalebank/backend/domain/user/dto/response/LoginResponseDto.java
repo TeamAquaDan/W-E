@@ -15,6 +15,7 @@ public class LoginResponseDto {
   public int user_id;
   public String profile_img;
   public String username;
+  public String role;
 
   public static LoginResponseDto of(String refresh_token, String access_token, UserEntity user) {
     return LoginResponseDto.builder()
@@ -23,6 +24,7 @@ public class LoginResponseDto {
         .user_id(user.getUserId())
         .profile_img(user.getProfileImage())
         .username(user.getUserName())
+        .role(user.getRole().toString())
         .build();
   }
 
