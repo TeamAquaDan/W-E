@@ -15,7 +15,7 @@ public class GoalDetailResponseDto {
   private int status; // 진행(0), 성공(1), 실패(2)
   private String start_date;  // 시작일
   private String goal_date; // 마감일
-  private int percentage; // 달성률
+  private double percentage; // 달성률
   private int saved_amt;  // 파킹통장 현재 잔액
   private String category;  // 카테고리
 

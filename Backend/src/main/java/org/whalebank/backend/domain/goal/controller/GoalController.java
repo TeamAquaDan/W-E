@@ -53,13 +53,13 @@ public class GoalController {
     return ApiResponse.ok("저축 목표 상세 조회 성공", goalService.getGoal(loginId, goalId));
   }
 
-  @Operation(summary = "목표 금액 저금하기")
-  @PatchMapping("/save")
-  public ApiResponse<GoalSaveResponseDto> saveMoney(
-      @RequestBody GoalSaveRequestDto saveRequest,
-      @AuthenticationPrincipal UserDetails loginUser) {
-    String loginId = loginUser.getUsername();
-
-    return ApiResponse.ok("저금 성공", goalService.saveMoney(saveRequest, loginId));
-  }
+//  @Operation(summary = "목표 금액 저금하기")
+//  @PatchMapping("/save")
+//  public ApiResponse<GoalSaveResponseDto> saveMoney(
+//      @RequestBody GoalSaveRequestDto saveRequest,
+//      @AuthenticationPrincipal UserDetails loginUser) {
+//    String loginId = loginUser.getUsername();
+//
+//    return ApiResponse.ok("저금 성공", goalService.saveMoney(saveRequest, loginId));
+//  }
 }

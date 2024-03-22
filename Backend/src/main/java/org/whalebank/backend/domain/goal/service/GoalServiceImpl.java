@@ -54,7 +54,8 @@ public class GoalServiceImpl implements GoalService {
         .status(goal.getStatus())
         .start_date(String.valueOf(goal.getStartDate()))
         .goal_date(String.valueOf(goal.getGoalDate()))
-        .percentage(parkingBalance.getParking_balance_amt())
+        .percentage(0)
+        .saved_amt(parkingBalance.getParking_balance_amt())
         .build();
   }
 
@@ -82,7 +83,8 @@ public class GoalServiceImpl implements GoalService {
               withdrawDate,
               g.getGoalDate().toString(),
               (g.getWithdrawAmt() / g.getGoalAmt()) * 100,
-              g.getWithdrawAmt()
+              g.getWithdrawAmt(),
+              g.getCategory()
           );
         })
         .toList();
@@ -106,9 +108,9 @@ public class GoalServiceImpl implements GoalService {
         user.getBankAccessToken(),
         new AccountIdRequestDto(goal.getAccountId()));
 
-    int savedAmt = parkingBalance.getParking_balance_amt();
+    double savedAmt = parkingBalance.getParking_balance_amt() * 1.0;
 
-    int percentage = savedAmt / goal.getGoalAmt() * 100;
+    double percentage = savedAmt / goal.getGoalAmt() * 100;
 
     return GoalDetailResponseDto
         .builder()
@@ -119,21 +121,22 @@ public class GoalServiceImpl implements GoalService {
         .start_date(String.valueOf(goal.getStartDate()))
         .goal_date(String.valueOf(goal.getGoalDate()))
         .percentage(percentage)
-        .saved_amt(savedAmt)
+        .saved_amt((int) savedAmt)
+        .category(goal.getCategory())
         .build();
   }
 
-  @Override
-  public GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId) {
-
-    // 로그인 유저
-    UserEntity user = authRepository.findByLoginId(loginId).get();
-
-    GoalEntity goal = goalRepository.getById(String.valueOf(saveRequest.getGoalId()));
-
-
-
-    return null;
-  }
+//  @Override
+//  public GoalSaveResponseDto saveMoney(GoalSaveRequestDto saveRequest, String loginId) {
+//
+//    // 로그인 유저
+//    UserEntity user = authRepository.findByLoginId(loginId).get();
+//
+//    GoalEntity goal = goalRepository.getById(String.valueOf(saveRequest.getGoalId()));
+//
+//
+//
+//    return null;
+//  }
 
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class GoalStatusRequestDto {
 
-  private int goal_id;  // 저축목표 아이디
-  private int status; // 상태
+  public int goal_id;  // 저축목표 아이디
+  public int status; // 상태
 
 }
