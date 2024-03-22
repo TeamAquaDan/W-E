@@ -5,9 +5,10 @@ import java.time.LocalDate;
 import java.time.Period;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.accountbook.AccountBookEntity;
+import org.whalebank.backend.domain.accountbook.service.AccountBookService;
 import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.dto.request.LoginRequestDto;
@@ -20,6 +21,7 @@ import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
+import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 import org.whalebank.backend.global.utils.EncryptionUtils;
 
@@ -31,8 +33,32 @@ public class AuthServiceImpl implements AuthService {
   private final AuthRepository repository;
   private final BCryptPasswordEncoder encoder;
   private final JwtService jwtService;
+  private final AccountBookService accountBookService;
   private final BankAccessUtil bankAccessUtil;
   private final CardAccessUtil cardAccessUtil;
+
+  public static String convertToEightDigits(String sixDigitDate) {
+    if (sixDigitDate.length() != 6) {
+      throw new CustomException(ResponseCode.INVALID_BIRTHDATE);
+    }
+
+    String yearPrefix = (Integer.parseInt(sixDigitDate.substring(0, 2)) < 24) ? "20" : "19";
+    return yearPrefix + sixDigitDate;
+  }
+
+  public static int calculateAge(String birthDateStr) {
+
+    // 생년월일 문자열을 LocalDate로 변환
+    LocalDate birthDate = LocalDate.of(Integer.parseInt(birthDateStr.substring(0, 4)),
+        Integer.parseInt(birthDateStr.substring(4, 6)),
+        Integer.parseInt(birthDateStr.substring(6)));
+
+    // 나이를 계산
+    Period period = Period.between(birthDate, LocalDate.now());
+
+    // 계산된 나이에서 년수만 추출하여 반환
+    return period.getYears();
+  }
 
   @Transactional
   public void signUp(SignUpRequestDto dto) {
@@ -86,8 +112,8 @@ public class AuthServiceImpl implements AuthService {
       user.updateCardAccessToken(cardResponseDto.getAccess_token());
     }
     user.updateFcmToken(dto.getFcm_token()); // fcm 토큰 저장
-    // TODO: 카드 내역 조회
-    // user.getLastCardHistoryFetchTime() 시간 이후로 생성된 카드 내역 조회. null이면 현재 시간까지 생성된 모든 카드 내역 조회
+    // 카드 내역 저장
+    accountBookService.saveCardHistory(user);
     user.updateCardFetchTime();
 
     return jwtService.generateToken(user);
@@ -114,29 +140,6 @@ public class AuthServiceImpl implements AuthService {
    */
   public String createCI(String birthDate, String rrNumber) {
     return EncryptionUtils.encryptSHA256(birthDate + rrNumber);
-  }
-
-  public static String convertToEightDigits(String sixDigitDate) {
-    if (sixDigitDate.length() != 6) {
-      throw new CustomException(ResponseCode.INVALID_BIRTHDATE);
-    }
-
-    String yearPrefix = (Integer.parseInt(sixDigitDate.substring(0, 2)) < 24) ? "20" : "19";
-    return yearPrefix + sixDigitDate;
-  }
-
-  public static int calculateAge(String birthDateStr) {
-
-    // 생년월일 문자열을 LocalDate로 변환
-    LocalDate birthDate = LocalDate.of(Integer.parseInt(birthDateStr.substring(0, 4)),
-        Integer.parseInt(birthDateStr.substring(4, 6)),
-        Integer.parseInt(birthDateStr.substring(6)));
-
-    // 나이를 계산
-    Period period = Period.between(birthDate, LocalDate.now());
-
-    // 계산된 나이에서 년수만 추출하여 반환
-    return period.getYears();
   }
 
 }
