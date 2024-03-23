@@ -9,7 +9,7 @@ public interface AccountBookService {
 
   public void saveAccountAndCardHistory(UserEntity user);
 
-  public List<CardHistoryResponseDto> getCardHistory(String loginId, int year, int month);
+  public List<CardHistoryResponseDto> getIncomeAndExpenseHistory(String loginId, int year, int month);
 
 
 

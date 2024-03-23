@@ -24,11 +24,11 @@ public class AccountBookController {
   private final AccountBookService service;
 
   @GetMapping("/history")
-  @Operation(summary = "월별 카드내역 조회", description = "선택한 연,월에 해당하는 카드내역을 조회한다")
-  public ApiResponse<List<CardHistoryResponseDto>> getCardHistory(@RequestParam(name="year") int year,
+  @Operation(summary = "월별 수입/지출내역 조회", description = "선택한 연,월에 해당하는 입금 내역, 카드 지출 내역을 조회한다")
+  public ApiResponse<List<CardHistoryResponseDto>> getMonthlyHistory(@RequestParam(name="year") int year,
       @RequestParam(name="month") int month,
       @AuthenticationPrincipal UserDetails loginUser) {
-    return ApiResponse.ok("카드 내역 조회 성공", service.getCardHistory(loginUser.getUsername(), year, month));
+    return ApiResponse.ok("수입/지출 내역 조회 성공", service.getIncomeAndExpenseHistory(loginUser.getUsername(), year, month));
   }
 
 }

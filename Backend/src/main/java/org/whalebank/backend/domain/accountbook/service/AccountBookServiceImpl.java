@@ -76,7 +76,7 @@ public class AccountBookServiceImpl implements AccountBookService {
   }
 
   @Override
-  public List<CardHistoryResponseDto> getCardHistory(String loginId, int year, int month) {
+  public List<CardHistoryResponseDto> getIncomeAndExpenseHistory(String loginId, int year, int month) {
     UserEntity currentUser = userRepository.findByLoginId(loginId)
             .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
     
