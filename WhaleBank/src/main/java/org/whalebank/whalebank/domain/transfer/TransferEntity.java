@@ -13,6 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.whalebank.whalebank.domain.account.AccountEntity;
+import org.whalebank.whalebank.domain.account.dto.request.ParkingRequest;
 import org.whalebank.whalebank.domain.transfer.dto.request.DepositRequest;
 import org.whalebank.whalebank.domain.transfer.dto.request.WithdrawRequest;
 
@@ -76,6 +78,22 @@ public class TransferEntity {
         .recvClientName(depositRequest.getRecv_client_name())
         .recvClientAccountNum(depositRequest.getRecv_client_account_num())
         .recvClientBankCode(depositRequest.getRecv_client_bank_code())
+        .build();
+  }
+
+  public static TransferEntity createTransfer(ParkingRequest parkingRequest,
+      AccountEntity account) {
+    return TransferEntity
+        .builder()
+        .transType(2)
+        .transAmt(parkingRequest.getParking_amt())
+        .balanceAmt(account.getBalanceAmt())
+        .transMemo("저금하기")
+        .transDtm(LocalDateTime.now())
+        .transDate(LocalDate.now())
+        .recvClientName("저금통")
+        .recvClientAccountNum(account.getAccountNum())
+        .recvClientBankCode(account.getBankCode())
         .build();
   }
 }
