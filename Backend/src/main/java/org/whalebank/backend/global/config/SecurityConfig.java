@@ -1,6 +1,6 @@
 package org.whalebank.backend.global.config;
 
-import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +14,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import java.util.List;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.security.JwtAuthenticationFilter;
+import org.whalebank.backend.domain.user.security.JwtExceptionFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +29,7 @@ import org.whalebank.backend.domain.user.security.JwtAuthenticationFilter;
 public class SecurityConfig {
 
   private final JwtAuthenticationFilter authenticationFilter;
+  private final JwtExceptionFilter jwtExceptionFilter;
 
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -41,8 +45,7 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return (web) -> web.ignoring()
-        .requestMatchers("/api/**")
-        .requestMatchers("/")
+        .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/auth/reissue")
         .requestMatchers(
             "/swagger-ui/**",
             "/swagger-ui.html",
@@ -69,15 +72,19 @@ public class SecurityConfig {
                 .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs",
                     "/api-docs/**", "/v3/api-docs/**")
                 .permitAll()
-//                .requestMatchers("/api/user/signup", "/api/user/login",
-//                .permitAll()
-                .requestMatchers("/**")
+                .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/auth/reissue")
                 .permitAll()
-//                .anyRequest()
-//                .authenticated()
+//                .requestMatchers("/api/goal", "/api/goal/**").hasRole(Role.CHILD.toString())
+//                .requestMatchers
+                //.requestMatchers("/api/hello").hasRole(Role.ADULT.toString())
+                .anyRequest()
+                .authenticated()
         )
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-    ;
+        .addFilterBefore(jwtExceptionFilter, authenticationFilter.getClass())
+        .exceptionHandling(handler ->
+            handler.accessDeniedHandler(accessDeniedHandler())
+        );
 
     return http.build();
   }
@@ -95,6 +102,18 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
     return source;
+  }
+
+  @Bean
+  public AccessDeniedHandler accessDeniedHandler() {
+    return (request, response, accessDeniedException) -> {
+
+      response.setContentType("application/json;charset=UTF-8");
+      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+      response.getWriter()
+          .write("{\"status\":403, \"message\": \"" + "접근 권한이 없습니다" + "\", \"data\" : \"null\"}");
+
+    };
   }
 
 }

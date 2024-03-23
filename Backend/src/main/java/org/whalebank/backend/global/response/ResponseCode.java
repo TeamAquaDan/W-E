@@ -37,7 +37,15 @@ public enum ResponseCode {
   INVALID_TIME_FORMAT(HttpStatus.BAD_REQUEST.value(), "해당 월은 존재하지 않습니다"),
 
   // 목표
-  ALREADY_EXIST(HttpStatus.BAD_REQUEST.value(), "이미 목표가 존재하는 계좌입니다.");
+  ALREADY_EXIST(HttpStatus.BAD_REQUEST.value(), "이미 목표가 존재하는 계좌입니다."),
+
+  // JWT
+  JWT_EXPIRED(HttpStatus.UNAUTHORIZED.value(), "토큰이 만료되었습니다."),
+  JWT_MALFORMED(HttpStatus.UNAUTHORIZED.value(), "손상된 토큰입니다."),
+  JWT_UNSUPPORTED(HttpStatus.UNAUTHORIZED.value(), "지원하지 않는 토큰입니다."),
+  JWT_SIGNATURE(HttpStatus.UNAUTHORIZED.value(), "검증에 실패한 토큰입니다"),
+  JWT_ILLEGALARGUMENT(HttpStatus.UNAUTHORIZED.value(), "관리자에게 문의해주세요"),
+  JWT_NULL(HttpStatus.UNAUTHORIZED.value(), "토큰이 필요합니다");
 
   private final int code;
   private final String message;

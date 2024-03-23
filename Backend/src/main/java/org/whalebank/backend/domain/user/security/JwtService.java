@@ -1,10 +1,11 @@
 package org.whalebank.backend.domain.user.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
@@ -41,50 +42,49 @@ public class JwtService {
   }
 
   public String generateAccessToken(String loginId) {
-    Date currentDate = new Date();
+    Date now = new Date();
+    Date expiration = new Date(now.getTime() + accessTokenExpirationDate);
 
     return Jwts.builder()
         .subject(loginId)
-        .issuedAt(new Date())
-        .expiration(new Date(currentDate.getTime() + accessTokenExpirationDate))
+        .issuedAt(now)
+        .expiration(expiration)
         .signWith(key())
         .compact();
   }
 
   public String generateRefreshToken(String loginId) {
-    Date currentDate = new Date();
+    Date now = new Date();
+    Date expiration = new Date(now.getTime() + refreshTokenExpirationDate);
 
     return Jwts.builder()
         .subject(loginId)
-        .issuedAt(new Date())
-        .expiration(new Date(currentDate.getTime() + refreshTokenExpirationDate))
+        .issuedAt(now)
+        .expiration(expiration)
         .signWith(key())
         .compact();
   }
 
   // get loginId from Jwt token
   public String getLoginId(String token) {
-    return Jwts.parser()
-        .verifyWith((SecretKey) key())
-        .build()
-        .parseSignedClaims(token)
-        .getPayload()
-        .getSubject();
-  }
-
-  public boolean validateToken(String token) {
     try {
-      Jwts.parser()
+      return Jwts.parser()
           .verifyWith((SecretKey) key())
           .build()
-          .parse(token);
-      return true;
-    } catch (ExpiredJwtException exception) {
-      return false;
-    } catch (JwtException exception) {
-      return false;
+          .parseSignedClaims(token)
+          .getPayload()
+          .getSubject();
+    } catch (SignatureException e) {
+      throw new org.whalebank.backend.global.exception.JwtException(ResponseCode.JWT_SIGNATURE.getMessage());
+    } catch (MalformedJwtException e) {
+      throw new org.whalebank.backend.global.exception.JwtException(ResponseCode.JWT_MALFORMED.getMessage());
+    } catch (ExpiredJwtException e) {
+      throw new org.whalebank.backend.global.exception.JwtException(ResponseCode.JWT_EXPIRED.getMessage());
+    } catch (IllegalArgumentException e) {
+      throw new org.whalebank.backend.global.exception.JwtException(ResponseCode.JWT_ILLEGALARGUMENT.getMessage());
     }
   }
+
 
   public String getTokenFromRequest(HttpServletRequest request) {
     String bearerToken = request.getHeader("Authorization");
@@ -97,28 +97,30 @@ public class JwtService {
   }
 
   public LoginResponseDto generateToken(UserEntity user) {
-    LoginResponseDto resDto = LoginResponseDto.of(generateAccessToken(user.getLoginId()),
-        generateRefreshToken(user.getLoginId()), user);
+    LoginResponseDto resDto = LoginResponseDto.of(
+        generateRefreshToken(user.getLoginId()),
+        generateAccessToken(user.getLoginId()),
+        user);
 
-    redisTemplate.opsForValue().set("RT:"+user.getLoginId(), resDto.getRefresh_token(), refreshTokenExpirationDate,
-        TimeUnit.MILLISECONDS);
+    redisTemplate.opsForValue()
+        .set("RT:" + user.getLoginId(), resDto.getRefresh_token(), refreshTokenExpirationDate,
+            TimeUnit.MILLISECONDS);
 
     return resDto;
   }
 
-  public ReissueResponseDto reissueToken(UserEntity user, String refreshToken) {
+  public ReissueResponseDto reissueToken(String loginId, String refreshToken) {
     // redis에서 login id를 기반으로 저장된 refresh token 값 가져옴
-    String refreshTokenfromRedis = (String)redisTemplate.opsForValue().get("RT:"+user.getLoginId());
-    if(!refreshToken.equals(refreshTokenfromRedis)) {
+    if (!refreshToken.equals((String) redisTemplate.opsForValue().get("RT:" + loginId))) {
       throw new CustomException(ResponseCode.DIFFERENT_REFRESH_TOKEN);
     }
 
     // 토큰 재생성
-    refreshToken = generateRefreshToken(user.getLoginId());
-    String accessToken = generateAccessToken(user.getLoginId());
+    refreshToken = generateRefreshToken(loginId);
+    String accessToken = generateAccessToken(loginId);
 
     // redis 업데이트
-    redisTemplate.opsForValue().set("RT:"+user.getLoginId(), refreshToken, refreshTokenExpirationDate,
+    redisTemplate.opsForValue().set("RT:"+loginId, refreshToken, refreshTokenExpirationDate,
         TimeUnit.MILLISECONDS);
 
     return new ReissueResponseDto(accessToken, refreshToken);
