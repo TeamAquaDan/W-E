@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto.AccountBookHistoryDetail;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse.Transaction;
 import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.CardHistoryDetail;
@@ -34,15 +35,15 @@ public class AccountBookEntity {
   @JoinColumn(name = "user_id")
   private UserEntity user;
 
-  private int transId; // 카드사 거래 고유번호
+  private int transId; // 지출: 카드사 거래 고유번호/ 수입: 0
 
-  private String accountBookTitle; // 카드사 가맹점명
+  private String accountBookTitle; // 지출: 카드사 가맹점명/ 수입: 적요
 
-  private int accountBookAmt; // 카드사 거래 금액
+  private int accountBookAmt; // 지출: 카드사 거래 금액/ 수입: 입금액
 
-  private LocalDateTime accountBookDtm; // 카드사 거래일시
+  private LocalDateTime accountBookDtm; // 거래일시
 
-  private String accountBookCategory; // 거래 카테고리
+  private String accountBookCategory; // 지출: 거래 카테고리/ 수입: "100"
 
   @ColumnDefault("0")
   private boolean isHide; // 거래내역 숨김 여부

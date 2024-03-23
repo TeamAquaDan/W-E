@@ -8,7 +8,7 @@ import org.whalebank.backend.domain.user.UserEntity;
 
 public interface AccountBookRepository extends JpaRepository<AccountBookEntity, Integer> {
 
-  List<AccountBookEntity> findAllByUserAndAccountBookDtmBetweenOrderByAccountBookDtmDesc(
+  List<AccountBookEntity> findAllByUserAndAccountBookDtmBetweenAndIsHideFalseOrderByAccountBookDtmDesc(
       UserEntity user, LocalDateTime starts, LocalDateTime ends);
 
 }

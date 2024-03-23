@@ -10,9 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.accountbook.AccountBookEntity;
+import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto.AccountBookHistoryDetail;
 import org.whalebank.backend.domain.accountbook.repository.AccountBookBulkRepository;
 import org.whalebank.backend.domain.accountbook.repository.AccountBookRepository;
-import org.whalebank.backend.domain.accountbook.dto.response.CardHistoryResponseDto;
+import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
@@ -76,7 +77,7 @@ public class AccountBookServiceImpl implements AccountBookService {
   }
 
   @Override
-  public List<CardHistoryResponseDto> getIncomeAndExpenseHistory(String loginId, int year, int month) {
+  public MonthlyHistoryResponseDto getIncomeAndExpenseHistory(String loginId, int year, int month) {
     UserEntity currentUser = userRepository.findByLoginId(loginId)
             .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
     
@@ -88,11 +89,27 @@ public class AccountBookServiceImpl implements AccountBookService {
     int lastDayOfMonth = yearMonth.lengthOfMonth();
 
     // 내 가계부 내역 중에 year, month에 해당하는 내역을 시간 내림차순으로 정렬해서 돌려줘야함
-    return repository.findAllByUserAndAccountBookDtmBetweenOrderByAccountBookDtmDesc(
+    List<AccountBookHistoryDetail> accountBookList = repository.findAllByUserAndAccountBookDtmBetweenAndIsHideFalseOrderByAccountBookDtmDesc(
         currentUser,
         LocalDateTime.of(year, month, 1, 0, 0,0),
         LocalDateTime.of(year, month, lastDayOfMonth, 23,59,59))
-        .stream().map(CardHistoryResponseDto::from)
-        .collect(Collectors.toList());
+        .stream().map(AccountBookHistoryDetail::from)
+        .toList();
+
+    // 수입 및 지출 합산
+    int incomeAmt = 0;
+    int expenseAmt = 0;
+    for(AccountBookHistoryDetail detail:accountBookList) {
+      if(detail.getTrans_id()>0) {
+        expenseAmt += detail.getAccount_book_amt();
+      } else {
+        incomeAmt += detail.getAccount_book_amt();
+      }
+    }
+    return MonthlyHistoryResponseDto.builder()
+        .expense_amt(expenseAmt)
+        .income_amt(incomeAmt)
+        .account_book_list(accountBookList)
+        .build();
   }
 }
