@@ -1,17 +1,26 @@
 package org.whalebank.backend.domain.accountbook.service;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.accountbook.AccountBookEntity;
-import org.whalebank.backend.domain.accountbook.AccountBookRepository;
+import org.whalebank.backend.domain.accountbook.repository.AccountBookBulkRepository;
+import org.whalebank.backend.domain.accountbook.repository.AccountBookRepository;
 import org.whalebank.backend.domain.accountbook.dto.response.CardHistoryResponseDto;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
+import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
+import org.whalebank.backend.global.openfeign.bank.request.TransactionRequest;
+import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
+import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto.AccountInfo;
+import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse;
 import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
 import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse;
 import org.whalebank.backend.global.response.ResponseCode;
@@ -22,19 +31,48 @@ public class AccountBookServiceImpl implements AccountBookService {
 
   private final AuthRepository userRepository;
   private final AccountBookRepository repository;
+  private final AccountBookBulkRepository bulkRepository;
   private final CardAccessUtil cardAccessUtil;
+  private final BankAccessUtil bankAccessUtil;
 
+  @Transactional
   @Override
-  public void saveCardHistory(UserEntity user) {
+  @Async
+  public void saveAccountAndCardHistory(UserEntity user) {
+    saveCardHistory(user);
+    saveIncomeHistory(user);
+  }
+
+  private void saveCardHistory(UserEntity user) {
     // 카드 내역 조회
     CardHistoryResponse resFromCard = cardAccessUtil.getCardHistory(user.getCardAccessToken(),
         user.getLastCardHistoryFetchTime());
     // 카드 내역 저장
-    List<AccountBookEntity> accountBookList = resFromCard.getPay_list().stream()
+    List<AccountBookEntity> expensesList = resFromCard.getPay_list().stream()
         .map(detail -> AccountBookEntity.from(detail, user))
         .collect(Collectors.toList());
 
-    repository.saveAll(accountBookList);
+    bulkRepository.saveAll(expensesList);
+  }
+
+  private void saveIncomeHistory(UserEntity user) {
+    List<AccountBookEntity> incomeList = new ArrayList<>();
+    // 내 모든 계좌 불러오기
+    AccountListResponseDto resFromBank = bankAccessUtil.getAccountInfo(
+        user.getBankAccessToken());
+
+    // 각 계좌의 거래내역 중 입금 내역만 불러옴
+    for (AccountInfo accountInfo : resFromBank.getAccount_list()) {
+      TransactionResponse bankHistory = bankAccessUtil.getTransactionHistory(user.getBankAccessToken(),
+         TransactionRequest.of(accountInfo.account_id, user.getLastCardHistoryFetchTime()));
+
+      incomeList.addAll(bankHistory.getTrans_list().stream()
+          .filter(transaction -> transaction.getTrans_type() == 3) // 거래 유형이 입금인 것만 필터링
+          .map(h -> AccountBookEntity.fromAccountHistory(h, user))
+          .toList());
+    }
+    // 저장
+    bulkRepository.saveAll(incomeList);
   }
 
   @Override

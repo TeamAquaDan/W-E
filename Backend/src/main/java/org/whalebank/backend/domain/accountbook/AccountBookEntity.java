@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse.Transaction;
 import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.CardHistoryDetail;
 
 @Entity
@@ -54,6 +54,17 @@ public class AccountBookEntity {
         .accountBookAmt(cardHistoryDetail.getTrans_amt()) // 이용금액
         .accountBookDtm(cardHistoryDetail.getTransaction_dtm()) // 결제일시
         .accountBookCategory(convertCodetoCategory(cardHistoryDetail.getMember_store_type())) // 카테고리
+        .user(user)
+        .build();
+  }
+
+  public static AccountBookEntity fromAccountHistory(Transaction accountHistory, UserEntity user) {
+    return AccountBookEntity.builder()
+        .transId(0) // 수입
+        .accountBookTitle(accountHistory.getTrans_memo())
+        .accountBookAmt(accountHistory.getTrans_amt())
+        .accountBookDtm(accountHistory.getTrans_dtm())
+        .accountBookCategory("100")
         .user(user)
         .build();
   }

@@ -1,6 +1,7 @@
 package org.whalebank.backend.global.openfeign.bank.request;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,14 @@ public class TransactionRequest {
         .account_id(reqDto.getAccount_id())
         .from_date(LocalDate.parse(reqDto.getStart_date(), format))
         .to_date(LocalDate.parse(reqDto.getEnd_date(), format))
+        .build();
+  }
+
+  public static TransactionRequest of(int accountId, LocalDateTime startDate) {
+    return TransactionRequest.builder()
+        .account_id(accountId)
+        .from_date(LocalDate.from(startDate))
+        .to_date(LocalDate.now())
         .build();
   }
 

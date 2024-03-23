@@ -7,7 +7,7 @@ import org.whalebank.backend.domain.user.UserEntity;
 
 public interface AccountBookService {
 
-  public void saveCardHistory(UserEntity user);
+  public void saveAccountAndCardHistory(UserEntity user);
 
   public List<CardHistoryResponseDto> getCardHistory(String loginId, int year, int month);
 

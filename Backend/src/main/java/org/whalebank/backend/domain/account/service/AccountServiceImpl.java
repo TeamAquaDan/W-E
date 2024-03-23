@@ -41,15 +41,14 @@ public class AccountServiceImpl implements AccountService {
   public List<AccountInfoResponseDto> getAllAccounts(String loginId) {
     UserEntity currentUser = getCurrentUser(loginId);
 
-    AccountListResponseDto resFromBank = bankAccessUtil.getAccountInfo(currentUser.getBankAccessToken());
-    if(resFromBank.rsp_code.equals("200")) {
-      // resFromBank -> List<AccountInfoResponseDto>
-      return resFromBank.getAccount_list().stream()
-          .map(AccountInfoResponseDto::from)
-          .collect(Collectors.toList());
-    } else {
-      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
-    }
+    AccountListResponseDto resFromBank = bankAccessUtil.getAccountInfo(
+        currentUser.getBankAccessToken());
+
+    // resFromBank -> List<AccountInfoResponseDto>
+    return resFromBank.getAccount_list().stream()
+        .map(AccountInfoResponseDto::from)
+        .collect(Collectors.toList());
+
   }
 
   @Override

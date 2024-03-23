@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.user.ProfileEntity;
-import org.whalebank.backend.domain.accountbook.AccountBookEntity;
 import org.whalebank.backend.domain.accountbook.service.AccountBookService;
 import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
@@ -22,7 +21,6 @@ import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
-import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 import org.whalebank.backend.global.utils.EncryptionUtils;
 
@@ -92,8 +90,6 @@ public class AuthServiceImpl implements AuthService {
     entity.setProfile(profile);
 
     repository.save(entity);
-
-    System.out.println("유저 등록 완료");
   }
 
   @Override
@@ -107,8 +103,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     updateToken(dto, user);
-    // 카드 내역 저장
-    accountBookService.saveCardHistory(user);
+    // 카드 내역, 입금 내역을 가계부에 저장
+    accountBookService.saveAccountAndCardHistory(user);
     user.updateCardFetchTime();
 
     return jwtService.generateToken(user);
