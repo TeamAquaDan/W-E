@@ -25,6 +25,7 @@ import org.whalebank.whalebank.domain.account.repository.AccountRepository;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
 import org.whalebank.whalebank.domain.transfer.TransferEntity;
+import org.whalebank.whalebank.domain.transfer.repository.TransferRepository;
 
 @Service
 @Transactional
@@ -35,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
   private final AuthRepository authRepository;
   private final TokenProvider tokenProvider;
   private final AccountRepository accountRepository;
+  private final TransferRepository transferRepository;
 
   @Override
   public AccountResponse getAccounts(HttpServletRequest request) {
@@ -43,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
 
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    if (authRepository.findById(userId).get().getAccountList() == null) {
+    if (authRepository.findById(userId).get().getAccountList().isEmpty()) {
       return AccountResponse
           .builder()
           .rsp_code(404)
@@ -127,6 +129,13 @@ public class AccountServiceImpl implements AccountService {
     } else {
       account.get().depositParking(depositAmt);
     }
+
+    TransferEntity transfer = TransferEntity.createTransfer(parkingRequest,
+        account.get());
+
+    transferRepository.save(transfer);
+
+    account.get().addTransfer(transfer);
 
     return ParkingResponse
         .builder()
@@ -214,10 +223,8 @@ public class AccountServiceImpl implements AccountService {
         .filter(t -> t.getTransDtm().isAfter(fromDate.atStartOfDay()) && t.getTransDtm()
             .isBefore(toDate.atStartOfDay()))
         .map(t -> new TransactionResponse.Transaction(t.getTransDtm(), t.getTransId(),
-            t.getTransType(), t.getTransAmt(), t.getBalanceAmt(), t.getTransMemo()))
+            t.getTransType(), t.getTransAmt(), t.getBalanceAmt(), t.getTransMemo())).sorted()
         .collect(Collectors.toList());
-
-    Collections.sort(transactions);
 
     return TransactionResponse
         .builder()
