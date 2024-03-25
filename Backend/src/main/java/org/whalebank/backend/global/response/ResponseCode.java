@@ -47,9 +47,10 @@ public enum ResponseCode {
   JWT_ILLEGALARGUMENT(HttpStatus.UNAUTHORIZED.value(), "관리자에게 문의해주세요"),
   JWT_NULL(HttpStatus.UNAUTHORIZED.value(), "토큰이 필요합니다"),
 
-  // 그룹
+  // 그룹, 역할
   GROUP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "부모-자녀 그룹이 존재하지 않습니다"),
-  GROUP_EDIT_FORBIDDEN(HttpStatus.FORBIDDEN.value(), "그룹 수정 권한이 없습니다");
+  GROUP_EDIT_FORBIDDEN(HttpStatus.FORBIDDEN.value(), "그룹 수정 권한이 없습니다"),
+  GROUP_ROLE_NOT_FOUND(HttpStatus.FORBIDDEN.value(), "그룹에 소속되어 있지 않습니다");
 
   private final int code;
   private final String message;

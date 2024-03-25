@@ -9,6 +9,7 @@ import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
+import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.allowance.repository.RoleRepository;
@@ -88,6 +89,22 @@ public class AllowanceServiceImpl implements AllowanceService{
 
     group.updateGroup(reqDto);
     return GroupInfoResponseDto.of(group,child.getUser().getAccountNum());
+  }
+
+  @Override
+  @Transactional
+  public void updateNickname(UpdateNicknameRequestDto reqDto, String loginId) {
+    UserEntity loginUser = getCurrentUser(loginId);
+
+    // 존재하지 않는 그룹일 경우 예외
+    GroupEntity group = groupRepository.findById(reqDto.getGroup_id())
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
+
+    // 그룹 아이디, 유저 아이디로 role 찾기
+    RoleEntity roleEntity = roleRepository.findByUserGroupAndUser(group, loginUser)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
+
+    roleEntity.updateNickname(reqDto.getGroup_nickname());
   }
 
   private UserEntity getCurrentUser(String loginId) {

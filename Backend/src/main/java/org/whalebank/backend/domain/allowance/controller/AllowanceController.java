@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
+import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.service.AllowanceService;
 import org.whalebank.backend.global.response.ApiResponse;
@@ -37,6 +38,16 @@ public class AllowanceController {
       @AuthenticationPrincipal UserDetails loginUser) {
     return ApiResponse.ok("용돈 정보 수정 성공", allowanceService.updateGroup(requestDto,
         loginUser.getUsername()));
+  }
+
+  @PatchMapping("/nickname")
+  @Operation(summary = "별칭 수정", description = "그룹에 대한 별칭을 수정한다")
+  public ApiResponse<?> updateNickname(
+      @RequestBody UpdateNicknameRequestDto reqDto,
+      @AuthenticationPrincipal UserDetails loginUser
+  ) {
+    allowanceService.updateNickname(reqDto, loginUser.getUsername());
+    return ApiResponse.ok("별칭 수정 성공");
   }
 
 }

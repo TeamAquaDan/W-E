@@ -62,4 +62,8 @@ public class RoleEntity {
     return role.toString();
   }
 
+  public void updateNickname(String newNickname) {
+    this.groupNickname = newNickname;
+  }
+
 }
