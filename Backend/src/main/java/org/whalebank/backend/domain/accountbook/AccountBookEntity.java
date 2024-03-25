@@ -9,11 +9,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequestDto;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto.AccountBookHistoryDetail;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse.Transaction;
@@ -21,14 +23,14 @@ import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.
 
 @Entity
 @Getter
-@Table(name="account_book")
+@Table(name = "account_book")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountBookEntity {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int accountBookId; // 가계부 내역 아이디
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -54,7 +56,8 @@ public class AccountBookEntity {
         .accountBookTitle(cardHistoryDetail.getMember_store_name()) // 가맹점명
         .accountBookAmt(cardHistoryDetail.getTrans_amt()) // 이용금액
         .accountBookDtm(cardHistoryDetail.getTransaction_dtm()) // 결제일시
-        .accountBookCategory(convertCodetoCategory(cardHistoryDetail.getMember_store_type())) // 카테고리
+        .accountBookCategory(
+            convertCodetoCategory(cardHistoryDetail.getMember_store_type())) // 카테고리
         .user(user)
         .build();
   }
@@ -84,4 +87,17 @@ public class AccountBookEntity {
     };
   }
 
+  public static AccountBookEntity createAccountBookEntry(UserEntity currentUser,
+      AccountBookEntryRequestDto request) {
+
+    return AccountBookEntity
+        .builder()
+        .user(currentUser)
+        .transId(0)
+        .accountBookTitle(request.getAccount_book_title())
+        .accountBookAmt(request.getAccount_amt())
+        .accountBookDtm(LocalDateTime.parse(request.getAccount_book_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+        .accountBookCategory(request.getAccount_book_category())
+        .build();
+  }
 }
