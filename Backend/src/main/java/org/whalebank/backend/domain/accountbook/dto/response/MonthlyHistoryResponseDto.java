@@ -24,7 +24,7 @@ public class MonthlyHistoryResponseDto {
     public int trans_id; // 거래 고유 번호
     public String account_book_title; // 거래 제목
     public int account_book_amt; // 거래금액
-    public String account_book_dtm; // 거래일시 yyyy.mm.dd hh:mm:ss
+    public String account_book_dtm; // 거래일시 yyyy.mm.dd hh:mm
     public String account_book_category; // 카테고리
 
     public static AccountBookHistoryDetail from(AccountBookEntity entity) {
@@ -33,7 +33,7 @@ public class MonthlyHistoryResponseDto {
           .trans_id(entity.getTransId())
           .account_book_title(entity.getAccountBookTitle())
           .account_book_amt(entity.getAccountBookAmt())
-          .account_book_dtm(entity.getAccountBookDtm().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss")))
+          .account_book_dtm(entity.getAccountBookDtm().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
           .account_book_category(entity.getAccountBookCategory())
           .build();
     }
