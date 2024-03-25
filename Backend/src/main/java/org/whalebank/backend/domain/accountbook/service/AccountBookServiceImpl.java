@@ -19,7 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.accountbook.AccountBookEntity;
 import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequestDto;
-import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponse;
+import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto.AccountBookHistoryDetail;
 import org.whalebank.backend.domain.accountbook.repository.AccountBookBulkRepository;
 import org.whalebank.backend.domain.accountbook.repository.AccountBookRepository;
@@ -139,20 +139,35 @@ public class AccountBookServiceImpl implements AccountBookService {
   }
 
   @Override
-  public AccountBookEntryResponse getAccountBookEntry(int accountBookId, String loginId) {
+  public AccountBookEntryResponseDto getAccountBookEntry(int accountBookId, String loginId) {
 
     UserEntity currentUser = userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    AccountBookEntity accountBook = accountBookRepository.getById(accountBookId);
+    AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
+        accountBookId);
 
-    return AccountBookEntryResponse
-        .builder()
-        .account_book_id(accountBookId)
-        .account_book_title(accountBook.getAccountBookTitle())
-        .account_book_amt(accountBook.getAccountBookAmt())
-        .account_book_dtm(accountBook.getAccountBookDtm().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-        .account_book_category(accountBook.getAccountBookCategory())
-        .build();
+    return AccountBookEntryResponseDto.from(accountBook);
+  }
+
+  @Override
+  public AccountBookEntryResponseDto updateAccountBookEntry(int accountBookId,
+      AccountBookEntryRequestDto request, String loginId) {
+
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
+        accountBookId);
+
+    accountBook.setAccountBookTitle(request.getAccount_book_title());
+    accountBook.setAccountBookAmt(request.getAccount_amt());
+    accountBook.setAccountBookDtm(LocalDateTime.parse(request.getAccount_book_date(),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    accountBook.setAccountBookCategory(request.getAccount_book_category());
+
+    accountBookRepository.save(accountBook);
+
+    return AccountBookEntryResponseDto.from(accountBook);
   }
 }

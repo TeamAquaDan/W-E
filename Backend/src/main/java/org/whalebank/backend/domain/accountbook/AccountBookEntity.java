@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequestDto;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto.AccountBookHistoryDetail;
@@ -22,6 +23,7 @@ import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse.
 import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.CardHistoryDetail;
 
 @Entity
+@Setter
 @Getter
 @Table(name = "account_book")
 @Builder

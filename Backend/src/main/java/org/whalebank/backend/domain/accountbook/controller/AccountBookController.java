@@ -7,13 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequestDto;
-import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponse;
+import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto;
 import org.whalebank.backend.domain.accountbook.service.AccountBookService;
 import org.whalebank.backend.global.response.ApiResponse;
@@ -49,10 +50,22 @@ public class AccountBookController {
 
   @GetMapping("/{account_book_id}")
   @Operation(summary = "수입/지출 내역 상세 조회")
-  public ApiResponse<AccountBookEntryResponse> getAccountBookEntry(
+  public ApiResponse<AccountBookEntryResponseDto> getAccountBookEntry(
       @RequestParam int accountBookId,
       @AuthenticationPrincipal UserDetails loginUser) {
 
-    return ApiResponse.ok("수일/지출 내역 상세 조회 성공", service.getAccountBookEntry(accountBookId, loginUser.getUsername()));
+    return ApiResponse.ok("수입/지출 내역 상세 조회 성공",
+        service.getAccountBookEntry(accountBookId, loginUser.getUsername()));
+  }
+
+  @PatchMapping("/{account_book_id}")
+  @Operation(summary = "수입/지출 내역 수정")
+  public ApiResponse<AccountBookEntryResponseDto> updateAccountBookEntry(
+      @RequestParam int accountBookId,
+      @RequestBody AccountBookEntryRequestDto request,
+      @AuthenticationPrincipal UserDetails loginUser) {
+
+    return ApiResponse.ok("수입/지출 내역 수정 성공",
+        service.updateAccountBookEntry(accountBookId, request, loginUser.getUsername()));
   }
 }
