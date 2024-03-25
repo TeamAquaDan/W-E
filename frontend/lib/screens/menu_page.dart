@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/child_page/child_home_page.dart';
 import 'package:frontend/screens/parents_page/future_test.dart';
 import 'package:get/get.dart';
 import 'package:frontend/api/test_html.dart';
@@ -65,12 +66,12 @@ class MenuPage extends StatelessWidget {
             },
             child: const Text('get요청 테스트'),
           ),
-          Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(() => const MyStatelessWidget());
-                  },
-                  child: const Text('FutureBuilder 테스트'))),
+          ElevatedButton(
+            onPressed: () {
+              Get.to(() => const ChildHomePage());
+            },
+            child: const Text('자녀 페이지'),
+          ),
           Center(
             child: ElevatedButton(
               onPressed: () {
