@@ -72,6 +72,8 @@ public class UserEntity {
 
   private int accountId;
 
+  private String accountNum;
+
   private String phoneNum;
 
   private String userCi;
@@ -103,8 +105,9 @@ public class UserEntity {
     this.cardAccessToken = token;
   }
 
-  public void updateMainAccount(int accountId) {
+  public void updateMainAccount(int accountId, String accountNum) {
     this.accountId = accountId;
+    this.accountNum = accountNum;
   }
 
   public void updateFcmToken(String fcmToken) {

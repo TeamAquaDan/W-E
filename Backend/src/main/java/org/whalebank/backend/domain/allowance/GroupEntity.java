@@ -1,7 +1,9 @@
 package org.whalebank.backend.domain.allowance;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,32 +17,41 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 
 @Entity
-@Table(name = "group")
+@Table(name = "we_group")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class GroupEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int groupId;
 
-  @OneToMany(mappedBy = "group")
-  private List<RoleEntity> role = new ArrayList<>();
-
   private boolean isMonthly;
 
   private int allowanceAmt;
 
-  private byte dayOfMonth;
+  private int dayOfMonth;
 
-  private byte dayOfWeek;
+  private int dayOfWeek;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDate createdDtm;
+
+  public static GroupEntity from(AddGroupRequestDto reqDto) {
+    return GroupEntity.builder()
+        .isMonthly(reqDto.is_monthly)
+        .allowanceAmt(reqDto.getAllowance_amt())
+        .dayOfMonth(reqDto.is_monthly ? reqDto.getPayment_date() : 0) // isMonthly가 true인 경우에만 dayOfMonth 설정
+        .dayOfWeek(reqDto.is_monthly ? 0 : reqDto.getPayment_date()) // isMonthly가 false인 경우에만 dayOfWeek 설정
+        .build();
+  }
 
 }

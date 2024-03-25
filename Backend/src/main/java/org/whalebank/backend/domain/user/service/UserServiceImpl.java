@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.whalebank.backend.domain.user.ProfileEntity;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.domain.user.dto.request.RegisterMainAccountRequestDto;
 import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileImageResponseDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto;
@@ -109,10 +110,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public void updateMainAccount(String loginId, Integer accountId) {
+  public void updateMainAccount(String loginId, RegisterMainAccountRequestDto reqDto) {
     UserEntity user = repository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    user.updateMainAccount(accountId);
+    user.updateMainAccount(reqDto.getAccount_id(), reqDto.getAccount_num());
   }
 }

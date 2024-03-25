@@ -16,7 +16,7 @@ import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 
 @Entity
-@Table(name="role")
+@Table(name="we_role")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,13 +32,27 @@ public class RoleEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "group_id")
-  private GroupEntity group;
+  private GroupEntity userGroup;
 
   @Enumerated(value = EnumType.STRING)
   private Role role;
 
-  private String accountNum; // 용돈을 줄/받을 계좌
+  private int accountId; // 용돈을 줄 계좌 고유 번호
+
+  private String accountNum; // 용돈을 줄 계좌 번호
 
   private String groupNickname; // default: 이름?
+
+  public static RoleEntity of(UserEntity user, String groupNickname, int accountId, String accountNum,
+      GroupEntity group) {
+    return RoleEntity.builder()
+        .user(user)
+        .userGroup(group)
+        .role(user.getRole())
+        .accountId(accountId)
+        .accountNum(accountNum)
+        .groupNickname(groupNickname)
+        .build();
+  }
 
 }
