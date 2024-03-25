@@ -17,7 +17,7 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
-    const ParentsHomePage(),
+    const ParentsHomePage(), //ChildHomePage
     const StatisticsPage(),
     const AlarmPage(),
     const MenuPage(),

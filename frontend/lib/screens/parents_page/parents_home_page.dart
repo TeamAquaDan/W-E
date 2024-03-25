@@ -27,9 +27,7 @@ class ParentsHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CarouselWithIndicator(),
-              const SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               const SectionBar(title: '자녀 용돈 목록'),
               const Column(
                 children: [
