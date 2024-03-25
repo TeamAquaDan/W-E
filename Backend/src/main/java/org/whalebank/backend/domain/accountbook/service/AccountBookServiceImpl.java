@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.accountbook.AccountBookEntity;
 import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequestDto;
+import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponse;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto.AccountBookHistoryDetail;
 import org.whalebank.backend.domain.accountbook.repository.AccountBookBulkRepository;
 import org.whalebank.backend.domain.accountbook.repository.AccountBookRepository;
@@ -134,5 +136,23 @@ public class AccountBookServiceImpl implements AccountBookService {
 
     accountBookRepository.save(accountBook);
 
+  }
+
+  @Override
+  public AccountBookEntryResponse getAccountBookEntry(int accountBookId, String loginId) {
+
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    AccountBookEntity accountBook = accountBookRepository.getById(accountBookId);
+
+    return AccountBookEntryResponse
+        .builder()
+        .account_book_id(accountBookId)
+        .account_book_title(accountBook.getAccountBookTitle())
+        .account_book_amt(accountBook.getAccountBookAmt())
+        .account_book_dtm(accountBook.getAccountBookDtm().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+        .account_book_category(accountBook.getAccountBookCategory())
+        .build();
   }
 }
