@@ -70,11 +70,8 @@ class _GoalAddFormState extends State<GoalAddForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Goal'),
-      ),
-      body: Padding(
+    return Container(
+      child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,

@@ -57,6 +57,7 @@ class DefaultFirebaseOptions {
     appId: '1:234142846054:android:f8cf8cf6ef9ec02e29f1a7',
     messagingSenderId: '234142846054',
     projectId: 'whale-f56e3',
+    databaseURL: 'https://whale-f56e3-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'whale-f56e3.appspot.com',
   );
 }
