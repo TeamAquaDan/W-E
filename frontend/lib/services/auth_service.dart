@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:developer' as developer;
+import 'package:frontend/main.dart';
 
 class AuthService {
   final Dio _dio = Dio();
@@ -68,11 +69,12 @@ class AuthService {
   Future<bool> tryAutoLogin() async {
     String? login_id = await _storage.read(key: 'login_id');
     String? password = await _storage.read(key: 'password');
-    String? fcm_token = 'fcm_token';
+    String? fcm_token = globalFCMToken;
     if (login_id != null && password != null) {
       developer.log('아이디: ${login_id}', name: 'saved_id');
       developer.log('비밀번호: ${password}', name: 'saved_password');
-      return await login(login_id, password, fcm_token);
+      developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
+      return await login(login_id, password, fcm_token!);
     }
     return false;
   }

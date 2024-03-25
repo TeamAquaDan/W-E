@@ -31,12 +31,13 @@ class _LoginPageState extends State<LoginPage> {
 
     bool loginSuccess = await _authService.login(loginId, password, fcm_token);
 
-    developer.log('아이디: ${loginIdController.text}', name: 'signup.data');
-    developer.log('비밀번호: ${passwordController.text}', name: 'signup.data');
-    developer.log('fcm_token: $loginSuccess', name: 'fcm_token');
+    
 
     // 로그인 성공 시, Page로 넘어갑니다.
     if (loginSuccess) {
+      developer.log('아이디: ${loginId}', name: 'signup.data');
+    developer.log('비밀번호: ${password}', name: 'signup.data');
+    developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
