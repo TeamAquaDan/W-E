@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.whalebank.backend.domain.accountbook.repository.AccountBookBulkReposi
 import org.whalebank.backend.domain.accountbook.repository.AccountBookRepository;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.domain.user.dto.response.StatisticsResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
@@ -180,5 +183,53 @@ public class AccountBookServiceImpl implements AccountBookService {
         .orElseThrow(() -> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
 
     accountBookRepository.delete(accountBook);
+  }
+
+  @Override
+  public StatisticsResponseDto getStatistics(String loginId, int year, int month) {
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 주어진 연도와 월로 YearMonth 객체 생성
+    YearMonth yearMonth = YearMonth.of(year, month);
+    // 해당 연도와 월의 마지막 날짜 얻기
+    int lastDayOfMonth = yearMonth.lengthOfMonth();
+
+    // 내 가계부 내역 중에 year, month에 해당하는 내역을 시간 내림차순으로 정렬해서 돌려줘야함
+    List<AccountBookHistoryDetail> accountBookList = accountBookRepository.findAllByUserAndAccountBookDtmBetweenAndIsHideFalseOrderByAccountBookDtmDesc(
+            currentUser,
+            LocalDateTime.of(year, month, 1, 0, 0, 0),
+            LocalDateTime.of(year, month, lastDayOfMonth, 23, 59, 59))
+        .stream().map(AccountBookHistoryDetail::from)
+        .toList();
+
+    // 지출 총액
+    int expenseAmt = 0;
+
+    // 카테고리별 총액
+    Map<String, Integer> statisticsList = new HashMap<>();
+
+    for (AccountBookHistoryDetail detail : accountBookList) {
+
+      String category = detail.getAccount_book_category();
+      int amount = detail.getAccount_book_amt();
+
+      if (category.equals("100")) {
+        continue;
+      } else if (!statisticsList.containsKey(category)) {
+        statisticsList.put(category, amount);
+      } else {
+        statisticsList.replace(category, statisticsList.get(category) + amount);
+      }
+
+      expenseAmt += amount;
+
+    }
+
+    return StatisticsResponseDto
+        .builder()
+        .expense_amt(expenseAmt)
+        .statistics_list(statisticsList)
+        .build();
   }
 }

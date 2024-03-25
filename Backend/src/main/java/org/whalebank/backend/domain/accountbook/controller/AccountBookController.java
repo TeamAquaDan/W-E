@@ -18,6 +18,7 @@ import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequ
 import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto;
 import org.whalebank.backend.domain.accountbook.service.AccountBookService;
+import org.whalebank.backend.domain.user.dto.response.StatisticsResponseDto;
 import org.whalebank.backend.global.response.ApiResponse;
 
 
@@ -77,6 +78,16 @@ public class AccountBookController {
 
     service.deleteAccountBookEntry(accountBookId, loginUser.getUsername());
     return ApiResponse.ok("수입/지출 내역 삭제 성공");
+  }
+
+  @GetMapping("/statistics")
+  @Operation(summary = "수입/지출 통계 조회")
+  public ApiResponse<StatisticsResponseDto> getStatistics(
+      @RequestParam(name = "year") int year,
+      @RequestParam(name = "month") int month,
+      @AuthenticationPrincipal UserDetails loginUser) {
+
+    return ApiResponse.ok("수입/지출 통계 조회 성공", service.getStatistics(loginUser.getUsername(), year, month));
   }
 
 }

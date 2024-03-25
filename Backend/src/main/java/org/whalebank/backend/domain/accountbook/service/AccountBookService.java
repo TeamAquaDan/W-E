@@ -5,6 +5,7 @@ import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequ
 import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
 import org.whalebank.backend.domain.accountbook.dto.response.MonthlyHistoryResponseDto;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.domain.user.dto.response.StatisticsResponseDto;
 
 public interface AccountBookService {
 
@@ -20,4 +21,6 @@ public interface AccountBookService {
   AccountBookEntryResponseDto updateAccountBookEntry(int accountBookId, AccountBookEntryRequestDto request,  String username);
 
   void deleteAccountBookEntry(int accountBookId, String loginId);
+
+  StatisticsResponseDto getStatistics(String loginId, int year, int month);
 }
