@@ -24,6 +24,34 @@ Future<List<AccountListData>?> getAccountListData(String accessToken) async {
   }
 }
 
+Future<AccountDetailData?> getAccountDetail(int account_id) async {
+  final DioService dioService = DioService();
+  try {
+    Response response = await dioService.dio.get(
+      '${baseURL}api/account/detail',
+      data: {'account_id': account_id},
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response data: ${response.data}');
+
+    // Check if response data contains 'data' field and if it's not null
+    if (response.data.containsKey('data') && response.data['data'] != null) {
+      AccountDetailData accountDetail =
+          AccountDetailData.fromJson(response.data['data']);
+
+      return accountDetail;
+    } else {
+      print('Error: No data field or null data in response');
+      return null;
+    }
+  } catch (error) {
+    print('account_id status: $account_id');
+    print('Error sending POST request: $error');
+    return null;
+  }
+}
+
 Future<List<AccountHistoryData>?> getAccountHistoryData(
     String accessToken, AccountHistoryBody body) async {
   final DioService dioService = DioService();

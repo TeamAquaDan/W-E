@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/alarm_page.dart';
+import 'package:frontend/screens/child_page/child_home_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/mission_page/my_mission_page.dart';
-import 'package:frontend/screens/parents_page/parent_home_page.dart';
 import 'package:frontend/screens/statistics_page.dart';
 // import 'package:frontend/screens/statistics_page.dart';
 
-class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+class ChildPage extends StatefulWidget {
+  const ChildPage({super.key});
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  State<ChildPage> createState() => _ChildPageState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _ChildPageState extends State<ChildPage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
-    const ParentHomePage(), //ChildHomePage
+    const ChildHomePage(), //ChildHomePage
     const StatisticsPage(),
     const AlarmPage(),
     const MenuPage(),

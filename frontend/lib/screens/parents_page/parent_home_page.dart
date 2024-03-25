@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/parents_page/widgets/section_bar.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
-import 'package:frontend/screens/misson_page/widgets/mission_none.dart';
+import 'package:frontend/screens/mission_page/widgets/mission_none.dart';
 import 'package:frontend/widgets/pin_money.dart';
 
-class ParentsHomePage extends StatelessWidget {
-  const ParentsHomePage({super.key});
+class ParentHomePage extends StatelessWidget {
+  const ParentHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,7 @@ class ParentsHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CarouselWithIndicator(),
-              const SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               const SectionBar(title: '자녀 용돈 목록'),
               const Column(
                 children: [

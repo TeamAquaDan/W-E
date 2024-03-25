@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/child_page/widgets/goal_card.dart';
+import 'package:frontend/screens/child_page/widgets/goal_section_bar.dart';
+import 'package:frontend/screens/child_page/widgets/mission_section_bar.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
 
 class ChildHomePage extends StatelessWidget {
@@ -21,6 +24,11 @@ class ChildHomePage extends StatelessWidget {
           child: Column(
             children: [
               CarouselWithIndicator(),
+              const SizedBox(height: 16),
+              GoalSectionBar(),
+              GoalCard(),
+              const SizedBox(height: 16),
+              MissionSectionBar(),
             ],
           ),
         ));
