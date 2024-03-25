@@ -16,6 +16,7 @@ import org.whalebank.backend.domain.user.dto.request.SignUpRequestDto;
 import org.whalebank.backend.domain.user.dto.response.LoginResponseDto;
 import org.whalebank.backend.domain.user.dto.response.ReissueResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
+import org.whalebank.backend.domain.user.repository.ProfileRepository;
 import org.whalebank.backend.domain.user.security.JwtService;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
@@ -30,6 +31,7 @@ import org.whalebank.backend.global.utils.EncryptionUtils;
 public class AuthServiceImpl implements AuthService {
 
   private final AuthRepository repository;
+  private final ProfileRepository profileRepository;
   private final BCryptPasswordEncoder encoder;
   private final JwtService jwtService;
   private final AccountBookService accountBookService;
@@ -86,8 +88,13 @@ public class AuthServiceImpl implements AuthService {
     // 프로필 엔티티 설정
     profile.setUser(entity); // 유저 엔티티와 연결
 
-    // 유저 엔티티에 프로필 엔티티 설정
+    // 프로필 엔티티와 유저 엔티티를 서로 연결
+    profile.setUser(entity);
     entity.setProfile(profile);
+
+    // 저장
+    profileRepository.save(profile);
+    repository.save(entity);
 
     repository.save(entity);
   }
@@ -139,7 +146,7 @@ public class AuthServiceImpl implements AuthService {
       user.updateCardAccessToken(cardResponseDto.getAccess_token());
     }
     // fcm 토큰 저장
-    if(user.getFcmToken()==null || !dto.getFcm_token().equals(user.getFcmToken())) {
+    if (user.getFcmToken() == null || !dto.getFcm_token().equals(user.getFcmToken())) {
       user.updateFcmToken(dto.getFcm_token());
     }
   }
