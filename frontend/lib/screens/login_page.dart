@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/screens/parents_page/parents_home_page.dart';
 import '../services/auth_service.dart';
 import 'signup_page.dart';
 import 'pin_login_page.dart';
 import 'pin_setting_page.dart';
 import '../widgets/nav_bar.dart';
-
 import 'dart:developer' as developer;
 
 class LoginPage extends StatefulWidget {
@@ -33,33 +31,21 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    LoginResult loginResult = await _authService.login(loginId, password, fcm_token);
+    bool loginSuccess = await _authService.login(loginId, password, fcm_token);
 
     
 
     // 로그인 성공 시, Page로 넘어갑니다.
-    if (loginResult.isSuccess) {
+    if (loginSuccess) {
       developer.log('아이디: ${loginId}', name: 'signup.data');
-      developer.log('비밀번호: ${password}', name: 'signup.data');
-      developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
-      if (loginResult.isSuccess) {
-    // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
-    if (loginResult.role == 'CHILD') {
-      // 자녀 페이지로 이동
+    developer.log('비밀번호: ${password}', name: 'signup.data');
+    developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ParentsHomePage()),
+        MaterialPageRoute(
+          builder: (context) => const NavBar(),
+        ),
       );
-    } else if (loginResult.role == 'ADULT') {
-      // 부모 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ParentsHomePage()),
-      );
-    }
-  } else {
-    print("로그인 실패");
-  }
     }
   }
 
