@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import '../services/auth_service.dart';
 import 'signup_page.dart';
 import 'pin_login_page.dart';
@@ -23,15 +24,22 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     String loginId = loginIdController.text;
     String password = passwordController.text;
-    String fcmToken = "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
+    String? fcm_token = globalFCMToken;
+    // "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
+    if (fcm_token == null) {
+      print("FCM 토큰이 없습니다.");
+      return;
+    }
 
-    bool loginSuccess = await _authService.login(loginId, password, fcmToken);
+    bool loginSuccess = await _authService.login(loginId, password, fcm_token);
 
-    developer.log('아이디: ${loginIdController.text}', name: 'signup.data');
-    developer.log('비밀번호: ${passwordController.text}', name: 'signup.data');
+    
 
     // 로그인 성공 시, Page로 넘어갑니다.
     if (loginSuccess) {
+      developer.log('아이디: ${loginId}', name: 'signup.data');
+    developer.log('비밀번호: ${password}', name: 'signup.data');
+    developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
