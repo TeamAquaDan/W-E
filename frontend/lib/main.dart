@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/user/user_controller.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/screens/login_page.dart';
 import 'package:frontend/screens/pin_login_page.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  Get.put(UserController());
   runApp(MyApp());
 }
 

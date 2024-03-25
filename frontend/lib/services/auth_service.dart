@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/models/user/user_controller.dart';
 import 'dart:developer' as developer;
+
+import 'package:get/get.dart';
 
 class AuthService {
   final Dio _dio = Dio();
@@ -48,7 +51,9 @@ class AuthService {
         String? checkAccesstoken = await _storage.read(key: 'access_token');
         String? checkRefreshtoken = await _storage.read(key: 'refresh_token');
         developer.log('access: $checkAccesstoken', name: 'check_accesstoken');
-        developer.log('refresh: $checkRefreshtoken', name: 'check_refreshtoken');
+        developer.log('refresh: $checkRefreshtoken',
+            name: 'check_refreshtoken');
+        Get.find<UserController>().setUserId(data['user_id']);
         return true;
       }
       return false;
