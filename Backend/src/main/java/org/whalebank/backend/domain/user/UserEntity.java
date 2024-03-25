@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.friend.FriendEntity;
 import org.whalebank.backend.domain.goal.GoalEntity;
 
@@ -85,6 +87,9 @@ public class UserEntity {
 
   @OneToOne(mappedBy = "user")
   private ProfileEntity profile;
+
+  @OneToMany(mappedBy = "user")
+  private List<RoleEntity> roleEntityList = new ArrayList<>();
 
   public void updateSentence(String sentence) {
     this.profile.setSentence(sentence);
