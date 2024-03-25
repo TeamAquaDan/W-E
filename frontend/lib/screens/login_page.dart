@@ -24,8 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
 
   void _login() async {
-    String loginId = loginIdController.text;
-    String password = passwordController.text;
+    String loginId = loginIdController.text.trim();
+    String password = passwordController.text.trim();
     String? fcm_token = globalFCMToken;
     // "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
     if (fcm_token == null) {
@@ -33,9 +33,15 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    LoginResult loginResult = await _authService.login(loginId, password, fcm_token);
+    if (loginId.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('아이디와 비밀번호를 모두 입력해주세요.')),
+      );
+      return; // 함수를 여기서 종료시켜 더 이상 진행하지 않음
+    }
 
-    
+    LoginResult loginResult =
+        await _authService.login(loginId, password, fcm_token);
 
     // 로그인 성공 시, Page로 넘어갑니다.
     if (loginResult.isSuccess) {
@@ -43,23 +49,23 @@ class _LoginPageState extends State<LoginPage> {
       developer.log('비밀번호: ${password}', name: 'signup.data');
       developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
       if (loginResult.isSuccess) {
-    // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
-    if (loginResult.role == 'CHILD') {
-      // 자녀 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ParentsHomePage()),
-      );
-    } else if (loginResult.role == 'ADULT') {
-      // 부모 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ParentsHomePage()),
-      );
-    }
-  } else {
-    print("로그인 실패");
-  }
+        // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
+        if (loginResult.role == 'CHILD') {
+          // 자녀 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ParentsHomePage()),
+          );
+        } else if (loginResult.role == 'ADULT') {
+          // 부모 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ParentsHomePage()),
+          );
+        }
+      } else {
+        print("로그인 실패");
+      }
     }
   }
 

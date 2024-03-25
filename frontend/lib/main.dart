@@ -82,6 +82,7 @@ void main() async {
         payload: 'item x');
 
     // 받은 알림 출력
+    print("Received notification title: ${message.notification?.title}");
     print("Received notification: ${message.notification?.body}");
   });
 
@@ -109,20 +110,35 @@ class MyApp extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         ),
       ),
-      home: FutureBuilder(
+      // home: FutureBuilder(
+      //   future: _authService.tryAutoLogin(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const CircularProgressIndicator();
+      //     } else {
+      //       if (snapshot.data == true) {
+      //         return PinLoginPage();
+      //       } else {
+      //         return LoginPage();
+      //       }
+      //     }
+      //   },
+      // ),
+      home: FutureBuilder<LoginResult>(
         future: _authService.tryAutoLogin(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
+          } else if (snapshot.hasData && snapshot.data!.isSuccess) {
+            // 로그인 성공 시 PIN 로그인 페이지로 이동
+            return PinLoginPage();
           } else {
-            if (snapshot.data == true) {
-              return PinLoginPage();
-            } else {
-              return LoginPage();
-            }
+            // 로그인 실패 또는 로그인 정보 없음 -> 로그인 페이지로 이동
+            return LoginPage();
           }
         },
       ),
+
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
