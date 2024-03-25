@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/screens/parents_page/parents_home_page.dart';
+import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/parents_page/parent_page.dart';
 import '../services/auth_service.dart';
 import 'signup_page.dart';
 import 'pin_login_page.dart';
 import 'pin_setting_page.dart';
-import '../widgets/nav_bar.dart';
 
 import 'dart:developer' as developer;
 
@@ -33,13 +33,6 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    if (loginId.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('아이디와 비밀번호를 모두 입력해주세요.')),
-      );
-      return; // 함수를 여기서 종료시켜 더 이상 진행하지 않음
-    }
-
     LoginResult loginResult =
         await _authService.login(loginId, password, fcm_token);
 
@@ -54,13 +47,13 @@ class _LoginPageState extends State<LoginPage> {
           // 자녀 페이지로 이동
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ParentsHomePage()),
+            MaterialPageRoute(builder: (context) => ChildPage()),
           );
         } else if (loginResult.role == 'ADULT') {
           // 부모 페이지로 이동
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ParentsHomePage()),
+            MaterialPageRoute(builder: (context) => ParentPage()),
           );
         }
       } else {

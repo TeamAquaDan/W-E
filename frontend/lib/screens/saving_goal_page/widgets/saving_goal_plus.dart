@@ -42,7 +42,7 @@ class SavingGoalPlus extends StatelessWidget {
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           // return const MySavingGoalForm(); // BottomSheet로 MySavingGoalForm을 표시
-                          return GoalAddForm();
+                          return MySavingGoalForm();
                         },
                       );
                     },
