@@ -71,6 +71,7 @@ void main() async {
                 'This channel is used for important notifications.',
             importance: Importance.high,
             priority: Priority.high,
+            icon: 'ic_launcher',
             ticker: 'ticker');
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
