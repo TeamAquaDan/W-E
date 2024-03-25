@@ -14,7 +14,7 @@ class BankDetail extends StatefulWidget {
 
 class _BankDetailState extends State<BankDetail> {
   bool _isLoading = true;
-
+  AccountDetailData? res;
   @override
   void initState() {
     super.initState();
@@ -29,10 +29,12 @@ class _BankDetailState extends State<BankDetail> {
         _isLoading = true;
       });
 
-      var res = await getAccountDetail(widget.bankData.account_id);
-      print('통신결과: $res');
+      var resData = await getAccountDetail(widget.bankData.account_id);
+      print('통신결과: $resData');
       setState(() {
-        if (res == null) {}
+        if (resData != null) {
+          res = resData;
+        }
       });
     } catch (error) {
       // 에러가 발생한 경우 에러 처리를 수행합니다.
@@ -63,6 +65,34 @@ class _BankDetailState extends State<BankDetail> {
               child: Column(
                 children: [
                   BankTopContainer(bankData: widget.bankData),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text('생성일자 : ', style: TextStyle(fontSize: 20)),
+                            Text(res?.issue_date ?? 'N/A',
+                                style: TextStyle(fontSize: 20)),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('일일 결제 한도 : ', style: TextStyle(fontSize: 20)),
+                            Text(res?.day_limit_amt?.toString() ?? 'N/A',
+                                style: TextStyle(fontSize: 20)),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('1회 결제 한도 : ', style: TextStyle(fontSize: 20)),
+                            Text(res?.once_limit_amt?.toString() ?? 'N/A',
+                                style: TextStyle(fontSize: 20))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

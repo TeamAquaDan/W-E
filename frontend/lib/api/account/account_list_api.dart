@@ -29,7 +29,7 @@ Future<AccountDetailData?> getAccountDetail(int account_id) async {
   try {
     Response response = await dioService.dio.get(
       '${baseURL}api/account/detail',
-      data: account_id,
+      data: {'account_id': account_id},
     );
 
     print('Response status: ${response.statusCode}');
@@ -38,7 +38,7 @@ Future<AccountDetailData?> getAccountDetail(int account_id) async {
     // Check if response data contains 'data' field and if it's not null
     if (response.data.containsKey('data') && response.data['data'] != null) {
       AccountDetailData accountDetail =
-          AccountDetailData.fromJson(response.data);
+          AccountDetailData.fromJson(response.data['data']);
 
       return accountDetail;
     } else {
