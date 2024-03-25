@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/save/goal_add_api.dart';
+import 'package:frontend/models/save/goal_add.dart';
 import 'package:intl/intl.dart';
 
 class MySavingGoalForm extends StatefulWidget {
@@ -187,9 +189,46 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                   child: const Text('취소'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    // 저장 api 구현 예정
+                  onPressed: () async {
+                    // 금액을 int로 변환합니다.
+                    int goalAmt = int.parse(_amountController.text
+                        .replaceAll(RegExp(r'[^0-9]'), ''));
+                    // 카테고리 코드와 계좌 ID를 적절히 처리합니다. 예제에서는 직접 매핑하지 않습니다.
+                    String categoryCode = _selectedCategoryCode ??
+                        ''; // 기본값 또는 오류 처리가 필요할 수 있습니다.
+                    // 계좌 ID 처리. 여기서는 임시로 0을 할당합니다.
+                    int accountId = 1; // 실제로는 선택된 계좌에 대한 ID를 할당해야 합니다.
 
+                    // 목표 날짜를 ISO 8601 문자열로 변환합니다. 선택되지 않은 경우 기본값 처리가 필요할 수 있습니다.
+                    String goalDate = _selectedDate?.toIso8601String() ?? '';
+
+                    PostAddGoalBody goalBody = PostAddGoalBody(
+                      goal_name: _controller.text,
+                      goal_amt: goalAmt,
+                      goal_date: goalDate,
+                      category: categoryCode,
+                      account_id: accountId,
+                    );
+
+                    // API 호출
+                    try {
+                      var response = await postGoal(goalBody);
+                      if (response != null) {
+                        // 성공적으로 데이터를 전송했다면, 사용자에게 알림 등의 처리를 수행합니다.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
+                        );
+                      } else {
+                        // 오류 처리
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("목표 등록에 실패했습니다.")),
+                        );
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("오류가 발생했습니다: $e")),
+                      );
+                    }
                     Navigator.pop(context);
                   },
                   child: const Text('등록'),

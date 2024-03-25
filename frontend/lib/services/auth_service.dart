@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/models/user/user_controller.dart';
 import 'dart:developer' as developer;
 import 'package:frontend/main.dart';
+import 'package:get/get.dart';
 
 // 로그인 결과 처리
 class LoginResult {
@@ -89,10 +91,14 @@ class AuthService {
         await _storage.write(key: 'refresh_token', value: refreshToken);
         String? check_accesstoken = await _storage.read(key: 'access_token');
         String? check_refreshtoken = await _storage.read(key: 'refresh_token');
-        developer.log('access: ${check_accesstoken}', name: 'check_accesstoken');
-        developer.log('refresh: ${check_refreshtoken}', name: 'check_refreshtoken');
+        developer.log('access: ${check_accesstoken}',
+            name: 'check_accesstoken');
+        developer.log('refresh: ${check_refreshtoken}',
+            name: 'check_refreshtoken');
         // 역할 정보를 포함하여 LoginResult 객체 반환
         String role = data['role'];
+
+        Get.find<UserController>().setUserId(data['user_id']);
         return LoginResult(isSuccess: true, role: role);
       }
       // 실패 시 역할 정보 없이 반환
