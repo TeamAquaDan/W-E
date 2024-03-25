@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/screens/parents_page/parents_home_page.dart';
+import 'package:frontend/screens/child_page/child_home_page.dart';
+import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/parents_page/parent_home_page.dart';
+import 'package:frontend/screens/parents_page/parent_page.dart';
 import '../services/auth_service.dart';
 import 'signup_page.dart';
 import 'pin_login_page.dart';
@@ -33,9 +36,8 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    LoginResult loginResult = await _authService.login(loginId, password, fcm_token);
-
-    
+    LoginResult loginResult =
+        await _authService.login(loginId, password, fcm_token);
 
     // 로그인 성공 시, Page로 넘어갑니다.
     if (loginResult.isSuccess) {
@@ -43,23 +45,23 @@ class _LoginPageState extends State<LoginPage> {
       developer.log('비밀번호: ${password}', name: 'signup.data');
       developer.log('fcm_token: ${fcm_token}', name: 'fcm_token');
       if (loginResult.isSuccess) {
-    // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
-    if (loginResult.role == 'CHILD') {
-      // 자녀 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ParentsHomePage()),
-      );
-    } else if (loginResult.role == 'ADULT') {
-      // 부모 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ParentsHomePage()),
-      );
-    }
-  } else {
-    print("로그인 실패");
-  }
+        // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
+        if (loginResult.role == 'CHILD') {
+          // 자녀 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ChildPage()),
+          );
+        } else if (loginResult.role == 'ADULT') {
+          // 부모 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ParentPage()),
+          );
+        }
+      } else {
+        print("로그인 실패");
+      }
     }
   }
 

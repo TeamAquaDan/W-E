@@ -25,7 +25,6 @@ class _GoalCardState extends State<GoalCard> {
   Future<void> loadSavingGoals() async {
     // 여기에 REST API 요청을 수행하는 코드를 작성합니다.
     // 예시로, 다음은 가상의 데이터 로딩 함수입니다.
-    // var fetchedSavingGoals = await fetchSavingGoalsFromAPI();
     var goalList = await getGoalList(3);
     setState(() {
       if (goalList != null) {
@@ -35,22 +34,6 @@ class _GoalCardState extends State<GoalCard> {
         mySavingGoals = [];
       }
     });
-  }
-
-  Future<List<Map<String, dynamic>>> fetchSavingGoalsFromAPI() async {
-    return [
-      {
-        "goal_id": 1,
-        "goal_name": "목표 1",
-        "goal_amt": 800000,
-        "status": 0,
-        "start_date": "2024.01.03",
-        "withdraw_date": "2024.01.26",
-        "end_date": "2024.10.19",
-        "percentage": 30.0,
-        "saved_amt": 243800
-      }
-    ];
   }
 
   @override
@@ -82,14 +65,13 @@ class _GoalCardState extends State<GoalCard> {
 
     // 진행중 목표 비었을 시 widget 추가
     if (currentGoals.isEmpty) {
-      currentGoalWidgets.add(const SavingGoalNoneNoadd());
+      currentGoalWidgets.add(const SavingGoalPlus());
     }
 
     return SingleChildScrollView(
       child: Column(
         children: [
           ...currentGoalWidgets,
-          const SavingGoalPlus(),
         ],
       ),
     );

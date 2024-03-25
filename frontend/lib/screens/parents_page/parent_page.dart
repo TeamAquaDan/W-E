@@ -6,14 +6,14 @@ import 'package:frontend/screens/parents_page/parent_home_page.dart';
 import 'package:frontend/screens/statistics_page.dart';
 // import 'package:frontend/screens/statistics_page.dart';
 
-class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+class ParentPage extends StatefulWidget {
+  const ParentPage({super.key});
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  State<ParentPage> createState() => _ParentPageState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _ParentPageState extends State<ParentPage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
