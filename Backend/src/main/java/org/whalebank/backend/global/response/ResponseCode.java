@@ -35,6 +35,7 @@ public enum ResponseCode {
 
   // 가계부
   INVALID_TIME_FORMAT(HttpStatus.BAD_REQUEST.value(), "해당 월은 존재하지 않습니다"),
+  ACCOUNT_BOOK_ENTRY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "지출/수입 내역을 찾을 수 없습니다"),
 
   // 목표
   ALREADY_EXIST(HttpStatus.BAD_REQUEST.value(), "이미 목표가 존재하는 계좌입니다."),
