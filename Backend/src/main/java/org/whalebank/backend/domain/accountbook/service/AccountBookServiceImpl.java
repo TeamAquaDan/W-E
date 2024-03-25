@@ -1,11 +1,6 @@
 package org.whalebank.backend.domain.accountbook.service;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -14,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.accountbook.AccountBookEntity;
@@ -145,7 +139,7 @@ public class AccountBookServiceImpl implements AccountBookService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
-        accountBookId);
+        accountBookId).orElseThrow(()-> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
 
     return AccountBookEntryResponseDto.from(accountBook);
   }
@@ -158,7 +152,7 @@ public class AccountBookServiceImpl implements AccountBookService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
-        accountBookId);
+        accountBookId).orElseThrow(()-> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
 
     accountBook.setAccountBookTitle(request.getAccount_book_title());
     accountBook.setAccountBookAmt(request.getAccount_amt());
@@ -169,5 +163,17 @@ public class AccountBookServiceImpl implements AccountBookService {
     accountBookRepository.save(accountBook);
 
     return AccountBookEntryResponseDto.from(accountBook);
+  }
+
+  @Override
+  public void deleteAccountBookEntry(int accountBookId, String loginId) {
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
+        accountBookId).orElseThrow(()-> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
+
+
+    accountBookRepository.delete(accountBook);
   }
 }

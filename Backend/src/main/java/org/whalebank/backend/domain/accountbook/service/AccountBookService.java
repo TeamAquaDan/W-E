@@ -18,4 +18,6 @@ public interface AccountBookService {
   AccountBookEntryResponseDto getAccountBookEntry(int accountBookId, String loginId);
 
   AccountBookEntryResponseDto updateAccountBookEntry(int accountBookId, AccountBookEntryRequestDto request,  String username);
+
+  void deleteAccountBookEntry(int accountBookId, String loginId);
 }

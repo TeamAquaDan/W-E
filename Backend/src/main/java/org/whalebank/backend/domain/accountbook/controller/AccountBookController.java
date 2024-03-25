@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,4 +69,14 @@ public class AccountBookController {
     return ApiResponse.ok("수입/지출 내역 수정 성공",
         service.updateAccountBookEntry(accountBookId, request, loginUser.getUsername()));
   }
+
+  @DeleteMapping("/{account_book_id}")
+  @Operation(summary = "수입/지출 내역 삭제")
+  public ApiResponse<?> deleteAccountBookEntry(@RequestParam int accountBookId,
+      @AuthenticationPrincipal UserDetails loginUser) {
+
+    service.deleteAccountBookEntry(accountBookId, loginUser.getUsername());
+    return ApiResponse.ok("수입/지출 내역 삭제 성공");
+  }
+
 }
