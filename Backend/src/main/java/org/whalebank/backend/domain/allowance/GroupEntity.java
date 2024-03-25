@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
+import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 
 @Entity
 @Table(name = "we_group")
@@ -52,6 +53,13 @@ public class GroupEntity {
         .dayOfMonth(reqDto.is_monthly ? reqDto.getPayment_date() : 0) // isMonthly가 true인 경우에만 dayOfMonth 설정
         .dayOfWeek(reqDto.is_monthly ? 0 : reqDto.getPayment_date()) // isMonthly가 false인 경우에만 dayOfWeek 설정
         .build();
+  }
+
+  public void updateGroup(UpdateAllowanceRequestDto reqDto) {
+    this.isMonthly = reqDto.getIs_monthly();
+    this.allowanceAmt = reqDto.getAllowance_amt();
+    this.dayOfMonth = isMonthly ? reqDto.payment_date : 0;
+    this.dayOfWeek = isMonthly ? 0:reqDto.payment_date;
   }
 
 }

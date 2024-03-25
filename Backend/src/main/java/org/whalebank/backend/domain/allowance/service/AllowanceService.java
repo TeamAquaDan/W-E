@@ -1,10 +1,13 @@
 package org.whalebank.backend.domain.allowance.service;
 
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
-import org.whalebank.backend.domain.allowance.dto.response.AddGroupResponseDto;
+import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
+import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 
 public interface AllowanceService {
 
-  public AddGroupResponseDto registerGroup(AddGroupRequestDto reqDto, String loginId);
+  public GroupInfoResponseDto registerGroup(AddGroupRequestDto reqDto, String loginId);
+
+  public GroupInfoResponseDto updateGroup(UpdateAllowanceRequestDto reqDto, String loginId);
 
 }

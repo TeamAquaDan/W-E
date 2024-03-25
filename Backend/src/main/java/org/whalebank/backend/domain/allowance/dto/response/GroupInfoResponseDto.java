@@ -8,7 +8,7 @@ import org.whalebank.backend.domain.allowance.GroupEntity;
 @Getter
 @Setter
 @Builder
-public class AddGroupResponseDto {
+public class GroupInfoResponseDto {
 
   public String account_num; // 자녀 계좌번호
   public boolean is_monthly; // 용돈 주기
@@ -16,9 +16,9 @@ public class AddGroupResponseDto {
   public int payment_date; // 용돈 지급일
   public int group_id; // 그룹 아이디
 
-  public static AddGroupResponseDto of(GroupEntity group, String childAccountNum) {
+  public static GroupInfoResponseDto of(GroupEntity group, String childAccountNum) {
 
-    return AddGroupResponseDto.builder()
+    return GroupInfoResponseDto.builder()
         .account_num(childAccountNum) // 자녀 계좌번호
         .is_monthly(group.isMonthly())
         .allowance_amt(group.getAllowanceAmt())

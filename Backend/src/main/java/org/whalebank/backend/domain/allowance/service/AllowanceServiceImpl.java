@@ -1,15 +1,18 @@
 package org.whalebank.backend.domain.allowance.service;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.account.service.AccountService;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
-import org.whalebank.backend.domain.allowance.dto.response.AddGroupResponseDto;
+import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
+import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.allowance.repository.RoleRepository;
+import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
@@ -26,7 +29,7 @@ public class AllowanceServiceImpl implements AllowanceService{
 
   @Override
   @Transactional
-  public AddGroupResponseDto registerGroup(AddGroupRequestDto reqDto, String loginId) {
+  public GroupInfoResponseDto registerGroup(AddGroupRequestDto reqDto, String loginId) {
     UserEntity adult = getCurrentUser(loginId);
     UserEntity child = userRepository.findById(reqDto.getUser_id())
             .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
@@ -57,7 +60,34 @@ public class AllowanceServiceImpl implements AllowanceService{
     // 저장
     groupRepository.save(group);
 
-    return AddGroupResponseDto.of(group, child.getAccountNum());
+    return GroupInfoResponseDto.of(group, child.getAccountNum());
+  }
+
+  @Override
+  @Transactional
+  public GroupInfoResponseDto updateGroup(UpdateAllowanceRequestDto reqDto, String loginId) {
+    UserEntity loginUser = getCurrentUser(loginId);
+
+    // 존재하지 않는 그룹일 경우 예외
+    GroupEntity group = groupRepository.findById(reqDto.getGroup_id())
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
+
+    // 본인이 소속된 그룹이 아니라면 예외
+    boolean hasAuthority = false;
+    for(RoleEntity entity: roleRepository.findRoleEntitiesByUserGroupAndRole(group, Role.ADULT)) {
+      if(entity.getUser().getUserId() == loginUser.getUserId()) {
+        hasAuthority = true;
+        break;
+      }
+    }
+    if(!hasAuthority) {
+      throw new CustomException(ResponseCode.GROUP_EDIT_FORBIDDEN);
+    }
+    // CHILD 찾기
+    RoleEntity child = roleRepository.findRoleEntitiesByUserGroupAndRole(group, Role.CHILD).get(0);
+
+    group.updateGroup(reqDto);
+    return GroupInfoResponseDto.of(group,child.getUser().getAccountNum());
   }
 
   private UserEntity getCurrentUser(String loginId) {

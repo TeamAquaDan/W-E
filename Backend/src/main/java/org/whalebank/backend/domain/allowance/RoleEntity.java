@@ -5,12 +5,14 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
@@ -20,10 +22,11 @@ import org.whalebank.backend.domain.user.UserEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class RoleEntity {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int roleId;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -53,6 +56,10 @@ public class RoleEntity {
         .accountNum(accountNum)
         .groupNickname(groupNickname)
         .build();
+  }
+
+  public String getRole() {
+    return role.toString();
   }
 
 }
