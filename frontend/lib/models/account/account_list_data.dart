@@ -42,6 +42,55 @@ class AccountListData {
   }
 }
 
+// "{
+//   ""status"": 200,
+//   ""message"": ""계좌 상세 조회 성공"",
+//   ""data"": {
+//      ""account_id"": ""int, 계좌고유번호"",
+//      ""account_name"": ""string, 계좌명"",
+//      ""account_num"": ""string, 계좌번호"",
+//      ""balance_amt"": ""int, 현재잔액"",
+//      ""account_type: ""int, 계좌구분"",
+//     ""issue_date"": ""string, 개설일자"",
+//     ""day_limit_amt"": ""int, 1일 한도"",
+//     ""once_limit_amt"": ""int, 1회 한도""
+//   }
+// }"
+class AccountDetailData {
+  AccountDetailData({
+    required this.account_id,
+    required this.account_name,
+    required this.account_num,
+    required this.balance_amt,
+    required this.account_type,
+    required this.issue_date,
+    required this.day_limit_amt,
+    required this.once_limit_amt,
+  });
+
+  final int account_id;
+  final String account_name;
+  final String account_num;
+  final int balance_amt;
+  final int account_type;
+  final String issue_date;
+  final int day_limit_amt;
+  final int once_limit_amt;
+
+  factory AccountDetailData.fromJson(Map<String, dynamic> json) {
+    return AccountDetailData(
+      account_id: json['account_id'] as int,
+      account_name: json['account_name'] as String,
+      account_num: json['account_num'] as String,
+      balance_amt: json['balance_amt'] as int,
+      account_type: json['account_type'] as int,
+      issue_date: json['issue_date'] as String,
+      day_limit_amt: json['day_limit_amt'] as int,
+      once_limit_amt: json['once_limit_amt'] as int,
+    );
+  }
+}
+
 /* 계좌 거래 내역 조회
 request body
 "{
