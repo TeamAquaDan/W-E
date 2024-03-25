@@ -3,7 +3,7 @@ import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/mission_page/my_mission_page.dart';
 import 'package:frontend/screens/parents_page/parent_home_page.dart';
-import 'package:frontend/screens/statistics_page.dart';
+import 'package:frontend/screens/statistics_page/statistics_page.dart';
 // import 'package:frontend/screens/statistics_page.dart';
 
 class ParentPage extends StatefulWidget {
