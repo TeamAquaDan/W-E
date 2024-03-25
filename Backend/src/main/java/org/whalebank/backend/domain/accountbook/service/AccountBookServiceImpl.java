@@ -7,6 +7,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -106,13 +107,15 @@ public class AccountBookServiceImpl implements AccountBookService {
     // 수입 및 지출 합산
     int incomeAmt = 0;
     int expenseAmt = 0;
+
     for (AccountBookHistoryDetail detail : accountBookList) {
-      if (detail.getTrans_id() > 0) {
-        expenseAmt += detail.getAccount_book_amt();
-      } else {
+      if (Objects.equals(detail.getAccount_book_category(), "100")) {
         incomeAmt += detail.getAccount_book_amt();
+      } else {
+        expenseAmt += detail.getAccount_book_amt();
       }
     }
+
     return MonthlyHistoryResponseDto.builder()
         .expense_amt(expenseAmt)
         .income_amt(incomeAmt)
@@ -139,7 +142,8 @@ public class AccountBookServiceImpl implements AccountBookService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
-        accountBookId).orElseThrow(()-> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
+            accountBookId)
+        .orElseThrow(() -> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
 
     return AccountBookEntryResponseDto.from(accountBook);
   }
@@ -152,7 +156,8 @@ public class AccountBookServiceImpl implements AccountBookService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
-        accountBookId).orElseThrow(()-> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
+            accountBookId)
+        .orElseThrow(() -> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
 
     accountBook.setAccountBookTitle(request.getAccount_book_title());
     accountBook.setAccountBookAmt(request.getAccount_amt());
@@ -171,8 +176,8 @@ public class AccountBookServiceImpl implements AccountBookService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     AccountBookEntity accountBook = accountBookRepository.findByUserAndAccountBookId(currentUser,
-        accountBookId).orElseThrow(()-> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
-
+            accountBookId)
+        .orElseThrow(() -> new CustomException(ResponseCode.ACCOUNT_BOOK_ENTRY_NOT_FOUND));
 
     accountBookRepository.delete(accountBook);
   }
