@@ -2,9 +2,11 @@ package org.whalebank.backend.domain.allowance.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
+import org.whalebank.backend.domain.allowance.dto.response.AllowanceInfoResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.service.AllowanceService;
 import org.whalebank.backend.global.response.ApiResponse;
@@ -48,6 +51,14 @@ public class AllowanceController {
   ) {
     allowanceService.updateNickname(reqDto, loginUser.getUsername());
     return ApiResponse.ok("별칭 수정 성공");
+  }
+
+  @GetMapping("/list")
+  @Operation(summary = "용돈 목록 조회", description = "자녀는 용돈을 주는 사람과 주기, 금액을 조회한다")
+  public ApiResponse<List<AllowanceInfoResponseDto>> getAllowanceList(
+      @AuthenticationPrincipal UserDetails loginUser) {
+    return ApiResponse.ok("용돈 목록 조회 성공",
+        allowanceService.getAllowanceList(loginUser.getUsername()));
   }
 
 }

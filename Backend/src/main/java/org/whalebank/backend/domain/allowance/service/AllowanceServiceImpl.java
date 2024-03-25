@@ -1,6 +1,7 @@
 package org.whalebank.backend.domain.allowance.service;
 
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
+import org.whalebank.backend.domain.allowance.dto.response.AllowanceInfoResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.allowance.repository.RoleRepository;
@@ -105,6 +107,20 @@ public class AllowanceServiceImpl implements AllowanceService{
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
 
     roleEntity.updateNickname(reqDto.getGroup_nickname());
+  }
+
+  @Override
+  public List<AllowanceInfoResponseDto> getAllowanceList(String loginId) {
+    UserEntity child = getCurrentUser(loginId);
+    List<AllowanceInfoResponseDto> result = new ArrayList<>();
+
+    // role 중에서 ADULT만 찾기, role과 연결된 group 찾기
+    List<RoleEntity> roleEntityList = roleRepository.findAdultRolesByUserId(child.getUserId());
+    for(RoleEntity entity:roleEntityList) {
+      result.add(AllowanceInfoResponseDto.from(entity));
+    }
+
+    return result;
   }
 
   private UserEntity getCurrentUser(String loginId) {
