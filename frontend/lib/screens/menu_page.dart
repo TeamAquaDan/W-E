@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
-import 'package:frontend/screens/child_page/child_home_page.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
-import 'package:frontend/screens/parents_page/future_test.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';

@@ -4,7 +4,7 @@ import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_top_container.dart';
 
 class BankDetail extends StatefulWidget {
-  BankDetail({super.key, required this.bankData});
+  const BankDetail({super.key, required this.bankData});
   final AccountListData bankData;
   @override
   State<StatefulWidget> createState() {
@@ -71,23 +71,23 @@ class _BankDetailState extends State<BankDetail> {
                       children: [
                         Row(
                           children: [
-                            Text('생성일자 : ', style: TextStyle(fontSize: 20)),
+                            const Text('생성일자 : ', style: TextStyle(fontSize: 20)),
                             Text(res?.issue_date ?? 'N/A',
-                                style: TextStyle(fontSize: 20)),
+                                style: const TextStyle(fontSize: 20)),
                           ],
                         ),
                         Row(
                           children: [
-                            Text('일일 결제 한도 : ', style: TextStyle(fontSize: 20)),
-                            Text(res?.day_limit_amt?.toString() ?? 'N/A',
-                                style: TextStyle(fontSize: 20)),
+                            const Text('일일 결제 한도 : ', style: TextStyle(fontSize: 20)),
+                            Text(res?.day_limit_amt.toString() ?? 'N/A',
+                                style: const TextStyle(fontSize: 20)),
                           ],
                         ),
                         Row(
                           children: [
-                            Text('1회 결제 한도 : ', style: TextStyle(fontSize: 20)),
-                            Text(res?.once_limit_amt?.toString() ?? 'N/A',
-                                style: TextStyle(fontSize: 20))
+                            const Text('1회 결제 한도 : ', style: TextStyle(fontSize: 20)),
+                            Text(res?.once_limit_amt.toString() ?? 'N/A',
+                                style: const TextStyle(fontSize: 20))
                           ],
                         ),
                       ],

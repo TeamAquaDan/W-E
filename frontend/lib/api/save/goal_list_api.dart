@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/models/save/goal_list.dart';
 import 'package:frontend/services/dio_service.dart';
 import '../base_url.dart';
 

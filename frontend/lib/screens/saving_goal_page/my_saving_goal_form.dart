@@ -235,11 +235,11 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                       var response = await postGoal(goalBody);
                       if (response != null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
+                          const SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("목표 등록에 실패했습니다.")),
+                          const SnackBar(content: Text("목표 등록에 실패했습니다.")),
                         );
                       }
                     } catch (e) {

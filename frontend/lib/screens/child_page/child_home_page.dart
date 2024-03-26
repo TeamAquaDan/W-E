@@ -25,10 +25,10 @@ class ChildHomePage extends StatelessWidget {
             children: [
               CarouselWithIndicator(),
               const SizedBox(height: 16),
-              GoalSectionBar(),
-              GoalCard(),
+              const GoalSectionBar(),
+              const GoalCard(),
               const SizedBox(height: 16),
-              MissionSectionBar(),
+              const MissionSectionBar(),
             ],
           ),
         ));

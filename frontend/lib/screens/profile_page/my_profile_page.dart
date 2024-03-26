@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/user/user_controller.dart';
 import 'package:frontend/screens/friends_page/my_friends_page.dart';
@@ -37,14 +35,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
       if (response.statusCode == 200) {
         // 요청이 성공적으로 완료되었을 때의 처리
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("프로필 정보가 성공적으로 업데이트되었습니다!")),
+          const SnackBar(content: Text("프로필 정보가 성공적으로 업데이트되었습니다!")),
         );
         // 성공적으로 업데이트된 후에는 프로필 정보를 다시 로딩할 수 있습니다.
         loadProfiles();
       } else {
         // 요청이 실패했을 때의 처리
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("프로필 정보 업데이트에 실패했습니다.")),
+          const SnackBar(content: Text("프로필 정보 업데이트에 실패했습니다.")),
         );
       }
     } catch (e) {
@@ -165,7 +163,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               hintText: '여기에 한 줄 소개를 입력하세요',
                               border: InputBorder.none,
                               suffixIcon: IconButton(
-                                icon: Icon(Icons.save),
+                                icon: const Icon(Icons.save),
                                 onPressed: toggleEdit,
                               ),
                             ),
@@ -178,7 +176,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               child: Text(
                                 myProfileList[0]['sentence'] ??
                                     '한 줄 소개가 설정되지 않았습니다.',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black, // 색상 코드 수정
                                   fontSize: 16,
                                 ),
@@ -237,12 +235,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             ),
                           ],
                         )
-                      : SizedBox(height: 0, width: 0),
+                      : const SizedBox(height: 0, width: 0),
                   const SizedBox(height: 20), // 버튼과 하단 여백
                   // 필요한 경우 여기에 추가적인 위젯 배치
                 ],
               )
-            : Center(
+            : const Center(
                 child:
                     CircularProgressIndicator(), // 데이터가 로드되지 않았을 경우 로딩 인디케이터 표시
               ),

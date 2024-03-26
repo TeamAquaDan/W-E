@@ -134,10 +134,10 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData && snapshot.data!.isSuccess) {
             // 로그인 성공 시 PIN 로그인 페이지로 이동
-            return PinLoginPage();
+            return const PinLoginPage();
           } else {
             // 로그인 실패 또는 로그인 정보 없음 -> 로그인 페이지로 이동
-            return LoginPage();
+            return const LoginPage();
           }
         },
       ),

@@ -212,7 +212,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
 
     // 로딩 중이라면 로딩 인디케이터를 표시
     if (isLoading) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(), // 로딩 인디케이터
         ),
@@ -259,7 +259,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
               children: [
                 ...currentGoalWidgets,
                 const SavingGoalPlus(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],

@@ -44,12 +44,12 @@ class _FriendsRequestModalState extends State<FriendsRequestModal> {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text('이름:'),
+            const Text('이름:'),
             TextField(
               controller: _nameController,
             ),
-            SizedBox(height: 8),
-            Text('전화번호:'),
+            const SizedBox(height: 8),
+            const Text('전화번호:'),
             TextField(
               controller: _phoneNumberController,
             ),
@@ -82,7 +82,7 @@ class _FriendsRequestModalState extends State<FriendsRequestModal> {
                 // 사용자가 존재하지 않는 경우
                 print('존재하지 않는 친구임 ㅇㅇ');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text("사용자가 존재하지 않습니다."),
                   ),
                 );
@@ -94,7 +94,7 @@ class _FriendsRequestModalState extends State<FriendsRequestModal> {
                   // 사용자가 존재하지 않는 경우
                   print('존재하지 않는 친구임 ㅇㅇ');
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text("사용자가 존재하지 않습니다."),
                     ),
                   );

@@ -113,7 +113,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                     //     );
                     //   },
                     // );
-                    Get.to(() => ContactsModal());
+                    Get.to(() => const ContactsModal());
                   },
                   icon: const Icon(Icons.person_add),
                   iconSize: 35,
