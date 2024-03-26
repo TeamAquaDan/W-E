@@ -67,10 +67,10 @@ class _ContactsModalState extends State<ContactsModal> {
                     ).then((value) {
                       if (value == true) {
                         // 사용자가 '예'를 선택했을 때의 처리 로직
-                        print('친구 요청을 보냈습니다.');
+                        print('예 누름');
                       } else {
                         // 사용자가 '아니오'를 선택했을 때의 처리 로직 또는 아무것도 하지 않음
-                        print('친구 요청을 취소했습니다.');
+                        print('아니오 누름');
                       }
                     });
                   },
