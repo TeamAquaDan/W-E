@@ -12,6 +12,7 @@ import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
 import org.whalebank.backend.domain.allowance.dto.response.AllowanceInfoResponseDto;
+import org.whalebank.backend.domain.allowance.dto.response.ChildrenInfoResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.allowance.repository.RoleRepository;
@@ -115,12 +116,27 @@ public class AllowanceServiceImpl implements AllowanceService{
     List<AllowanceInfoResponseDto> result = new ArrayList<>();
 
     // role 중에서 ADULT만 찾기, role과 연결된 group 찾기
-    List<RoleEntity> roleEntityList = roleRepository.findAdultRolesByUserId(child.getUserId());
+    List<RoleEntity> roleEntityList = roleRepository.findRolesByUserId(child.getUserId(),
+        Role.ADULT);
     for(RoleEntity entity:roleEntityList) {
       result.add(AllowanceInfoResponseDto.from(entity));
     }
 
     return result;
+  }
+
+  @Override
+  public List<ChildrenInfoResponseDto> getChildrenList(String loginId) {
+    UserEntity adult = getCurrentUser(loginId);
+    List<ChildrenInfoResponseDto> result = new ArrayList<>();
+
+    List<RoleEntity> roleEntityList = roleRepository.findRolesByUserId(adult.getUserId(),
+        Role.CHILD);
+    for(RoleEntity entity:roleEntityList) {
+      result.add(ChildrenInfoResponseDto.from(entity));
+    }
+    return result;
+
   }
 
   private UserEntity getCurrentUser(String loginId) {

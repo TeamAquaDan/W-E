@@ -16,6 +16,7 @@ import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
 import org.whalebank.backend.domain.allowance.dto.response.AllowanceInfoResponseDto;
+import org.whalebank.backend.domain.allowance.dto.response.ChildrenInfoResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.service.AllowanceService;
 import org.whalebank.backend.global.response.ApiResponse;
@@ -59,6 +60,15 @@ public class AllowanceController {
       @AuthenticationPrincipal UserDetails loginUser) {
     return ApiResponse.ok("용돈 목록 조회 성공",
         allowanceService.getAllowanceList(loginUser.getUsername()));
+  }
+
+  @GetMapping("/children")
+  @Operation(summary = "자녀 목록 조회", description = "부모님이 용돈을 받고 있는 자녀를 조회한다")
+  public ApiResponse<List<ChildrenInfoResponseDto>> getChildrenList(
+      @AuthenticationPrincipal UserDetails loginUser) {
+    return ApiResponse.ok("자녀 목록 조회 성공",
+        allowanceService.getChildrenList(loginUser.getUsername())
+        );
   }
 
 }
