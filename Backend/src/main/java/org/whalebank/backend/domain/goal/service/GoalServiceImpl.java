@@ -53,10 +53,10 @@ public class GoalServiceImpl implements GoalService {
     // 새로운 목표 생성
     GoalEntity goal = GoalEntity.createGoal(goalRequest, user, LocalDate.now());
 
-    goalRepository.save(goal);
-
     // 해당하는 유저에 목표 등록
     user.addGoal(goal);
+
+    goalRepository.save(goal);
 
     return GoalResponseDto
         .builder()
