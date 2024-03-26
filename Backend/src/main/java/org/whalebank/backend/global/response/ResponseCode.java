@@ -30,7 +30,7 @@ public enum ResponseCode {
   BANK_USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "은행 고객이 아닙니다"),
   ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "계좌가 존재하지 않습니다"),
   WRONG_ACCOUNT_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "계좌 비밀번호가 올바르지 않습니다"),
-  INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST.value(),"잔액이 부족합니다"),
+  INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST.value(), "잔액이 부족합니다"),
   TRANSFER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST.value(), "이체 한도가 초과되었습니다"),
 
   // 가계부
@@ -52,7 +52,11 @@ public enum ResponseCode {
   GROUP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "부모-자녀 그룹이 존재하지 않습니다"),
   GROUP_EDIT_FORBIDDEN(HttpStatus.FORBIDDEN.value(), "그룹 수정 권한이 없습니다"),
   GROUP_ROLE_NOT_FOUND(HttpStatus.FORBIDDEN.value(), "그룹에 소속되어 있지 않습니다"),
-  USER_VIEW_FORBIDDEN(HttpStatus.FORBIDDEN.value(),"해당 유저에 대한 조회 권한이 없습니다");
+  USER_VIEW_FORBIDDEN(HttpStatus.FORBIDDEN.value(), "해당 유저에 대한 조회 권한이 없습니다"),
+
+
+  // 더치페이
+  CANNOT_ADD_SELF(HttpStatus.BAD_REQUEST.value(), "본인은 자동 추가되기 때문에 추가할 수 없습니다");
 
   private final int code;
   private final String message;
