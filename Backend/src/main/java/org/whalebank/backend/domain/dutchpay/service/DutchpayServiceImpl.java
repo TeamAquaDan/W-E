@@ -37,12 +37,20 @@ public class DutchpayServiceImpl implements DutchpayService {
     DutchpayRoomEntity dutchpayRoom = DutchpayRoomEntity.createRoom(request,
         user);
 
+    DutchpayEntity dutchpayManager = DutchpayEntity.createRoom(user, dutchpayRoom);
+
     dutchpayRoomRepository.save(dutchpayRoom);
+
+    dutchpayRepository.save(dutchpayManager);
 
     // 초대한 친구에게 모두 더치페이 만들기
     for (int userId : request.getMembers()) {
       UserEntity member = authRepository.findById(userId)
           .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+      if (user.equals(member)) {
+        throw new CustomException(ResponseCode.CANNOT_ADD_SELF);
+      }
 
       profileImg.add(member.getProfile().getProfileImage());
 
