@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
+import 'package:frontend/screens/account_book/account_book_page.dart';
+
 import 'package:frontend/screens/child_page/child_page.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/services/dio_service.dart';
@@ -104,6 +106,11 @@ class MenuPage extends StatelessWidget {
               child: const Text('용돈 목록 조회 get 요청 테스트'),
             ),
           ),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(() => const AccountBookPage());
+              },
+              child: const Text('AccountBookPage'))
         ],
       ),
     );

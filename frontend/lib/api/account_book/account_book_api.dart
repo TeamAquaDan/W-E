@@ -1,0 +1,21 @@
+import 'package:dio/dio.dart';
+import 'package:frontend/services/dio_service.dart';
+import '../base_url.dart';
+
+Future getAccountBook(int year, int month) async {
+  final DioService dioService = DioService();
+  try {
+    Response response = await dioService.dio.get(
+      '${baseURL}api/accountbook/history?year=$year&month=$month',
+    );
+
+    // Handle response
+    print('Response status: ${response.statusCode}');
+    print('Response data: ${response.data}');
+    return response.data;
+  } catch (error) {
+    // Handle error
+    print('Error sending POST request: $error');
+    return null;
+  }
+}
