@@ -1,6 +1,7 @@
 package org.whalebank.backend.domain.user.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.whalebank.backend.domain.user.dto.request.RegisterMainAccountRequestDto;
 import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileImageResponseDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto;
@@ -12,7 +13,7 @@ public interface UserService {
 
   public VerifyResponseDto verifyUser(VerifyRequestDto reqDto);
 
-  void updateMainAccount(String loginId, Integer accountId);
+  void updateMainAccount(String loginId, RegisterMainAccountRequestDto reqDto);
 
   ProfileImageResponseDto updateProfileImage(String loginId, MultipartFile file);
 

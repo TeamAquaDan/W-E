@@ -25,6 +25,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.friend.FriendEntity;
 import org.whalebank.backend.domain.goal.GoalEntity;
 
@@ -72,6 +73,8 @@ public class UserEntity {
 
   private int accountId;
 
+  private String accountNum;
+
   private String phoneNum;
 
   private String userCi;
@@ -88,6 +91,9 @@ public class UserEntity {
   @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
   private ProfileEntity profile;
 
+  @OneToMany(mappedBy = "user")
+  private List<RoleEntity> roleEntityList = new ArrayList<>();
+
   public void updateSentence(String sentence) {
     this.profile.setSentence(sentence);
   }
@@ -100,8 +106,9 @@ public class UserEntity {
     this.cardAccessToken = token;
   }
 
-  public void updateMainAccount(int accountId) {
+  public void updateMainAccount(int accountId, String accountNum) {
     this.accountId = accountId;
+    this.accountNum = accountNum;
   }
 
   public void updateFcmToken(String fcmToken) {
