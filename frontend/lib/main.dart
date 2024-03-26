@@ -20,7 +20,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 String? globalFCMToken;
 
 void registerNotification(String token) async {
-  final DatabaseReference database = FirebaseDatabase.instance.reference();
+  final DatabaseReference database = FirebaseDatabase.instance.ref();
 
   try {
     // 알림 데이터 저장
