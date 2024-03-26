@@ -8,14 +8,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
 import org.whalebank.backend.domain.allowance.dto.response.AllowanceInfoResponseDto;
+import org.whalebank.backend.domain.allowance.dto.response.ChildrenDetailResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.ChildrenInfoResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.service.AllowanceService;
@@ -69,6 +72,16 @@ public class AllowanceController {
     return ApiResponse.ok("자녀 목록 조회 성공",
         allowanceService.getChildrenList(loginUser.getUsername())
         );
+  }
+
+  @GetMapping("/children/{group_id}/{user_id}")
+  @Operation(summary = "자녀 상세 조회", description = "부모님이 자녀의 상세 정보(계좌번호, 용돈 주기, 금액 등)를 조회한다")
+  public ApiResponse<ChildrenDetailResponseDto> getChildrenDetail(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @PathVariable("group_id") int groupId,
+      @PathVariable("user_id") int childId) {
+    return ApiResponse.ok("자녀 상세 조회 성공",
+        allowanceService.getChildDetail(loginUser.getUsername(), groupId, childId));
   }
 
 }

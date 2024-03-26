@@ -12,6 +12,7 @@ import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateAllowanceRequestDto;
 import org.whalebank.backend.domain.allowance.dto.request.UpdateNicknameRequestDto;
 import org.whalebank.backend.domain.allowance.dto.response.AllowanceInfoResponseDto;
+import org.whalebank.backend.domain.allowance.dto.response.ChildrenDetailResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.ChildrenInfoResponseDto;
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
@@ -136,6 +137,28 @@ public class AllowanceServiceImpl implements AllowanceService{
       result.add(ChildrenInfoResponseDto.from(entity));
     }
     return result;
+
+  }
+
+  @Override
+  public ChildrenDetailResponseDto getChildDetail(String loginId, int groupId, int childId) {
+    // 부모
+    UserEntity parent = getCurrentUser(loginId);
+    // 자녀가 포함된 그룹
+    GroupEntity group = groupRepository.findById(groupId)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
+    // 상세 조회할 자녀
+    UserEntity child = userRepository.findById(childId)
+            .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 부모가 자녀와 같은 그룹에 포함되어 있지 않으면 예외
+    roleRepository.findByUserGroupAndUser(group, parent)
+            .orElseThrow(() ->  new CustomException(ResponseCode.USER_VIEW_FORBIDDEN));
+    // 자녀가 그룹에 포함되어 있지 않으면 예외
+    RoleEntity childRole = roleRepository.findByUserGroupAndUser(group, child)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
+
+    return ChildrenDetailResponseDto.of(childRole.getUserGroup(), child);
 
   }
 

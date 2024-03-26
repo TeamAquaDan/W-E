@@ -15,14 +15,15 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
 
   List<RoleEntity> findRoleEntitiesByUserGroupAndRole(GroupEntity group, Role userRole);
 
+  @EntityGraph(attributePaths = {"userGroup","user"})
   Optional<RoleEntity> findByUserGroupAndUser(GroupEntity group, UserEntity user);
 
-    @Query("SELECT r FROM RoleEntity r " +
-    "WHERE r.userGroup IN"+
-    "(SELECT g.userGroup FROM RoleEntity g " +
-    "JOIN g.user gu " +
-    "ON gu.userId = :userId) " +
-    "AND r.role = :role")
-    List<RoleEntity> findRolesByUserId(@Param("userId") int userId, @Param("role") Role role);
+  @Query("SELECT r FROM RoleEntity r " +
+      "WHERE r.userGroup IN" +
+      "(SELECT g.userGroup FROM RoleEntity g " +
+      "JOIN g.user gu " +
+      "ON gu.userId = :userId) " +
+      "AND r.role = :role")
+  List<RoleEntity> findRolesByUserId(@Param("userId") int userId, @Param("role") Role role);
 
 }
