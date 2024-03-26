@@ -35,8 +35,8 @@ public class GoalServiceImpl implements GoalService {
   @Override
   public GoalResponseDto createGoal(GoalRequestDto goalRequest, String loginId) {
 
-    // 로그인 유저
-    UserEntity user = authRepository.findByLoginId(loginId).get();
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     // 이미 목표가 진행 중인 계좌면 에러
     GoalEntity existingGoal = goalRepository.findByAccountIdAndStatus(goalRequest.getAccount_id(), 0);
