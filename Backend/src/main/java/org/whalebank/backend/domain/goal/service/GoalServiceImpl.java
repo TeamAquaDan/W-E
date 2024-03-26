@@ -39,9 +39,11 @@ public class GoalServiceImpl implements GoalService {
     UserEntity user = authRepository.findByLoginId(loginId).get();
 
     // 이미 목표가 진행 중인 계좌면 에러
-    if (goalRepository.findByAccountIdAndStatus(goalRequest.getAccount_id(), 0)) {
+    GoalEntity existingGoal = goalRepository.findByAccountIdAndStatus(goalRequest.getAccount_id(), 0);
+    if (existingGoal != null) {
       throw new CustomException(ResponseCode.ALREADY_EXIST);
     }
+
 
     // 파킹통장 잔액
     ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(

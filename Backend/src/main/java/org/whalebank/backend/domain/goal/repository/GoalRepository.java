@@ -7,5 +7,5 @@ import org.whalebank.backend.domain.goal.GoalEntity;
 public interface GoalRepository extends JpaRepository<GoalEntity, String> {
 
 
-  boolean findByAccountIdAndStatus(int accountId, int status);
+  GoalEntity findByAccountIdAndStatus(int accountId, int status);
 }
