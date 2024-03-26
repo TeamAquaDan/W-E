@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/account_book/widgets/chart.dart';
 import 'package:frontend/screens/account_book/widgets/table.dart';
 
 class AccountBookHomePage extends StatelessWidget {
@@ -12,8 +13,8 @@ class AccountBookHomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text('data'),
-            Text('data'),
+            AccountBookChart(),
+            const SizedBox(height: 8),
             AccountBookTable(),
           ],
         ),

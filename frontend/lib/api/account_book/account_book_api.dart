@@ -19,3 +19,21 @@ Future getAccountBook(int year, int month) async {
     return null;
   }
 }
+
+Future getAccountBookChart(int year, int month) async {
+  final DioService dioService = DioService();
+  try {
+    Response response = await dioService.dio.get(
+      '${baseURL}api/accountbook/statistics?year=$year&month=$month',
+    );
+
+    // Handle response
+    print('Response status: ${response.statusCode}');
+    print('Response data: ${response.data}');
+    return response.data;
+  } catch (error) {
+    // Handle error
+    print('Error sending POST request: $error');
+    return null;
+  }
+}
