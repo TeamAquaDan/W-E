@@ -57,6 +57,11 @@ dependencies {
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.529')
     implementation 'com.amazonaws:aws-java-sdk-s3'
 
+    // Firebase
+    // https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.2.0'
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
 }
 
 tasks.named('test') {
