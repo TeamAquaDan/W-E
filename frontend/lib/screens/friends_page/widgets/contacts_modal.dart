@@ -60,7 +60,9 @@ class _ContactsModalState extends State<ContactsModal> {
                       context: context,
                       builder: (BuildContext context) {
                         return FriendsRequestModal(
-                            friendName: _contacts[index].displayName ?? "");
+                            friendName: _contacts[index].displayName ?? "",
+                            friendPhoneNumber:
+                                _contacts[index].phones!.first.value ?? "");
                       },
                     ).then((value) {
                       if (value == true) {
