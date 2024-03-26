@@ -69,8 +69,6 @@ public class UserEntity {
 
   private boolean isDeleted;
 
-  private String profileImage;
-
   private int accountId;
 
   private String accountNum;

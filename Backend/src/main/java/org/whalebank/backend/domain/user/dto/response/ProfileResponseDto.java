@@ -24,7 +24,7 @@ public class ProfileResponseDto {
         .user_id(user.getUserId())
         .login_id(user.getLoginId())
         .username(user.getUserName())
-        .profile_img(user.getProfileImage())
+        .profile_img(user.getProfile().getProfileImage())
         .birthdate(user.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
         .sentence(user.getProfile().getSentence())
         .editable(editable)

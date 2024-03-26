@@ -19,7 +19,7 @@ public class UpdateFriendNicknameResponseDto {
     return UpdateFriendNicknameResponseDto.builder()
         .friend_id(friend.getUserId())
         .friend_nickname(friend_nickname)
-        .friend_profileImg(friend.getProfileImage())
+        .friend_profileImg(friend.getProfile().getProfileImage())
         .build();
   }
 

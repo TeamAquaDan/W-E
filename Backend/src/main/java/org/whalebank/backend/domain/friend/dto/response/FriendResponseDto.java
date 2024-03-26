@@ -22,7 +22,7 @@ public class FriendResponseDto {
     return FriendResponseDto.builder()
         .friend_id(friend.getUserId())
         .friend_nickname(friendEntity.getFriendNickname())
-        .friend_profileImg(friend.getProfileImage())
+        .friend_profileImg(friend.getProfile().getProfileImage())
         .friend_name(friend.getUserName())
         .friend_loginid(friend.getLoginId())
         .build();

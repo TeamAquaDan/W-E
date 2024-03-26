@@ -22,7 +22,7 @@ public class LoginResponseDto {
         .refresh_token(refresh_token)
         .access_token(access_token)
         .user_id(user.getUserId())
-        .profile_img(user.getProfileImage())
+        .profile_img(user.getProfile().getProfileImage())
         .username(user.getUserName())
         .role(user.getRole().toString())
         .build();

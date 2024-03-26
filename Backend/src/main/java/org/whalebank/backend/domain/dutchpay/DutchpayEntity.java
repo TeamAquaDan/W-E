@@ -14,6 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.whalebank.backend.domain.user.UserEntity;
 
 @Entity
@@ -30,6 +32,7 @@ public class DutchpayEntity {
   @Column(name = "dutchpay_id")
   private int dutchpayId;  // 더치페이 아이디
 
+  @ColumnDefault("false")
   private boolean isCompleted; // 개인 정산금액 송금여부
 
   private String accountNum;  // 출금 계좌번호
@@ -45,4 +48,12 @@ public class DutchpayEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "room_id")
   private DutchpayRoomEntity room;
+
+  public static DutchpayEntity createRoom(UserEntity member, DutchpayRoomEntity dutchpayRoom) {
+    return DutchpayEntity
+        .builder()
+        .user(member)
+        .room(dutchpayRoom)
+        .build();
+  }
 }
