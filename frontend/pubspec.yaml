@@ -50,6 +50,7 @@ dependencies:
   firebase_messaging: ^14.7.20
   flutter_local_notifications: ^17.0.0
   firebase_database: ^10.4.10
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:

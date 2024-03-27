@@ -37,9 +37,15 @@ class _AccountBookTableState extends State<AccountBookTable> {
           ? CircularProgressIndicator()
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("수입: ${responseData['data']['income_amt']}"),
-                Text("지출: ${responseData['data']['expense_amt']}"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("수입: ${responseData['data']['income_amt']}"),
+                    Text("지출: ${responseData['data']['expense_amt']}"),
+                  ],
+                ),
                 Column(
                   children: List.generate(
                     responseData['data']['account_book_list'].length,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
+import 'package:frontend/screens/account_book/widgets/chart2.dart';
+import 'package:frontend/screens/account_book/widgets/expense_chart.dart';
 
 class AccountBookChart extends StatefulWidget {
   @override
@@ -33,12 +35,7 @@ class _AccountBookChartState extends State<AccountBookChart> {
       child: responseData.isEmpty
           ? CircularProgressIndicator()
           : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Expense Amount: ${responseData['data']['expense_amt']}"),
-                Text(
-                    "Expense Amount: ${responseData['data']['statistics_list']}"),
-              ],
+              children: [PieChartSample2(data: responseData['data'])],
             ),
     );
   }

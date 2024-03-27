@@ -57,6 +57,8 @@ Future postAccountBook(AccountBook body) async {
 }
 
 Future patchAccountBook(AccountBook body, int account_book_id) async {
+  print('카드 아이디 : $account_book_id');
+  print('카드 아이디 바디 : ${body.toJson()}');
   final DioService dioService = DioService();
   try {
     Response response = await dioService.dio.patch(

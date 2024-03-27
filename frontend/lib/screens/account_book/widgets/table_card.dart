@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/api/account_book/account_book_model.dart';
+import 'package:frontend/screens/account_book/form_account_book.dart';
+import 'package:get/get.dart';
 
 class AccountBookCard extends StatelessWidget {
   final Map<String, dynamic> accountBookData;
@@ -23,9 +26,22 @@ class AccountBookCard extends StatelessWidget {
                   'Title: ${accountBookData['account_book_title']}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.edit),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.to(() =>
+                            FormAccountBook(accountBookData: accountBookData));
+                      },
+                      icon: Icon(Icons.edit),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        deleteAccountBook(accountBookData['account_book_id']);
+                      },
+                      icon: Icon(Icons.delete),
+                    ),
+                  ],
                 ),
               ],
             ),
