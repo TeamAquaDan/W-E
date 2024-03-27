@@ -131,14 +131,19 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     DutchpayEntity dutchpay = dutchpayRepository.findByUserAndRoom(user, dutchpayRoom);
 
+    int totalAmt = 0;
+
     for (Transaction transaction : request.getTransactions()) {
       selectedPaymentRepository
           .save(SelectedPaymentEntity.from(dutchpay, transaction));
+
+      totalAmt += transaction.getTransAmt();
     }
 
     dutchpay.setAccountId(request.getAccount_id());
     dutchpay.setAccountNum(request.getAccount_num());
     dutchpay.setAccountPassword(request.getPassword());
+    dutchpay.setTotalAmt(totalAmt);
 
     dutchpayRepository.save(dutchpay);
   }
