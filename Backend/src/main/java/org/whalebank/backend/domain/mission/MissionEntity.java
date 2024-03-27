@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.whalebank.backend.domain.allowance.GroupEntity;
+import org.whalebank.backend.domain.mission.dto.request.MissionCreateRequestDto;
 
 @Entity
 @AllArgsConstructor
@@ -52,5 +54,17 @@ public class MissionEntity {
   private int missionReward; // 보상 금액
 
   private LocalDate deadlineDate; // 마감 일시
+
+  public static MissionEntity of(MissionCreateRequestDto reqDto, GroupEntity group) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    return MissionEntity.builder()
+        .missionName(reqDto.getMission_name())
+        .status(0)
+        .createDtm(LocalDateTime.now())
+        .missionReward(reqDto.getMission_reward())
+        .deadlineDate(LocalDate.parse(reqDto.getDeadline_date(),formatter))
+        .group(group)
+        .build();
+  }
 
 }

@@ -49,7 +49,7 @@ public class AllowanceServiceImpl implements AllowanceService{
       groupNickname = reqDto.getGroup_nickname();
     }
 
-    System.out.println(reqDto.is_monthly + ", 입력받은 계좌 고유번호: "+reqDto.getAccount_id()+", 계좌번호: "+reqDto.getAccount_num());
+//    System.out.println(reqDto.is_monthly + ", 입력받은 계좌 고유번호: "+reqDto.getAccount_id()+", 계좌번호: "+reqDto.getAccount_num());
     RoleEntity adultRole = RoleEntity.of(adult, groupNickname, reqDto.getAccount_id(),
         reqDto.getAccount_num(), group);
 
@@ -60,6 +60,7 @@ public class AllowanceServiceImpl implements AllowanceService{
     roleRepository.save(adultRole);
     roleRepository.save(childRole);
     // 예약 이체 생성
+
 
 
     // 저장

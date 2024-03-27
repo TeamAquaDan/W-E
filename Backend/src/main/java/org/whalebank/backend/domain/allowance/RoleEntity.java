@@ -48,7 +48,7 @@ public class RoleEntity {
 
   public static RoleEntity of(UserEntity user, String groupNickname, int accountId, String accountNum,
       GroupEntity group) {
-    return RoleEntity.builder()
+    RoleEntity entity = RoleEntity.builder()
         .user(user)
         .userGroup(group)
         .role(user.getRole())
@@ -56,6 +56,8 @@ public class RoleEntity {
         .accountNum(accountNum)
         .groupNickname(groupNickname)
         .build();
+    group.addRole(entity);
+    return entity;
   }
 
   public String getRole() {
