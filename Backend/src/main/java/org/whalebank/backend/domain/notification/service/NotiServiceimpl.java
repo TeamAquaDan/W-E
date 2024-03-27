@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.notification.FCMCategory;
 import org.whalebank.backend.domain.notification.NotificationEntity;
+import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
 import org.whalebank.backend.domain.notification.dto.response.NotiResponseDto;
 import org.whalebank.backend.domain.notification.repository.NotiRepository;
 import org.whalebank.backend.domain.user.UserEntity;
@@ -19,6 +21,7 @@ public class NotiServiceimpl implements NotiService{
 
   private final NotiRepository notiRepository;
   private final AuthRepository userRepository;
+  private final FcmUtils fcmUtils;
 
   @Override
   public List<NotiResponseDto> getAllNotification(String loginId) {
@@ -46,6 +49,7 @@ public class NotiServiceimpl implements NotiService{
   }
 
   @Override
+  @Transactional
   public void readAll(String loginId) {
     UserEntity user = userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));

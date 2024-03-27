@@ -18,6 +18,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
 import org.whalebank.backend.domain.user.UserEntity;
 
 @Getter
@@ -56,6 +57,17 @@ public class NotificationEntity {
 
   public void readNotification() {
     this.isRead = true;
+  }
+
+  public static NotificationEntity from(FCMRequestDto reqDto, UserEntity user) {
+    return NotificationEntity.builder()
+        .createdDtm(LocalDateTime.now())
+        .notiName(reqDto.getTitle())
+        .notiContent(reqDto.getContent())
+        .notiContent(reqDto.getContent())
+        .isRead(false)
+        .user(user)
+        .build();
   }
 
 }

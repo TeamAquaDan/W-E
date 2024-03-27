@@ -5,6 +5,9 @@ HELP.md
 .gradle
 build/
 
+### fcm key ###
+/src/main/resources/key/
+
 ### STS ###
 .apt_generated
 .classpath
