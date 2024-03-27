@@ -3,7 +3,6 @@ import 'package:frontend/screens/account_book/account_book_home_page.dart';
 import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/mission_page/my_mission_page.dart';
-import 'package:frontend/screens/statistics_page/statistics_page.dart';
 
 class AccountBookPage extends StatefulWidget {
   const AccountBookPage({super.key});
@@ -17,7 +16,7 @@ class _ChildPageState extends State<AccountBookPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
     const AccountBookHomePage(), //ChildHomePage
-    const StatisticsPage(),
+    const AccountBookHomePage(),
     const AlarmPage(),
     const MenuPage(),
     const MyMissionPage(),

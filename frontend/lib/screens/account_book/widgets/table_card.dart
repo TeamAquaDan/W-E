@@ -16,9 +16,18 @@ class AccountBookCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Title: ${accountBookData['account_book_title']}',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Title: ${accountBookData['account_book_title']}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.edit),
+                ),
+              ],
             ),
             Text('Amount: ${accountBookData['account_book_amt']}'),
             Text('Date: ${accountBookData['account_book_dtm']}'),
