@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,7 +64,7 @@ public class AccountBookController {
   @PatchMapping("/{account_book_id}")
   @Operation(summary = "수입/지출 내역 수정")
   public ApiResponse<AccountBookEntryResponseDto> updateAccountBookEntry(
-      @RequestParam int accountBookId,
+      @PathVariable("account_book_id") int accountBookId,
       @RequestBody AccountBookEntryRequestDto request,
       @AuthenticationPrincipal UserDetails loginUser) {
 
@@ -73,7 +74,8 @@ public class AccountBookController {
 
   @DeleteMapping("/{account_book_id}")
   @Operation(summary = "수입/지출 내역 삭제")
-  public ApiResponse<?> deleteAccountBookEntry(@RequestParam int accountBookId,
+  public ApiResponse<?> deleteAccountBookEntry(
+      @PathVariable("account_book_id") int accountBookId,
       @AuthenticationPrincipal UserDetails loginUser) {
 
     service.deleteAccountBookEntry(accountBookId, loginUser.getUsername());
