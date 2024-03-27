@@ -41,21 +41,20 @@ class _LoginPageState extends State<LoginPage> {
       developer.log('아이디: $loginId', name: 'signup.data');
       developer.log('비밀번호: $password', name: 'signup.data');
       developer.log('fcm_token: $fcmToken', name: 'fcm_token');
-      if (loginResult.isSuccess) {
-        // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
-        if (loginResult.role == 'CHILD') {
-          // 자녀 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const ChildPage()),
-          );
-        } else if (loginResult.role == 'ADULT') {
-          // 부모 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const ParentPage()),
-          );
-        }
+
+      // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
+      if (loginResult.role == 'CHILD') {
+        // 자녀 페이지로 이동
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ChildPage()),
+        );
+      } else if (loginResult.role == 'ADULT') {
+        // 부모 페이지로 이동
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ParentPage()),
+        );
       } else {
         print("로그인 실패");
       }

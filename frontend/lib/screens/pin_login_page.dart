@@ -3,6 +3,8 @@ import '../services/auth_service.dart';
 import '../widgets/nav_bar.dart';
 import 'package:frontend/screens/login_page.dart';
 import 'dart:developer' as developer;
+import 'child_page/child_page.dart';
+import 'parents_page/parent_page.dart';
 import 'pin_setting_page.dart';
 
 class PinLoginPage extends StatefulWidget {
@@ -19,10 +21,22 @@ class _PinLoginPageState extends State<PinLoginPage> {
 
   void _checkPin() async {
     String? savedPin = await _securityService.getPin();
+    // 사용자 역할 정보를 로컬 스토리지에서 조회
+    String? userRole = await _authService.getUserRole();
     if (savedPin == _pinController.text) {
-      developer.log('PIN: $savedPin', name: 'saved_pin');
+      if (userRole == 'CHILD') {
+      // 자녀 페이지로 이동
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const NavBar()));
+        context,
+        MaterialPageRoute(builder: (context) => const ChildPage()),
+      );
+    } else if (userRole == 'ADULT') {
+      // 부모 페이지로 이동
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ParentPage()),
+      );
+    }
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('PIN이 일치하지 않습니다.')));

@@ -11,6 +11,14 @@ import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'screens/alarm_page.dart';
+import 'screens/child_page/child_page.dart';
+import 'screens/friends_page/my_friends_page.dart';
+import 'screens/mission_page/my_mission_page.dart';
+import 'screens/pin_setting_page.dart';
+import 'screens/profile_page/my_profile_page.dart';
+import 'screens/salary_page/salary_list_page.dart';
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print("Handling a background message title : ${message.notification?.title}");
@@ -36,11 +44,53 @@ void registerNotification(String token) async {
   }
 }
 
+void handleNotificationClick(RemoteMessage? message) {
+  if (message != null) {
+    final category = message.data['category'];
+    if (category != null) {
+      switch (category) {
+        case '100':
+          Get.to(() => const MyFriendsPage());
+          break;
+        case '400':
+          Get.to(() => const SalaryListPage());
+          break;
+        case '600':
+          Get.to(() => const MyProfilePage());
+          break;
+        default:
+          Get.to(() => const ChildPage());
+          break;
+      }
+    }
+  }
+}
+
+// payload 기반 페이지 이동 처리 함수
+void handleNotificationPayload(String payload) {
+  // Get.to()를 사용하여 페이지 이동
+  if (payload == '100') {
+    Get.to(() => const AlarmPage());
+  } else if (payload == '400'){
+    Get.to(() => const SalaryListPage());
+  } else if (payload == '600'){
+    Get.to(() => const MyProfilePage());
+  } else {
+    Get.to(() => const AlarmPage());
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  final initialMessage = await firebaseMessaging.getInitialMessage();
+  handleNotificationClick(initialMessage);
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    handleNotificationClick(message);
+  });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -55,6 +105,22 @@ void main() async {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  // 알림 설정
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('ic_launcher');
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+
+  /// 새로운 콜백 함수 사용
+await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    onDidReceiveNotificationResponse: (NotificationResponse response) async {
+  if (response.payload != null) {
+    // 알림을 클릭했을 때 필요한 작업을 수행합니다.
+    handleNotificationPayload(response.payload!);
+  }
+});
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
@@ -84,15 +150,14 @@ void main() async {
         message.notification?.title,
         message.notification?.body,
         notificationDetails,
-        payload: 'item x');
+        payload: message.data['category']);
 
     // 받은 알림 출력
     print("Received notification title: ${message.notification?.title}");
     print("Received notification: ${message.notification?.body}");
     if (message.data.containsKey('category')) {
-    print("Foreground message category: ${message.data['category']}");
-  }
-
+      print("Foreground message category: ${message.data['category']}");
+    }
   });
 
   Get.put(UserController());
@@ -141,6 +206,13 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData && snapshot.data!.isSuccess) {
             // 로그인 성공 시 PIN 로그인 페이지로 이동
+            Future.delayed(Duration.zero, () async {
+              // 알림 데이터에 따른 처리 로직
+              RemoteMessage? initialMessage =
+                  await FirebaseMessaging.instance.getInitialMessage();
+              if (initialMessage != null)
+                handleNotificationClick(initialMessage);
+            });
             return const PinLoginPage();
           } else {
             // 로그인 실패 또는 로그인 정보 없음 -> 로그인 페이지로 이동
