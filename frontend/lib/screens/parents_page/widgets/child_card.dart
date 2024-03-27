@@ -59,35 +59,67 @@ class _ChildCardState extends State<ChildCard> {
                   // Text('요청 Group ID: ${widget.userId}'),
                   // Text('User ID: ${childDetail.userId}'),
                   // Text('Group ID: ${childDetail.groupId}'),
-                  Text(
-                    '${widget.groupNickname} 용돈',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text('자녀 계좌 번호: ${childDetail.accountNum}'),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${childDetail.isMonthly //
-                            ? '매달 ${childDetail.paymentDate}일' //
-                            : '매주 ${_convertToDayOfWeek(childDetail.paymentDate)}요일'}',
+                        '${widget.groupNickname} 용돈',
                         style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: const Text(
+                          '수정하기',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ],
                   ),
+                  Text('자녀 계좌 번호: ${childDetail.accountNum}'),
                   Text(
-                    moneyFormat.format(childDetail.allowanceAmt),
+                    '${childDetail.isMonthly //
+                        ? '매달 ${childDetail.paymentDate}일' //
+                        : '매주 ${_convertToDayOfWeek(childDetail.paymentDate)}요일'}',
                     style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        moneyFormat.format(childDetail.allowanceAmt),
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      FilledButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF3F62DE)),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          '이체',
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
