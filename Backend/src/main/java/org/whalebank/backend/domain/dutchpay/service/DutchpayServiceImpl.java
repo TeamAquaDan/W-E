@@ -7,20 +7,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.whalebank.backend.domain.accountbook.AccountBookEntity;
-import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
+import org.whalebank.backend.domain.dutchpay.SelectedPaymentEntity;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto.Transaction;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRepository;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRoomRepository;
+import org.whalebank.backend.domain.dutchpay.repository.SelectedPaymentRepository;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
-import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.CardHistoryDetail;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -30,6 +31,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final AuthRepository authRepository;
   private final DutchpayRepository dutchpayRepository;
   private final DutchpayRoomRepository dutchpayRoomRepository;
+  private final SelectedPaymentRepository selectedPaymentRepository;
   private final CardAccessUtil cardAccessUtil;
 
   @Override
@@ -102,14 +104,7 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     LocalDate targetDate = dutchpayRoom.getDutchpayDate();
 
-    List<CardHistoryDetail> paymentResponseList = new ArrayList<>(cardAccessUtil.getCardHistory(
-        user.getCardAccessToken(), targetDate.atStartOfDay()).getPay_list());
-
-    System.out.println(targetDate.atStartOfDay());
-
-    System.out.println(paymentResponseList.size());
-
-    List<PaymentResponseDto> paymentResponseList2 = cardAccessUtil.getCardHistory(
+    return cardAccessUtil.getCardHistory(
             user.getCardAccessToken(), targetDate.atStartOfDay()).getPay_list()
         .stream()
         .filter(detail -> {
@@ -123,7 +118,28 @@ public class DutchpayServiceImpl implements DutchpayService {
             .category(PaymentResponseDto.convertCodetoCategory(detail.getMember_store_type()))
             .build())
         .collect(Collectors.toList());
+  }
 
-    return paymentResponseList2;
+  @Override
+  public void registerPayments(String loginId, PaymentRequestDto request) {
+
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(request.getRoom_id())
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    DutchpayEntity dutchpay = dutchpayRepository.findByUserAndRoom(user, dutchpayRoom);
+
+    for (Transaction transaction : request.getTransactions()) {
+      selectedPaymentRepository
+          .save(SelectedPaymentEntity.from(dutchpay, transaction));
+    }
+
+    dutchpay.setAccountId(request.getAccount_id());
+    dutchpay.setAccountNum(request.getAccount_num());
+    dutchpay.setAccountPassword(request.getPassword());
+
+    dutchpayRepository.save(dutchpay);
   }
 }

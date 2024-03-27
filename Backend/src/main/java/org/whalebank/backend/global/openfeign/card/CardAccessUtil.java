@@ -32,5 +32,4 @@ public class CardAccessUtil {
     return cardClient.getCardList(accessToken, CardHistoryRequest.from(lastCardHistoryFetchTime))
         .getBody();
   }
-
 }
