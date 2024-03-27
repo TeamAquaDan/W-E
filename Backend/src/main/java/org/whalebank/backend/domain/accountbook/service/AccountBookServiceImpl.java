@@ -112,7 +112,7 @@ public class AccountBookServiceImpl implements AccountBookService {
     int expenseAmt = 0;
 
     for (AccountBookHistoryDetail detail : accountBookList) {
-      if (Objects.equals(detail.getAccount_book_category(), "100")) {
+      if (detail.getAccount_book_category().equals("100")) {
         incomeAmt += detail.getAccount_book_amt();
       } else {
         expenseAmt += detail.getAccount_book_amt();
