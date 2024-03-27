@@ -57,7 +57,14 @@ public enum ResponseCode {
 
   // 더치페이
   CANNOT_ADD_SELF(HttpStatus.BAD_REQUEST.value(), "본인은 자동 추가되기 때문에 추가할 수 없습니다"),
-  DUTCHPAY_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "더치페이 방이 존재하지 않습니다.");
+  DUTCHPAY_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "더치페이 방이 존재하지 않습니다."),
+
+  // 알림
+  NOTI_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "알림이 존재하지 않습니다"),
+  NOTI_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "알림 접근 권한이 없습니다"),
+  NOTI_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR.value(), "알림 전송에 실패했습니다"),
+  FIREBASE_SETTING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR.value(), "파이어베이스 세팅 실패");
+
 
   private final int code;
   private final String message;
