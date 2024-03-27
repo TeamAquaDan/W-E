@@ -34,11 +34,20 @@ public class MissionServiceImpl implements MissionService {
 
   @Override
   public MissionInfoResponseDto createMission(MissionCreateRequestDto reqDto, String loginId) {
-    GroupEntity group = getGroupEntity(reqDto.getGroup_id(), loginId);
+    UserEntity currentUser = getUserByLoginId(loginId);
+    GroupEntity group = getGroupEntity(reqDto.getGroup_id(), currentUser);
 
     // 미션 엔티티 생성
     MissionEntity entity = MissionEntity.of(reqDto, group);
     missionRepository.save(entity);
+
+    // 자녀에게 미션 등록 푸시 알림 보내기
+    UserEntity child = findMemberInGroup(group, "CHILD");
+    fcmUtils.sendNotificationByToken(child,
+        FCMRequestDto.of("미션이 등록되었어요!", String.format("%s님이 미션을 등록했어요! %d원을 받을 수 있어요!",
+                currentUser.getUserName(), entity.getMissionReward()),
+            FCMCategory.MISSION_ADDED
+        ));
 
     return MissionInfoResponseDto.from(entity, findMissionProvider(group));
   }
@@ -46,8 +55,8 @@ public class MissionServiceImpl implements MissionService {
 
   @Override
   public List<MissionInfoResponseDto> getAllMission(int groupId, String loginId) {
-
-    GroupEntity group = getGroupEntity(groupId, loginId);
+    UserEntity currentUser = getUserByLoginId(loginId);
+    GroupEntity group = getGroupEntity(groupId, currentUser);
 
     // 미션 목록
     return missionRepository.findAllByGroupOrderByDeadlineDateAsc(group)
@@ -58,7 +67,8 @@ public class MissionServiceImpl implements MissionService {
   @Override
   @Transactional
   public MissionInfoResponseDto manageMission(MissionManageRequestDto reqDto, String loginId) {
-    GroupEntity group = getGroupEntity(reqDto.getGroup_id(), loginId);
+    UserEntity currentUser = getUserByLoginId(loginId);
+    GroupEntity group = getGroupEntity(reqDto.getGroup_id(), currentUser);
 
     MissionEntity mission = missionRepository.findById(reqDto.getMission_id())
         .orElseThrow(() -> new CustomException(ResponseCode.MISSION_NOT_FOUND));
@@ -99,11 +109,13 @@ public class MissionServiceImpl implements MissionService {
     return null;
   }
 
-  // 그룹 찾기
-  private GroupEntity getGroupEntity(int groupId, String loginId) {
-    UserEntity user = userRepository.findByLoginId(loginId)
+  private UserEntity getUserByLoginId(String loginId) {
+    return userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+  }
 
+  // 그룹 찾기
+  private GroupEntity getGroupEntity(int groupId, UserEntity user) {
     GroupEntity group = groupRepository.findById(groupId)
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
 
