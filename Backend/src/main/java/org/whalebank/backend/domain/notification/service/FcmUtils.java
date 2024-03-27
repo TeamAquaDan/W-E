@@ -38,6 +38,7 @@ public class FcmUtils {
       notiRepository.save(NotificationEntity.from(reqDto, receiver));
       return true;
     } catch(FirebaseMessagingException e) {
+      e.printStackTrace();
       throw new CustomException(ResponseCode.NOTI_SEND_FAIL);
     }
   }

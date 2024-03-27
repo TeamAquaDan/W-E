@@ -46,6 +46,9 @@ public class GroupEntity {
   @Column(updatable = false)
   private LocalDate createdDtm;
 
+  @OneToMany(mappedBy = "userGroup")
+  List<RoleEntity> memberEntityList = new ArrayList<>();
+
   public static GroupEntity from(AddGroupRequestDto reqDto) {
     return GroupEntity.builder()
         .isMonthly(reqDto.is_monthly)
@@ -60,6 +63,10 @@ public class GroupEntity {
     this.allowanceAmt = reqDto.getAllowance_amt();
     this.dayOfMonth = isMonthly ? reqDto.payment_date : 0;
     this.dayOfWeek = isMonthly ? 0:reqDto.payment_date;
+  }
+
+  public void addRole(RoleEntity role) {
+    memberEntityList.add(role);
   }
 
 }
