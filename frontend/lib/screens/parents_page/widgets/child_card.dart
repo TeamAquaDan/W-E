@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
+import 'package:intl/intl.dart';
 
 class ChildCard extends StatefulWidget {
   final int groupId;
@@ -26,6 +27,7 @@ class _ChildCardState extends State<ChildCard> {
     _childDetailFuture = getChildDetail(widget.groupId, widget.userId);
   }
 
+  var moneyFormat = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ChildDetail>(
@@ -39,21 +41,54 @@ class _ChildCardState extends State<ChildCard> {
           // 데이터가 성공적으로 로드되면 카드를 출력
           ChildDetail childDetail = snapshot.data!;
           return Card(
-            margin: EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 1, color: Color(0xFFC1C7CE)),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: const Color(0xFF7A97FF),
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: 24,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('요청 User ID: ${widget.groupId}'),
-                  Text('요청 Group ID: ${widget.userId}'),
-                  Text('User ID: ${childDetail.userId}'),
-                  Text('Group ID: ${childDetail.groupId}'),
-                  Text('${widget.groupNickname} 용돈'),
-                  Text('Account Number: ${childDetail.accountNum}'),
-                  Text('Is Monthly: ${childDetail.isMonthly}'),
-                  Text('Allowance Amount: ${childDetail.allowanceAmt}'),
-                  Text('Payment Date: ${childDetail.paymentDate}'),
+                  // Text('요청 User ID: ${widget.groupId}'),
+                  // Text('요청 Group ID: ${widget.userId}'),
+                  // Text('User ID: ${childDetail.userId}'),
+                  // Text('Group ID: ${childDetail.groupId}'),
+                  Text(
+                    '${widget.groupNickname} 용돈',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text('자녀 계좌 번호: ${childDetail.accountNum}'),
+                  Row(
+                    children: [
+                      Text(
+                        '${childDetail.isMonthly //
+                            ? '매달 ${childDetail.paymentDate}일' //
+                            : '매주 ${_convertToDayOfWeek(childDetail.paymentDate)}요일'}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    moneyFormat.format(childDetail.allowanceAmt),
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -61,5 +96,26 @@ class _ChildCardState extends State<ChildCard> {
         }
       },
     );
+  }
+
+  String _convertToDayOfWeek(int day) {
+    switch (day) {
+      case 1:
+        return '월';
+      case 2:
+        return '화';
+      case 3:
+        return '수';
+      case 4:
+        return '목';
+      case 5:
+        return '금';
+      case 6:
+        return '토';
+      case 7:
+        return '일';
+      default:
+        return '';
+    }
   }
 }
