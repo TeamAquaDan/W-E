@@ -44,4 +44,17 @@ public class NotiServiceimpl implements NotiService{
     }
     noti.readNotification();
   }
+
+  @Override
+  public void readAll(String loginId) {
+    UserEntity user = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    List<NotificationEntity> notiList = notiRepository.findAllByUser(user);
+    for (NotificationEntity entity : notiList) {
+      if (!entity.isRead()) {
+        entity.readNotification();
+      }
+    }
+  }
 }

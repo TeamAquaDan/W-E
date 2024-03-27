@@ -30,11 +30,18 @@ public class NotiController {
   }
 
   @PatchMapping("/{noti_id}")
-  @Operation(summary = "알림 단건 조회", description = "noti_id에 해당하는 알림을 읽음 처리함")
+  @Operation(summary = "알림 단건 읽음 처리", description = "noti_id에 해당하는 알림을 읽음 처리함")
   public ApiResponse<?> readNotification(@AuthenticationPrincipal UserDetails loginUser,
       @PathVariable("noti_id") int notiId) {
     notiService.readNotification(loginUser.getUsername(), notiId);
     return ApiResponse.ok("알림 읽음 성공");
+  }
+
+  @PatchMapping("/read-all")
+  @Operation(summary = "모든 알림 읽음 처리", description = "내가 받은 모든 알림을 읽음 처리함")
+  public ApiResponse<?> readAllNotification(@AuthenticationPrincipal UserDetails loginUser) {
+    notiService.readAll(loginUser.getUsername());
+    return ApiResponse.ok("알림 읽음 확인");
   }
 
 

@@ -9,4 +9,6 @@ public interface NotiService {
 
   public void readNotification(String loginId, int notificationId);
 
+  public void readAll(String loginId);
+
 }
