@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/api/save/goal_add_api.dart';
 import 'package:frontend/models/save/goal_add.dart';
@@ -41,16 +43,26 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
   }
 
   void _updateAmount() {
+    // 사용자 입력에서 숫자만 추출합니다.
     String plainNumber =
         _amountController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    int? number = int.tryParse(plainNumber);
-    if (number != null) {
-      String formattedNumber = '${_numberFormat.format(number)}원';
-      _amountController.value = TextEditingValue(
-        text: formattedNumber,
-        selection: TextSelection.collapsed(offset: formattedNumber.length),
-      );
-    }
+    // 추출된 숫자에 대해 콤마를 포함한 포맷을 적용합니다.
+    String formattedNumber =
+        plainNumber.isEmpty ? '' : _numberFormat.format(int.parse(plainNumber));
+
+    // 커서의 현재 위치를 계산합니다.
+    int cursorPosition = _amountController.selection.start;
+    // 콤마를 추가하기 전과 후의 숫자 길이 차이를 계산합니다.
+    int offset = formattedNumber.length - plainNumber.length;
+
+    // 포맷된 텍스트를 설정하고, 커서 위치를 조정합니다.
+    // 이는 사용자가 숫자를 입력하거나 삭제할 때 커서가 적절한 위치에 있도록 합니다.
+    _amountController.value = TextEditingValue(
+      text: formattedNumber,
+      // 사용자가 텍스트를 수정할 때 커서 위치를 유지하도록 조정합니다.
+      selection: TextSelection.collapsed(
+          offset: max(0, min(cursorPosition + offset, formattedNumber.length))),
+    );
   }
 
   void _presentDatePicker() {
@@ -190,36 +202,42 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    // 금액을 int로 변환합니다.
                     int goalAmt = int.parse(_amountController.text
                         .replaceAll(RegExp(r'[^0-9]'), ''));
-                    // 카테고리 코드와 계좌 ID를 적절히 처리합니다. 예제에서는 직접 매핑하지 않습니다.
-                    String categoryCode = _selectedCategoryCode ??
-                        ''; // 기본값 또는 오류 처리가 필요할 수 있습니다.
-                    // 계좌 ID 처리. 여기서는 임시로 0을 할당합니다.
-                    int accountId = 1; // 실제로는 선택된 계좌에 대한 ID를 할당해야 합니다.
+                    String categoryCode = _selectedCategoryCode ?? '';
+                    int accountId = 6;
 
-                    // 목표 날짜를 ISO 8601 문자열로 변환합니다. 선택되지 않은 경우 기본값 처리가 필요할 수 있습니다.
-                    String goalDate = _selectedDate?.toIso8601String() ?? '';
+                    // _selectedDate를 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
+                    String formattedGoalDate = _selectedDate != null
+                        ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
+                        : '';
 
                     PostAddGoalBody goalBody = PostAddGoalBody(
                       goal_name: _controller.text,
                       goal_amt: goalAmt,
-                      goal_date: goalDate,
+                      goal_date: formattedGoalDate, // 변환된 날짜 문자열을 사용합니다.
                       category: categoryCode,
                       account_id: accountId,
                     );
 
-                    // API 호출
                     try {
+                      print(
+                          'Goal Name: ${goalBody.goal_name}, Type: ${goalBody.goal_name.runtimeType}');
+                      print(
+                          'Goal Amount: ${goalBody.goal_amt}, Type: ${goalBody.goal_amt.runtimeType}');
+                      print(
+                          'Goal Date: ${goalBody.goal_date}, Type: ${goalBody.goal_date.runtimeType}');
+                      print(
+                          'Category: ${goalBody.category}, Type: ${goalBody.category.runtimeType}');
+                      print(
+                          'Account ID: ${goalBody.account_id}, Type: ${goalBody.account_id.runtimeType}');
+
                       var response = await postGoal(goalBody);
                       if (response != null) {
-                        // 성공적으로 데이터를 전송했다면, 사용자에게 알림 등의 처리를 수행합니다.
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
                         );
                       } else {
-                        // 오류 처리
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("목표 등록에 실패했습니다.")),
                         );

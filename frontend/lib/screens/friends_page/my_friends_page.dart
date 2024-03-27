@@ -105,14 +105,15 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                 const SizedBox(width: 10),
                 IconButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const Dialog(
-                          child: ContactsModal(),
-                        );
-                      },
-                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return const Dialog(
+                    //       child: ContactsModal(),
+                    //     );
+                    //   },
+                    // );
+                    Get.to(() => const ContactsModal());
                   },
                   icon: const Icon(Icons.person_add),
                   iconSize: 35,
