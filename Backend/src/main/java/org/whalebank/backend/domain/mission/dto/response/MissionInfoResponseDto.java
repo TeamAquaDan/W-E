@@ -1,6 +1,5 @@
 package org.whalebank.backend.domain.mission.dto.response;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;

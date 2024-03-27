@@ -2,6 +2,7 @@ package org.whalebank.backend.domain.mission.service;
 
 import java.util.List;
 import org.whalebank.backend.domain.mission.dto.request.MissionCreateRequestDto;
+import org.whalebank.backend.domain.mission.dto.request.MissionManageRequestDto;
 import org.whalebank.backend.domain.mission.dto.response.MissionInfoResponseDto;
 
 public interface MissionService {
@@ -10,4 +11,5 @@ public interface MissionService {
 
   List<MissionInfoResponseDto> getAllMission(int groupId, String loginId);
 
+  MissionInfoResponseDto manageMission(MissionManageRequestDto reqDto, String loginId);
 }

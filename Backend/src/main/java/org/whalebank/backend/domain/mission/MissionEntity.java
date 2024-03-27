@@ -67,4 +67,8 @@ public class MissionEntity {
         .build();
   }
 
+  public void manageMission(int status) {
+    this.status = status;
+  }
+
 }

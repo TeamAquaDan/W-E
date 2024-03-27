@@ -7,12 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.mission.dto.request.MissionCreateRequestDto;
+import org.whalebank.backend.domain.mission.dto.request.MissionManageRequestDto;
 import org.whalebank.backend.domain.mission.dto.response.MissionInfoResponseDto;
 import org.whalebank.backend.domain.mission.service.MissionService;
 import org.whalebank.backend.global.response.ApiResponse;
@@ -42,5 +44,14 @@ public class MissionController {
         missionService.getAllMission(groupId, loginUser.getUsername()));
   }
 
+  @PatchMapping("")
+  @Operation(summary = "미션 관리(성공/실패)", description = "미션을 성공 처리하거나 실패 처리한다")
+  public ApiResponse<MissionInfoResponseDto> manageMission(
+      @RequestBody MissionManageRequestDto reqDto,
+      @AuthenticationPrincipal UserDetails loginUser
+  ) {
+    return ApiResponse.ok("미션 처리 완료",
+        missionService.manageMission(reqDto, loginUser.getUsername()));
+  }
 
 }

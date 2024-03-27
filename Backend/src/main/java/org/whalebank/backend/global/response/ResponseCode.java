@@ -63,7 +63,11 @@ public enum ResponseCode {
   NOTI_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "알림이 존재하지 않습니다"),
   NOTI_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "알림 접근 권한이 없습니다"),
   NOTI_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR.value(), "알림 전송에 실패했습니다"),
-  FIREBASE_SETTING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR.value(), "파이어베이스 세팅 실패");
+  FIREBASE_SETTING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR.value(), "파이어베이스 세팅 실패"),
+
+  // 미션
+  MISSION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "미션이 존재하지 않습니다")
+  ;
 
 
   private final int code;
