@@ -28,22 +28,6 @@ class MenuPage extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => const SalaryIncreasePage());
-              },
-              child: const Text('Increase Salary Page'),
-            ),
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Get.to(() => const SalaryIncreaseFormPage());
-              },
-              child: const Text('Increase Salary Form Page'),
-            ),
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
                 Get.to(() => const SalaryListPage());
               },
               child: const Text('Salary List Page'),

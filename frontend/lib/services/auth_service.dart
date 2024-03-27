@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:frontend/models/user/user_controller.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'dart:developer' as developer;
 import 'package:frontend/main.dart';
 import 'package:get/get.dart';
@@ -93,8 +93,7 @@ class AuthService {
         await _storage.write(key: 'user_role', value: role); // 사용자 역할 저장
         String? checkAccesstoken = await _storage.read(key: 'access_token');
         String? checkRefreshtoken = await _storage.read(key: 'refresh_token');
-        developer.log('access: $checkAccesstoken',
-            name: 'check_accesstoken');
+        developer.log('access: $checkAccesstoken', name: 'check_accesstoken');
         developer.log('refresh: $checkRefreshtoken',
             name: 'check_refreshtoken');
 

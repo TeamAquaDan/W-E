@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/salary_page/widgets/salary.dart';
+import 'package:frontend/services/dio_service.dart';
 
 class SalaryListPage extends StatefulWidget {
   const SalaryListPage({super.key});
@@ -27,85 +29,27 @@ class _SalaryListPageState extends State<SalaryListPage> {
   }
 
   Future<List<dynamic>> fetchSalarysFromAPI() async {
-    return [
-      {
-        "is_monthly": true,
-        "allowance_amt": 50000,
-        "payment_date": 15,
-        "group_nickname": "가족 그룹 A",
-        "group_id": 1,
-        "user_id": 101,
-        "user_name": "김철수"
-      },
-      {
-        "is_monthly": false,
-        "allowance_amt": 30000,
-        "payment_date": 2,
-        "group_nickname": "가족 그룹 B",
-        "group_id": 2,
-        "user_id": 102,
-        "user_name": "박영희"
-      },
-      {
-        "is_monthly": true,
-        "allowance_amt": 100000,
-        "payment_date": 5,
-        "group_nickname": "가족 그룹 C",
-        "group_id": 3,
-        "user_id": 103,
-        "user_name": "이민준"
-      },
-      {
-        "is_monthly": true,
-        "allowance_amt": 75000,
-        "payment_date": 10,
-        "group_nickname": "가족 그룹 D",
-        "group_id": 4,
-        "user_id": 104,
-        "user_name": "최수지"
-      },
-      {
-        "is_monthly": false,
-        "allowance_amt": 60000,
-        "payment_date": 7,
-        "group_nickname": "가족 그룹 E",
-        "group_id": 5,
-        "user_id": 105,
-        "user_name": "정하늘"
-      },
-      {
-        "is_monthly": true,
-        "allowance_amt": 45000,
-        "payment_date": 12,
-        "group_nickname": "가족 그룹 F",
-        "group_id": 6,
-        "user_id": 106,
-        "user_name": "한지민"
-      },
-      {
-        "is_monthly": true,
-        "allowance_amt": 55000,
-        "payment_date": 18,
-        "group_nickname": "가족 그룹 G",
-        "group_id": 7,
-        "user_id": 107,
-        "user_name": "송다은"
-      },
-      {
-        "is_monthly": true,
-        "allowance_amt": 85000,
-        "payment_date": 28,
-        "group_nickname": "가족 그룹 H",
-        "group_id": 8,
-        "user_id": 108,
-        "user_name": "우성호"
-      },
-    ];
+    final DioService dioService = DioService();
+
+    try {
+      var response = await dioService.dio.get(
+        '${baseURL}api/allowance/list',
+      );
+      print(response.data);
+      if (response.statusCode == 200) {
+        return response.data['data'];
+      } else {
+        print('Error: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: const Text('용돈 내역'),
