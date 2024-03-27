@@ -7,6 +7,6 @@ import org.whalebank.backend.domain.mission.MissionEntity;
 
 public interface MissionRepository extends JpaRepository<MissionEntity, Integer> {
 
-  List<MissionEntity> findAllByGroup(GroupEntity group);
+  List<MissionEntity> findAllByGroupOrderByDeadlineDateAsc(GroupEntity group);
 
 }

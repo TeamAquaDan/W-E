@@ -36,7 +36,7 @@ public class MissionController {
   }
 
   @GetMapping("/{group_id}")
-  @Operation(summary = "미션 조회(부모, 자녀 모두 가능)", description = "그룹에 속하는 모든 미션 목록을 조회한다")
+  @Operation(summary = "미션 조회(부모, 자녀 모두 가능)", description = "그룹에 속하는 모든 미션 목록 마감일 순으로 조회한다")
   public ApiResponse<List<MissionInfoResponseDto>> getAllMissionByGroupId(
       @PathVariable("group_id") int groupId,
       @AuthenticationPrincipal UserDetails loginUser) {

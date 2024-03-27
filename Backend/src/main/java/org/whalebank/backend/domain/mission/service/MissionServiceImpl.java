@@ -83,7 +83,7 @@ public class MissionServiceImpl implements MissionService {
         .map(roleEntity -> roleEntity.getUser().getUserName()).orElse(null);
 
     // 미션 목록
-    return missionRepository.findAllByGroup(group)
+    return missionRepository.findAllByGroupOrderByDeadlineDateAsc(group)
         .stream().map(m -> MissionInfoResponseDto.from(m, providerName))
         .collect(Collectors.toList());
   }
