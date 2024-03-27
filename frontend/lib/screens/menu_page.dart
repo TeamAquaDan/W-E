@@ -14,6 +14,8 @@ import 'package:frontend/screens/salary_page/salary_increase_form_page.dart';
 import 'package:frontend/screens/salary_page/salary_list_page.dart';
 import 'package:frontend/screens/salary_page/salary_increase_page.dart';
 
+import 'alarm_page.dart';
+
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
   @override
@@ -110,7 +112,12 @@ class MenuPage extends StatelessWidget {
               onPressed: () {
                 Get.to(() => const AccountBookPage());
               },
-              child: const Text('AccountBookPage'))
+              child: const Text('AccountBookPage')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(() => const AlarmPage());
+              },
+              child: const Text('Notify'))
         ],
       ),
     );
