@@ -68,51 +68,22 @@ public class DutchpayServiceImpl implements DutchpayService {
 
   @Override
   public List<DutchpayRoomResponseDto> getDutchpayRooms(String loginId) {
-
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByUserId(user.getUserId());
+    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByUser(user);
 
-    List<DutchpayRoomResponseDto> dutchpayRooms = new ArrayList<>();
-
-    for(DutchpayEntity dutchpay: dutchpayList){
-
-      DutchpayRoomEntity dutchpayRoom = dutchpay.getRoom();
-
-      List<String> profileImg = new ArrayList<>();
-
-      List<DutchpayEntity> userDutchpay = dutchpayRepository.findByRoomId(dutchpayRoom.getRoomId());
-
-      for(DutchpayEntity userProfile : userDutchpay){
-        profileImg.add(userProfile.getUser().getProfile().getProfileImage());
-      }
-
-
-      dutchpayRooms.add(DutchpayRoomResponseDto.from(dutchpay.getRoom(), profileImg));
-    }
-
-    return dutchpayRooms;
+    return dutchpayList.stream()
+        .map(dutchpay -> {
+          DutchpayRoomEntity dutchpayRoom = dutchpay.getRoom();
+          List<String> profileImg = dutchpayRepository.findByRoom(dutchpayRoom).stream()
+              .map(userProfile -> userProfile.getUser().getProfile().getProfileImage())
+              .collect(Collectors.toList());
+          return DutchpayRoomResponseDto.from(dutchpay.getRoom(), profileImg);
+        })
+        .collect(Collectors.toList());
   }
 
-//  @Override
-//  public List<DutchpayRoomResponseDto> getDutchpayRooms(String loginId) {
-//    UserEntity user = authRepository.findByLoginId(loginId)
-//        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
-//
-//    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByUserId(user.getUserId());
-//
-//    return dutchpayList.stream()
-//        .map(DutchpayEntity::getRoom)
-//        .map(dutchpayRoom -> {
-//          List<String> profileImg = dutchpayRepository.findByRoomId(dutchpayRoom.getRoomId())
-//              .stream()
-//              .map(userProfile -> userProfile.getUser().getProfile().getProfileImage())
-//              .collect(Collectors.toList());
-//          return DutchpayRoomResponseDto.from(dutchpayRoom, profileImg);
-//        })
-//        .collect(Collectors.toList());
-//  }
 
 }
 
