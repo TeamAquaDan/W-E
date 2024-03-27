@@ -16,6 +16,9 @@ import org.whalebank.backend.domain.friend.dto.response.FriendResponseDto;
 import org.whalebank.backend.domain.friend.dto.response.UpdateFriendNicknameResponseDto;
 import org.whalebank.backend.domain.friend.repository.FriendRepository;
 import org.whalebank.backend.domain.friend.repository.FriendshipRepository;
+import org.whalebank.backend.domain.notification.FCMCategory;
+import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
+import org.whalebank.backend.domain.notification.service.FcmUtils;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
@@ -28,6 +31,7 @@ public class FriendServiceImpl implements FriendService {
   private final FriendRepository friendRepository;
   private final AuthRepository userRepository;
   private final FriendshipRepository friendshipRepository;
+  private final FcmUtils fcmUtils;
 
   @Override
   public List<FriendResponseDto> findAllMyFriends(String loginId) {
@@ -59,7 +63,10 @@ public class FriendServiceImpl implements FriendService {
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
     friendshipRepository.save(FriendshipEntity.of(user, receiver));
 
-    // TODO: receiver에게 푸시 알림 보내기
+    // receiver에게 푸시 알림 보내기
+    fcmUtils.sendNotificationByToken(receiver, FCMRequestDto.of("친구 요청이 왔어요!",
+        String.format("%s님이 %s님에게 친구 요청을 보냈어요!", user.getUserCi(), receiver.getUserName()),
+        FCMCategory.FRIEND_REQUEST_RECEIVED));
   }
 
   private UserEntity getCurrentUser(String loginId) {
@@ -87,7 +94,13 @@ public class FriendServiceImpl implements FriendService {
       friendRepository.save(entity1);
       friendRepository.save(entity2);
 
-      // TODO: 요청자에게 푸시 알림 보내기
+      // 요청자에게 푸시 알림 보내기
+      fcmUtils.sendNotificationByToken(requester, FCMRequestDto.of(
+          "친구 요청이 승인되었어요!",
+          String.format("%s님이 친구 요청을 승인하여 %s님과 친구가 되었습니다.", receiver.getUserName(),
+              requester.getUserName()),
+          FCMCategory.FRIEND_REQUEST_ACCEPTED
+      ));
 
     } else if(reqDto.getStatus()>2 || reqDto.getStatus()<=0) {
       throw new CustomException(ResponseCode.INVALID_FRIENDSHIP_REQ);
