@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.accountbook.AccountBookEntity;
 import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
@@ -101,18 +102,28 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     LocalDate targetDate = dutchpayRoom.getDutchpayDate();
 
-    List<CardHistoryDetail> cardHistoryList = cardAccessUtil.getCardHistory(
+    List<CardHistoryDetail> paymentResponseList = new ArrayList<>(cardAccessUtil.getCardHistory(
+        user.getCardAccessToken(), targetDate.atStartOfDay()).getPay_list());
+
+    System.out.println(targetDate.atStartOfDay());
+
+    System.out.println(paymentResponseList.size());
+
+    List<PaymentResponseDto> paymentResponseList2 = cardAccessUtil.getCardHistory(
             user.getCardAccessToken(), targetDate.atStartOfDay()).getPay_list()
         .stream()
         .filter(detail -> {
           LocalDateTime transactionDateTime = detail.getTransaction_dtm();
-          return !transactionDateTime.isBefore(targetDate.atStartOfDay())
-              && !transactionDateTime.isAfter(targetDate.plusDays(1).atStartOfDay());
+          return !transactionDateTime.isAfter(targetDate.plusDays(1).atStartOfDay());
         })
-        .toList();
+        .map(detail -> PaymentResponseDto.builder()
+            .trans_id(detail.getTrans_id())
+            .member_store_name(detail.getMember_store_name())
+            .trans_amt(detail.getTrans_amt())
+            .category(PaymentResponseDto.convertCodetoCategory(detail.getMember_store_type()))
+            .build())
+        .collect(Collectors.toList());
 
-    return null;
+    return paymentResponseList2;
   }
-
 }
-
