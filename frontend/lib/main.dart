@@ -15,6 +15,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print("Handling a background message title : ${message.notification?.title}");
   print("Handling a background message body : ${message.notification?.body}");
+  if (message.data.containsKey('category')) {
+    print("Background message category: ${message.data['category']}");
+  }
 }
 
 String? globalFCMToken;
@@ -86,6 +89,10 @@ void main() async {
     // 받은 알림 출력
     print("Received notification title: ${message.notification?.title}");
     print("Received notification: ${message.notification?.body}");
+    if (message.data.containsKey('category')) {
+    print("Foreground message category: ${message.data['category']}");
+  }
+
   });
 
   Get.put(UserController());
