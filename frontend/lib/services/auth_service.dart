@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:frontend/models/user/user_controller.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'dart:developer' as developer;
 import 'package:frontend/main.dart';
 import 'package:get/get.dart';
@@ -91,8 +91,7 @@ class AuthService {
         await _storage.write(key: 'refresh_token', value: refreshToken);
         String? checkAccesstoken = await _storage.read(key: 'access_token');
         String? checkRefreshtoken = await _storage.read(key: 'refresh_token');
-        developer.log('access: $checkAccesstoken',
-            name: 'check_accesstoken');
+        developer.log('access: $checkAccesstoken', name: 'check_accesstoken');
         developer.log('refresh: $checkRefreshtoken',
             name: 'check_refreshtoken');
         // 역할 정보를 포함하여 LoginResult 객체 반환

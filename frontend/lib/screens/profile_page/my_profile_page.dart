@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
-import 'package:frontend/models/user/user_controller.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/friends_page/my_friends_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';

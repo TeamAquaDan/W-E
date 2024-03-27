@@ -1,12 +1,15 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:frontend/models/account/account_list_data.dart';
+import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:frontend/services/dio_service.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../base_url.dart';
 
 Future<List<AccountListData>?> getAccountListData(String accessToken) async {
   final DioService dioService = DioService();
   try {
-    Response response = await dioService.dio.get(
+    dio.Response response = await dioService.dio.get(
       '${baseURL}api/account',
     );
 
@@ -27,7 +30,7 @@ Future<List<AccountListData>?> getAccountListData(String accessToken) async {
 Future<AccountDetailData?> getAccountDetail(int accountId) async {
   final DioService dioService = DioService();
   try {
-    Response response = await dioService.dio.get(
+    dio.Response response = await dioService.dio.get(
       '${baseURL}api/account/detail',
       data: {'account_id': accountId},
     );
@@ -56,7 +59,7 @@ Future<List<AccountHistoryData>?> getAccountHistoryData(
     String accessToken, AccountHistoryBody body) async {
   final DioService dioService = DioService();
   try {
-    Response response = await dioService.dio.get(
+    dio.Response response = await dioService.dio.get(
       '${baseURL}api/account/history',
       data: body.toMap(),
     );
@@ -69,6 +72,7 @@ Future<List<AccountHistoryData>?> getAccountHistoryData(
       List<AccountHistoryData> accountList = (response.data['data'] as List)
           .map((item) => AccountHistoryData.fromJson(item))
           .toList();
+
       return accountList;
     } else {
       print('Error: No data field or null data in response');

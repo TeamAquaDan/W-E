@@ -109,14 +109,17 @@ class Salary extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       Get.to(
-                        () => const SalaryIncreasePage(),
-                        arguments: {},
+                        () => SalaryIncreasePage(
+                          groupNickname: groupNickname,
+                          userName: userName,
+                          groupId: groupId,
+                        ),
                       );
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: const Color(0xFFFFEF83),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                     ),
                     child: const Text(
                       '인상요청',
