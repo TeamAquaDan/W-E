@@ -3,6 +3,7 @@ package org.whalebank.backend.domain.dutchpay.service;
 import java.util.List;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
 
@@ -15,4 +16,6 @@ public interface DutchpayService {
   List<PaymentResponseDto> getPayments(String loginId, int dutchpayRoomId);
 
   void registerPayments(String loginId, PaymentRequestDto request);
+
+  List<DutchpayDetailResponseDto> getDutchpayRoom(String loginId, int roomId);
 }

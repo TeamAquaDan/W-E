@@ -43,10 +43,10 @@ public class SelectedPaymentEntity {
     return SelectedPaymentEntity
         .builder()
         .dutchpay(dutchpay)
-        .transId(transaction.getTransId())
-        .transAmt(transaction.getTransAmt())
+        .transId(transaction.getTrans_id())
+        .transAmt(transaction.getTrans_amt())
         .category(transaction.getCategory())
-        .memberStoreName(transaction.getMemberStoreName())
+        .memberStoreName(transaction.getMember_storeName())
         .build();
   }
 }

@@ -13,6 +13,7 @@ import org.whalebank.backend.domain.dutchpay.SelectedPaymentEntity;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto.Transaction;
+import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRepository;
@@ -137,7 +138,7 @@ public class DutchpayServiceImpl implements DutchpayService {
       selectedPaymentRepository
           .save(SelectedPaymentEntity.from(dutchpay, transaction));
 
-      totalAmt += transaction.getTransAmt();
+      totalAmt += transaction.getTrans_amt();
     }
 
     dutchpay.setAccountId(request.getAccount_id());
@@ -146,5 +147,21 @@ public class DutchpayServiceImpl implements DutchpayService {
     dutchpay.setTotalAmt(totalAmt);
 
     dutchpayRepository.save(dutchpay);
+  }
+
+  @Override
+  public List<DutchpayDetailResponseDto> getDutchpayRoom(String loginId, int roomId) {
+
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(roomId)
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByRoom(dutchpayRoom);
+
+    return dutchpayList.stream()
+        .map(DutchpayDetailResponseDto::from)
+        .collect(Collectors.toList());
   }
 }

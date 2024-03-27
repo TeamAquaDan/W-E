@@ -19,9 +19,9 @@ public class PaymentRequestDto {
   @Getter
   public static class Transaction {
 
-    private int transId; // 거래 고유 번호
-    private int transAmt; // 거래 금액
+    private int trans_id; // 거래 고유 번호
+    private int trans_amt; // 거래 금액
     private String category;  // 카테고리
-    private String memberStoreName; // 거래 제목
+    private String member_storeName; // 거래 제목
   }
 }

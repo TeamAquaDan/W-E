@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
 import org.whalebank.backend.domain.dutchpay.service.DutchpayService;
@@ -49,7 +51,7 @@ public class DutchpayController {
   @PostMapping("/my-payments")
   public ApiResponse<List<PaymentResponseDto>> getPayments(
       @AuthenticationPrincipal UserDetails loginUser,
-      @RequestParam int dutchpayRoomId){
+      @RequestParam int dutchpayRoomId) {
 
     return ApiResponse.ok("결제 내역 조회 성공",
         dutchpayService.getPayments(loginUser.getUsername(), dutchpayRoomId));
@@ -59,11 +61,23 @@ public class DutchpayController {
   @PostMapping("/register")
   public ApiResponse<?> registerPayments(
       @AuthenticationPrincipal UserDetails loginUser,
-      @RequestBody PaymentRequestDto request){
+      @RequestBody PaymentRequestDto request) {
 
     dutchpayService.registerPayments(loginUser.getUsername(), request);
     return ApiResponse.ok("더치페이 금액 및 계좌 등록 성공");
   }
+
+  @Operation(summary = "더치페이 방 상세 조회")
+  @GetMapping("/{room_id}")
+  public ApiResponse<List<DutchpayDetailResponseDto>> getDutchpayRoom(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @PathVariable("room_id") int roomId) {
+
+    List<DutchpayDetailResponseDto> dutchpayRoom = dutchpayService.getDutchpayRoom(loginUser.getUsername(), roomId);
+
+    return ApiResponse.ok("더치페이 방 상세 조회", dutchpayRoom);
+  }
+
 
 
 }
