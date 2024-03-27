@@ -1,5 +1,7 @@
 package org.whalebank.backend.domain.dutchpay.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,11 +12,14 @@ import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
+import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRepository;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRoomRepository;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
+import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
+import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.CardHistoryDetail;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -24,6 +29,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final AuthRepository authRepository;
   private final DutchpayRepository dutchpayRepository;
   private final DutchpayRoomRepository dutchpayRoomRepository;
+  private final CardAccessUtil cardAccessUtil;
 
   @Override
   public DutchpayRoomResponseDto createDutchpayRoom(String loginId,
@@ -84,6 +90,29 @@ public class DutchpayServiceImpl implements DutchpayService {
         .collect(Collectors.toList());
   }
 
+  @Override
+  public List<PaymentResponseDto> getPayments(String loginId, int dutchpayRoomId) {
+
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(dutchpayRoomId)
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    LocalDate targetDate = dutchpayRoom.getDutchpayDate();
+
+    List<CardHistoryDetail> cardHistoryList = cardAccessUtil.getCardHistory(
+            user.getCardAccessToken(), targetDate.atStartOfDay()).getPay_list()
+        .stream()
+        .filter(detail -> {
+          LocalDateTime transactionDateTime = detail.getTransaction_dtm();
+          return !transactionDateTime.isBefore(targetDate.atStartOfDay())
+              && !transactionDateTime.isAfter(targetDate.plusDays(1).atStartOfDay());
+        })
+        .toList();
+
+    return null;
+  }
 
 }
 

@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
+import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
 import org.whalebank.backend.domain.dutchpay.service.DutchpayService;
 import org.whalebank.backend.global.response.ApiResponse;
 
@@ -40,6 +42,16 @@ public class DutchpayController {
       @AuthenticationPrincipal UserDetails loginUser) {
     return ApiResponse.ok("더치페이 목록 조회 성공",
         dutchpayService.getDutchpayRooms(loginUser.getUsername()));
+  }
+
+  @Operation(summary = "결제 내역 조회")
+  @PostMapping("/my-payments")
+  public ApiResponse<List<PaymentResponseDto>> getPayments(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @RequestParam int dutchpayRoomId){
+
+    return ApiResponse.ok("결제 내역 조회 성공",
+        dutchpayService.getPayments(loginUser.getUsername(), dutchpayRoomId));
   }
 
 }
