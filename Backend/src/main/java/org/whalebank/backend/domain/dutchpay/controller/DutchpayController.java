@@ -2,9 +2,12 @@ package org.whalebank.backend.domain.dutchpay.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +25,21 @@ public class DutchpayController {
 
   private final DutchpayService dutchpayService;
 
-  @Operation(summary = "더치페이 방 등록")
+  @Operation(summary = "더치페이 방 생성")
   @PostMapping
   public ApiResponse<DutchpayRoomResponseDto> createDutchpayRoom(
       @AuthenticationPrincipal UserDetails loginUser,
       @RequestBody DutchpayRoomRequestDto request) {
     return ApiResponse.ok("더치페이 방 생성 성공",
         dutchpayService.createDutchpayRoom(loginUser.getUsername(), request));
+  }
+
+  @Operation(summary = "더치페이 목록 조회")
+  @GetMapping
+  public ApiResponse<List<DutchpayRoomResponseDto>> getDutchpayRooms(
+      @AuthenticationPrincipal UserDetails loginUser) {
+    return ApiResponse.ok("더치페이 목록 조회 성공",
+        dutchpayService.getDutchpayRooms(loginUser.getUsername()));
   }
 
 }

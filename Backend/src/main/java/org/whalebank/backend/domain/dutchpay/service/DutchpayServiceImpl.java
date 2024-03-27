@@ -2,6 +2,7 @@ package org.whalebank.backend.domain.dutchpay.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.accountbook.dto.response.AccountBookEntryResponseDto;
@@ -64,5 +65,54 @@ public class DutchpayServiceImpl implements DutchpayService {
     // 요청으로 들어온 친구 목록의 프로필 사진이 리턴값에 포함
     return DutchpayRoomResponseDto.from(dutchpayRoom, profileImg);
   }
+
+  @Override
+  public List<DutchpayRoomResponseDto> getDutchpayRooms(String loginId) {
+
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByUserId(user.getUserId());
+
+    List<DutchpayRoomResponseDto> dutchpayRooms = new ArrayList<>();
+
+    for(DutchpayEntity dutchpay: dutchpayList){
+
+      DutchpayRoomEntity dutchpayRoom = dutchpay.getRoom();
+
+      List<String> profileImg = new ArrayList<>();
+
+      List<DutchpayEntity> userDutchpay = dutchpayRepository.findByRoomId(dutchpayRoom.getRoomId());
+
+      for(DutchpayEntity userProfile : userDutchpay){
+        profileImg.add(userProfile.getUser().getProfile().getProfileImage());
+      }
+
+
+      dutchpayRooms.add(DutchpayRoomResponseDto.from(dutchpay.getRoom(), profileImg));
+    }
+
+    return dutchpayRooms;
+  }
+
+//  @Override
+//  public List<DutchpayRoomResponseDto> getDutchpayRooms(String loginId) {
+//    UserEntity user = authRepository.findByLoginId(loginId)
+//        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+//
+//    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByUserId(user.getUserId());
+//
+//    return dutchpayList.stream()
+//        .map(DutchpayEntity::getRoom)
+//        .map(dutchpayRoom -> {
+//          List<String> profileImg = dutchpayRepository.findByRoomId(dutchpayRoom.getRoomId())
+//              .stream()
+//              .map(userProfile -> userProfile.getUser().getProfile().getProfileImage())
+//              .collect(Collectors.toList());
+//          return DutchpayRoomResponseDto.from(dutchpayRoom, profileImg);
+//        })
+//        .collect(Collectors.toList());
+//  }
+
 }
 
