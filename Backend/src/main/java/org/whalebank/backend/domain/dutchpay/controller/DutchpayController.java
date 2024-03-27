@@ -3,7 +3,6 @@ package org.whalebank.backend.domain.dutchpay.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
@@ -61,7 +61,7 @@ public class DutchpayController {
   @PostMapping("/register")
   public ApiResponse<?> registerPayments(
       @AuthenticationPrincipal UserDetails loginUser,
-      @RequestBody PaymentRequestDto request) {
+      @RequestBody RegisterPaymentRequestDto request) {
 
     dutchpayService.registerPayments(loginUser.getUsername(), request);
     return ApiResponse.ok("더치페이 금액 및 계좌 등록 성공");
@@ -76,6 +76,14 @@ public class DutchpayController {
     List<DutchpayDetailResponseDto> dutchpayRoom = dutchpayService.getDutchpayRoom(loginUser.getUsername(), roomId);
 
     return ApiResponse.ok("더치페이 방 상세 조회", dutchpayRoom);
+  }
+
+  @Operation(summary = "타인 결제 내역 조회")
+  @PostMapping("/payments")
+  public ApiResponse<PaymentResponseDto> viewPayments(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @RequestBody PaymentRequestDto request){
+    return ApiResponse.ok("선택한 결제 내역 조회 성공", dutchpayService.viewPayments(loginUser.getUsername(), request));
   }
 
 

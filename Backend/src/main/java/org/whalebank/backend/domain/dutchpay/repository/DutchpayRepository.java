@@ -7,7 +7,7 @@ import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
 import org.whalebank.backend.domain.user.UserEntity;
 
-public interface DutchpayRepository extends JpaRepository<DutchpayEntity, String> {
+public interface DutchpayRepository extends JpaRepository<DutchpayEntity, Integer> {
 
   List<DutchpayEntity> findByUser(UserEntity user);
 

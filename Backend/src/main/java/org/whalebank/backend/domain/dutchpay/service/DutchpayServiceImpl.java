@@ -12,7 +12,8 @@ import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
 import org.whalebank.backend.domain.dutchpay.SelectedPaymentEntity;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
-import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto.Transaction;
+import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto.Transaction;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
@@ -122,7 +123,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   }
 
   @Override
-  public void registerPayments(String loginId, PaymentRequestDto request) {
+  public void registerPayments(String loginId, RegisterPaymentRequestDto request) {
 
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
@@ -163,5 +164,24 @@ public class DutchpayServiceImpl implements DutchpayService {
     return dutchpayList.stream()
         .map(DutchpayDetailResponseDto::from)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public PaymentResponseDto viewPayments(String loginId, PaymentRequestDto request) {
+
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    DutchpayEntity dutchpay = dutchpayRepository.getById(request.getDutchpay_id());
+
+    SelectedPaymentEntity payment = selectedPaymentRepository.getByDutchpay(dutchpay);
+
+    return PaymentResponseDto
+        .builder()
+        .trans_id(payment.getTransId())
+        .member_store_name(payment.getMemberStoreName())
+        .trans_amt(payment.getTransAmt())
+        .category(payment.getCategory())
+        .build();
   }
 }

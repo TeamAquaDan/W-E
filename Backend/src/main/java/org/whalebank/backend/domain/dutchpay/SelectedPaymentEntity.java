@@ -12,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto.Transaction;
+import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto.Transaction;
 
 @Entity
 @Table(name = "selected_payment")

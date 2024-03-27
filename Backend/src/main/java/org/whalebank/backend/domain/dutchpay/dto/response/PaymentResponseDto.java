@@ -20,12 +20,6 @@ public class PaymentResponseDto {
 
   private String category;  // 카테고리
 
-  public static PaymentResponseDto from(List<CardHistoryDetail> cardHistoryList) {
-    return PaymentResponseDto
-        .builder()
-
-        .build();
-  }
   public static String convertCodetoCategory(String code) {
     return switch (code.substring(0, 2)) {
       case "30", "31", "32" -> "003"; // 생활
