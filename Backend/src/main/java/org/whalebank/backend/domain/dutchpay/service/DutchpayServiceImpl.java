@@ -33,6 +33,9 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     List<String> profileImg = new ArrayList<>();
 
+    // 방장 프로필 사진 추가
+    profileImg.add(user.getProfile().getProfileImage());
+
     // 더치페이 방 생성
     DutchpayRoomEntity dutchpayRoom = DutchpayRoomEntity.createRoom(request,
         user);
@@ -40,7 +43,6 @@ public class DutchpayServiceImpl implements DutchpayService {
     DutchpayEntity dutchpayManager = DutchpayEntity.createRoom(user, dutchpayRoom);
 
     dutchpayRoomRepository.save(dutchpayRoom);
-
     dutchpayRepository.save(dutchpayManager);
 
     // 초대한 친구에게 모두 더치페이 만들기

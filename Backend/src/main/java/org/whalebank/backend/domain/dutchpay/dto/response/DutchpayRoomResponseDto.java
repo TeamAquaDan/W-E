@@ -14,6 +14,7 @@ public class DutchpayRoomResponseDto {
   private int room_id; // 방아이디
   private int manager_id; // 방장
   private boolean is_completed; // 완료 여부
+  private int member_num; // 총 인원수
   private List<String> profile_img; // 친구 프로필사진
 
   public static DutchpayRoomResponseDto from(DutchpayRoomEntity dutchpayRoom,
@@ -23,7 +24,8 @@ public class DutchpayRoomResponseDto {
         .room_id(dutchpayRoom.getRoomId())
         .manager_id(dutchpayRoom.getManagerId())
         .is_completed(dutchpayRoom.isCompleted())
-        .profile_img(profileImg)
+        .member_num(profileImg.size())  // 방장 포함 인원수
+        .profile_img(profileImg)  // 방장 프로필 포함
         .build();
   }
 }
