@@ -38,8 +38,8 @@ class _AccountBookTableState extends State<AccountBookTable> {
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Income Amount: ${responseData['data']['income_amt']}"),
-                Text("Expense Amount: ${responseData['data']['expense_amt']}"),
+                Text("수입: ${responseData['data']['income_amt']}"),
+                Text("지출: ${responseData['data']['expense_amt']}"),
                 Column(
                   children: List.generate(
                     responseData['data']['account_book_list'].length,

@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/api/account_book/account_book_model.dart';
+import 'package:intl/intl.dart';
 
 class FormAccountBook extends StatefulWidget {
   @override
@@ -11,8 +14,10 @@ class _FormAccountBookState extends State<FormAccountBook> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _amountController = TextEditingController();
-  TextEditingController _dateController = TextEditingController();
+  // TextEditingController _dateController = TextEditingController();
   String? _selectedCategory;
+  DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,7 @@ class _FormAccountBookState extends State<FormAccountBook> {
                   return null;
                 },
               ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _amountController,
                 decoration: InputDecoration(labelText: '금액'),
@@ -48,17 +54,63 @@ class _FormAccountBookState extends State<FormAccountBook> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _dateController,
-                decoration:
-                    InputDecoration(labelText: 'Date (yyyy-MM-dd hh:mm)'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a date';
-                  }
-                  return null;
-                },
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: TextEditingController(
+                          text: DateFormat('yyyy-MM-dd').format(_selectedDate)),
+                      readOnly: true,
+                      onTap: () async {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (pickedDate != null && pickedDate != _selectedDate)
+                          setState(() {
+                            _selectedDate = pickedDate;
+                          });
+                      },
+                      decoration: InputDecoration(labelText: '날짜'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a date';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: TextEditingController(
+                          text: DateFormat('HH:mm').format(DateTime(2024, 3, 12,
+                              _selectedTime.hour, _selectedTime.minute))),
+                      readOnly: true,
+                      onTap: () async {
+                        final TimeOfDay? pickedTime = await showTimePicker(
+                          context: context,
+                          initialTime: _selectedTime,
+                        );
+                        if (pickedTime != null && pickedTime != _selectedTime)
+                          setState(() {
+                            _selectedTime = pickedTime;
+                          });
+                      },
+                      decoration: InputDecoration(labelText: '시간'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a time';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
                 onChanged: (String? newValue) {
@@ -161,14 +213,23 @@ class _FormAccountBookState extends State<FormAccountBook> {
   }
 
   void _submitForm() {
-    // Create an AccountBook object from the form input
+    DateTime selectedDateTime = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+      _selectedTime.hour,
+      _selectedTime.minute,
+    );
+    String formattedDateTime =
+        DateFormat('yyyy-MM-dd HH:mm').format(selectedDateTime);
+
     AccountBook newAccountBook = AccountBook(
       accountBookTitle: _titleController.text,
       accountAmount: int.parse(_amountController.text),
-      accountBookDate: _dateController.text,
+      accountBookDate: formattedDateTime,
       accountBookCategory: _selectedCategory ?? "000",
     );
-
+    print(formattedDateTime);
     // Call the postAccountBook function to send data to the server
     postAccountBook(newAccountBook);
   }
