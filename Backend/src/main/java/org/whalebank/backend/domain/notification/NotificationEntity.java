@@ -54,4 +54,8 @@ public class NotificationEntity {
     this.user = user;
   }
 
+  public void readNotification() {
+    this.isRead = true;
+  }
+
 }

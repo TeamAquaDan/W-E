@@ -7,4 +7,6 @@ public interface NotiService {
 
   public List<NotiResponseDto> getAllNotification(String loginId);
 
+  public void readNotification(String loginId, int notificationId);
+
 }
