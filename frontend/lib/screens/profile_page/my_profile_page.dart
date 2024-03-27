@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/user/user_controller.dart';
@@ -151,12 +150,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             ),
                           ],
                         )
-                      : SizedBox(height: 0, width: 0),
+                      : const SizedBox(height: 0, width: 0),
                   const SizedBox(height: 20), // 버튼과 하단 여백
                   // 필요한 경우 여기에 추가적인 위젯 배치
                 ],
               )
-            : Center(
+            : const Center(
                 child:
                     CircularProgressIndicator(), // 데이터가 로드되지 않았을 경우 로딩 인디케이터 표시
               ),

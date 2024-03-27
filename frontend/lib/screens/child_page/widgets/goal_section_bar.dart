@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/parents_page/children_page/parents_children_page.dart';
 import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
 import 'package:get/get.dart';
 

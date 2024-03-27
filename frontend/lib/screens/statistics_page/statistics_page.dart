@@ -4,9 +4,9 @@ class StatisticsPage extends StatelessWidget {
   const StatisticsPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const Text('통계 페이지'),
+        Text('통계 페이지'),
       ],
     );
   }

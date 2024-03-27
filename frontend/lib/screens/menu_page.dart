@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/child_page/child_home_page.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
-import 'package:frontend/screens/parents_page/future_test.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:get/get.dart';
 import 'package:frontend/api/test_html.dart';

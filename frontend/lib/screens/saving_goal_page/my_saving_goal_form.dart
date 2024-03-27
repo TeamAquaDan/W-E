@@ -216,12 +216,12 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                       if (response != null) {
                         // 성공적으로 데이터를 전송했다면, 사용자에게 알림 등의 처리를 수행합니다.
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
+                          const SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
                         );
                       } else {
                         // 오류 처리
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("목표 등록에 실패했습니다.")),
+                          const SnackBar(content: Text("목표 등록에 실패했습니다.")),
                         );
                       }
                     } catch (e) {

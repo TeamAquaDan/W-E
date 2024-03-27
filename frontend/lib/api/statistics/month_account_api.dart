@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/models/statistics/account_month_model.dart';
 import 'package:frontend/services/dio_service.dart';
 import '../base_url.dart';

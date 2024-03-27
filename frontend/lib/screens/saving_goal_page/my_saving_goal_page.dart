@@ -248,7 +248,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
               children: [
                 ...currentGoalWidgets,
                 const SavingGoalPlus(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],
