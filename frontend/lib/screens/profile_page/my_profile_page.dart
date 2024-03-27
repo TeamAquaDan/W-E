@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/user/user_controller.dart';
@@ -15,11 +14,43 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePageState extends State<MyProfilePage> {
   late List<dynamic> myProfileList = [];
+  final TextEditingController bioController = TextEditingController();
+  bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
     loadProfiles();
+  }
+
+  void updateInfo() async {
+    final DioService dioService = DioService();
+    try {
+      var response = await dioService.dio.patch(
+        '${baseURL}api/user/profile/sentence',
+        data: {
+          "sentence": bioController.text,
+        },
+      );
+      if (response.statusCode == 200) {
+        // 요청이 성공적으로 완료되었을 때의 처리
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("프로필 정보가 성공적으로 업데이트되었습니다!")),
+        );
+        // 성공적으로 업데이트된 후에는 프로필 정보를 다시 로딩할 수 있습니다.
+        loadProfiles();
+      } else {
+        // 요청이 실패했을 때의 처리
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("프로필 정보 업데이트에 실패했습니다.")),
+        );
+      }
+    } catch (e) {
+      // 요청 중 에러가 발생했을 때의 처리
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("오류가 발생했습니다: $e")),
+      );
+    }
   }
 
   Future<void> loadProfiles() async {
@@ -54,6 +85,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
       print('Error: 에러 $e');
       return [];
     }
+  }
+
+  void toggleEdit() {
+    // 편집 모드 상태 토글 함수
+    setState(() {
+      isEditing = !isEditing;
+      if (!isEditing) {
+        // 편집 완료 시, API로 변경된 한 줄 소개 전송
+        updateInfo();
+      }
+    });
   }
 
   @override
@@ -104,6 +146,47 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
 
                   const SizedBox(height: 10),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    // 한 줄 소개 표시/편집 컨테이너
+                    child: isEditing
+                        ? TextField(
+                            controller: bioController,
+                            decoration: InputDecoration(
+                              hintText: '여기에 한 줄 소개를 입력하세요',
+                              border: InputBorder.none,
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.save),
+                                onPressed: toggleEdit,
+                              ),
+                            ),
+                            maxLength: 20,
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 5),
+                            child: InkWell(
+                              child: Text(
+                                myProfileList[0]['sentence'] ??
+                                    '한 줄 소개가 설정되지 않았습니다.',
+                                style: const TextStyle(
+                                  color: Colors.black, // 색상 코드 수정
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+
+                  const SizedBox(height: 20),
+
                   Get.find<UserController>().getUserId() ==
                           myProfileList[0]['user_id']
                       ? Row(
@@ -139,6 +222,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 backgroundColor: const Color(0xFF6750A4),
                               ),
                               onPressed: () {
+                                toggleEdit();
                                 // 프로필수정 버튼 액션
                               },
                               child: const Text(
@@ -151,12 +235,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             ),
                           ],
                         )
-                      : SizedBox(height: 0, width: 0),
+                      : const SizedBox(height: 0, width: 0),
                   const SizedBox(height: 20), // 버튼과 하단 여백
                   // 필요한 경우 여기에 추가적인 위젯 배치
                 ],
               )
-            : Center(
+            : const Center(
                 child:
                     CircularProgressIndicator(), // 데이터가 로드되지 않았을 경우 로딩 인디케이터 표시
               ),

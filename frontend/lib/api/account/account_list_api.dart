@@ -24,12 +24,12 @@ Future<List<AccountListData>?> getAccountListData(String accessToken) async {
   }
 }
 
-Future<AccountDetailData?> getAccountDetail(int account_id) async {
+Future<AccountDetailData?> getAccountDetail(int accountId) async {
   final DioService dioService = DioService();
   try {
     Response response = await dioService.dio.get(
       '${baseURL}api/account/detail',
-      data: {'account_id': account_id},
+      data: {'account_id': accountId},
     );
 
     print('Response status: ${response.statusCode}');
@@ -46,7 +46,7 @@ Future<AccountDetailData?> getAccountDetail(int account_id) async {
       return null;
     }
   } catch (error) {
-    print('account_id status: $account_id');
+    print('account_id status: $accountId');
     print('Error sending POST request: $error');
     return null;
   }

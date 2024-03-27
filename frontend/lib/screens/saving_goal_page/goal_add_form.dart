@@ -7,6 +7,8 @@ import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/models/save/goal_add.dart';
 
 class GoalAddForm extends StatefulWidget {
+  const GoalAddForm({super.key});
+
   @override
   _GoalAddFormState createState() => _GoalAddFormState();
 }
@@ -72,14 +74,14 @@ class _GoalAddFormState extends State<GoalAddForm> {
   Widget build(BuildContext context) {
     return Container(
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Goal Name'),
+                decoration: const InputDecoration(labelText: 'Goal Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a goal name';
@@ -88,9 +90,9 @@ class _GoalAddFormState extends State<GoalAddForm> {
                 },
                 onSaved: (newValue) => _goalName = newValue!,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Goal Amount'),
+                decoration: const InputDecoration(labelText: 'Goal Amount'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -100,14 +102,14 @@ class _GoalAddFormState extends State<GoalAddForm> {
                 },
                 onSaved: (newValue) => _goalAmt = newValue!,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () => _selectDate(context),
                 child: Text(
                   'Goal Date: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}',
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
                 onChanged: (newValue) {
@@ -134,7 +136,7 @@ class _GoalAddFormState extends State<GoalAddForm> {
                     child: Text(value),
                   );
                 }).toList(),
-                decoration: InputDecoration(labelText: 'Select Category'),
+                decoration: const InputDecoration(labelText: 'Select Category'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select a category';
@@ -142,7 +144,7 @@ class _GoalAddFormState extends State<GoalAddForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropdownButtonFormField<int>(
                 value: _selectedAccountId,
                 onChanged: (newValue) {
@@ -156,12 +158,12 @@ class _GoalAddFormState extends State<GoalAddForm> {
                     child: Text(account.account_name),
                   );
                 }).toList(),
-                decoration: InputDecoration(labelText: 'Select Account'),
+                decoration: const InputDecoration(labelText: 'Select Account'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitGoal,
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),
@@ -177,9 +179,10 @@ class _GoalAddFormState extends State<GoalAddForm> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
+    }
   }
 }

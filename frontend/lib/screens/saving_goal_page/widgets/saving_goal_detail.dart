@@ -66,8 +66,8 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
         future: _goalDetailsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Container(
+            return const Center(
+              child: SizedBox(
                   width: 200,
                   height: 200,
                   child: CircularProgressIndicator(strokeWidth: 4)),
@@ -121,7 +121,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                         const AlwaysStoppedAnimation<Color>(Color(0xFF46A1F5)),
                     minHeight: 5,
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   goalDetails['status'] != 100
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -129,16 +129,16 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                             TextButton(
                               onPressed: () {},
                               style: TextButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
-                                backgroundColor: Color(0xffD7D7D7),
+                                backgroundColor: const Color(0xffD7D7D7),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ), // 배경 색상
                               ),
-                              child: Text(
+                              child: const Text(
                                 '포기하기',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -147,20 +147,20 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 15),
+                            const SizedBox(width: 15),
                             TextButton(
                               onPressed: () {},
                               style: TextButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
-                                backgroundColor: Color(0xffD7D7D7),
+                                backgroundColor: const Color(0xffD7D7D7),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ), // 배경 색상
                               ),
-                              child: Text(
+                              child: const Text(
                                 '저금하기',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -176,16 +176,16 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                             TextButton(
                               onPressed: () {},
                               style: TextButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
-                                backgroundColor: Color(0xff31B675),
+                                backgroundColor: const Color(0xff31B675),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ), // 배경 색상
                               ),
-                              child: Text(
+                              child: const Text(
                                 '출금하기',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -196,50 +196,50 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                             ),
                           ],
                         ),
-                  SizedBox(height: 80),
-                  Text(
+                  const SizedBox(height: 80),
+                  const Text(
                     '목표 날짜',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   Text(
                     'D-${calculateDDay(goalDetails['goal_date'])}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 40),
-                  Text(
+                  const SizedBox(height: 40),
+                  const Text(
                     '현재 금액',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   Text(
                     '${formatNumber(goalDetails['saved_amt'])} 원',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 40),
-                  Text(
+                  const SizedBox(height: 40),
+                  const Text(
                     '목표 금액',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   Text(
                     '${formatNumber(goalDetails['goal_amt'])} 원',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

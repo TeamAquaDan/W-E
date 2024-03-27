@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/bank_history_page.dart';
 import 'package:frontend/screens/transfer_page/transfer_page.dart';
 import 'package:frontend/widgets/bank_detail.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class BankBook extends StatefulWidget {
@@ -32,7 +30,7 @@ class _BankBook extends State<BankBook> {
             top: 0,
             right: 0,
             child: IconButton(
-              style: IconButton.styleFrom(padding: EdgeInsets.all(0)),
+              style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
               onPressed: () {
                 toBankDetailPage(context);
               },

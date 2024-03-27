@@ -15,6 +15,7 @@ class MySavingGoalPage extends StatefulWidget {
 
 class _MySavingGoalPageState extends State<MySavingGoalPage> {
   late List<Map<String, dynamic>> mySavingGoals = []; // 여기에 API 응답 데이터를 저장합니다.
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
     setState(() {
       if (goalList != null) {
         mySavingGoals = goalList;
+        isLoading = false;
         // API로부터 받아온 데이터를 상태에 저장합니다.
       } else {
         mySavingGoals = fetchedSavingGoals;
@@ -208,6 +210,15 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
       completedGoalWidgets.add(const SavingGoalPlus());
     }
 
+    // 로딩 중이라면 로딩 인디케이터를 표시
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(), // 로딩 인디케이터
+        ),
+      );
+    }
+
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -248,7 +259,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
               children: [
                 ...currentGoalWidgets,
                 const SavingGoalPlus(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],

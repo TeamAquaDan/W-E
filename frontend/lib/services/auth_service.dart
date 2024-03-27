@@ -70,18 +70,18 @@ class AuthService {
   // }
 
   Future<LoginResult> login(
-      String login_id, String password, String fcm_token) async {
+      String loginId, String password, String fcmToken) async {
     try {
       final response = await _dio.post(
         'https://j10e103.p.ssafy.io/api/auth/login',
         data: {
-          'login_id': login_id,
+          'login_id': loginId,
           'password': password,
-          'fcm_token': fcm_token,
+          'fcm_token': fcmToken,
         },
       );
       if (response.statusCode == 200) {
-        await _storage.write(key: 'login_id', value: login_id);
+        await _storage.write(key: 'login_id', value: loginId);
         await _storage.write(key: 'password', value: password);
         // JWT 토큰 저장
         var data = response.data['data'];
@@ -89,11 +89,11 @@ class AuthService {
         String refreshToken = data['refresh_token'];
         await _storage.write(key: 'access_token', value: accessToken);
         await _storage.write(key: 'refresh_token', value: refreshToken);
-        String? check_accesstoken = await _storage.read(key: 'access_token');
-        String? check_refreshtoken = await _storage.read(key: 'refresh_token');
-        developer.log('access: ${check_accesstoken}',
+        String? checkAccesstoken = await _storage.read(key: 'access_token');
+        String? checkRefreshtoken = await _storage.read(key: 'refresh_token');
+        developer.log('access: $checkAccesstoken',
             name: 'check_accesstoken');
-        developer.log('refresh: ${check_refreshtoken}',
+        developer.log('refresh: $checkRefreshtoken',
             name: 'check_refreshtoken');
         // 역할 정보를 포함하여 LoginResult 객체 반환
         String role = data['role'];
@@ -117,14 +117,14 @@ class AuthService {
   }
 
   Future<LoginResult> tryAutoLogin() async {
-    String? login_id = await _storage.read(key: 'login_id');
+    String? loginId = await _storage.read(key: 'login_id');
     String? password = await _storage.read(key: 'password');
-    String? fcm_token = globalFCMToken;
-    if (login_id != null && password != null && fcm_token != null) {
-      developer.log('아이디: $login_id', name: 'saved_id');
+    String? fcmToken = globalFCMToken;
+    if (loginId != null && password != null && fcmToken != null) {
+      developer.log('아이디: $loginId', name: 'saved_id');
       developer.log('비밀번호: $password', name: 'saved_password');
-      developer.log('fcm_token: $fcm_token', name: 'fcm_token');
-      return await login(login_id, password, fcm_token);
+      developer.log('fcm_token: $fcmToken', name: 'fcm_token');
+      return await login(loginId, password, fcmToken);
     }
     // 저장된 로그인 정보가 없거나 로그인 실패 시 기본 LoginResult 반환
     return LoginResult(isSuccess: false, role: null);

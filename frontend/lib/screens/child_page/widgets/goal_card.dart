@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/save/goal_list_api.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_detail.dart';
-import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none_noadd.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_plus.dart';
 import 'package:get/get.dart';
 
