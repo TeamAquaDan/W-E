@@ -12,4 +12,6 @@ public interface DutchpayRepository extends JpaRepository<DutchpayEntity, String
   List<DutchpayEntity> findByUser(UserEntity user);
 
   List<DutchpayEntity> findByRoom(DutchpayRoomEntity dutchpayRoom);
+
+  DutchpayEntity findByUserAndRoom(UserEntity user, DutchpayRoomEntity dutchpayRoom);
 }

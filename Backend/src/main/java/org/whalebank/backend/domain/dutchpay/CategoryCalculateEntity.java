@@ -1,6 +1,8 @@
 package org.whalebank.backend.domain.dutchpay;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,6 +23,9 @@ import lombok.Setter;
 public class CategoryCalculateEntity {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int categoryCalculateId;
+
   @ManyToOne
   @JoinColumn(name = "room_id")
   private DutchpayRoomEntity roomId;  // 외래 키로 설정된 DutchpayRoomEntity의 room_id

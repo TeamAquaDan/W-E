@@ -1,6 +1,8 @@
 package org.whalebank.backend.domain.dutchpay;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,9 +12,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto.Transaction;
 
 @Entity
-@Table(name="selected_payment")
+@Table(name = "selected_payment")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -21,9 +24,12 @@ import lombok.Setter;
 public class SelectedPaymentEntity {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int selectedPaymentId;
+
   @ManyToOne
   @JoinColumn(name = "dutchpay_id")
-  private DutchpayEntity dutchpayId;
+  private DutchpayEntity dutchpay;
 
   private int transId; // 거래 고유 번호
 
@@ -33,4 +39,14 @@ public class SelectedPaymentEntity {
 
   private String memberStoreName; // 거래 제목
 
+  public static SelectedPaymentEntity from(DutchpayEntity dutchpay, Transaction transaction) {
+    return SelectedPaymentEntity
+        .builder()
+        .dutchpay(dutchpay)
+        .transId(transaction.getTransId())
+        .transAmt(transaction.getTransAmt())
+        .category(transaction.getCategory())
+        .memberStoreName(transaction.getMemberStoreName())
+        .build();
+  }
 }

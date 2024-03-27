@@ -6,13 +6,22 @@ import lombok.Getter;
 @Getter
 public class PaymentRequestDto {
 
-  private int room_id;  // 방 아이디 
+  public int room_id;  // 방 아이디
 
-  private int account_id; // 계좌 고유번호
+  public int account_id; // 계좌 고유번호
 
-  private String account_num; // 계좌번호
+  public String account_num; // 계좌번호
 
-  private String password;  // 계좌 비밀번호
+  public String password;  // 계좌 비밀번호
 
-  private List<Integer> trans_ids; // 거래 고유 번호
+  public List<Transaction> transactions; // 변경된 부분
+
+  @Getter
+  public static class Transaction {
+
+    private int transId; // 거래 고유 번호
+    private int transAmt; // 거래 금액
+    private String category;  // 카테고리
+    private String memberStoreName; // 거래 제목
+  }
 }
