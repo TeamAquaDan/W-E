@@ -2,6 +2,7 @@ package org.whalebank.backend.domain.mission.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.allowance.GroupEntity;
@@ -54,5 +55,30 @@ public class MissionServiceImpl implements MissionService {
     }
 
     return MissionInfoResponseDto.from(entity, providerName);
+  }
+
+  @Override
+  public List<MissionInfoResponseDto> getAllMission(int groupId, String loginId) {
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    GroupEntity group = groupRepository.findById(groupId)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
+
+    // 현재 유저가 group에 소속되어 있지 않다면 예외
+    roleRepository.findByUserGroupAndUser(group, currentUser)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
+
+    // 미션 제공자 찾기
+    String providerName;
+    List<RoleEntity> roleEntityList = group.getMemberEntityList();
+    providerName = roleEntityList.stream()
+        .filter(roleEntity -> roleEntity.getRole().equals("ADULT")).findFirst()
+        .map(roleEntity -> roleEntity.getUser().getUserName()).orElse(null);
+
+    // 미션 목록
+    return missionRepository.findAllByGroup(group)
+        .stream().map(m -> MissionInfoResponseDto.from(m, providerName))
+        .collect(Collectors.toList());
   }
 }

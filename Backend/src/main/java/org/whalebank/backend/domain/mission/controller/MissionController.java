@@ -2,9 +2,12 @@ package org.whalebank.backend.domain.mission.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +32,15 @@ public class MissionController {
       @AuthenticationPrincipal UserDetails loginUser) {
     return ApiResponse.ok("미션 등록 성공", missionService.createMission(reqDto, loginUser.getUsername()));
   }
+
+  @GetMapping("/{group_id}")
+  @Operation(summary = "미션 조회(부모, 자녀 모두 가능)", description = "그룹에 속하는 모든 미션 목록을 조회한다")
+  public ApiResponse<List<MissionInfoResponseDto>> getAllMissionByGroupId(
+      @PathVariable("group_id") int groupId,
+      @AuthenticationPrincipal UserDetails loginUser) {
+    return ApiResponse.ok("미션 조회 성공",
+        missionService.getAllMission(groupId, loginUser.getUsername()));
+  }
+
 
 }
