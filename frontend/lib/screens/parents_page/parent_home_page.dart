@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/parents_page/widgets/children_list.dart';
 import 'package:frontend/screens/parents_page/widgets/section_bar.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
 import 'package:frontend/screens/mission_page/widgets/mission_none.dart';
@@ -29,6 +30,7 @@ class ParentHomePage extends StatelessWidget {
               CarouselWithIndicator(),
               const SizedBox(height: 16),
               const SectionBar(title: '자녀 용돈 목록'),
+              ChildrenList(),
               const Column(
                 children: [
                   PinMoney(
