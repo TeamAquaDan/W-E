@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
+import 'package:frontend/api/account_book/account_book_model.dart';
+import 'package:frontend/screens/account_book/widgets/table_card.dart';
 
 class AccountBookTable extends StatefulWidget {
   @override
@@ -38,9 +40,15 @@ class _AccountBookTableState extends State<AccountBookTable> {
               children: [
                 Text("Income Amount: ${responseData['data']['income_amt']}"),
                 Text("Expense Amount: ${responseData['data']['expense_amt']}"),
-                Text(
-                    "Expense Amount: ${responseData['data']['account_book_list']}"),
-                // You can iterate over account_book_list and display its items here
+                Column(
+                  children: List.generate(
+                    responseData['data']['account_book_list'].length,
+                    (index) => AccountBookCard(
+                      accountBookData: responseData['data']['account_book_list']
+                          [index],
+                    ),
+                  ),
+                ),
               ],
             ),
     );

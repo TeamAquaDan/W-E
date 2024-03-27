@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/account_book/form_account_book.dart';
 import 'package:frontend/screens/account_book/widgets/chart.dart';
 import 'package:frontend/screens/account_book/widgets/table.dart';
+import 'package:get/get.dart';
 
 class AccountBookHomePage extends StatelessWidget {
   const AccountBookHomePage({super.key});
@@ -8,7 +10,16 @@ class AccountBookHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('가계부'),
+        title: Row(
+          children: [
+            Text('가계부'),
+            IconButton(
+                onPressed: () {
+                  Get.to(() => FormAccountBook());
+                },
+                icon: Icon(Icons.add)),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

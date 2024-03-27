@@ -42,8 +42,8 @@ Future getAccountBookChart(int year, int month) async {
 Future postAccountBook(AccountBook body) async {
   final DioService dioService = DioService();
   try {
-    Response response =
-        await dioService.dio.post('${baseURL}api/accountbook', data: body);
+    Response response = await dioService.dio
+        .post('${baseURL}api/accountbook', data: body.toJson());
 
     // Handle response
     print('Response status: ${response.statusCode}');
@@ -59,8 +59,9 @@ Future postAccountBook(AccountBook body) async {
 Future patchAccountBook(AccountBook body, int account_book_id) async {
   final DioService dioService = DioService();
   try {
-    Response response = await dioService.dio
-        .patch('${baseURL}api/accountbook/${account_book_id}', data: body);
+    Response response = await dioService.dio.patch(
+        '${baseURL}api/accountbook/${account_book_id}',
+        data: body.toJson());
 
     // Handle response
     print('Response status: ${response.statusCode}');
@@ -73,7 +74,7 @@ Future patchAccountBook(AccountBook body, int account_book_id) async {
   }
 }
 
-Future deleteAccountBook(AccountBook body, int account_book_id) async {
+Future deleteAccountBook(int account_book_id) async {
   final DioService dioService = DioService();
   try {
     Response response = await dioService.dio
