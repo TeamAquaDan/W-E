@@ -14,4 +14,6 @@ public interface AccountBookRepository extends JpaRepository<AccountBookEntity, 
       UserEntity user, LocalDateTime starts, LocalDateTime ends);
 
   Optional<AccountBookEntity> findByUserAndAccountBookId(UserEntity user, int accountBookId);
+
+  AccountBookEntity findByUserAndTransId(UserEntity user, int transId);
 }

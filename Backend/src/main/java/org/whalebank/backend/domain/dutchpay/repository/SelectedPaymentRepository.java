@@ -10,4 +10,8 @@ import org.whalebank.backend.domain.dutchpay.SelectedPaymentEntity;
 public interface SelectedPaymentRepository extends JpaRepository<SelectedPaymentEntity, String> {
 
   List<SelectedPaymentEntity> findByDutchpay(DutchpayEntity dutchpay);
+
+  SelectedPaymentEntity findByTransId(int transId);
+
+  List<SelectedPaymentEntity> findByRoomId(int roomId);
 }

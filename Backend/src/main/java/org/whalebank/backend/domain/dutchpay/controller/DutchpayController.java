@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,7 +74,8 @@ public class DutchpayController {
       @AuthenticationPrincipal UserDetails loginUser,
       @PathVariable("room_id") int roomId) {
 
-    List<DutchpayDetailResponseDto> dutchpayRoom = dutchpayService.getDutchpayRoom(loginUser.getUsername(), roomId);
+    List<DutchpayDetailResponseDto> dutchpayRoom = dutchpayService.getDutchpayRoom(
+        loginUser.getUsername(), roomId);
 
     return ApiResponse.ok("더치페이 방 상세 조회", dutchpayRoom);
   }
@@ -82,13 +84,26 @@ public class DutchpayController {
   @PostMapping("/payments")
   public ApiResponse<List<PaymentResponseDto>> viewPayments(
       @AuthenticationPrincipal UserDetails loginUser,
-      @RequestBody PaymentRequestDto request){
+      @RequestBody PaymentRequestDto request) {
 
-    List<PaymentResponseDto> payments = dutchpayService.viewPayments(loginUser.getUsername(), request);
+    List<PaymentResponseDto> payments = dutchpayService.viewPayments(loginUser.getUsername(),
+        request);
 
     return ApiResponse.ok("선택한 결제 내역 조회 성공", payments);
   }
 
+
+  @Operation(summary = "자동 정산")
+  @PatchMapping("/{room_id}")
+  public ApiResponse<List<DutchpayDetailResponseDto>> autoDutchpay(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @PathVariable("room_id") int roomId) {
+
+    List<DutchpayDetailResponseDto> dutchpayRoom = dutchpayService.autoDutchpay(
+        loginUser.getUsername(), roomId);
+
+    return ApiResponse.ok("자동 정산 성공", dutchpayRoom);
+  }
 
 
 }

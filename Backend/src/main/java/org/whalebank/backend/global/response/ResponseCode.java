@@ -1,5 +1,6 @@
 package org.whalebank.backend.global.response;
 
+import com.google.api.Http;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -60,6 +61,9 @@ public enum ResponseCode {
   CANNOT_ADD_SELF(HttpStatus.BAD_REQUEST.value(), "본인은 자동 추가되기 때문에 추가할 수 없습니다"),
   DUTCHPAY_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "더치페이 방이 존재하지 않습니다"),
   DUTCHPAY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "더치페이가 존재하지 않습니다"),
+  AUTO_DUTCHPAY_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "자동정산 권한이 없습니다"),
+  UNREGISTERED_MEMBERS(HttpStatus.BAD_REQUEST.value(), "아직 내역을 등록하지 않은 인원이 있습니다"),
+  ALREADY_REGISTERED(HttpStatus.BAD_REQUEST.value(), "이미 등록한 내역입니다"),
 
   // 알림
   NOTI_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "알림이 존재하지 않습니다"),

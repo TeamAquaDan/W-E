@@ -39,6 +39,8 @@ public class SelectedPaymentEntity {
 
   private String memberStoreName; // 거래 제목
 
+  private int roomId; // 더치페이 방 아이디
+
   public static SelectedPaymentEntity from(DutchpayEntity dutchpay, Transaction transaction) {
     return SelectedPaymentEntity
         .builder()
@@ -47,6 +49,7 @@ public class SelectedPaymentEntity {
         .transAmt(transaction.getTrans_amt())
         .category(transaction.getCategory())
         .memberStoreName(transaction.getMember_storeName())
+        .roomId(dutchpay.getRoom().getRoomId())
         .build();
   }
 }

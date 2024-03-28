@@ -21,4 +21,6 @@ public interface DutchpayService {
   List<DutchpayDetailResponseDto> getDutchpayRoom(String loginId, int roomId);
 
   List<PaymentResponseDto> viewPayments(String loginId, PaymentRequestDto request);
+
+  List<DutchpayDetailResponseDto> autoDutchpay(String loginId, int roomId);
 }
