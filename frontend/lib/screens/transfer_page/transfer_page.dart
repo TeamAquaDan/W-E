@@ -53,26 +53,6 @@ class TransferPageState extends State<TransferPage> {
         );
       } else {
         Get.snackbar('수취인이 없어요', '해당 수취인을 찾을 수 가 없습니다.');
-        // transferData = TransferPost(
-        //     tran_amt: tran_amt,
-        //     req_account_id: widget.bankData.account_id,
-        //     req_account_num: widget.bankData.account_num,
-        //     req_account_password: '',
-        //     req_trans_memo: req_trans_memo,
-        //     recv_client_name: 'Fail',
-        //     recv_client_bank_code: recv_client_bank_code,
-        //     recv_client_account_num: account_num,
-        //     recv_trans_memo: recv_trans_memo);
-        // showModalBottomSheet(
-        //   context: context,
-        //   builder: (BuildContext context) {
-        //     return TransferPasswordForm(
-        //       data: transferData,
-        //       bank_code_name: bank_code_name,
-        //       input_tran_amt: input_tran_amt,
-        //     );
-        //   },
-        // );
       }
     }
   }
@@ -223,17 +203,6 @@ class TransferPageState extends State<TransferPage> {
                       onPressed: _submitTransferData, child: const Text('송금')),
                 ],
               ),
-              // Column(
-              //   children: [
-              //     Text('bank_code_std : $bank_code_name'),
-              //     Text('recv_client_bank_code : $recv_client_bank_code'),
-              //     Text('account_num : $account_num'),
-              //     Text('tran_amt : $tran_amt'),
-              //     Text('input_tran_amt : $input_tran_amt'),
-              //     Text('req_trans_memo : $req_trans_memo'),
-              //     Text('recv_trans_memo : $recv_trans_memo')
-              //   ],
-              // )
             ],
           ),
         ),

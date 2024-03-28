@@ -44,6 +44,7 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
