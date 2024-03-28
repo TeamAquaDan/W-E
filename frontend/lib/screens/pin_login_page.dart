@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../services/auth_service.dart';
-import '../widgets/nav_bar.dart';
+// import '../widgets/nav_bar.dart';
 import 'package:frontend/screens/login_page.dart';
 import 'dart:developer' as developer;
+import 'alarm_page.dart';
 import 'child_page/child_page.dart';
+import 'friends_page/my_friends_page.dart';
 import 'parents_page/parent_page.dart';
 import 'pin_setting_page.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'profile_page/my_profile_page.dart';
+import 'salary_page/salary_list_page.dart';
 
 class PinLoginPage extends StatefulWidget {
   const PinLoginPage({super.key});
@@ -18,28 +25,75 @@ class _PinLoginPageState extends State<PinLoginPage> {
   final _pinController = TextEditingController();
   final SecurityService _securityService = SecurityService();
   final AuthService _authService = AuthService();
+  RemoteMessage? _initialMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkForInitialMessage();
+  }
+
+  Future<void> _checkForInitialMessage() async {
+    _initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  }
 
   void _checkPin() async {
     String? savedPin = await _securityService.getPin();
     // 사용자 역할 정보를 로컬 스토리지에서 조회
     String? userRole = await _authService.getUserRole();
-    if (savedPin == _pinController.text) {
-      if (userRole == 'CHILD') {
-      // 자녀 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ChildPage()),
-      );
-    } else if (userRole == 'ADULT') {
-      // 부모 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ParentPage()),
-      );
-    }
+    if (savedPin == _pinController.text) {      
+      // 초기 알림 데이터가 없으면 사용자 역할에 따라 페이지 이동
+      _navigateBasedOnRole(userRole);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('PIN이 일치하지 않습니다.')));
+    }
+  }
+
+  void _navigateBasedOnRole(String? role) {
+    if (role == 'CHILD') {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const ChildPage()));
+      if (_initialMessage != null) {
+        // 초기 알림 데이터가 있으면 처리
+        handleNotificationClick(_initialMessage);
+      }
+    } else if (role == 'ADULT') {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const ParentPage()));
+      if (_initialMessage != null) {
+        // 초기 알림 데이터가 있으면 처리
+        handleNotificationClick(_initialMessage);
+      }
+    } else {
+      // 역할이 없거나 다른 경우, 로그인 페이지로 이동
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
+    }
+  }
+
+  void handleNotificationClick(RemoteMessage? message) {
+    if (message != null) {
+      final category = message.data['category'];
+      developer.log('Handle notification click with category: $category',
+          name: 'NotificationClick');
+      // 여기에 실제 페이지 이동 로직 추가
+      if (category != null) {
+        switch (category) {
+          case '100':
+            Get.to(() => const MyFriendsPage());
+            break;
+          case '400':
+            Get.to(() => const SalaryListPage());
+            break;
+          case '600':
+            Get.to(() => const MyProfilePage());
+            break;
+          default:
+            Get.to(() => const AlarmPage());
+            break;
+        }
+      }
     }
   }
 
