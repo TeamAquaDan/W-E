@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/save/goal_list_api.dart';
+import 'package:frontend/models/store/saving_goal/goal_list_controller.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_detail.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none_noadd.dart';
@@ -16,6 +17,7 @@ class MySavingGoalPage extends StatefulWidget {
 class _MySavingGoalPageState extends State<MySavingGoalPage> {
   late List<Map<String, dynamic>> mySavingGoals = []; // 여기에 API 응답 데이터를 저장합니다.
   bool isLoading = true;
+  final GoalListController goalListController = Get.put(GoalListController());
 
   @override
   void initState() {
@@ -39,6 +41,10 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
     });
   }
 
+  void reloadGoals() {
+    loadSavingGoals();
+  }
+
   Future<List<Map<String, dynamic>>> fetchSavingGoalsFromAPI() async {
     return [
       {
@@ -52,105 +58,6 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         "percentage": 30.0,
         "saved_amt": 243800
       },
-      {
-        "goal_id": 2,
-        "goal_name": "목표 2",
-        "goal_amt": 800000,
-        "status": 0,
-        "start_date": "2024.03.07",
-        "withdraw_date": "2024.05.18",
-        "end_date": "2024.07.30",
-        "percentage": 99.0,
-        "saved_amt": 793507
-      },
-      {
-        "goal_id": 3,
-        "goal_name": "목표 3",
-        "goal_amt": 1000000,
-        "status": 0,
-        "start_date": "2024.01.08",
-        "withdraw_date": "2024.01.27",
-        "end_date": "2024.11.05",
-        "percentage": 1.0,
-        "saved_amt": 12700
-      },
-      {
-        "goal_id": 4,
-        "goal_name": "목표 4",
-        "goal_amt": 300000,
-        "status": 1,
-        "start_date": "2024.01.09",
-        "withdraw_date": "2024.06.30",
-        "end_date": "2024.10.07",
-        "percentage": 100.0,
-        "saved_amt": 300000
-      },
-      {
-        "goal_id": 5,
-        "goal_name": "목표 5",
-        "goal_amt": 600000,
-        "status": 1,
-        "start_date": "2023.12.20",
-        "withdraw_date": "2024.02.11",
-        "end_date": "2024.07.07",
-        "percentage": 100.0,
-        "saved_amt": 600000
-      },
-      {
-        "goal_id": 6,
-        "goal_name": "목표 6",
-        "goal_amt": 800000,
-        "status": 1,
-        "start_date": "2024.02.08",
-        "withdraw_date": "2024.04.24",
-        "end_date": "2024.12.15",
-        "percentage": 100.0,
-        "saved_amt": 800000
-      },
-      {
-        "goal_id": 7,
-        "goal_name": "목표 7",
-        "goal_amt": 200000,
-        "status": 1,
-        "start_date": "2024.02.21",
-        "withdraw_date": "2024.10.01",
-        "end_date": "2024.11.23",
-        "percentage": 100.0,
-        "saved_amt": 200000
-      },
-      {
-        "goal_id": 8,
-        "goal_name": "목표 8",
-        "goal_amt": 700000,
-        "status": 2,
-        "start_date": "2024.01.25",
-        "withdraw_date": "2024.10.08",
-        "end_date": "2024.09.11",
-        "percentage": 25.0,
-        "saved_amt": 176971
-      },
-      {
-        "goal_id": 9,
-        "goal_name": "목표 9",
-        "goal_amt": 500000,
-        "status": 2,
-        "start_date": "2024.02.09",
-        "withdraw_date": "2024.09.01",
-        "end_date": "2024.08.21",
-        "percentage": 99.0,
-        "saved_amt": 497718
-      },
-      {
-        "goal_id": 10,
-        "goal_name": "목표 10",
-        "goal_amt": 300000,
-        "status": 2,
-        "start_date": "2023.12.23",
-        "withdraw_date": "2024.11.11",
-        "end_date": "2024.10.14",
-        "percentage": 26.0,
-        "saved_amt": 78564
-      }
     ];
   }
 
@@ -207,7 +114,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
 
     // 완료된 목표 없으면 추가 위젯 추가.
     if (completedGoals.isEmpty) {
-      completedGoalWidgets.add(const SavingGoalPlus());
+      completedGoalWidgets.add(SavingGoalPlus(onAddGoal: reloadGoals));
     }
 
     // 로딩 중이라면 로딩 인디케이터를 표시
@@ -258,7 +165,9 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
             ListView(
               children: [
                 ...currentGoalWidgets,
-                const SavingGoalPlus(),
+                SavingGoalPlus(
+                  onAddGoal: reloadGoals,
+                ),
                 const SizedBox(
                   height: 10,
                 ),

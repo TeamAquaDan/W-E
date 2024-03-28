@@ -256,6 +256,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
+import 'package:frontend/models/store/saving_goal/goal_list_controller.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/models/store/userRole/user_role.dart';
 import 'package:frontend/services/auth_service.dart';
@@ -359,7 +360,6 @@ void main() async {
     String payload = message.data['category'];
     handleNotificationPayload(payload);
   });
-  
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -438,6 +438,7 @@ void main() async {
   Get.put(UserController());
   Get.put(AccountController());
   Get.put(UserRoleController());
+  Get.put(GoalListController());
   runApp(MyApp());
 }
 
@@ -491,7 +492,6 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
-
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

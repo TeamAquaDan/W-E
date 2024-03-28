@@ -64,7 +64,9 @@ class _GoalCardState extends State<GoalCard> {
 
     // 진행중 목표 비었을 시 widget 추가
     if (currentGoals.isEmpty) {
-      currentGoalWidgets.add(const SavingGoalPlus());
+      currentGoalWidgets.add(SavingGoalPlus(
+        onAddGoal: loadSavingGoals,
+      ));
     }
 
     return SingleChildScrollView(

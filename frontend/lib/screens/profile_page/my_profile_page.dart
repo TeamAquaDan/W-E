@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/friends_page/my_friends_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -16,6 +20,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   late List<dynamic> myProfileList = [];
   final TextEditingController bioController = TextEditingController();
   bool isEditing = false;
+  File? _selectedImage;
 
   @override
   void initState() {
@@ -98,6 +103,95 @@ class _MyProfilePageState extends State<MyProfilePage> {
     });
   }
 
+  // 갤러리 또는 카메라에서 이미지를 선택하는 함수
+  Future<void> _pickImage(ImageSource source) async {
+    print('이미지 선택 시작: $source');
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: source);
+
+    if (image != null) {
+      print('선택된 이미지 경로: ${image.path}');
+      setState(() {
+        _selectedImage = File(image.path);
+        Navigator.pop(context);
+
+        _showSelectedImageModal(_selectedImage!);
+      });
+      // Navigator.pop(context);
+    } else {
+      print('이미지 선택 취소');
+    }
+  }
+
+  void _showSelectedImageModal(File image) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // 이 속성을 true로 설정하여 전체 화면 모달을 가능하게 합니다.
+      builder: (BuildContext context) {
+        // 전체 화면 높이의 80%를 계산
+        double modalHeight = MediaQuery.of(context).size.height * 0.8;
+
+        return Container(
+          height: modalHeight, // 여기에서 모달의 높이를 설정합니다.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.file(
+                image,
+                width: double.infinity, // 이미지를 모달 너비에 맞춤
+                fit: BoxFit.fitWidth, // 이미지를 너비에 맞게 조정하면서 비율을 유지
+              ),
+              SizedBox(height: 20), // 이미지와 버튼 사이의 간격
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 모달 닫기
+                    },
+                    child: const Text('취소'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 모달 닫기
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // 이미지 선택 모달을 표시하는 함수
+  void _showImagePickerModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // 모달의 크기를 내용물에 맞춤
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('갤러리에서 선택'),
+                onTap: () => _pickImage(ImageSource.gallery), // 갤러리에서 이미지 선택
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('카메라로 촬영'),
+                onTap: () => _pickImage(ImageSource.camera), // 카메라로 사진 촬영
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,17 +205,23 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     MainAxisAlignment.start, // 컨텐츠를 위에서부터 시작하도록 설정
                 children: [
                   const SizedBox(height: 30), // 상단 여백
-                  Container(
-                    width: 94,
-                    height: 94,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1),
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                            'https://i.namu.wiki/i/D95WsY8MeICt3KVX1_tUf7KOIexMwiNeNvWtPFpVxez2l8PZd9ULpEiTCcYtfWLi7oo5e2He6YjyvHdWypIr4deeOgSkUfU_LTxDT-BUFOeHD65eCe36Bzn58ik-gMENFo7xgrDWyNEboaH8wpwShQ.webp'),
-                        fit: BoxFit.fill,
+                  GestureDetector(
+                    onTap: () {
+                      print('프로필 이미지 클릭됨');
+                      _showImagePickerModal(context); // 이미지 선택 모달 표시
+                    },
+                    child: Container(
+                      width: 94,
+                      height: 94,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1),
+                        image: const DecorationImage(
+                          image: NetworkImage(
+                              'https://i.namu.wiki/i/D95WsY8MeICt3KVX1_tUf7KOIexMwiNeNvWtPFpVxez2l8PZd9ULpEiTCcYtfWLi7oo5e2He6YjyvHdWypIr4deeOgSkUfU_LTxDT-BUFOeHD65eCe36Bzn58ik-gMENFo7xgrDWyNEboaH8wpwShQ.webp'),
+                          fit: BoxFit.fill,
+                        ),
+                        borderRadius: BorderRadius.circular(50), // 원형 이미지로 만들기
                       ),
-                      borderRadius: BorderRadius.circular(50), // 원형 이미지로 만들기
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -222,8 +322,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 backgroundColor: const Color(0xFF6750A4),
                               ),
                               onPressed: () {
-                                toggleEdit();
-                                // 프로필수정 버튼 액션
+                                setState(() {
+                                  isEditing = true;
+                                });
                               },
                               child: const Text(
                                 '프로필수정',
