@@ -5,8 +5,8 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-model = AutoModelForCausalLM.from_pretrained('/home/ubuntu/we_model')
-tokenizer = AutoTokenizer.from_pretrained('/home/ubuntu/we_model')
+model = AutoModelForCausalLM.from_pretrained('/app/model/we_model')
+tokenizer = AutoTokenizer.from_pretrained('/app/model/we_model')
 
 class UserInput(BaseModel):
     user_input: str
