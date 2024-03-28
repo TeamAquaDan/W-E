@@ -23,7 +23,7 @@ pipeline {
                 sh 'docker stop chat || true'
                 sh 'docker rm chat || true'
                 // 백엔드 이미지 실행
-                sh 'docker run -d -p 8000:8000 --name chat chat'
+                sh 'docker run -d -p 8000:8000 -v /home/ubuntu/we_model_we_model:/app/model --name chat chat'
             }
         }
         // // 빌드
