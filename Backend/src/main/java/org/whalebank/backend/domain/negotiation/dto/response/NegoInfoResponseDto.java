@@ -13,12 +13,14 @@ public class NegoInfoResponseDto {
   public int nego_amt; // 요청액
   public int current_amt; // 요청 당시 금액
   public String username; // 요청자 이름
+  public String nego_reason; // 요청 이유
 
   public static NegoInfoResponseDto of(NegotiationEntity entity, String childName) {
     return NegoInfoResponseDto.builder()
         .nego_amt(entity.getNegoAmt())
         .current_amt(entity.getCurrentAllowanceAmt())
         .username(childName)
+        .nego_reason(entity.getNegoReason())
         .build();
   }
 
