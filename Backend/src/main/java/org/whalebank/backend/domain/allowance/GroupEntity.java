@@ -78,8 +78,9 @@ public class GroupEntity {
     role.setGroup(this);
   }
 
-  public void setAutoPaymentEntity(AutoPaymentEntity entity) {
+  public AutoPaymentEntity setAutoPaymentEntity(AutoPaymentEntity entity) {
     this.autoPaymentEntity = entity;
+    return entity;
   }
 
 }

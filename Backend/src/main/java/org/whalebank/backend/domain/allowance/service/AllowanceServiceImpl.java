@@ -52,7 +52,6 @@ public class AllowanceServiceImpl implements AllowanceService{
       groupNickname = reqDto.getGroup_nickname();
     }
 
-//    System.out.println(reqDto.is_monthly + ", 입력받은 계좌 고유번호: "+reqDto.getAccount_id()+", 계좌번호: "+reqDto.getAccount_num());
     RoleEntity adultRole = RoleEntity.of(adult, groupNickname, reqDto.getAccount_id(),
         reqDto.getAccount_num(), group);
 
@@ -63,9 +62,13 @@ public class AllowanceServiceImpl implements AllowanceService{
     group.addRole(adultRole);
     group.addRole(childRole);
 
-    group.setAutoPaymentEntity(AutoPaymentEntity.of(childRole, adultRole,
-        reqDto.getAccount_password(), reqDto.getAllowance_amt(),
-        calculateNextAutoPaymentDate(reqDto.is_monthly, reqDto.payment_date)));
+    AutoPaymentEntity autoPaymentEntity = group.setAutoPaymentEntity(
+        AutoPaymentEntity.of(childRole, adultRole,
+            reqDto.getAccount_password(), reqDto.getAllowance_amt()
+        ));
+    autoPaymentEntity.calculateNextAutoPaymentDate(reqDto.getIs_monthly(),
+        reqDto.getPayment_date());
+
     // 저장
     groupRepository.save(group);
 
@@ -171,33 +174,4 @@ public class AllowanceServiceImpl implements AllowanceService{
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
   }
 
-  private LocalDate calculateNextAutoPaymentDate(boolean isMonthly, int paymentDate) {
-    LocalDate today = LocalDate.now();
-    int year = today.getYear();
-    int month = today.getMonth().getValue();
-
-    if (isMonthly) {
-      // 월별 지급
-      if (today.getDayOfMonth() >= paymentDate) {
-        // 이미 n일을 지났다면, 다음 달 paymentDate일 부터 용돈 지급
-        return LocalDate.of(year, month + 1, paymentDate);
-      } else {
-        // 이번 달 paymentDate일 부터 용돈 지급
-        return LocalDate.of(year, month, paymentDate);
-      }
-
-    } else {
-      // 주별 지급
-      DayOfWeek currentDayOfWeek = today.getDayOfWeek();
-      int daysToAdd;
-      if (currentDayOfWeek.getValue() < paymentDate) { // 4 < 6
-        // 이번 주부터 용돈 지급
-        daysToAdd = paymentDate - currentDayOfWeek.getValue();
-      } else {
-        // 다음 주 paymentDate(1월 ~ 7일)요일부터 용돈 지급
-        daysToAdd = 7 - (currentDayOfWeek.getValue() - paymentDate);
-      }
-      return today.plusDays(daysToAdd);
-    }
-  }
 }
