@@ -16,6 +16,7 @@ class CarouselWithIndicator extends StatefulWidget {
       account_num: '111-1234-12345',
       balance_amt: 3630000,
       account_type: 0,
+      is_mainAccount: true,
     ),
     AccountListData(
       account_id: 2,
@@ -23,6 +24,7 @@ class CarouselWithIndicator extends StatefulWidget {
       account_num: '222-1234-12345',
       balance_amt: 222000,
       account_type: 0,
+      is_mainAccount: false,
     ),
     AccountListData(
       account_id: 3,
@@ -30,6 +32,7 @@ class CarouselWithIndicator extends StatefulWidget {
       account_num: '111-1234-12345',
       balance_amt: 3630000,
       account_type: 0,
+      is_mainAccount: false,
     ),
   ];
 

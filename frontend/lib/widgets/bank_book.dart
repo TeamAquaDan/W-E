@@ -15,10 +15,10 @@ class BankBook extends StatefulWidget {
 }
 
 class _BankBook extends State<BankBook> {
-  bool isMain = false;
   var moneyFormat = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
+    bool isMain = widget.bankData.is_mainAccount;
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(width: 1, color: Color(0xFFC1C7CE)),
@@ -43,7 +43,7 @@ class _BankBook extends State<BankBook> {
                       isMain = res;
                     });
                   },
-                  icon: const Icon(Icons.star),
+                  icon: isMain ? Icon(Icons.star) : Icon(Icons.star_border),
                 ),
                 IconButton(
                   style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),

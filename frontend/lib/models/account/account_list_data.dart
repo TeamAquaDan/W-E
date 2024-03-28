@@ -23,6 +23,7 @@ class AccountListData {
     required this.account_num,
     required this.balance_amt,
     required this.account_type,
+    required this.is_mainAccount,
   });
 
   final int account_id;
@@ -30,6 +31,7 @@ class AccountListData {
   final String account_num;
   final int balance_amt;
   final int account_type;
+  final bool is_mainAccount;
 
   factory AccountListData.fromJson(Map<String, dynamic> json) {
     return AccountListData(
@@ -38,6 +40,7 @@ class AccountListData {
       account_num: json['account_num'] as String,
       balance_amt: json['balance_amt'] as int,
       account_type: json['account_type'] as int,
+      is_mainAccount: json['is_mainAccount'] as bool,
     );
   }
 }
