@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'dart:developer' as developer;
 import 'package:frontend/main.dart';
+import 'package:frontend/models/store/userRole/user_role.dart';
 import 'package:get/get.dart';
 
 // 로그인 결과 처리
@@ -98,6 +99,7 @@ class AuthService {
             name: 'check_refreshtoken');
 
         Get.find<UserController>().setUserId(data['user_id']);
+        Get.find<UserRoleController>().setUserRole(role);
         return LoginResult(isSuccess: true, role: role);
       }
       // 실패 시 역할 정보 없이 반환
@@ -107,8 +109,9 @@ class AuthService {
       return LoginResult(isSuccess: false, role: null);
     }
   }
+
   Future<String?> getUserRole() async {
-  return await _storage.read(key: 'user_role');
+    return await _storage.read(key: 'user_role');
   }
 
   Future<void> logout() async {

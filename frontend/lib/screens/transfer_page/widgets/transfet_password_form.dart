@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account/transfer_api.dart';
 import 'package:frontend/models/account/transfer_data.dart';
+import 'package:frontend/models/store/userRole/user_role.dart';
+import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:get/get.dart';
 
 class TransferPasswordForm extends StatefulWidget {
@@ -43,8 +46,8 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
               children: <Widget>[
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
                   keyboardType: TextInputType.number,
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
@@ -70,8 +73,16 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                         if (res == null) {
                           Get.snackbar('송금 에러', '송금 에러');
                         } else {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          if (Get.find<UserRoleController>().getUserRole() ==
+                              'ADULT') {
+                            Get.offAll(ParentPage());
+                          } else if (Get.find<UserRoleController>()
+                                  .getUserRole() ==
+                              'CHILD') {
+                            Get.offAll(ChildPage());
+                          }
+                          // Navigator.pop(context);
+                          // Navigator.pop(context);
                           Get.snackbar('송금완료',
                               '${widget.data.recv_client_name}님에게 ${widget.data.tran_amt} 원 입금 원료');
                         }
