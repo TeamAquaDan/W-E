@@ -19,7 +19,32 @@ class ChildInfo extends StatelessWidget {
               userId: data.userId,
               groupNickname: data.groupNickname),
           //미션 추가
-          MissionAddCard(groupId: data.groupId),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Row(
+              children: [
+                const Text(
+                  '미션 목록',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              MissionAddCard(groupId: data.groupId),
+                          isScrollControlled: true);
+                    },
+                    icon: Icon(Icons.add)),
+              ],
+            ),
+          ),
+          // MissionAddCard(groupId: data.groupId),
           MissionList(
             groupId: data.groupId,
           )

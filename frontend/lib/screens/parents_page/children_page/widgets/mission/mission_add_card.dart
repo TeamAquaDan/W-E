@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/api/mission/add_mission_api.dart';
+import 'package:frontend/screens/parents_page/children_page/child_management_page.dart';
+import 'package:get/get.dart';
+
+import 'package:intl/intl.dart';
 
 class MissionAddCard extends StatefulWidget {
   final int groupId;
@@ -14,6 +19,7 @@ class _MissionAddCardState extends State<MissionAddCard> {
   late TextEditingController _missionNameController;
   late TextEditingController _missionRewardController;
   late TextEditingController _deadlineDateController;
+  late DateTime _deadlineDate;
 
   @override
   void initState() {
@@ -21,6 +27,7 @@ class _MissionAddCardState extends State<MissionAddCard> {
     _missionNameController = TextEditingController();
     _missionRewardController = TextEditingController();
     _deadlineDateController = TextEditingController();
+    _deadlineDate = DateTime.now();
   }
 
   @override
@@ -33,39 +40,68 @@ class _MissionAddCardState extends State<MissionAddCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8.0),
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '새로운 미션 추가',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            TextField(
-              controller: _missionNameController,
-              decoration: InputDecoration(labelText: '미션 제목'),
-            ),
-            TextField(
-              controller: _missionRewardController,
-              decoration: InputDecoration(labelText: '보상금액'),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: _deadlineDateController,
-              decoration: InputDecoration(labelText: '마감일 (yyyy-mm-dd)'),
-            ),
-            SizedBox(height: 8.0),
-            ElevatedButton(
-              onPressed: () {
-                _addMission();
-              },
-              child: Text('미션 추가'),
-            ),
-          ],
+    return SingleChildScrollView(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Card(
+        margin: EdgeInsets.all(8.0),
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '새로운 미션 추가',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              SizedBox(height: 8.0),
+              TextField(
+                controller: _missionNameController,
+                decoration: InputDecoration(labelText: '미션 제목'),
+              ),
+              TextField(
+                controller: _missionRewardController,
+                decoration: InputDecoration(labelText: '보상금액'),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+              // TextField(
+              //   controller: _deadlineDateController,
+              //   decoration: InputDecoration(labelText: '마감일 (yyyy-mm-dd)'),
+              // ),
+              Row(
+                children: [
+                  Text(
+                    DateFormat('yyyy-MM-dd').format(_deadlineDate),
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    child: Text('마감일 선택'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.0),
+              ElevatedButton(
+                onPressed: () {
+                  _addMission();
+                },
+                child: Text('미션 추가'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -90,12 +126,29 @@ class _MissionAddCardState extends State<MissionAddCard> {
       _missionNameController.clear();
       _missionRewardController.clear();
       _deadlineDateController.clear();
+      Get.to(() => ChildManagementPage());
     } catch (error) {
       // 오류 처리
       print('Error adding mission: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('미션 추가 중 오류가 발생했습니다.')),
       );
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101), // 임의의 미래 날짜
+    );
+    if (pickedDate != null && pickedDate != _deadlineDate) {
+      setState(() {
+        _deadlineDate = pickedDate;
+        _deadlineDateController.text =
+            DateFormat('yyyy-MM-dd').format(pickedDate);
+      });
     }
   }
 }

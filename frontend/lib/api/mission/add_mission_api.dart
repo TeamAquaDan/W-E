@@ -29,3 +29,29 @@ Future addMission({
     throw error;
   }
 }
+
+Future patchMission({
+  required int groupId,
+  required int missionId,
+  required int status,
+}) async {
+  final DioService dioService = DioService();
+  try {
+    Map<String, dynamic> body = {
+      "group_id": groupId,
+      "mission_id": missionId,
+      "status": status, //1성공 2실패
+    };
+    dio.Response response =
+        await dioService.dio.patch('${baseURL}api/mission', data: body);
+
+    // Handle response
+    print('Response status: ${response.statusCode}');
+    print('Response data: ${response.data}');
+    return response.data;
+  } catch (error) {
+    // Handle error
+    print('Error sending POST request: $error');
+    throw error;
+  }
+}
