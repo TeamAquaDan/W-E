@@ -5,7 +5,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SalaryIncreasePage extends StatefulWidget {
-  const SalaryIncreasePage({super.key});
+  const SalaryIncreasePage({
+    super.key,
+    required this.groupNickname,
+    required this.userName,
+    required this.groupId,
+  });
+
+  final String groupNickname;
+  final String userName;
+  final int groupId;
 
   @override
   State<SalaryIncreasePage> createState() => _SalaryIncreasePageState();
@@ -53,11 +62,11 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
               ],
             ),
             const SizedBox(height: 19),
-            const Text.rich(
+            Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
-                    text: '보호자',
+                    text: widget.groupNickname,
                     style: TextStyle(
                       color: Color(0xFF0014FF),
                       fontSize: 20,
@@ -67,7 +76,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                   ),
                   WidgetSpan(child: SizedBox(width: 8)), // 공간 추가
                   TextSpan(
-                    text: '(실명)',
+                    text: '(${widget.userName})',
                     style: TextStyle(
                       color: Color(0xFF8B7777),
                       fontSize: 20,
@@ -174,8 +183,26 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                         const EdgeInsets.fromLTRB(20, 10, 20, 10)),
                   ),
                   onPressed: () {
-                    print(_controller.text.replaceAll(',', ''));
-                    Get.to(() => const SalaryIncreaseFormPage());
+                    // 콤마를 제거한 후의 문자열
+                    String textWithoutCommas =
+                        _controller.text.replaceAll(',', '');
+                    // 문자열을 정수로 변환
+                    int? negoAmt = int.tryParse(textWithoutCommas);
+
+                    // 정수 변환에 성공했는지 확인
+                    if (negoAmt != null) {
+                      // 변환에 성공했다면 SalaryIncreaseFormPage로 이동하고 negoAmt를 전달
+                      Get.to(() => SalaryIncreaseFormPage(
+                            groupId: widget.groupId,
+                            negoAmt: negoAmt,
+                            userName: widget.userName,
+                            groupNickname: widget.groupNickname,
+                          ));
+                    } else {
+                      // 변환에 실패했다면, 예를 들어, 에러 메시지를 표시
+                      // 에러 처리 코드를 여기에 추가 (예: 토스트 메시지 표시, 대화 상자 열기 등)
+                      print("Invalid input for negoAmt");
+                    }
                   }, // api 요청
                   child: const Text(
                     '확인',

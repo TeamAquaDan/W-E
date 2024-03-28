@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user/user_controller.dart';
+import 'package:frontend/models/store/account/account_controller.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/screens/login_page.dart';
 import 'package:frontend/screens/pin_login_page.dart';
@@ -161,6 +162,7 @@ await flutterLocalNotificationsPlugin.initialize(initializationSettings,
   });
 
   Get.put(UserController());
+  Get.put(AccountController());
   runApp(MyApp());
 }
 
