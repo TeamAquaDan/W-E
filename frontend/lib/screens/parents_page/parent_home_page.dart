@@ -31,23 +31,7 @@ class ParentHomePage extends StatelessWidget {
               const SizedBox(height: 16),
               const SectionBar(title: '자녀 용돈 목록'),
               ChildrenList(),
-              // const Column(
-              //   children: [
-              //     PinMoney(
-              //       PinMoneyDay: 16,
-              //       PinMoneyMoney: 100000,
-              //       childName: '김자녀',
-              //     ),
-              //     PinMoney(
-              //       PinMoneyDay: 16,
-              //       PinMoneyMoney: 50000,
-              //       childName: '김막내',
-              //     )
-              //   ],
-              // ),
-              const SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               const SectionBar(title: '진행 중인 미션'),
               const MissionNone(),
             ],
