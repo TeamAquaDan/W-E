@@ -1,14 +1,21 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/api/save/goal_add_api.dart';
 import 'package:frontend/models/save/goal_add.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
+import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
+import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_account_carousel.dart';
+import 'package:frontend/widgets/carousel_with_indicator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class MySavingGoalForm extends StatefulWidget {
-  const MySavingGoalForm({super.key});
+  const MySavingGoalForm({super.key, required this.onAddGoal});
+
+  final VoidCallback onAddGoal;
 
   @override
   State<MySavingGoalForm> createState() => _MySavingGoalFormState();
@@ -19,7 +26,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
   final TextEditingController _amountController = TextEditingController();
   DateTime? _selectedDate;
   String? _selectedAccount;
-  final List<String> _accounts = ['계좌 A', '계좌 B', '계좌 C']; // 예시 계좌 목록
+  String? _selectedAccountName;
   String? _selectedCategoryCode; // 선택된 카테고리 코드
   final NumberFormat _numberFormat = NumberFormat.decimalPattern('ko');
 
@@ -42,6 +49,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
   void initState() {
     super.initState();
     _amountController.addListener(_updateAmount);
+    Get.put(AccountController()).fetchAccounts();
   }
 
   void _updateAmount() {
@@ -77,6 +85,17 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
       if (pickedDate == null) return;
       setState(() {
         _selectedDate = pickedDate;
+      });
+    });
+  }
+
+  void _showAccountSelection() {
+    showAccountCarouselDialog(context, (String accountId, String accountName) {
+      // 계좌 ID와 이름을 상태 변수에 저장
+      print("Selected Account ID: $accountId, Account Name: $accountName");
+      setState(() {
+        _selectedAccount = accountId;
+        _selectedAccountName = accountName; // 계좌 이름 저장
       });
     });
   }
@@ -158,21 +177,14 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                 const SizedBox(width: 10),
                 Expanded(
                   flex: 1,
-                  child: DropdownButton<String>(
-                    value: _selectedAccount,
-                    isExpanded: true,
-                    hint: const Text('출금계좌 선택'),
-                    items: _accounts.map((account) {
-                      return DropdownMenuItem(
-                        value: account,
-                        child: Text(account),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedAccount = value;
-                      });
-                    },
+                  child: Container(
+                    // Container 추가
+                    child: TextButton(
+                      onPressed: () {
+                        _showAccountSelection();
+                      },
+                      child: Text(_selectedAccountName ?? '계좌 선택'),
+                    ),
                   ),
                 ),
               ],
@@ -180,15 +192,24 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _selectedDate == null
-                      ? '목표 기간을 선택하세요'
-                      : '목표 기간: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}',
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    child: Text(
+                      _selectedDate == null
+                          ? '목표 기간을 선택하세요'
+                          : '목표 기간: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}',
+                    ),
+                  ),
                 ),
-                TextButton(
-                  onPressed: _presentDatePicker,
-                  child: const Text('날짜 선택'),
+                Expanded(
+                  flex: 1,
+                  child: TextButton(
+                    onPressed: _presentDatePicker,
+                    child: const Text('날짜 선택'),
+                  ),
                 ),
               ],
             ),
@@ -207,7 +228,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                     int goalAmt = int.parse(_amountController.text
                         .replaceAll(RegExp(r'[^0-9]'), ''));
                     String categoryCode = _selectedCategoryCode ?? '';
-                    int accountId = 6;
+                    int accountId = int.parse(_selectedAccount ?? '');
 
                     // _selectedDate를 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
                     String formattedGoalDate = _selectedDate != null
@@ -239,6 +260,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
                         );
+                        widget.onAddGoal();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("목표 등록에 실패했습니다.")),

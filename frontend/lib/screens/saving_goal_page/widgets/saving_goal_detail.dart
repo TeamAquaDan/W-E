@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:frontend/api/base_url.dart';
 import 'package:frontend/api/save/goal_detail_api.dart';
+import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
+import 'package:frontend/services/dio_service.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SavingGoalDetail extends StatefulWidget {
@@ -56,9 +61,83 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
     return dDay; // 종료일 - 오늘의 날짜 차이를 일수로 반환
   }
 
+  void showDepositDialog(int goalId) async {
+    TextEditingController _amountController = TextEditingController();
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('저금하기'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text('저금할 금액을 입력하세요.'),
+              TextField(
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  // Custom formatter to add comma
+                  TextInputFormatter.withFunction((oldValue, newValue) {
+                    if (newValue.text.isEmpty) {
+                      return newValue.copyWith(text: '');
+                    } else if (newValue.text.compareTo(oldValue.text) != 0) {
+                      final int value =
+                          int.parse(newValue.text.replaceAll(',', ''));
+                      final String newText =
+                          NumberFormat('#,###').format(value);
+                      return newValue.copyWith(
+                          text: newText,
+                          selection:
+                              TextSelection.collapsed(offset: newText.length));
+                    }
+                    return newValue;
+                  })
+                ],
+                decoration: InputDecoration(
+                  hintText: '금액',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('저금하기'),
+              onPressed: () {
+                final DioService dioService = DioService();
+                dioService.dio.patch(
+                  '${baseURL}api/goal/save',
+                  data: {
+                    'goal_id': goalId,
+                    'save_amt':
+                        int.parse(_amountController.text.replaceAll(',', '')),
+                  },
+                ).then((response) {
+                  print('전송 성공! $response');
+                  Navigator.of(context).pop(); // Close the dialog
+                  setState(() {
+                    _goalDetailsFuture =
+                        loadGoalDetail(); // Re-fetch the goal details
+                  });
+                }).catchError((error) {
+                  print(error);
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('목표 상세'),
       ),
@@ -104,7 +183,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('${goalDetails['percentage']}%',
+                      Text('${goalDetails['percentage'].toStringAsFixed(2)}%',
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -127,7 +206,43 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('포기하기'),
+                                      content: const Text('정말 포기하시겠습니까?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('취소'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            final DioService dioService =
+                                                DioService();
+                                            dioService.dio.patch(
+                                                '${baseURL}api/goal',
+                                                data: {
+                                                  'goal_id':
+                                                      goalDetails['goal_id'],
+                                                  'status': 2,
+                                                }).then((res) {
+                                              print('포기 성공! $res');
+                                              Get.to(() => MySavingGoalPage());
+                                            }).catchError((err) {});
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('포기하기'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
@@ -149,7 +264,9 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                             ),
                             const SizedBox(width: 15),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDepositDialog(goalDetails['goal_id']);
+                              },
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
@@ -174,7 +291,31 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                       : Row(
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('출금하기'),
+                                      content: const Text('출금 하시겠습니까?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('취소'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('출금하기'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 20,

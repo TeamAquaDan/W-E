@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/saving_goal_page/my_saving_goal_form.dart';
 
 class SavingGoalPlus extends StatelessWidget {
-  const SavingGoalPlus({super.key});
+  const SavingGoalPlus({super.key, required this.onAddGoal});
+
+  final VoidCallback onAddGoal;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class SavingGoalPlus extends StatelessWidget {
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           // return const MySavingGoalForm(); // BottomSheet로 MySavingGoalForm을 표시
-                          return const MySavingGoalForm();
+                          return MySavingGoalForm(onAddGoal: onAddGoal);
                         },
                       );
                     },

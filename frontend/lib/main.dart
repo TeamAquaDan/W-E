@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
+import 'package:frontend/models/store/saving_goal/goal_list_controller.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/screens/login_page.dart';
@@ -72,9 +73,9 @@ void handleNotificationPayload(String payload) {
   // Get.to()를 사용하여 페이지 이동
   if (payload == '100') {
     Get.to(() => const AlarmPage());
-  } else if (payload == '400'){
+  } else if (payload == '400') {
     Get.to(() => const SalaryListPage());
-  } else if (payload == '600'){
+  } else if (payload == '600') {
     Get.to(() => const MyProfilePage());
   } else {
     Get.to(() => const AlarmPage());
@@ -115,13 +116,13 @@ void main() async {
   );
 
   /// 새로운 콜백 함수 사용
-await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) async {
-  if (response.payload != null) {
-    // 알림을 클릭했을 때 필요한 작업을 수행합니다.
-    handleNotificationPayload(response.payload!);
-  }
-});
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+    if (response.payload != null) {
+      // 알림을 클릭했을 때 필요한 작업을 수행합니다.
+      handleNotificationPayload(response.payload!);
+    }
+  });
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
@@ -163,6 +164,7 @@ await flutterLocalNotificationsPlugin.initialize(initializationSettings,
 
   Get.put(UserController());
   Get.put(AccountController());
+  Get.put(GoalListController());
   runApp(MyApp());
 }
 
