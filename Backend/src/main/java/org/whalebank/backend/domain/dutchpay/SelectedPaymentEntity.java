@@ -48,7 +48,7 @@ public class SelectedPaymentEntity {
         .transId(transaction.getTrans_id())
         .transAmt(transaction.getTrans_amt())
         .category(transaction.getCategory())
-        .memberStoreName(transaction.getMember_storeName())
+        .memberStoreName(transaction.getMember_store_name())
         .roomId(dutchpay.getRoom().getRoomId())
         .build();
   }

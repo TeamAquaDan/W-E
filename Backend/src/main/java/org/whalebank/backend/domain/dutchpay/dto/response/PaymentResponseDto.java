@@ -35,7 +35,7 @@ public class PaymentResponseDto {
     };
   }
 
-  public static PaymentResponseDto from(SelectedPaymentEntity selectedPayment){
+  public static PaymentResponseDto from(SelectedPaymentEntity selectedPayment) {
     return PaymentResponseDto
         .builder()
         .trans_id(selectedPayment.getTransId())

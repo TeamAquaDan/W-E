@@ -230,6 +230,11 @@ public class DutchpayServiceImpl implements DutchpayService {
       throw new CustomException(ResponseCode.AUTO_DUTCHPAY_ACCESS_DENIED);
     }
 
+    // 이미 더치페이가 완료된 경우
+    if (dutchpayRoom.isCompleted()) {
+      throw new CustomException(ResponseCode.DUTCHPAY_FINISHED);
+    }
+
     // 더치페이 방에 등록된 더치페이 리스트
     List<DutchpayEntity> dutchpayList = dutchpayRepository.findByRoom(dutchpayRoom);
 

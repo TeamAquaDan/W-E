@@ -14,14 +14,15 @@ public class RegisterPaymentRequestDto {
 
   public String password;  // 계좌 비밀번호
 
-  public List<Transaction> transactions; // 변경된 부분
+  public List<Transaction> transactions;
 
   @Getter
   public static class Transaction {
 
-    private int trans_id; // 거래 고유 번호
-    private int trans_amt; // 거래 금액
-    private String category;  // 카테고리
-    private String member_storeName; // 거래 제목
+    public int trans_id; // 거래 고유 번호
+    public int trans_amt; // 거래 금액
+    public String category;  // 카테고리
+    public String member_store_name; // 거래 제목
+
   }
 }
