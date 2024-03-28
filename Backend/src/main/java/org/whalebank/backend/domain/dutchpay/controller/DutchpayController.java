@@ -80,10 +80,13 @@ public class DutchpayController {
 
   @Operation(summary = "타인 결제 내역 조회")
   @PostMapping("/payments")
-  public ApiResponse<PaymentResponseDto> viewPayments(
+  public ApiResponse<List<PaymentResponseDto>> viewPayments(
       @AuthenticationPrincipal UserDetails loginUser,
       @RequestBody PaymentRequestDto request){
-    return ApiResponse.ok("선택한 결제 내역 조회 성공", dutchpayService.viewPayments(loginUser.getUsername(), request));
+
+    List<PaymentResponseDto> payments = dutchpayService.viewPayments(loginUser.getUsername(), request);
+
+    return ApiResponse.ok("선택한 결제 내역 조회 성공", payments);
   }
 
 

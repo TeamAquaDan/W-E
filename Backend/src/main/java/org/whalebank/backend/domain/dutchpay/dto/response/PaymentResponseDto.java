@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
+import org.whalebank.backend.domain.dutchpay.SelectedPaymentEntity;
 import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse.CardHistoryDetail;
 
 @Setter
@@ -32,6 +33,16 @@ public class PaymentResponseDto {
       case "80", "81" -> "014";
       default -> "000";
     };
+  }
+
+  public static PaymentResponseDto from(SelectedPaymentEntity selectedPayment){
+    return PaymentResponseDto
+        .builder()
+        .trans_id(selectedPayment.getTransId())
+        .member_store_name(selectedPayment.getMemberStoreName())
+        .trans_amt(selectedPayment.getTransAmt())
+        .category(selectedPayment.getCategory())
+        .build();
   }
 
 }

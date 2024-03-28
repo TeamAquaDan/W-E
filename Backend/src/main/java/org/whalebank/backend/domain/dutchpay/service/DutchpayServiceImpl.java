@@ -167,21 +167,20 @@ public class DutchpayServiceImpl implements DutchpayService {
   }
 
   @Override
-  public PaymentResponseDto viewPayments(String loginId, PaymentRequestDto request) {
+  public List<PaymentResponseDto> viewPayments(String loginId, PaymentRequestDto request) {
 
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    DutchpayEntity dutchpay = dutchpayRepository.getById(request.getDutchpay_id());
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(request.getRoom_id())
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
 
-    SelectedPaymentEntity payment = selectedPaymentRepository.getByDutchpay(dutchpay);
+    DutchpayEntity dutchpay = dutchpayRepository.findByDutchpayIdAndRoom(request.getDutchpay_id(), dutchpayRoom);
 
-    return PaymentResponseDto
-        .builder()
-        .trans_id(payment.getTransId())
-        .member_store_name(payment.getMemberStoreName())
-        .trans_amt(payment.getTransAmt())
-        .category(payment.getCategory())
-        .build();
+    List<SelectedPaymentEntity> payment = selectedPaymentRepository.findByDutchpay(dutchpay);
+
+    return payment.stream()
+        .map(PaymentResponseDto::from)
+        .collect(Collectors.toList());
   }
 }
