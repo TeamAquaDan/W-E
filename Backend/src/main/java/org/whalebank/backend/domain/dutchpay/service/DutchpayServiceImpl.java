@@ -3,10 +3,13 @@ package org.whalebank.backend.domain.dutchpay.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.dutchpay.CategoryCalculateEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
 import org.whalebank.backend.domain.dutchpay.SelectedPaymentEntity;
@@ -17,6 +20,7 @@ import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestD
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
+import org.whalebank.backend.domain.dutchpay.repository.CategoryCalculateRepository;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRepository;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRoomRepository;
 import org.whalebank.backend.domain.dutchpay.repository.SelectedPaymentRepository;
@@ -34,6 +38,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final DutchpayRepository dutchpayRepository;
   private final DutchpayRoomRepository dutchpayRoomRepository;
   private final SelectedPaymentRepository selectedPaymentRepository;
+  private final CategoryCalculateRepository categoryCalculateRepository;
   private final CardAccessUtil cardAccessUtil;
 
   @Override
@@ -147,6 +152,8 @@ public class DutchpayServiceImpl implements DutchpayService {
     dutchpay.setAccountPassword(request.getPassword());
     dutchpay.setTotalAmt(totalAmt);
 
+    dutchpayRoom.setSetAmtCount(dutchpayRoom.getSetAmtCount() + 1);
+
     dutchpayRepository.save(dutchpay);
   }
 
@@ -175,7 +182,8 @@ public class DutchpayServiceImpl implements DutchpayService {
     DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(request.getRoom_id())
         .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
 
-    DutchpayEntity dutchpay = dutchpayRepository.findByDutchpayIdAndRoom(request.getDutchpay_id(), dutchpayRoom);
+    DutchpayEntity dutchpay = dutchpayRepository.findByDutchpayIdAndRoom(request.getDutchpay_id(),
+        dutchpayRoom);
 
     List<SelectedPaymentEntity> payment = selectedPaymentRepository.findByDutchpay(dutchpay);
 
@@ -183,4 +191,70 @@ public class DutchpayServiceImpl implements DutchpayService {
         .map(PaymentResponseDto::from)
         .collect(Collectors.toList());
   }
+
+  @Override
+  public List<DutchpayDetailResponseDto> autoDutchpay(String loginId, int roomId) {
+
+    // 로그인한 유저
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 정산할 더치페이 방
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(roomId)
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    // 로그인한 유저가 방장이 아닌 경우
+    // 403: 정산하기 권한이 없습니다
+    if (dutchpayRoom.getManagerId() != user.getUserId()) {
+      throw new CustomException(ResponseCode.AUTO_DUTCHPAY_ACCESS_DENIED);
+    }
+
+    // 더치페이 방에 등록된 더치페이 리스트
+    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByRoom(dutchpayRoom);
+
+    // 미등록 인원이 있는 경우
+    // 400: 모든 멤버가 금액을 등록해야 합니다.
+    if (dutchpayRoom.getSetAmtCount() != dutchpayList.size()) {
+      throw new CustomException(ResponseCode.UNREGISTERED_MEMBERS);
+    }
+
+    // 더치페이 방에 등록된 모든 결제 내역 리스트
+    List<SelectedPaymentEntity> selectedPaymentList = selectedPaymentRepository.findByRoomId(
+        dutchpayRoom.getRoomId());
+
+    // 카테고리별 정산 함수
+    categoryCalculate(selectedPaymentList);
+
+    // 개인별 정산 금액 계산하는 함수
+
+    // 잔액이 정산금액보다 많으면 이체하기
+
+    // 이체 내역 가계부에 등록 및 선택한 내역 가계부에서 숨기기
+
+    return null;
+  }
+
+  private void categoryCalculate(List<SelectedPaymentEntity> selectedPaymentList) {
+
+    for (SelectedPaymentEntity selectedPayment : selectedPaymentList) {
+
+      String category = selectedPayment.getCategory();
+
+      CategoryCalculateEntity categoryCalculate = categoryCalculateRepository.findByCategory(
+          category);
+
+      // CategoryCalculate Entity를 선택한 내역의 "카테고리"로 찾는다
+      // 존재하지 않으면 새로 만든다
+      // 존재하면 기존 totalAmt 값에 현재 선택 내역의 결제 금액을 더해준다
+      if (categoryCalculate == null) {
+        categoryCalculateRepository.save(CategoryCalculateEntity.create(selectedPayment));
+      } else {
+        categoryCalculate.setTotalAmt(
+            categoryCalculate.getTotalAmt() + selectedPayment.getTransAmt());
+        categoryCalculateRepository.save(categoryCalculate);
+      }
+    }
+  }
+
 }
+

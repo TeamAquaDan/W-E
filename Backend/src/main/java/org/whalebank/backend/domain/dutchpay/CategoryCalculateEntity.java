@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,4 +34,11 @@ public class CategoryCalculateEntity {
   private String category;  // 카테고리
   private int totalAmt; // 카테고리별 금액
 
+  public static CategoryCalculateEntity create(SelectedPaymentEntity selectedPayment) {
+    return CategoryCalculateEntity
+        .builder()
+        .category(selectedPayment.getCategory())
+        .totalAmt(selectedPayment.getTransAmt())
+        .build();
+  }
 }

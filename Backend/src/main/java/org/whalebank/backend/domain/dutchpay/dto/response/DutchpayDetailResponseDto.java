@@ -16,7 +16,7 @@ public class DutchpayDetailResponseDto {
   private int totalAmt; // 결제총액
   private boolean isCompleted;  // 정산금액 송금여부
 
-  public static DutchpayDetailResponseDto from(DutchpayEntity dutchpay){
+  public static DutchpayDetailResponseDto from(DutchpayEntity dutchpay) {
     return DutchpayDetailResponseDto
         .builder()
         .dutchpay_id(dutchpay.getDutchpayId())
