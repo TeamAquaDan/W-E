@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/parents_page/widgets/children_list.dart';
 import 'package:frontend/screens/parents_page/widgets/section_bar.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
-import 'package:frontend/screens/mission_page/widgets/mission_none.dart';
 
 class ParentHomePage extends StatelessWidget {
   const ParentHomePage({super.key});

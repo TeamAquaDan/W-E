@@ -44,11 +44,11 @@ class _ChildManagementPage extends State<ChildManagementPage> {
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
-                      builder: (BuildContext context) => AddChildForm(),
+                      builder: (BuildContext context) => const AddChildForm(),
                       isScrollControlled: true,
                     );
                   },
-                  icon: Icon(Icons.add_circle_outline))
+                  icon: const Icon(Icons.add_circle_outline))
             ],
           ),
           bottom: TabBar(

@@ -29,7 +29,7 @@ class _ChildrenListState extends State<ChildrenList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       // height: 700,
       child: ListView.builder(

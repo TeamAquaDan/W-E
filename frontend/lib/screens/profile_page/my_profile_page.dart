@@ -141,12 +141,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
       );
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("이미지가 성공적으로 업로드되었습니다!")),
+          const SnackBar(content: Text("이미지가 성공적으로 업로드되었습니다!")),
         );
         // Handle success
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("이미지 업로드에 실패했습니다.")),
+          const SnackBar(content: Text("이미지 업로드에 실패했습니다.")),
         );
         // Handle failure
       }

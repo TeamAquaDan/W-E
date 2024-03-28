@@ -4,7 +4,7 @@ import 'package:frontend/api/nego/nego_list_api.dart';
 class NegoListWidget extends StatefulWidget {
   final int groupId;
 
-  const NegoListWidget({Key? key, required this.groupId}) : super(key: key);
+  const NegoListWidget({super.key, required this.groupId});
 
   @override
   _NegoListWidgetState createState() => _NegoListWidgetState();
@@ -25,7 +25,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
       future: _negoListFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // 로딩 중이면 로딩 표시
+          return const CircularProgressIndicator(); // 로딩 중이면 로딩 표시
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}'); // 에러가 발생하면 에러 메시지 출력
         } else if (snapshot.hasData) {
@@ -45,7 +45,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
             },
           );
         } else {
-          return Text('No data available');
+          return const Text('No data available');
         }
       },
     );

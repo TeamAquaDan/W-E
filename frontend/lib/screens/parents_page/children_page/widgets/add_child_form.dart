@@ -4,6 +4,8 @@ import 'package:frontend/api/allowance/add_child_api.dart';
 import 'package:frontend/models/account/account_list_data.dart';
 
 class AddChildForm extends StatefulWidget {
+  const AddChildForm({super.key});
+
   @override
   _AddChildFormState createState() => _AddChildFormState();
 }
@@ -50,7 +52,7 @@ class _AddChildFormState extends State<AddChildForm> {
             children: <Widget>[
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: '자녀의 아이디'),
+                decoration: const InputDecoration(labelText: '자녀의 아이디'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '자녀의 아이디를 입력하세요';
@@ -63,7 +65,7 @@ class _AddChildFormState extends State<AddChildForm> {
               ),
               const SizedBox(height: 12),
               TextFormField(
-                decoration: InputDecoration(labelText: '그룹 별칭'),
+                decoration: const InputDecoration(labelText: '그룹 별칭'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '그룹 별칭을 입력하세요';
@@ -77,7 +79,7 @@ class _AddChildFormState extends State<AddChildForm> {
               const SizedBox(height: 12),
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: '용돈 금액'),
+                decoration: const InputDecoration(labelText: '용돈 금액'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '용돈 금액을 입력하세요';
@@ -91,7 +93,7 @@ class _AddChildFormState extends State<AddChildForm> {
               const SizedBox(height: 12),
               DropdownButtonFormField<bool>(
                 value: _isMonthly,
-                items: [
+                items: const [
                   DropdownMenuItem(
                     value: true,
                     child: Text('매월'),
@@ -106,7 +108,7 @@ class _AddChildFormState extends State<AddChildForm> {
                     _isMonthly = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: '용돈 주기'),
+                decoration: const InputDecoration(labelText: '용돈 주기'),
                 validator: (value) {
                   if (value == null) {
                     return '용돈 주기를 선택하세요';
@@ -129,7 +131,7 @@ class _AddChildFormState extends State<AddChildForm> {
                       _paymentDate = value!;
                     });
                   },
-                  decoration: InputDecoration(labelText: '용돈 지급일'),
+                  decoration: const InputDecoration(labelText: '용돈 지급일'),
                   validator: (value) {
                     if (value == null) {
                       return '용돈 지급일을 선택하세요';
@@ -141,7 +143,7 @@ class _AddChildFormState extends State<AddChildForm> {
                 const SizedBox(height: 12),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: '용돈 지급일'),
+                  decoration: const InputDecoration(labelText: '용돈 지급일'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '용돈 지급일을 입력하세요';
@@ -167,7 +169,7 @@ class _AddChildFormState extends State<AddChildForm> {
                     _selectedAccount = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: '출금 계좌'),
+                decoration: const InputDecoration(labelText: '출금 계좌'),
                 validator: (value) {
                   if (value == null) {
                     return '출금 계좌를 선택하세요';
@@ -179,7 +181,7 @@ class _AddChildFormState extends State<AddChildForm> {
               TextFormField(
                 obscureText: true,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: '출금 계좌 비밀번호'),
+                decoration: const InputDecoration(labelText: '출금 계좌 비밀번호'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '출금 계좌 비밀번호를 입력하세요';
@@ -190,7 +192,7 @@ class _AddChildFormState extends State<AddChildForm> {
                   _accountPassword = value!;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -198,7 +200,7 @@ class _AddChildFormState extends State<AddChildForm> {
                     _submitForm();
                   }
                 },
-                child: Text('제출'),
+                child: const Text('제출'),
               ),
             ],
           ),
@@ -220,12 +222,12 @@ class _AddChildFormState extends State<AddChildForm> {
         accountPassword: _accountPassword,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('자녀 정보가 성공적으로 추가되었습니다.')),
+        const SnackBar(content: Text('자녀 정보가 성공적으로 추가되었습니다.')),
       );
     } catch (error) {
       print('자녀 정보 추가 에러: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('자녀 정보 추가 중 오류가 발생했습니다.')),
+        const SnackBar(content: Text('자녀 정보 추가 중 오류가 발생했습니다.')),
       );
     }
   }
