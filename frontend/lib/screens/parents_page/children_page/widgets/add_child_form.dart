@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account/account_list_api.dart';
-import 'package:frontend/api/allowance/add_child.dart';
+import 'package:frontend/api/allowance/add_child_api.dart';
 import 'package:frontend/models/account/account_list_data.dart';
 
 class AddChildForm extends StatefulWidget {
