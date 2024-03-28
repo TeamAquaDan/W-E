@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
     // resFromBank -> List<AccountInfoResponseDto>
     return resFromBank.getAccount_list().stream()
-        .map(AccountInfoResponseDto::from)
+        .map(a -> AccountInfoResponseDto.from(a, currentUser.getAccountNum()))
         .collect(Collectors.toList());
 
   }
