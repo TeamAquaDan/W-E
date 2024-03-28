@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/mission_data.dart';
+import 'package:frontend/api/mission/add_mission_api.dart';
+import 'package:frontend/models/mission/mission_model.dart';
 import 'package:intl/intl.dart';
 
 class MissionCard extends StatelessWidget {
-  // const MissionCard(
-  //     {super.key,
-  //     required this.title,
-  //     required this.money,
-  //     required this.deadline});
-  // final String title;
-  // final int money;
-  // final String deadline;
-  const MissionCard(this.missionData, {super.key});
-  final MissionData missionData;
+  final MissionModel mission;
+  final int groupId;
+  MissionCard({required this.mission, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
     var moneyFormat = NumberFormat('###,###,###,### 원');
+    Color cardColor = _getCardColor(mission.status);
 
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      color: const Color(0xFF7A97FF),
+      color: cardColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 8),
         child: Column(
@@ -33,7 +28,7 @@ class MissionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      missionData.mission_name,
+                      mission.missionName,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -42,7 +37,7 @@ class MissionCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      missionData.deadline_date,
+                      mission.deadlineDate,
                       style: const TextStyle(
                         color: Color(0xFF555555),
                         fontSize: 16,
@@ -57,7 +52,7 @@ class MissionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      moneyFormat.format(missionData.mission_reward),
+                      moneyFormat.format(mission.missionReward),
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -69,9 +64,15 @@ class MissionCard extends StatelessWidget {
                     Row(
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            patchMission(
+                                groupId: groupId,
+                                missionId: mission.missionId,
+                                status: 1);
+                          },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 131, 220, 183),
+                            backgroundColor:
+                                const Color.fromARGB(255, 131, 220, 183),
                           ),
                           child: const Text(
                             '성공',
@@ -83,9 +84,15 @@ class MissionCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            patchMission(
+                                groupId: groupId,
+                                missionId: mission.missionId,
+                                status: 2);
+                          },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 220, 131, 131),
+                            backgroundColor:
+                                const Color.fromARGB(255, 220, 131, 131),
                           ),
                           child: const Text(
                             '실패',
@@ -106,28 +113,17 @@ class MissionCard extends StatelessWidget {
       ),
     );
   }
-}
 
-/*
-"{
-  ""group_id"": 'int, 그룹 아이디
-  ""mission_id"": ""int, 미션 아이디""
-  ""status"": ""int, 처리상태""
-}
-
-1(미션 성공 시), 2(미션 실패 시)"
-
-
-"{
-  ""status"": 200, 
-  ""message"": ""미션 조회 성공"", 
-  ""data"": {
-     ""mission_name"": ""string, 미션 제목"",
-     ""mission_reward"": ""int, 보상금액"", 
-     ""deadline_date"": ""string, 마감 일시"",
-     ""status"": ""int, 처리 상태"",
-     ""user_name"" : ""string, 미션 제공자 이름""
+  Color _getCardColor(int status) {
+    switch (status) {
+      case 0:
+        return const Color(0xFF7A97FF);
+      case 1:
+        return const Color(0xFF83DCB7);
+      case 2:
+        return const Color(0xFFDC8787);
+      default:
+        return const Color(0xFF7A97FF);
+    }
   }
 }
-처리상태 0(진행중), 1(성공), 2(실패)"
-*/

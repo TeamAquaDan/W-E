@@ -16,6 +16,7 @@ class CarouselWithIndicator extends StatefulWidget {
       account_num: '111-1234-12345',
       balance_amt: 3630000,
       account_type: 0,
+      is_mainAccount: true,
     ),
     AccountListData(
       account_id: 2,
@@ -23,6 +24,7 @@ class CarouselWithIndicator extends StatefulWidget {
       account_num: '222-1234-12345',
       balance_amt: 222000,
       account_type: 0,
+      is_mainAccount: false,
     ),
     AccountListData(
       account_id: 3,
@@ -30,6 +32,7 @@ class CarouselWithIndicator extends StatefulWidget {
       account_num: '111-1234-12345',
       balance_amt: 3630000,
       account_type: 0,
+      is_mainAccount: false,
     ),
   ];
 
@@ -51,6 +54,12 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
     _fetchAccountListData();
   }
 
+  void setChange() {
+    _isLoading = true;
+    _fetchAccountListData();
+    _current = 0;
+  }
+
   Future<void> _fetchAccountListData() async {
     try {
       // 비동기 작업을 시작하기 전에 로딩 상태를 true로 설정합니다.
@@ -65,9 +74,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           itemList = [
             //계좌 목록 조회 17
             for (int i = 0; i < widget._accountListData.length; i++)
-              BankBook(
-                bankData: widget._accountListData[i],
-              ),
+              BankBook(bankData: widget._accountListData[i]),
           ];
         } else {
           itemList = [
@@ -75,6 +82,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             for (int i = 0; i < res.length; i++)
               BankBook(
                 bankData: res[i],
+                setChange: setChange,
               ),
           ];
         }
