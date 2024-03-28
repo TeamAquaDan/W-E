@@ -1,14 +1,20 @@
 package org.whalebank.backend.domain.dutchpay.service;
 
+import com.amazonaws.transform.MapEntry;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
+import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
+import org.whalebank.backend.domain.account.service.AccountService;
 import org.whalebank.backend.domain.dutchpay.CategoryCalculateEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
@@ -27,6 +33,7 @@ import org.whalebank.backend.domain.dutchpay.repository.SelectedPaymentRepositor
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
+import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
 import org.whalebank.backend.global.response.ResponseCode;
 
@@ -40,6 +47,8 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final SelectedPaymentRepository selectedPaymentRepository;
   private final CategoryCalculateRepository categoryCalculateRepository;
   private final CardAccessUtil cardAccessUtil;
+  private final AccountService accountService;
+
 
   @Override
   public DutchpayRoomResponseDto createDutchpayRoom(String loginId,
@@ -232,12 +241,18 @@ public class DutchpayServiceImpl implements DutchpayService {
     categoryCalculate(selectedPaymentList);
 
     // 개인별 정산 금액 계산하는 함수
+    calculateDutchpayAmount(dutchpayList);
 
-    // 잔액이 정산금액보다 많으면 이체하기
+    // 모든 인원이 정산을 완료하면 true
+    if (dutchpayRoom.getCompleted_count() == dutchpayList.size()) {
+      dutchpayRoom.setCompleted(true);
+    }
 
     // 이체 내역 가계부에 등록 및 선택한 내역 가계부에서 숨기기
 
-    return null;
+    return dutchpayList.stream()
+        .map(DutchpayDetailResponseDto::from)
+        .collect(Collectors.toList());
   }
 
   private void categoryCalculate(List<SelectedPaymentEntity> selectedPaymentList) {
@@ -262,5 +277,68 @@ public class DutchpayServiceImpl implements DutchpayService {
     }
   }
 
-}
+  private void calculateDutchpayAmount(List<DutchpayEntity> dutchpayList) {
 
+    // 모든 더치페이를 돌면서 리스트에 dutpayId, totalAmt를 저장한다
+    Map<Integer, Integer> eachMemberAmt = new HashMap<>();
+
+    int dutchpayRoomTotalAmt = 0; // 더치페이 방의 총 사용금액
+
+    for (DutchpayEntity dutchpay : dutchpayList) {
+
+      dutchpayRoomTotalAmt += dutchpay.getTotalAmt();
+
+      int spentAmt = dutchpay.getTotalAmt() / dutchpayList.size();  // 사용한 금액 1/N
+      eachMemberAmt.put(dutchpay.getDutchpayId(), spentAmt);
+    }
+
+    // 인당 사용한 금액
+    dutchpayRoomTotalAmt /= dutchpayList.size();
+
+    // 기준이 될 더치페이
+    for (DutchpayEntity request : dutchpayList) {
+
+      int requestAmt = request.getTotalAmt() / dutchpayList.size();  // 사용한 금액 1/N
+
+      // (인당 총 사용금액 - 사용한 금액)이 계좌 잔액보다 클 경우 잔액 부족
+      AccountDetailResponseDto account = accountService.getAccountDetail(
+          request.getUser().getLoginId(), request.getAccountId());
+      if (dutchpayRoomTotalAmt - requestAmt > account.getBalance_amt()) {
+        continue;
+      }
+
+      // 잔액이 정산금액보다 많으면 이체하기
+      // 다른 금액과 비교
+      for (Entry<Integer, Integer> targetAmt : eachMemberAmt.entrySet()) {
+
+        // 돈을 보내야 하는 경우에만 송금
+        if (requestAmt < targetAmt.getValue()) {
+
+          DutchpayEntity response = dutchpayRepository.findById(targetAmt.getKey())
+              .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_NOT_FOUND));
+
+          sendDutchpayAmount(targetAmt.getValue() - requestAmt, request, response);
+        }
+      }
+
+      // 이체 완료 -> DutchpayEntity isComplete = true;
+      request.setCompleted(true);
+      dutchpayRepository.save(request);
+      // 정산 완료 인원 + 1
+      request.getRoom().setCompleted_count(request.getRoom().getCompleted_count() + 1);
+    }
+
+  }
+
+  private void sendDutchpayAmount(int tranAmt, DutchpayEntity request, DutchpayEntity response) {
+
+    // 송금할 유저의 아이디
+    String requestUserId = request.getUser().getLoginId();
+
+    // WithdrawRequestDto
+    WithdrawRequestDto withdrawRequest = WithdrawRequestDto.create(tranAmt, request, response);
+
+    accountService.withdraw(requestUserId, withdrawRequest);
+  }
+
+}
