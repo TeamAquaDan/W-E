@@ -141,6 +141,12 @@ public class DutchpayServiceImpl implements DutchpayService {
     int totalAmt = 0;
 
     for (Transaction transaction : request.getTransactions()) {
+
+      // 다른 방에 이미 등록한 내역을 선택한 경우
+      if (selectedPaymentRepository.findByTransId(transaction.getTrans_id()) != null) {
+        throw new CustomException(ResponseCode.ALREADY_REGISTERED);
+      }
+
       selectedPaymentRepository
           .save(SelectedPaymentEntity.from(dutchpay, transaction));
 
