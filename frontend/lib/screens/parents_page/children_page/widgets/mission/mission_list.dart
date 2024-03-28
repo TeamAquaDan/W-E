@@ -34,7 +34,7 @@ class _MissionListState extends State<MissionList> {
           List<MissionModel> missions = snapshot.data ?? [];
           return Column(
             children: missions.map((mission) {
-              return MissionCard(mission: mission);
+              return MissionCard(mission: mission, groupId: widget.groupId);
             }).toList(),
           );
         }

@@ -30,7 +30,7 @@ Future addMission({
   }
 }
 
-Future patchMission({
+Future<Map<String, dynamic>> patchMission({
   required int groupId,
   required int missionId,
   required int status,
