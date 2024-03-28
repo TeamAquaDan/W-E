@@ -6,7 +6,9 @@ import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/friends_page/my_friends_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dioImport;
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as pathImport;
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -98,6 +100,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       if (!isEditing) {
         // 편집 완료 시, API로 변경된 한 줄 소개 전송
         updateInfo();
+        Navigator.pop(context);
       }
     });
   }
@@ -119,6 +122,39 @@ class _MyProfilePageState extends State<MyProfilePage> {
       // Navigator.pop(context);
     } else {
       print('이미지 선택 취소');
+    }
+  }
+
+  Future<void> uploadImage(File image) async {
+    final DioService dioService = DioService();
+    String fileName = pathImport.basename(image.path);
+    dioImport.FormData formData = dioImport.FormData.fromMap({
+      "Content-Type": await dioImport.MultipartFile.fromFile(image.path,
+          filename: fileName),
+      // Include any other fields you need to send
+    });
+
+    try {
+      var response = await dioService.dio.patch(
+        "${baseURL}api/user/profile-img", // Replace with your endpoint
+        data: formData,
+      );
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("이미지가 성공적으로 업로드되었습니다!")),
+        );
+        // Handle success
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("이미지 업로드에 실패했습니다.")),
+        );
+        // Handle failure
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("오류가 발생했습니다: $e")),
+      );
+      // Handle error
     }
   }
 
@@ -152,7 +188,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
                   TextButton(
                     onPressed: () {
+                      uploadImage(image);
                       Navigator.pop(context); // 모달 닫기
+                      setState(() {
+                        loadProfiles();
+                      });
                     },
                     child: const Text('확인'),
                   ),
@@ -214,9 +254,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       height: 94,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 1),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                           image: NetworkImage(
-                              'https://i.namu.wiki/i/D95WsY8MeICt3KVX1_tUf7KOIexMwiNeNvWtPFpVxez2l8PZd9ULpEiTCcYtfWLi7oo5e2He6YjyvHdWypIr4deeOgSkUfU_LTxDT-BUFOeHD65eCe36Bzn58ik-gMENFo7xgrDWyNEboaH8wpwShQ.webp'),
+                              myProfileList[0]['profile_img'] ?? ''),
                           fit: BoxFit.fill,
                         ),
                         borderRadius: BorderRadius.circular(50), // 원형 이미지로 만들기
