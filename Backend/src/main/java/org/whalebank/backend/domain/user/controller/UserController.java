@@ -67,7 +67,7 @@ public class UserController {
   }
 
   @Operation(summary = "주계좌 등록", description = "계좌 목록 조회 api로 받아온 계좌 중 하나를 주 계좌로 등록한다")
-  @PatchMapping("/main-ccount")
+  @PatchMapping("/main-account")
   public ApiResponse<?> registerMainAccount(@AuthenticationPrincipal UserDetails loginUser,
       @RequestBody RegisterMainAccountRequestDto requestBody) {
     service.updateMainAccount(loginUser.getUsername(), requestBody);
