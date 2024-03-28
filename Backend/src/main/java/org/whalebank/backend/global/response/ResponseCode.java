@@ -68,7 +68,10 @@ public enum ResponseCode {
   FIREBASE_SETTING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR.value(), "파이어베이스 세팅 실패"),
 
   // 미션
-  MISSION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "미션이 존재하지 않습니다");
+  MISSION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "미션이 존재하지 않습니다"),
+
+  // 인상 요청
+  NEGO_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 요청입니다");
 
 
   private final int code;

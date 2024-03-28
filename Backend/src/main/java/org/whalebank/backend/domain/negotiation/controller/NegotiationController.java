@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.negotiation.dto.request.NegoRequestDto;
+import org.whalebank.backend.domain.negotiation.dto.response.NegoInfoResponseDto;
 import org.whalebank.backend.domain.negotiation.dto.response.NegoListResponseDto;
 import org.whalebank.backend.domain.negotiation.dto.response.NegoResponseDto;
 import org.whalebank.backend.domain.negotiation.service.NegotiationService;
@@ -40,6 +41,15 @@ public class NegotiationController {
       @AuthenticationPrincipal UserDetails loginUser, @PathVariable("group_id") int groupId) {
     return ApiResponse.ok("인상 요청 내역 조회 성공",
         negotiationService.findAllNegoList(groupId, loginUser.getUsername()));
+  }
+
+  @GetMapping("/{group_id}/{nego_id}")
+  @Operation(summary = "인상 요청 조회", description = "인상 요청")
+  public ApiResponse<NegoInfoResponseDto> getNegoDetail(@PathVariable("group_id") int groupId,
+      @PathVariable("nego_id") int negoId,
+      @AuthenticationPrincipal UserDetails loginUser) {
+    return ApiResponse.ok("인상 요청 조회 성공",
+        negotiationService.findNegoByNegoId(groupId, negoId, loginUser.getUsername()));
   }
 
 }

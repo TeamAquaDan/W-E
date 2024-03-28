@@ -1,6 +1,8 @@
 package org.whalebank.backend.domain.negotiation.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.allowance.repository.RoleRepository;
 import org.whalebank.backend.domain.negotiation.NegotiationEntity;
 import org.whalebank.backend.domain.negotiation.dto.request.NegoRequestDto;
+import org.whalebank.backend.domain.negotiation.dto.response.NegoInfoResponseDto;
 import org.whalebank.backend.domain.negotiation.dto.response.NegoListResponseDto;
 import org.whalebank.backend.domain.negotiation.dto.response.NegoResponseDto;
 import org.whalebank.backend.domain.negotiation.repository.NegotiationRepository;
@@ -63,4 +66,31 @@ public class NegotiationServiceImpl implements NegotiationService{
         .stream().map(NegoListResponseDto::from)
         .collect(Collectors.toList());
   }
+
+  @Override
+  public NegoInfoResponseDto findNegoByNegoId(int groupId, int negoId, String loginId) {
+    GroupEntity group = groupRepository.findById(groupId)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
+
+    long count = group.getMemberEntityList()
+        .stream()
+        .filter(e -> Objects.equals(e.getUser().getLoginId(), loginId))
+        .count();
+
+    if (count == 0) {
+      throw new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND);
+    }
+
+    NegotiationEntity entity = negotiationRepository.findByNegoIdAndGroup(negoId, group)
+        .orElseThrow(() -> new CustomException(ResponseCode.NEGO_NOT_FOUND));
+
+    RoleEntity child = group.getMemberEntityList()
+        .stream()
+        .filter(e -> e.getRole().equals("CHILD"))
+        .findFirst()
+        .get();
+
+    return NegoInfoResponseDto.of(entity, child.getUser().getUserName());
+  }
+
 }
