@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/account/main_account.dart';
 import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/bank_history_page.dart';
 import 'package:frontend/screens/transfer_page/transfer_page.dart';
@@ -14,6 +15,7 @@ class BankBook extends StatefulWidget {
 }
 
 class _BankBook extends State<BankBook> {
+  bool isMain = false;
   var moneyFormat = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,28 @@ class _BankBook extends State<BankBook> {
           Positioned(
             top: 0,
             right: 0,
-            child: IconButton(
-              style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
-              onPressed: () {
-                toBankDetailPage(context);
-              },
-              icon: const Icon(Icons.more_horiz),
+            child: Row(
+              children: [
+                IconButton(
+                  style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
+                  onPressed: () async {
+                    bool res = await patchMainAccount(
+                        widget.bankData.account_id,
+                        widget.bankData.account_num);
+                    setState(() {
+                      isMain = res;
+                    });
+                  },
+                  icon: const Icon(Icons.star),
+                ),
+                IconButton(
+                  style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
+                  onPressed: () {
+                    toBankDetailPage(context);
+                  },
+                  icon: const Icon(Icons.more_horiz),
+                ),
+              ],
             ),
           ),
           Padding(
