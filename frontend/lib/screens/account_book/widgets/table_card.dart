@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
-import 'package:frontend/api/account_book/account_book_model.dart';
 import 'package:frontend/screens/account_book/form_account_book.dart';
 import 'package:get/get.dart';
 
 class AccountBookCard extends StatelessWidget {
   final Map<String, dynamic> accountBookData;
 
-  const AccountBookCard({Key? key, required this.accountBookData})
-      : super(key: key);
+  const AccountBookCard({super.key, required this.accountBookData});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +16,9 @@ class AccountBookCard extends StatelessWidget {
     }
     return Card(
       color: cardColor,
-      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,7 +27,7 @@ class AccountBookCard extends StatelessWidget {
               children: [
                 Text(
                   '${accountBookData['account_book_title']}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Row(
                   children: [
@@ -38,13 +36,13 @@ class AccountBookCard extends StatelessWidget {
                         Get.to(() =>
                             FormAccountBook(accountBookData: accountBookData));
                       },
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                     ),
                     IconButton(
                       onPressed: () {
                         deleteAccountBook(accountBookData['account_book_id']);
                       },
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                     ),
                   ],
                 ),

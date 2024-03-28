@@ -1,21 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/api/account_book/account_book_model.dart';
 import 'package:intl/intl.dart';
 
 class FormAccountBook extends StatefulWidget {
   final Map<String, dynamic>? accountBookData;
-  const FormAccountBook({Key? key, this.accountBookData}) : super(key: key);
+  const FormAccountBook({super.key, this.accountBookData});
   @override
   _FormAccountBookState createState() => _FormAccountBookState();
 }
 
 class _FormAccountBookState extends State<FormAccountBook> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
   // TextEditingController _dateController = TextEditingController();
   String? _selectedCategory;
   DateTime _selectedDate = DateTime.now();
@@ -47,81 +45,81 @@ class _FormAccountBookState extends State<FormAccountBook> {
   @override
   Widget build(BuildContext context) {
     var category = [
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "001",
         child: Text("식비"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "002",
         child: Text("카페/간식"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "003",
         child: Text("생활"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "004",
         child: Text("주거/통신"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "005",
         child: Text("온라인쇼핑"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "006",
         child: Text("패션/쇼핑"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "007",
         child: Text("뷰티/미용"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "008",
         child: Text("의료/건강"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "009",
         child: Text("문화/여가"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "010",
         child: Text("여행/숙박"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "011",
         child: Text("경조/선물"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "012",
         child: Text("반려동물"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "013",
         child: Text("교육/학습"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "014",
         child: Text("술/유흥"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "015",
         child: Text("교통"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "000",
         child: Text("기타"),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: "100",
         child: Text("수입"),
       ),
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text('거래내역 추가하기'),
+        title: const Text('거래내역 추가하기'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -129,7 +127,7 @@ class _FormAccountBookState extends State<FormAccountBook> {
             children: <Widget>[
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: '제목'),
+                decoration: const InputDecoration(labelText: '제목'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a title';
@@ -140,7 +138,7 @@ class _FormAccountBookState extends State<FormAccountBook> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _amountController,
-                decoration: InputDecoration(labelText: '금액'),
+                decoration: const InputDecoration(labelText: '금액'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -164,12 +162,13 @@ class _FormAccountBookState extends State<FormAccountBook> {
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2101),
                         );
-                        if (pickedDate != null && pickedDate != _selectedDate)
+                        if (pickedDate != null && pickedDate != _selectedDate) {
                           setState(() {
                             _selectedDate = pickedDate;
                           });
+                        }
                       },
-                      decoration: InputDecoration(labelText: '날짜'),
+                      decoration: const InputDecoration(labelText: '날짜'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a date';
@@ -189,12 +188,13 @@ class _FormAccountBookState extends State<FormAccountBook> {
                           context: context,
                           initialTime: _selectedTime,
                         );
-                        if (pickedTime != null && pickedTime != _selectedTime)
+                        if (pickedTime != null && pickedTime != _selectedTime) {
                           setState(() {
                             _selectedTime = pickedTime;
                           });
+                        }
                       },
-                      decoration: InputDecoration(labelText: '시간'),
+                      decoration: const InputDecoration(labelText: '시간'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a time';
@@ -214,7 +214,7 @@ class _FormAccountBookState extends State<FormAccountBook> {
                   });
                 },
                 items: category,
-                decoration: InputDecoration(labelText: '카테고리'),
+                decoration: const InputDecoration(labelText: '카테고리'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select a category';
@@ -222,14 +222,14 @@ class _FormAccountBookState extends State<FormAccountBook> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _submitForm();
                   }
                 },
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),

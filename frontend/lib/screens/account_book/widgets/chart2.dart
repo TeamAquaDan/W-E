@@ -4,7 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 class PieChartSample2 extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  const PieChartSample2({Key? key, required this.data}) : super(key: key);
+  const PieChartSample2({super.key, required this.data});
 
   @override
   State<StatefulWidget> createState() => PieChart2State();
@@ -152,10 +152,10 @@ class PieChart2State extends State<PieChartSample2> {
                 height: 20,
                 color: color,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

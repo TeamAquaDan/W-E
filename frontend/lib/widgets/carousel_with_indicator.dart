@@ -2,9 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account/account_list_api.dart';
 import 'package:frontend/models/account/account_list_data.dart';
-import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:frontend/widgets/bank_book.dart';
-import 'package:get/get.dart';
 
 class CarouselWithIndicator extends StatefulWidget {
   CarouselWithIndicator({super.key});

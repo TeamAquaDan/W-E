@@ -67,25 +67,25 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                 children: [
                   TextSpan(
                     text: widget.groupNickname,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF0014FF),
                       fontSize: 20,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  WidgetSpan(child: SizedBox(width: 8)), // 공간 추가
+                  const WidgetSpan(child: SizedBox(width: 8)), // 공간 추가
                   TextSpan(
                     text: '(${widget.userName})',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF8B7777),
                       fontSize: 20,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  WidgetSpan(child: SizedBox(width: 8)), // 공간 추가
-                  TextSpan(
+                  const WidgetSpan(child: SizedBox(width: 8)), // 공간 추가
+                  const TextSpan(
                     text: '님께',
                     style: TextStyle(
                       color: Colors.black,

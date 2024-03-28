@@ -12,7 +12,7 @@ class ChildManagementPage extends StatefulWidget {
 }
 
 class _ChildManagementPage extends State<ChildManagementPage> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
   List<Child> children = [];
 
   @override

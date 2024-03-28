@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class MissionCard extends StatelessWidget {
   final MissionModel mission;
   final int groupId;
-  MissionCard({required this.mission, required this.groupId});
+  const MissionCard({super.key, required this.mission, required this.groupId});
 
   @override
   Widget build(BuildContext context) {

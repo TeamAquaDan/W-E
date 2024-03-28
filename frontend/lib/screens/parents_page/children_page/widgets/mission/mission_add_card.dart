@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class MissionAddCard extends StatefulWidget {
   final int groupId;
 
-  MissionAddCard({required this.groupId});
+  const MissionAddCard({super.key, required this.groupId});
 
   @override
   _MissionAddCardState createState() => _MissionAddCardState();
@@ -44,28 +44,28 @@ class _MissionAddCardState extends State<MissionAddCard> {
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Card(
-        margin: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 '새로운 미션 추가',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               TextField(
                 controller: _missionNameController,
-                decoration: InputDecoration(labelText: '미션 제목'),
+                decoration: const InputDecoration(labelText: '미션 제목'),
               ),
               TextField(
                 controller: _missionRewardController,
-                decoration: InputDecoration(labelText: '보상금액'),
+                decoration: const InputDecoration(labelText: '보상금액'),
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -79,26 +79,26 @@ class _MissionAddCardState extends State<MissionAddCard> {
                 children: [
                   Text(
                     DateFormat('yyyy-MM-dd').format(_deadlineDate),
-                    style: TextStyle(
+                    style: const TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   ElevatedButton(
                     onPressed: () {
                       _selectDate(context);
                     },
-                    child: Text('마감일 선택'),
+                    child: const Text('마감일 선택'),
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               ElevatedButton(
                 onPressed: () {
                   _addMission();
                 },
-                child: Text('미션 추가'),
+                child: const Text('미션 추가'),
               ),
             ],
           ),
@@ -126,12 +126,12 @@ class _MissionAddCardState extends State<MissionAddCard> {
       _missionNameController.clear();
       _missionRewardController.clear();
       _deadlineDateController.clear();
-      Get.to(() => ChildManagementPage());
+      Get.to(() => const ChildManagementPage());
     } catch (error) {
       // 오류 처리
       print('Error adding mission: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('미션 추가 중 오류가 발생했습니다.')),
+        const SnackBar(content: Text('미션 추가 중 오류가 발생했습니다.')),
       );
     }
   }

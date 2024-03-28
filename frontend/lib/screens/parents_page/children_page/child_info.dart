@@ -3,7 +3,6 @@ import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/mission/mission_add_card.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/mission/mission_list.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
-import 'package:frontend/widgets/pin_money.dart';
 
 class ChildInfo extends StatelessWidget {
   const ChildInfo({super.key, required this.data});
@@ -31,7 +30,7 @@ class ChildInfo extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -40,7 +39,7 @@ class ChildInfo extends StatelessWidget {
                               MissionAddCard(groupId: data.groupId),
                           isScrollControlled: true);
                     },
-                    icon: Icon(Icons.add)),
+                    icon: const Icon(Icons.add)),
               ],
             ),
           ),

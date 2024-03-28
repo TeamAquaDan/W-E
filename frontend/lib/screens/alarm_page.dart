@@ -37,13 +37,13 @@ class _AlarmPageState extends State<AlarmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('알림 페이지'),
+        title: const Text('알림 페이지'),
       ),
       body: FutureBuilder<List<Notification>>(
         future: notifications,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
@@ -54,7 +54,7 @@ class _AlarmPageState extends State<AlarmPage> {
                 return ListTile(
                   title: Text(notification.name),
                   subtitle: Text(notification.content),
-                  trailing: notification.isRead ? null : Icon(Icons.fiber_new),
+                  trailing: notification.isRead ? null : const Icon(Icons.fiber_new),
                   onTap: () {
                     // 알림 클릭 시 로직 구현 (예: 읽음 처리)
                   },

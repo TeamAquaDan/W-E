@@ -10,11 +10,10 @@ class ChildCard extends StatefulWidget {
   final int userId;
   String groupNickname;
   ChildCard(
-      {Key? key,
+      {super.key,
       required this.groupId,
       required this.userId,
-      required this.groupNickname})
-      : super(key: key);
+      required this.groupNickname});
 
   @override
   _ChildCardState createState() => _ChildCardState();
@@ -36,7 +35,7 @@ class _ChildCardState extends State<ChildCard> {
       future: _childDetailFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // 로딩 중이면 로딩 표시
+          return const CircularProgressIndicator(); // 로딩 중이면 로딩 표시
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}'); // 에러가 발생하면 에러 메시지 출력
         } else {
@@ -50,7 +49,7 @@ class _ChildCardState extends State<ChildCard> {
             color: const Color(0xFF7A97FF),
             margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 20,
                 horizontal: 24,
               ),
@@ -67,7 +66,7 @@ class _ChildCardState extends State<ChildCard> {
                       Row(
                         children: [
                           Text(
-                            '${widget.groupNickname}',
+                            widget.groupNickname,
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 20,
@@ -78,7 +77,7 @@ class _ChildCardState extends State<ChildCard> {
                               onPressed: () {
                                 _editGroupName(context);
                               },
-                              icon: Icon(Icons.edit))
+                              icon: const Icon(Icons.edit))
                         ],
                       ),
                       TextButton(
@@ -174,32 +173,32 @@ class _ChildCardState extends State<ChildCard> {
   }
 
   void _editGroupName(BuildContext context) async {
-    TextEditingController _groupNameController = TextEditingController();
-    _groupNameController.text = widget.groupNickname; // 현재 그룹 닉네임으로 텍스트 필드 초기화
+    TextEditingController groupNameController = TextEditingController();
+    groupNameController.text = widget.groupNickname; // 현재 그룹 닉네임으로 텍스트 필드 초기화
 
     await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("그룹 닉네임 수정"),
+          title: const Text("그룹 닉네임 수정"),
           content: TextField(
-            controller: _groupNameController,
-            decoration: InputDecoration(
+            controller: groupNameController,
+            decoration: const InputDecoration(
               hintText: "새로운 그룹 닉네임 입력",
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("취소"),
+              child: const Text("취소"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("저장"),
+              child: const Text("저장"),
               onPressed: () {
                 // 변경된 그룹 닉네임을 서버로 전송
-                _updateGroupName(_groupNameController.text);
+                _updateGroupName(groupNameController.text);
                 Navigator.of(context).pop();
               },
             ),

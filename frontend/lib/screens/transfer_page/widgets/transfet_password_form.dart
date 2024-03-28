@@ -75,11 +75,11 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                         } else {
                           if (Get.find<UserRoleController>().getUserRole() ==
                               'ADULT') {
-                            Get.offAll(ParentPage());
+                            Get.offAll(const ParentPage());
                           } else if (Get.find<UserRoleController>()
                                   .getUserRole() ==
                               'CHILD') {
-                            Get.offAll(ChildPage());
+                            Get.offAll(const ChildPage());
                           }
                           // Navigator.pop(context);
                           // Navigator.pop(context);

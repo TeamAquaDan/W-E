@@ -26,7 +26,7 @@ Future addMission({
   } catch (error) {
     // Handle error
     print('Error sending POST request: $error');
-    throw error;
+    rethrow;
   }
 }
 
@@ -52,6 +52,6 @@ Future<Map<String, dynamic>> patchMission({
   } catch (error) {
     // Handle error
     print('Error sending POST request: $error');
-    throw error;
+    rethrow;
   }
 }

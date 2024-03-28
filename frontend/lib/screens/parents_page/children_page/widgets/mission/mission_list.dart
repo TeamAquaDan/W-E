@@ -6,7 +6,7 @@ import 'package:frontend/screens/parents_page/children_page/widgets/mission/miss
 class MissionList extends StatefulWidget {
   final int groupId;
 
-  MissionList({required this.groupId});
+  const MissionList({super.key, required this.groupId});
 
   @override
   _MissionListState createState() => _MissionListState();
@@ -27,7 +27,7 @@ class _MissionListState extends State<MissionList> {
       future: _missionListFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {

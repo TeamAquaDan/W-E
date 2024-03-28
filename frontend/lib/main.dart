@@ -270,13 +270,9 @@ import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'screens/alarm_page.dart';
-import 'screens/child_page/child_page.dart';
 import 'screens/friends_page/my_friends_page.dart';
-import 'screens/mission_page/my_mission_page.dart';
-import 'screens/pin_setting_page.dart';
 import 'screens/profile_page/my_profile_page.dart';
 import 'screens/salary_page/salary_list_page.dart';
-import 'package:frontend/services/auth_service.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -378,7 +374,7 @@ void main() async {
   // 알림 설정
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('ic_launcher');
-  final InitializationSettings initializationSettings =
+  const InitializationSettings initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
 
   /// 새로운 콜백 함수 사용

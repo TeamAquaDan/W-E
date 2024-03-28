@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
-import 'package:frontend/api/account_book/account_book_model.dart';
 import 'package:frontend/screens/account_book/widgets/table_card.dart';
 
 class AccountBookTable extends StatefulWidget {
+  const AccountBookTable({super.key});
+
   @override
   _AccountBookTableState createState() => _AccountBookTableState();
 }
@@ -34,7 +34,7 @@ class _AccountBookTableState extends State<AccountBookTable> {
   Widget build(BuildContext context) {
     return Center(
       child: responseData.isEmpty
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

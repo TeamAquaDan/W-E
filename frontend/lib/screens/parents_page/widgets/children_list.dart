@@ -4,6 +4,8 @@ import 'package:frontend/api/allowance/children_api.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
 
 class ChildrenList extends StatefulWidget {
+  const ChildrenList({super.key});
+
   @override
   _ChildrenListState createState() => _ChildrenListState();
 }
@@ -26,10 +28,10 @@ class _ChildrenListState extends State<ChildrenList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(), // ListView 스크롤 제거
+        physics: const NeverScrollableScrollPhysics(), // ListView 스크롤 제거
         shrinkWrap: true, // ListView가 자신의 공간만 차지하도록 설정
         itemCount: children.length,
         itemBuilder: (BuildContext context, int index) {

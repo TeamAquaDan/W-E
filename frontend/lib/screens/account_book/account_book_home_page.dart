@@ -12,20 +12,20 @@ class AccountBookHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Text('가계부'),
+            const Text('가계부'),
             IconButton(
                 onPressed: () {
-                  Get.to(() => FormAccountBook());
+                  Get.to(() => const FormAccountBook());
                 },
-                icon: Icon(Icons.add)),
+                icon: const Icon(Icons.add)),
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
             AccountBookChart(),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             AccountBookTable(),
           ],
         ),

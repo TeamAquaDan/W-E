@@ -1,14 +1,10 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/save/goal_add_api.dart';
 import 'package:frontend/models/save/goal_add.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
-import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_account_carousel.dart';
-import 'package:frontend/widgets/carousel_with_indicator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 

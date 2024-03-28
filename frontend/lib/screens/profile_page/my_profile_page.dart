@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/friends_page/my_friends_page.dart';
@@ -106,8 +105,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
   // 갤러리 또는 카메라에서 이미지를 선택하는 함수
   Future<void> _pickImage(ImageSource source) async {
     print('이미지 선택 시작: $source');
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: source);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
 
     if (image != null) {
       print('선택된 이미지 경로: ${image.path}');
@@ -131,7 +130,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         // 전체 화면 높이의 80%를 계산
         double modalHeight = MediaQuery.of(context).size.height * 0.8;
 
-        return Container(
+        return SizedBox(
           height: modalHeight, // 여기에서 모달의 높이를 설정합니다.
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -141,7 +140,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 width: double.infinity, // 이미지를 모달 너비에 맞춤
                 fit: BoxFit.fitWidth, // 이미지를 너비에 맞게 조정하면서 비율을 유지
               ),
-              SizedBox(height: 20), // 이미지와 버튼 사이의 간격
+              const SizedBox(height: 20), // 이미지와 버튼 사이의 간격
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -176,13 +175,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
             mainAxisSize: MainAxisSize.min, // 모달의 크기를 내용물에 맞춤
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('갤러리에서 선택'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('갤러리에서 선택'),
                 onTap: () => _pickImage(ImageSource.gallery), // 갤러리에서 이미지 선택
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('카메라로 촬영'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('카메라로 촬영'),
                 onTap: () => _pickImage(ImageSource.camera), // 카메라로 사진 촬영
               ),
             ],

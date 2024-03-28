@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/widgets/chart2.dart';
-import 'package:frontend/screens/account_book/widgets/expense_chart.dart';
 
 class AccountBookChart extends StatefulWidget {
+  const AccountBookChart({super.key});
+
   @override
   _AccountBookChartState createState() => _AccountBookChartState();
 }
@@ -33,7 +34,7 @@ class _AccountBookChartState extends State<AccountBookChart> {
   Widget build(BuildContext context) {
     return Center(
       child: responseData.isEmpty
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Column(
               children: [PieChartSample2(data: responseData['data'])],
             ),

@@ -50,7 +50,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                     children: [
                       TextSpan(
                         text: widget.groupNickname,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xFF0014FF),
                           fontSize: 20,
                           fontFamily: 'Roboto',
@@ -59,14 +59,14 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                       ),
                       TextSpan(
                         text: ' (${widget.userName}) ',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xFF8B7777),
                           fontSize: 20,
                           fontFamily: 'Roboto',
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: '님께',
                         style: TextStyle(
                           color: Colors.black,
@@ -82,7 +82,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                 // 금액 텍스트
                 Text(
                   '${formatNumber(widget.negoAmt)}원을',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
                     fontFamily: 'Roboto',

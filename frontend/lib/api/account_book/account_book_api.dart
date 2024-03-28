@@ -56,13 +56,13 @@ Future postAccountBook(AccountBook body) async {
   }
 }
 
-Future patchAccountBook(AccountBook body, int account_book_id) async {
-  print('카드 아이디 : $account_book_id');
+Future patchAccountBook(AccountBook body, int accountBookId) async {
+  print('카드 아이디 : $accountBookId');
   print('카드 아이디 바디 : ${body.toJson()}');
   final DioService dioService = DioService();
   try {
     Response response = await dioService.dio.patch(
-        '${baseURL}api/accountbook/${account_book_id}',
+        '${baseURL}api/accountbook/$accountBookId',
         data: body.toJson());
 
     // Handle response
@@ -76,11 +76,11 @@ Future patchAccountBook(AccountBook body, int account_book_id) async {
   }
 }
 
-Future deleteAccountBook(int account_book_id) async {
+Future deleteAccountBook(int accountBookId) async {
   final DioService dioService = DioService();
   try {
     Response response = await dioService.dio
-        .delete('${baseURL}api/accountbook/${account_book_id}');
+        .delete('${baseURL}api/accountbook/$accountBookId');
 
     // Handle response
     print('Response status: ${response.statusCode}');

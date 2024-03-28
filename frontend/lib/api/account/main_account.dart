@@ -1,9 +1,5 @@
 import 'package:dio/dio.dart' as dio;
-import 'package:frontend/models/account/account_list_data.dart';
-import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:frontend/services/dio_service.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../base_url.dart';
 
 Future patchMainAccount(int accountId, String accountNum) async {

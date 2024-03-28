@@ -7,7 +7,7 @@ class AllowanceInfoForm extends StatefulWidget {
   final int allowanceAmt;
   final int paymentDate;
 
-  AllowanceInfoForm({
+  const AllowanceInfoForm({super.key, 
     required this.groupId,
     required this.isMonthly,
     required this.allowanceAmt,
@@ -55,7 +55,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
             children: <Widget>[
               DropdownButtonFormField<bool>(
                 value: _isMonthly,
-                items: [
+                items: const [
                   DropdownMenuItem(
                     value: true,
                     child: Text('매월'),
@@ -70,7 +70,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                     _isMonthly = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: '용돈 주기'),
+                decoration: const InputDecoration(labelText: '용돈 주기'),
                 validator: (value) {
                   if (value == null) {
                     return '용돈 주기를 선택하세요';
@@ -82,7 +82,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
               TextFormField(
                 controller: _allowanceAmtController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: '용돈 금액'),
+                decoration: const InputDecoration(labelText: '용돈 금액'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '용돈 금액을 입력하세요';
@@ -97,7 +97,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
               TextFormField(
                 controller: _paymentDateController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: '용돈 지급일'),
+                decoration: const InputDecoration(labelText: '용돈 지급일'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '용돈 지급일을 입력하세요';
@@ -108,7 +108,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                   _paymentDate = int.parse(value!);
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -116,7 +116,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                     _submitForm();
                   }
                 },
-                child: Text('정보 수정'),
+                child: const Text('정보 수정'),
               ),
             ],
           ),
@@ -134,12 +134,12 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
         paymentDate: _paymentDate,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('용돈 정보가 성공적으로 수정되었습니다.')),
+        const SnackBar(content: Text('용돈 정보가 성공적으로 수정되었습니다.')),
       );
     } catch (error) {
       print('용돈 정보 수정 에러: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('용돈 정보 수정 중 오류가 발생했습니다.')),
+        const SnackBar(content: Text('용돈 정보 수정 중 오류가 발생했습니다.')),
       );
     }
   }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/widgets.dart';
 
 class ExpenseChart extends StatelessWidget {
   final Map<String, dynamic> data;
 
-  ExpenseChart({required this.data});
+  const ExpenseChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -13,14 +12,14 @@ class ExpenseChart extends StatelessWidget {
     Map<String, int> categoryExpenses =
         Map<String, int>.from(data['statistics_list']);
 
-    return Container(
+    return SizedBox(
       height: 300,
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Text('Total Expense: $totalExpense'), // 지출 총량 표시
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: PieChart(
                 PieChartData(

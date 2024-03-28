@@ -62,18 +62,18 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
   }
 
   void showDepositDialog(int goalId) async {
-    TextEditingController _amountController = TextEditingController();
+    TextEditingController amountController = TextEditingController();
     await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('저금하기'),
+          title: const Text('저금하기'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text('저금할 금액을 입력하세요.'),
+              const Text('저금할 금액을 입력하세요.'),
               TextField(
-                controller: _amountController,
+                controller: amountController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -94,7 +94,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                     return newValue;
                   })
                 ],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: '금액',
                 ),
               ),
@@ -102,11 +102,11 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('취소'),
+              child: const Text('취소'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('저금하기'),
+              child: const Text('저금하기'),
               onPressed: () {
                 final DioService dioService = DioService();
                 dioService.dio.patch(
@@ -114,7 +114,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                   data: {
                     'goal_id': goalId,
                     'save_amt':
-                        int.parse(_amountController.text.replaceAll(',', '')),
+                        int.parse(amountController.text.replaceAll(',', '')),
                   },
                 ).then((response) {
                   print('전송 성공! $response');
@@ -232,7 +232,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                                                   'status': 2,
                                                 }).then((res) {
                                               print('포기 성공! $res');
-                                              Get.to(() => MySavingGoalPage());
+                                              Get.to(() => const MySavingGoalPage());
                                             }).catchError((err) {});
                                             Navigator.of(context).pop();
                                           },

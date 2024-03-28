@@ -10,9 +10,7 @@ import 'package:frontend/api/test_html.dart';
 import 'package:frontend/screens/friends_page/my_friends_page.dart';
 import 'package:frontend/screens/profile_page/my_profile_page.dart';
 import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
-import 'package:frontend/screens/salary_page/salary_increase_form_page.dart';
 import 'package:frontend/screens/salary_page/salary_list_page.dart';
-import 'package:frontend/screens/salary_page/salary_increase_page.dart';
 
 import 'alarm_page.dart';
 

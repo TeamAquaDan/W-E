@@ -31,6 +31,7 @@ Future<Response?> patchAllowanceInfo({
     print('patchAllowanceInfo 에러: $error');
     // You can show an error message to the user or handle the error in another way
   }
+  return null;
 }
 
 Future patchAllowanceNickname({

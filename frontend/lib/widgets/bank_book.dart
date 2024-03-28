@@ -7,8 +7,7 @@ import 'package:frontend/widgets/bank_detail.dart';
 import 'package:intl/intl.dart';
 
 class BankBook extends StatefulWidget {
-  BankBook({Key? key, required this.bankData, this.setChange})
-      : super(key: key);
+  BankBook({super.key, required this.bankData, this.setChange});
 
   final AccountListData bankData;
   void Function()? setChange;
@@ -49,7 +48,7 @@ class _BankBook extends State<BankBook> {
                     });
                     print('스테이트 변경 $isMain, ${widget.setChange}');
                   },
-                  icon: isMain ? Icon(Icons.star) : Icon(Icons.star_border),
+                  icon: isMain ? const Icon(Icons.star) : const Icon(Icons.star_border),
                 ),
                 IconButton(
                   style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),

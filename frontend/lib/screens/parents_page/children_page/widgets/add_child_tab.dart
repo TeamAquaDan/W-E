@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/api/allowance/child_model.dart';
 
 class AddChildTap extends StatelessWidget {
-  const AddChildTap({Key? key}) : super(key: key);
+  const AddChildTap({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(

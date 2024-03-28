@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class SavingGoalAccountCarousel extends StatelessWidget {
   final Function(String, String) onSelectAccount;
 
-  SavingGoalAccountCarousel({required this.onSelectAccount});
+  const SavingGoalAccountCarousel({super.key, required this.onSelectAccount});
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +18,21 @@ class SavingGoalAccountCarousel extends StatelessWidget {
       return formatter.format(number);
     }
 
-    Future<void> _showConfirmationDialog(
+    Future<void> showConfirmationDialog(
         BuildContext context, String accountId, String accountName) async {
       bool? confirmed = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('계좌 선택'),
-            content: Text('이 계좌를 선택하시겠습니까?'),
+            title: const Text('계좌 선택'),
+            content: const Text('이 계좌를 선택하시겠습니까?'),
             actions: <Widget>[
               TextButton(
-                child: Text('취소'),
+                child: const Text('취소'),
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               TextButton(
-                child: Text('확인'),
+                child: const Text('확인'),
                 onPressed: () {
                   onSelectAccount(accountId, accountName); // 콜백 함수 호출
                   Navigator.of(context).pop(true); // 확인 후 다이얼로그 닫기
@@ -54,14 +54,14 @@ class SavingGoalAccountCarousel extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CarouselSlider.builder(
                 itemCount: accountController.accountsData.length,
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) {
                   var account = accountController.accountsData[itemIndex];
                   return GestureDetector(
-                    onTap: () => _showConfirmationDialog(
+                    onTap: () => showConfirmationDialog(
                       context,
                       account['account_id'].toString(),
                       account['account_name'].toString(),
@@ -92,7 +92,7 @@ class SavingGoalAccountCarousel extends StatelessWidget {
                                   onPressed: () {},
                                   icon: const Icon(Icons.more_horiz),
                                   padding: EdgeInsets.zero,
-                                  constraints: BoxConstraints(),
+                                  constraints: const BoxConstraints(),
                                 ),
                               ],
                             ),
@@ -119,17 +119,17 @@ class SavingGoalAccountCarousel extends StatelessWidget {
                   viewportFraction: 0.85,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('닫기'),
+                child: const Text('닫기'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         );
       } else {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }
     });
   }
