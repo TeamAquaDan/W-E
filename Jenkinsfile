@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo 'Building WhaleChat'
                 dir('WhaleChat') {
-                    sh 'docker build -t chat'
+                    sh 'docker build -t chat .'
                 }
             }
         }
