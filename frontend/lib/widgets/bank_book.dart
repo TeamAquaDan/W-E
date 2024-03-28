@@ -7,9 +7,11 @@ import 'package:frontend/widgets/bank_detail.dart';
 import 'package:intl/intl.dart';
 
 class BankBook extends StatefulWidget {
-  const BankBook({super.key, required this.bankData});
+  BankBook({Key? key, required this.bankData, this.setChange})
+      : super(key: key);
 
   final AccountListData bankData;
+  void Function()? setChange;
   @override
   State<BankBook> createState() => _BankBook();
 }
@@ -41,7 +43,11 @@ class _BankBook extends State<BankBook> {
                         widget.bankData.account_num);
                     setState(() {
                       isMain = res;
+                      if (widget.setChange != null) {
+                        widget.setChange!();
+                      }
                     });
+                    print('스테이트 변경 $isMain, ${widget.setChange}');
                   },
                   icon: isMain ? Icon(Icons.star) : Icon(Icons.star_border),
                 ),
