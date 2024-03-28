@@ -1,5 +1,6 @@
 package org.whalebank.backend.domain.accountbook.dto.request;
 
+import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
 import org.whalebank.backend.domain.dutchpay.CategoryCalculateEntity;
@@ -22,7 +23,9 @@ public class AccountBookEntryRequestDto {
         .builder()
         .account_book_title(dutchpayRoom.getRoomName())
         .account_amt(amount)
-        .account_book_date(String.valueOf(dutchpayRoom.getDutchpayDate().atStartOfDay()))
+        .account_book_date(
+            dutchpayRoom.getDutchpayDate().atStartOfDay()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
         .account_book_category(categoryCalculate.getCategory())
         .build();
   }

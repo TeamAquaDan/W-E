@@ -260,20 +260,25 @@ public class DutchpayServiceImpl implements DutchpayService {
 
   }
 
-  private void categoryCalculate(List<SelectedPaymentEntity> selectedPaymentList) {
+  @Transactional
+  public void categoryCalculate(List<SelectedPaymentEntity> selectedPaymentList) {
 
     for (SelectedPaymentEntity selectedPayment : selectedPaymentList) {
 
       String category = selectedPayment.getCategory();
 
-      CategoryCalculateEntity categoryCalculate = categoryCalculateRepository.findByCategory(
-          category);
+      // 선택 내역이 저장되어 있는 더치페이 방
+      DutchpayRoomEntity dutchpayRoom = selectedPayment.getDutchpay().getRoom();
+
+      CategoryCalculateEntity categoryCalculate = categoryCalculateRepository.findByCategoryAndRoomId(
+          category, dutchpayRoom);
 
       // CategoryCalculate Entity를 선택한 내역의 "카테고리"로 찾는다
       // 존재하지 않으면 새로 만든다
       // 존재하면 기존 totalAmt 값에 현재 선택 내역의 결제 금액을 더해준다
       if (categoryCalculate == null) {
-        categoryCalculateRepository.save(CategoryCalculateEntity.create(selectedPayment));
+        categoryCalculateRepository.save(CategoryCalculateEntity.create(selectedPayment,
+            dutchpayRoom));
       } else {
         categoryCalculate.setTotalAmt(
             categoryCalculate.getTotalAmt() + selectedPayment.getTransAmt());
@@ -282,7 +287,8 @@ public class DutchpayServiceImpl implements DutchpayService {
     }
   }
 
-  private void calculateDutchpayAmount(List<DutchpayEntity> dutchpayList) {
+  @Transactional
+  public void calculateDutchpayAmount(List<DutchpayEntity> dutchpayList) {
 
     // 모든 더치페이를 돌면서 리스트에 dutpayId, totalAmt를 저장한다
     Map<Integer, Integer> eachMemberAmt = new HashMap<>();
@@ -343,7 +349,8 @@ public class DutchpayServiceImpl implements DutchpayService {
 
   }
 
-  private void sendDutchpayAmount(int tranAmt, DutchpayEntity request, DutchpayEntity response) {
+  @Transactional
+  public void sendDutchpayAmount(int tranAmt, DutchpayEntity request, DutchpayEntity response) {
 
     // 송금할 유저의 아이디
     String requestUserId = request.getUser().getLoginId();
@@ -355,7 +362,8 @@ public class DutchpayServiceImpl implements DutchpayService {
   }
 
 
-  private void hideAndRegister(DutchpayEntity dutchpay, int memberCount) {
+  @Transactional
+  public void hideAndRegister(DutchpayEntity dutchpay, int memberCount) {
 
     List<SelectedPaymentEntity> selectedPaymentList = selectedPaymentRepository.findByDutchpay(
         dutchpay);
@@ -384,12 +392,15 @@ public class DutchpayServiceImpl implements DutchpayService {
         dutchpayRoom);
 
     for (CategoryCalculateEntity category : categoryCalculateList) {
+
       int accountBookAmt = category.getTotalAmt() / memberCount;
 
       AccountBookEntryRequestDto request = AccountBookEntryRequestDto.create(accountBookAmt,
           category, dutchpayRoom);
 
-      accountBookRepository.save(AccountBookEntity.createAccountBookEntry(user, request));
+      AccountBookEntity newAccountBook = AccountBookEntity.createAccountBookEntry(user, request);
+
+      accountBookRepository.save(newAccountBook);
     }
 
   }

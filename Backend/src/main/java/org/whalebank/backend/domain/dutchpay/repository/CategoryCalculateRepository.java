@@ -8,7 +8,7 @@ import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
 public interface CategoryCalculateRepository extends
     JpaRepository<CategoryCalculateEntity, Integer> {
 
-  CategoryCalculateEntity findByCategory(String category);
-
   List<CategoryCalculateEntity> findByRoomId(DutchpayRoomEntity room);
+
+  CategoryCalculateEntity findByCategoryAndRoomId(String category, DutchpayRoomEntity dutchpayRoom);
 }
