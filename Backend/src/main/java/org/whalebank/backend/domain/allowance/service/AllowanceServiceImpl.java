@@ -1,11 +1,14 @@
 package org.whalebank.backend.domain.allowance.service;
 
 import jakarta.transaction.Transactional;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.account.service.AccountService;
+import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
@@ -57,12 +60,12 @@ public class AllowanceServiceImpl implements AllowanceService{
     RoleEntity childRole = RoleEntity.of(child, adult.getUserName(), child.getAccountId(),
         child.getAccountNum(), group);
 
-    roleRepository.save(adultRole);
-    roleRepository.save(childRole);
-    // 예약 이체 생성
+    group.addRole(adultRole);
+    group.addRole(childRole);
 
-
-
+    group.setAutoPaymentEntity(AutoPaymentEntity.of(childRole, adultRole,
+        reqDto.getAccount_password(), reqDto.getAllowance_amt(),
+        calculateNextAutoPaymentDate(reqDto.is_monthly, reqDto.payment_date)));
     // 저장
     groupRepository.save(group);
 
@@ -166,7 +169,35 @@ public class AllowanceServiceImpl implements AllowanceService{
   private UserEntity getCurrentUser(String loginId) {
     return userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+  }
 
+  private LocalDate calculateNextAutoPaymentDate(boolean isMonthly, int paymentDate) {
+    LocalDate today = LocalDate.now();
+    int year = today.getYear();
+    int month = today.getMonth().getValue();
 
+    if (isMonthly) {
+      // 월별 지급
+      if (today.getDayOfMonth() >= paymentDate) {
+        // 이미 n일을 지났다면, 다음 달 paymentDate일 부터 용돈 지급
+        return LocalDate.of(year, month + 1, paymentDate);
+      } else {
+        // 이번 달 paymentDate일 부터 용돈 지급
+        return LocalDate.of(year, month, paymentDate);
+      }
+
+    } else {
+      // 주별 지급
+      DayOfWeek currentDayOfWeek = today.getDayOfWeek();
+      int daysToAdd;
+      if (currentDayOfWeek.getValue() < paymentDate) { // 4 < 6
+        // 이번 주부터 용돈 지급
+        daysToAdd = paymentDate - currentDayOfWeek.getValue();
+      } else {
+        // 다음 주 paymentDate(1월 ~ 7일)요일부터 용돈 지급
+        daysToAdd = 7 - (currentDayOfWeek.getValue() - paymentDate);
+      }
+      return today.plusDays(daysToAdd);
+    }
   }
 }

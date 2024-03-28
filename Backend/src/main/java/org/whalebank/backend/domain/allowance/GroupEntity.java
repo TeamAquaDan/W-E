@@ -4,10 +4,13 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,11 +49,16 @@ public class GroupEntity {
   @Column(updatable = false)
   private LocalDate createdDtm;
 
-  @OneToMany(mappedBy = "userGroup")
+  @OneToMany(mappedBy = "userGroup", cascade = CascadeType.ALL)
   List<RoleEntity> memberEntityList = new ArrayList<>();
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "auto_payment_id")
+  AutoPaymentEntity autoPaymentEntity;
 
   public static GroupEntity from(AddGroupRequestDto reqDto) {
     return GroupEntity.builder()
+        .memberEntityList(new ArrayList<>())
         .isMonthly(reqDto.is_monthly)
         .allowanceAmt(reqDto.getAllowance_amt())
         .dayOfMonth(reqDto.is_monthly ? reqDto.getPayment_date() : 0) // isMonthly가 true인 경우에만 dayOfMonth 설정
@@ -66,7 +74,12 @@ public class GroupEntity {
   }
 
   public void addRole(RoleEntity role) {
-    memberEntityList.add(role);
+    this.memberEntityList.add(role);
+    role.setGroup(this);
+  }
+
+  public void setAutoPaymentEntity(AutoPaymentEntity entity) {
+    this.autoPaymentEntity = entity;
   }
 
 }
