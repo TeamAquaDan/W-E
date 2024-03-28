@@ -114,6 +114,10 @@ public class UserServiceImpl implements UserService {
     UserEntity user = repository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
+    if(user.getAccountId()  == reqDto.getAccount_id()) {
+      throw new CustomException(ResponseCode.ALREADY_MAIN_ACCOUNT);
+    }
+
     user.updateMainAccount(reqDto.getAccount_id(), reqDto.getAccount_num());
   }
 }

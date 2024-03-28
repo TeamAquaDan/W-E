@@ -20,6 +20,7 @@ public enum ResponseCode {
   USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "유저가 존재하지 않습니다"),
   INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED.value(), "리프레시 토큰 정보가 유효하지 않습니다"),
   DIFFERENT_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED.value(), "리프레시 토큰이 일치하지 않습니다"),
+  ALREADY_MAIN_ACCOUNT(HttpStatus.CONFLICT.value(), "이미 주계좌로 등록된 계좌입니다"),
 
   // 친구
   FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "친구 요청이 존재하지 않습니다"),
