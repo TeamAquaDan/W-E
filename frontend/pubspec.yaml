@@ -52,6 +52,7 @@ dependencies:
   firebase_database: ^10.4.10
   fl_chart: ^0.66.2
   image_picker: ^1.0.7
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:
