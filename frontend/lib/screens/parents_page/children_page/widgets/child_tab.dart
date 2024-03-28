@@ -11,10 +11,10 @@ class ChildTap extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundImage: NetworkImage(child.profileImage),
-        ),
+        // CircleAvatar(
+        //   radius: 30,
+        //   backgroundImage: NetworkImage(child.profileImage),
+        // ),
         const SizedBox(height: 8),
         Text(
           child.groupNickname,

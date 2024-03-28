@@ -43,6 +43,17 @@ class AccountListData {
       is_mainAccount: json['is_mainAccount'] as bool,
     );
   }
+
+  factory AccountListData.initial() {
+    return AccountListData(
+      account_id: 0, // Replace with appropriate initial value
+      account_name: '', // Replace with appropriate initial value
+      account_num: '', // Replace with appropriate initial value
+      balance_amt: 0, // Replace with appropriate initial value
+      account_type: 0, // Replace with appropriate initial value
+      is_mainAccount: false, // Replace with appropriate initial value
+    );
+  }
 }
 
 // "{

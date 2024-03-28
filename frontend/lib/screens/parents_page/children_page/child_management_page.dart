@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
 import 'package:frontend/screens/parents_page/children_page/child_info.dart';
+import 'package:frontend/screens/parents_page/children_page/widgets/add_child_form.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/child_tab.dart';
 
 class ChildManagementPage extends StatefulWidget {
@@ -35,7 +36,21 @@ class _ChildManagementPage extends State<ChildManagementPage> {
       initialIndex: _selectedIndex,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('내 자녀 조회'),
+          title: Row(
+            children: [
+              const Text('내 자녀 조회'),
+              const Spacer(),
+              IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) => AddChildForm(),
+                      isScrollControlled: true,
+                    );
+                  },
+                  icon: Icon(Icons.add_circle_outline))
+            ],
+          ),
           bottom: TabBar(
             // indicatorSize: TabBarIndicatorSize.label,
             tabs: children.map((child) {
