@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
+import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 
 @Getter
 @Setter
@@ -24,7 +25,9 @@ public class WithdrawRequestDto {
   public String req_trans_memo; // 내 거래내역에 표기할 메모
   public String recv_trans_memo; // 상대방 거래내역에 표기할 메모
 
-  public static WithdrawRequestDto create(int tranAmt, DutchpayEntity request, DutchpayEntity response) {
+
+  public static WithdrawRequestDto create(int tranAmt, DutchpayEntity request,
+      DutchpayEntity response) {
     return WithdrawRequestDto
         .builder()
         .tran_amt(tranAmt)
@@ -38,4 +41,20 @@ public class WithdrawRequestDto {
         .recv_trans_memo(request.getUser().getUserName())
         .build();
   }
+
+  public static WithdrawRequestDto of(AutoPaymentEntity entity, String parentName) {
+    return WithdrawRequestDto.builder()
+        .tran_amt(entity.getReservedAmt())
+        .req_account_id(entity.getParentAccountId())
+        .req_account_num(entity.getParentAccountNum())
+        .req_account_password(entity.getParentAccountPassword())
+        .recv_client_bank_code("103")
+        .recv_client_account_num(entity.getRecvAccountNum())
+        .recv_client_name(entity.getChildName())
+        .req_trans_memo(entity.getChildName() + " 용돈")
+        .recv_trans_memo(parentName + "님께 받은 용돈")
+        .build();
+  }
+
+
 }
