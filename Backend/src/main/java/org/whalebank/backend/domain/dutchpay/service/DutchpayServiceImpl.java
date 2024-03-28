@@ -1,6 +1,7 @@
 package org.whalebank.backend.domain.dutchpay.service;
 
 import com.amazonaws.transform.MapEntry;
+import jakarta.transaction.Transactional;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
 import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
 import org.whalebank.backend.domain.account.service.AccountService;
+import org.whalebank.backend.domain.accountbook.AccountBookEntity;
+import org.whalebank.backend.domain.accountbook.dto.request.AccountBookEntryRequestDto;
+import org.whalebank.backend.domain.accountbook.repository.AccountBookRepository;
 import org.whalebank.backend.domain.dutchpay.CategoryCalculateEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.dutchpay.DutchpayRoomEntity;
@@ -46,6 +50,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final DutchpayRoomRepository dutchpayRoomRepository;
   private final SelectedPaymentRepository selectedPaymentRepository;
   private final CategoryCalculateRepository categoryCalculateRepository;
+  private final AccountBookRepository accountBookRepository;
   private final CardAccessUtil cardAccessUtil;
   private final AccountService accountService;
 
@@ -208,6 +213,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   }
 
   @Override
+  @Transactional
   public List<DutchpayDetailResponseDto> autoDutchpay(String loginId, int roomId) {
 
     // 로그인한 유저
@@ -248,11 +254,10 @@ public class DutchpayServiceImpl implements DutchpayService {
       dutchpayRoom.setCompleted(true);
     }
 
-    // 이체 내역 가계부에 등록 및 선택한 내역 가계부에서 숨기기
-
     return dutchpayList.stream()
         .map(DutchpayDetailResponseDto::from)
         .collect(Collectors.toList());
+
   }
 
   private void categoryCalculate(List<SelectedPaymentEntity> selectedPaymentList) {
@@ -311,6 +316,11 @@ public class DutchpayServiceImpl implements DutchpayService {
       // 다른 금액과 비교
       for (Entry<Integer, Integer> targetAmt : eachMemberAmt.entrySet()) {
 
+        // 본인이면 넘어감
+        if (request.getDutchpayId() == targetAmt.getKey()) {
+          continue;
+        }
+
         // 돈을 보내야 하는 경우에만 송금
         if (requestAmt < targetAmt.getValue()) {
 
@@ -326,6 +336,9 @@ public class DutchpayServiceImpl implements DutchpayService {
       dutchpayRepository.save(request);
       // 정산 완료 인원 + 1
       request.getRoom().setCompleted_count(request.getRoom().getCompleted_count() + 1);
+
+      // 이체 내역 가계부에 등록 및 선택한 내역 가계부에서 숨기기
+      hideAndRegister(request, dutchpayList.size());
     }
 
   }
@@ -339,6 +352,46 @@ public class DutchpayServiceImpl implements DutchpayService {
     WithdrawRequestDto withdrawRequest = WithdrawRequestDto.create(tranAmt, request, response);
 
     accountService.withdraw(requestUserId, withdrawRequest);
+  }
+
+
+  private void hideAndRegister(DutchpayEntity dutchpay, int memberCount) {
+
+    List<SelectedPaymentEntity> selectedPaymentList = selectedPaymentRepository.findByDutchpay(
+        dutchpay);
+
+    UserEntity user = dutchpay.getUser();
+
+    // 더치페이 방
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(
+            dutchpay.getRoom().getRoomId())
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    // 선택한 결제 내역 가계부에서 숨기기
+    for (SelectedPaymentEntity selectedPayment : selectedPaymentList) {
+      AccountBookEntity accountBook = accountBookRepository.findByUserAndTransId(
+          user, selectedPayment.getTransId());
+
+      accountBook.setHide(true);
+
+      accountBookRepository.save(accountBook);
+    }
+
+    // 더치페이 했던 내역 카테고리별 지출내역으로 추가
+
+    // 카테고리별 내역
+    List<CategoryCalculateEntity> categoryCalculateList = categoryCalculateRepository.findByRoomId(
+        dutchpayRoom);
+
+    for (CategoryCalculateEntity category : categoryCalculateList) {
+      int accountBookAmt = category.getTotalAmt() / memberCount;
+
+      AccountBookEntryRequestDto request = AccountBookEntryRequestDto.create(accountBookAmt,
+          category, dutchpayRoom);
+
+      accountBookRepository.save(AccountBookEntity.createAccountBookEntry(user, request));
+    }
+
   }
 
 }
