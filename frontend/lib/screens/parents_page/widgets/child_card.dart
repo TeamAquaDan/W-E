@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/allowance/allowance_patch_api.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
+import 'package:frontend/screens/parents_page/widgets/allowance_info_form.dart';
 import 'package:intl/intl.dart';
 
 class ChildCard extends StatefulWidget {
   final int groupId;
   final int userId;
-  final String groupNickname;
-  const ChildCard(
+  String groupNickname;
+  ChildCard(
       {Key? key,
       required this.groupId,
       required this.userId,
@@ -62,16 +64,36 @@ class _ChildCardState extends State<ChildCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${widget.groupNickname} 용돈',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            '${widget.groupNickname}',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                _editGroupName(context);
+                              },
+                              icon: Icon(Icons.edit))
+                        ],
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  AllowanceInfoForm(
+                                    groupId: widget.groupId,
+                                    isMonthly: childDetail.isMonthly,
+                                    allowanceAmt: childDetail.allowanceAmt,
+                                    paymentDate: childDetail.paymentDate,
+                                  ),
+                              isScrollControlled: true);
+                        },
                         style: TextButton.styleFrom(
                           minimumSize: Size.zero,
                           padding: EdgeInsets.zero,
@@ -90,7 +112,7 @@ class _ChildCardState extends State<ChildCard> {
                   ),
                   Text('자녀 계좌 번호: ${childDetail.accountNum}'),
                   Text(
-                    '${childDetail.isMonthly //
+                    '용돈 지급 : ${childDetail.isMonthly //
                         ? '매달 ${childDetail.paymentDate}일' //
                         : '매주 ${_convertToDayOfWeek(childDetail.paymentDate)}요일'}',
                     style: const TextStyle(
@@ -148,6 +170,62 @@ class _ChildCardState extends State<ChildCard> {
         return '일';
       default:
         return '';
+    }
+  }
+
+  void _editGroupName(BuildContext context) async {
+    TextEditingController _groupNameController = TextEditingController();
+    _groupNameController.text = widget.groupNickname; // 현재 그룹 닉네임으로 텍스트 필드 초기화
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("그룹 닉네임 수정"),
+          content: TextField(
+            controller: _groupNameController,
+            decoration: InputDecoration(
+              hintText: "새로운 그룹 닉네임 입력",
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text("취소"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("저장"),
+              onPressed: () {
+                // 변경된 그룹 닉네임을 서버로 전송
+                _updateGroupName(_groupNameController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateGroupName(String newGroupName) async {
+    try {
+      print('ㅁㄴㅇㅁㄴㅇㅁㄴㅇ ${widget.groupId} $newGroupName');
+      await patchAllowanceNickname(
+        groupId: widget.groupId,
+        groupNickname: newGroupName,
+      );
+      setState(() {
+        widget.groupNickname = newGroupName; // 그룹 닉네임을 업데이트합니다.
+      });
+      // 성공적으로 서버로 그룹 닉네임을 업데이트한 경우
+      // 여기에 필요한 작업을 수행할 수 있습니다.
+      // 예: 화면 갱신 또는 다른 작업 수행
+    } catch (error) {
+      // 서버 통신 중 오류가 발생한 경우
+      print('그룹 닉네임 업데이트 오류: $error');
+      // 오류 처리를 위한 추가적인 작업 수행 가능
     }
   }
 }
