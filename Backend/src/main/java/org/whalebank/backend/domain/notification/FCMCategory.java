@@ -19,9 +19,10 @@ public enum FCMCategory {
 
   // 인상 요청
   INCREASE_REQUEST("400","인상 요청이 등록됨"),
-  INCREASE_REQUEST_RESULT("401", "인상 요청이 처리됨")
+  INCREASE_REQUEST_RESULT("401", "인상 요청이 처리됨"),
 
-  ;
+  // 그룹
+  PARENT_ADD_CHILD("700", "부모가 자녀를 추가함");
 
   public final String code;
   public final String description;

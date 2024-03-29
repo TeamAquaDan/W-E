@@ -17,6 +17,9 @@ import org.whalebank.backend.domain.allowance.dto.response.ChildrenInfoResponseD
 import org.whalebank.backend.domain.allowance.dto.response.GroupInfoResponseDto;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.allowance.repository.RoleRepository;
+import org.whalebank.backend.domain.notification.FCMCategory;
+import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
+import org.whalebank.backend.domain.notification.service.FcmUtils;
 import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
@@ -30,6 +33,7 @@ public class AllowanceServiceImpl implements AllowanceService{
   private final AuthRepository userRepository;
   private final GroupRepository groupRepository;
   private final RoleRepository roleRepository;
+  private final FcmUtils fcmUtils;
 
   @Override
   @Transactional
@@ -75,6 +79,12 @@ public class AllowanceServiceImpl implements AllowanceService{
 
     // 저장
     groupRepository.save(group);
+    // 자녀에게 푸시 알림 전송
+    fcmUtils.sendNotificationByToken(child,
+        FCMRequestDto.of(adult.getUserName() + "님께서 " + child.getUserName() + "님을 추가했어요",
+            "이제부터 " + adult.getUserName() + "님께 용돈을 받을 수 있어요!",
+            FCMCategory.PARENT_ADD_CHILD)
+    );
 
     return GroupInfoResponseDto.of(group, child.getAccountNum());
   }
