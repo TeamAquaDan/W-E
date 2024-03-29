@@ -26,7 +26,7 @@ public class AutoPaymentUtils {
   private final AccountService accountService;
   private final FcmUtils fcmUtils;
 
-  @Scheduled(cron = "0 0 11 1/1 * ?")
+  @Scheduled(cron = "0 28 17 * * *")
   public void allowanceAutoPayment() {
     // 오늘 날짜에 해당하는 자동이체만 가져와서
     LocalDate today = LocalDate.now();
@@ -41,6 +41,10 @@ public class AutoPaymentUtils {
 
       // 푸시 알림 전송
       UserEntity child = findUserByRole(group, Role.CHILD.name());
+      System.out.println("용돈 보내는 사람: "+parent.getUserId()+"번, "+parent.getUserName());
+      System.out.println("용돈 받는 사람: "+child.getUserId()+"번, "+child.getUserName());
+      System.out.println("송금 금액: "+entity.getReservedAmt());
+
       fcmUtils.sendNotificationByToken(child,
           FCMRequestDto.of("용돈을 받았어요!", parent.getUserName() + "님께서 용돈을 보냈어요!",
               FCMCategory.DEPOSIT));

@@ -12,6 +12,9 @@ RUN gradle build -x test --parallel --continue
 # 2단계: 실행 가능한 JAR 파일 빌드
 FROM openjdk:17
 
+# 서울 시간대로 설정
+ENV TZ=Asia/Seoul
+
 # 이전 단계에서 빌드된 JAR 파일을 복사
 COPY --from=build /app/build/libs/*.jar /app/
 RUN ls -al /app
