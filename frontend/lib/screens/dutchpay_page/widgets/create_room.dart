@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/services/dio_service.dart';
+import 'package:intl/intl.dart';
 
 Future postDutchPayRoom(
     {required String roomName,
@@ -28,7 +29,7 @@ Future postDutchPayRoom(
 //   ""message"": ""더치페이 방 생성 성공"",
 //   ""data"": {
 //      ""room_id"": ""int, 방 아이디"",
-//      ""dutchpay_date"": ""string, 결제 일자"",
+//      ""dutchpay_date"": ""string, 결제 일자 YYYY-mm-dd"",
 //      ""manager_id"": ""int, 방장"",
 //      ""is_completed"": ""boolean, 완료 여부"",
 //      ""member_num"" : int, 총 인원 수,
@@ -83,13 +84,15 @@ class CreateDutchPayRoom extends StatefulWidget {
 class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
   final _formKey = GlobalKey<FormState>();
   String roomName = '';
-  String roomDescription = '';
-
+  DateTime? dutchpayDate;
+  String dutchpayDateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  List<int> members = [];
+  Future<List<dynamic>> friendsFuture = getFriends();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('방 생성'),
+        title: Text('더치페이 방 생성'),
       ),
       body: Form(
         key: _formKey,
@@ -107,17 +110,80 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                 roomName = value!;
               },
             ),
+            const SizedBox(height: 16),
             TextFormField(
-              decoration: InputDecoration(labelText: '방 설명'),
-              onSaved: (value) {
-                roomDescription = value!;
+              decoration: InputDecoration(labelText: '더치페이 할 날짜'),
+              readOnly: true, // This will prohibit manual editing
+              onTap: () async {
+                final date = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(DateTime.now().year - 1),
+                    lastDate: DateTime.now());
+                if (date != null) {
+                  setState(() {
+                    dutchpayDate = date;
+                    dutchpayDateString = DateFormat('yyyy-MM-dd').format(date);
+                  });
+                }
+              },
+              controller: TextEditingController(text: dutchpayDateString),
+            ),
+            const SizedBox(height: 16),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return FutureBuilder<List<dynamic>>(
+                      future: friendsFuture,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<dynamic>> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          List<dynamic> friends = snapshot.data!;
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: friends.length,
+                            itemBuilder: (context, index) {
+                              return CheckboxListTile(
+                                title: Text(friends[index]["friend_nickname"]),
+                                value: members
+                                    .contains(friends[index]["friend_id"]),
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    if (value == true) {
+                                      members.add(friends[index]["friend_id"]);
+                                    } else {
+                                      members
+                                          .remove(friends[index]["friend_id"]);
+                                    }
+                                  });
+                                },
+                              );
+                            },
+                          );
+                        }
+                      },
+                    );
+                  },
+                );
               },
             ),
+            Text(members.toString()),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  // postDutchPayRoom(roomName, roomDescription);
+                  postDutchPayRoom(
+                      roomName: roomName,
+                      dutchpayDate: dutchpayDateString,
+                      members: members);
                 }
               },
               child: Text('방 생성'),

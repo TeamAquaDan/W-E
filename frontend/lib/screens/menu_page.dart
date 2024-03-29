@@ -4,6 +4,7 @@ import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/account_book/account_book_page.dart';
 
 import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/dutchpay_page/widgets/create_room.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/screens/pin_login_page.dart';
 import 'package:frontend/services/dio_service.dart';
@@ -107,7 +108,12 @@ class MenuPage extends StatelessWidget {
               onPressed: () {
                 Get.to(() => const PinLoginPage());
               },
-              child: const Text('핀로그인/로그아웃'))
+              child: const Text('핀로그인/로그아웃')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(() => CreateDutchPayRoom());
+              },
+              child: const Text('더치페이 방생성')),
         ],
       ),
     );
