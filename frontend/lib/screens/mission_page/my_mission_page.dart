@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/mission_page/widgets/mission.dart';
+import 'package:frontend/services/dio_service.dart';
 import 'package:intl/intl.dart';
 
 class MyMissionPage extends StatefulWidget {
@@ -28,88 +30,14 @@ class _MyMissionPageState extends State<MyMissionPage> {
   }
 
   Future<List<dynamic>> fetchMissionsFromAPI() async {
-    return [
-      {
-        "mission_id": 635,
-        "mission_name": "사진 촬영 새 제품",
-        "mission_reward": 81100,
-        "deadline_date": "2024-03-28",
-        "status": 1,
-        "user_name": "정예진"
-      },
-      {
-        "mission_id": 534,
-        "mission_name": "설문 참여 음식점",
-        "mission_reward": 99623,
-        "deadline_date": "2024-04-09",
-        "status": 1,
-        "user_name": "이서연"
-      },
-      {
-        "mission_id": 88,
-        "mission_name": "리뷰 작성 새 제품",
-        "mission_reward": 58258,
-        "deadline_date": "2024-04-13",
-        "status": 0,
-        "user_name": "이예진"
-      },
-      {
-        "mission_id": 593,
-        "mission_name": "사진 촬영 앱",
-        "mission_reward": 58413,
-        "deadline_date": "2024-03-30",
-        "status": 0,
-        "user_name": "김민준"
-      },
-      {
-        "mission_id": 645,
-        "mission_name": "동영상 시청 새 제품",
-        "mission_reward": 82355,
-        "deadline_date": "2024-03-28",
-        "status": 0,
-        "user_name": "정지아"
-      },
-      {
-        "mission_id": 975,
-        "mission_name": "리뷰 작성 서비스",
-        "mission_reward": 74259,
-        "deadline_date": "2024-03-30",
-        "status": 1,
-        "user_name": "박예진"
-      },
-      {
-        "mission_id": 570,
-        "mission_name": "리뷰 작성 영화",
-        "mission_reward": 39895,
-        "deadline_date": "2024-04-12",
-        "status": 0,
-        "user_name": "김서연"
-      },
-      {
-        "mission_id": 24,
-        "mission_name": "설문 참여 영화",
-        "mission_reward": 18670,
-        "deadline_date": "2024-03-23",
-        "status": 2,
-        "user_name": "김민준"
-      },
-      {
-        "mission_id": 929,
-        "mission_name": "리뷰 작성 음식점",
-        "mission_reward": 6332,
-        "deadline_date": "2024-03-29",
-        "status": 0,
-        "user_name": "김서연"
-      },
-      {
-        "mission_id": 172,
-        "mission_name": "데이터 입력 음식점",
-        "mission_reward": 89635,
-        "deadline_date": "2024-04-02",
-        "status": 0,
-        "user_name": "최서연"
-      }
-    ];
+    final DioService dioService = DioService();
+    try {
+      var response = await dioService.dio.get('${baseURL}api/mission');
+      print(response);
+    } catch (err) {
+      print(err);
+    }
+    return [];
   }
 
   String formatNumber(int number) {

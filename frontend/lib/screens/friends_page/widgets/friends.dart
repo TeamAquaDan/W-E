@@ -83,10 +83,10 @@ class Friends extends StatelessWidget {
                 ),
               ),
               Text(
-                '@$friendLoginId',
+                '@ $friendLoginId',
                 style: const TextStyle(
                   color: Color.fromARGB(255, 101, 92, 92),
-                  fontSize: 12,
+                  fontSize: 16,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
                 ),
