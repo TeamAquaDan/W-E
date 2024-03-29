@@ -49,8 +49,8 @@ class TransferPost {
   final String recv_client_bank_code;
   final String recv_client_account_num;
   final String recv_client_name;
-  final String req_trans_memo;
-  final String recv_trans_memo;
+  String req_trans_memo;
+  String recv_trans_memo;
 
   Map<String, dynamic> toMap() {
     return {

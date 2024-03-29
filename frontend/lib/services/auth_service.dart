@@ -105,6 +105,7 @@ class AuthService {
             name: 'check_refreshtoken');
 
         Get.find<UserController>().setUserId(data['user_id']);
+        Get.find<UserController>().setUserName(data['username']);
         Get.find<UserRoleController>().setUserRole(role);
         return LoginResult(isSuccess: true, role: role);
       }

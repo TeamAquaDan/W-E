@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account/transfer_api.dart';
 import 'package:frontend/models/account/transfer_data.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/models/store/userRole/user_role.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
@@ -68,6 +69,14 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         // Navigator.pop(context, transferData);
+                        if (widget.data.req_trans_memo.trim() == '') {
+                          widget.data.req_trans_memo =
+                              widget.data.recv_client_name;
+                        }
+                        if (widget.data.recv_trans_memo.trim() == '') {
+                          widget.data.recv_trans_memo =
+                              Get.find<UserController>().getUserName();
+                        }
                         var res =
                             await postTransfer('accessToken', widget.data);
                         if (res == null) {
