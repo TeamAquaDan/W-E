@@ -88,6 +88,12 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
   String dutchpayDateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
   List<int> members = [];
   Future<List<dynamic>> friendsFuture = getFriends();
+  void updateMembers(List<int> newMembers) {
+    setState(() {
+      members = newMembers;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,40 +142,10 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return FutureBuilder<List<dynamic>>(
-                      future: friendsFuture,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<dynamic>> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          List<dynamic> friends = snapshot.data!;
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: friends.length,
-                            itemBuilder: (context, index) {
-                              return CheckboxListTile(
-                                title: Text(friends[index]["friend_nickname"]),
-                                value: members
-                                    .contains(friends[index]["friend_id"]),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    if (value == true) {
-                                      members.add(friends[index]["friend_id"]);
-                                    } else {
-                                      members
-                                          .remove(friends[index]["friend_id"]);
-                                    }
-                                  });
-                                },
-                              );
-                            },
-                          );
-                        }
-                      },
+                    return MyCheckboxList(
+                      friendsFuture: friendsFuture,
+                      members: members,
+                      onMembersChanged: updateMembers,
                     );
                   },
                 );
@@ -191,6 +167,74 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyCheckboxList extends StatefulWidget {
+  final Future<List<dynamic>> friendsFuture;
+  final List<int> members;
+  final ValueChanged<List<int>> onMembersChanged;
+  MyCheckboxList(
+      {required this.friendsFuture,
+      required this.members,
+      required this.onMembersChanged});
+
+  @override
+  _MyCheckboxListState createState() => _MyCheckboxListState();
+}
+
+class _MyCheckboxListState extends State<MyCheckboxList> {
+  late Future<List<dynamic>> _friendsFuture;
+  Map<int, bool> checkboxStates = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _friendsFuture = widget.friendsFuture;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<dynamic>>(
+      future: _friendsFuture,
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          List<dynamic> friends = snapshot.data!;
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: friends.length,
+            itemBuilder: (context, index) {
+              int friendId = friends[index]["friend_id"];
+              if (!checkboxStates.containsKey(friendId)) {
+                checkboxStates[friendId] = false;
+              }
+
+              return CheckboxListTile(
+                title: Text(friends[index]["friend_nickname"]),
+                value: checkboxStates[friendId],
+                onChanged: (bool? value) {
+                  setState(() {
+                    checkboxStates[friendId] = value!;
+                    if (value == true) {
+                      if (!widget.members.contains(friendId)) {
+                        widget.members.add(friendId);
+                      }
+                    } else {
+                      widget.members.remove(friendId);
+                    }
+                    widget.onMembersChanged(widget.members);
+                  });
+                },
+              );
+            },
+          );
+        }
+      },
     );
   }
 }
