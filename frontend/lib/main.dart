@@ -56,7 +56,8 @@ void handleNotificationClick(RemoteMessage? message, bool isLoggedIn) {
           Get.offAll(() => const SalaryListPage());
           break;
         case '600':
-          Get.offAll(() => const MyProfilePage());
+          var userId = Get.find<UserController>().getUserId();
+          Get.to(() => MyProfilePage(userId: userId));
           break;
         default:
           Get.offAll(() => const AlarmPage());
@@ -79,7 +80,8 @@ void handleNotificationPayload(String payload) {
   } else if (payload == '400') {
     Get.to(() => const SalaryListPage());
   } else if (payload == '600') {
-    Get.to(() => const MyProfilePage());
+    var userId = Get.find<UserController>().getUserId();
+    Get.to(() => MyProfilePage(userId: userId));
   } else {
     Get.to(() => const AlarmPage());
   }
