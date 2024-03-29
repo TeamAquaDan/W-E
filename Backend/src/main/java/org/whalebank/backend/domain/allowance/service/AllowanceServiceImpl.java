@@ -38,6 +38,14 @@ public class AllowanceServiceImpl implements AllowanceService{
     UserEntity child = userRepository.findById(reqDto.getUser_id())
             .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
+    // 부모 - 자녀 쌍이 이미 존재한다면 예외
+    List<RoleEntity> roleEntityList = roleRepository.findRolesByUserId(child.getUserId(),
+        Role.ADULT);
+    if (roleEntityList.stream().anyMatch(r -> r.getUser().getUserId() == adult.getUserId())) {
+      throw new CustomException(ResponseCode.ALREADY_ADDED_CHILD);
+    }
+
+
     // 그룹, 역할 생성
     GroupEntity group = GroupEntity.from(reqDto);
     // 부모 -> 자녀 role 생성

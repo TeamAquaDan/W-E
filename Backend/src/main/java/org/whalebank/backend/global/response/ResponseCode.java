@@ -55,7 +55,7 @@ public enum ResponseCode {
   GROUP_EDIT_FORBIDDEN(HttpStatus.FORBIDDEN.value(), "그룹 수정 권한이 없습니다"),
   GROUP_ROLE_NOT_FOUND(HttpStatus.FORBIDDEN.value(), "그룹에 소속되어 있지 않습니다"),
   USER_VIEW_FORBIDDEN(HttpStatus.FORBIDDEN.value(), "해당 유저에 대한 조회 권한이 없습니다"),
-
+  ALREADY_ADDED_CHILD(HttpStatus.CONFLICT.value(), "이미 추가된 자녀입니다"),
 
   // 더치페이
   CANNOT_ADD_SELF(HttpStatus.BAD_REQUEST.value(), "본인은 자동 추가되기 때문에 추가할 수 없습니다"),
