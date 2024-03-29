@@ -22,7 +22,7 @@ public class ProfileResponseDto {
   public boolean editable; // 본인 프로필일 경우 editable: true
 
 
-  public List<GuestBook> guestBook_list;
+  public List<GuestBook> guestbook_list;
 
   @Getter
   @Setter
@@ -45,7 +45,7 @@ public class ProfileResponseDto {
         .birthdate(user.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
         .sentence(user.getProfile().getSentence())
         .editable(editable)
-        .guestBook_list(guestBookList)
+        .guestbook_list(guestBookList)
         .build();
   }
 
