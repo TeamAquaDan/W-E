@@ -48,6 +48,7 @@ public class GuestBookEntity {
         .content(request.getContent())
         .guestbookDtm(LocalDateTime.now())
         .profile(profile)
+
         .build();
 
   }

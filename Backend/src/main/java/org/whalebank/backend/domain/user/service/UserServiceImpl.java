@@ -3,7 +3,10 @@ package org.whalebank.backend.domain.user.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +23,7 @@ import org.whalebank.backend.domain.user.dto.request.RegisterMainAccountRequestD
 import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileImageResponseDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto;
+import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto.GuestBook;
 import org.whalebank.backend.domain.user.dto.response.VerifyResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.domain.user.repository.GuestBookRepository;
@@ -102,21 +106,20 @@ public class UserServiceImpl implements UserService {
 
     // 작성 대상 프로필 사용자
     UserEntity profileUser = repository.findById(request.getUser_id())
-        .orElseThrow(()-> new CustomException(ResponseCode.USER_NOT_FOUND));
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     // 본인 프로필에는 작성 불가능
-    if(writer == profileUser){
+    if (writer == profileUser) {
       throw new CustomException(ResponseCode.SAME_USER);
     }
 
     // 작성자와 프로필 유저가 서로 친구가 아니면 작성 불가능
     FriendEntity friend = friendRepository.findById(new FriendId(writer, profileUser))
-        .orElseThrow(()-> new CustomException(ResponseCode.FRIEND_NOT_FOUND));
-
+        .orElseThrow(() -> new CustomException(ResponseCode.FRIEND_NOT_FOUND));
 
     // 작성자 프로필 엔티티 불러오기
     ProfileEntity profile = profileRepository.findById(String.valueOf(profileUser.getUserId()))
-        .orElseThrow(()->new CustomException(ResponseCode.PROFILE_NOT_FOUND));
+        .orElseThrow(() -> new CustomException(ResponseCode.PROFILE_NOT_FOUND));
 
     // 방명록 저장
     GuestBookEntity guestBook = GuestBookEntity.createGuestBook(profile, writer, request);
@@ -139,8 +142,21 @@ public class UserServiceImpl implements UserService {
     }
 
     // 내 프로필에 저장된 모든 방명록 불러오기
+    List<GuestBookEntity> guestBooks = guestBookRepository.findByProfile(user.getProfile());
 
-    return ProfileResponseDto.of(user, editable);
+    List<GuestBook> guestBookList = guestBooks.stream().map(guestBookEntity -> {
+      // 작성자 불러오기
+      UserEntity writer = repository.findById(guestBookEntity.getWriterId())
+          .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+      return GuestBook.builder()
+          .writer_profile_img(writer.getProfile().getProfileImage())
+          .writer_name(writer.getUserName())
+          .content(guestBookEntity.getContent())
+          .build();
+    }).collect(Collectors.toList());
+
+    return ProfileResponseDto.of(user, editable, guestBookList);
   }
 
   public VerifyResponseDto verifyUser(VerifyRequestDto reqDto) {

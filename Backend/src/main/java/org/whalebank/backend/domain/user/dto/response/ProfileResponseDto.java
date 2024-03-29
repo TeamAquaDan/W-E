@@ -24,6 +24,9 @@ public class ProfileResponseDto {
 
   public List<GuestBook> guestBook_list;
 
+  @Getter
+  @Setter
+  @Builder
   public static class GuestBook {
 
     private String writer_profile_img;  // 작성자 프로필 이미지
@@ -32,7 +35,7 @@ public class ProfileResponseDto {
   }
 
 
-  public static ProfileResponseDto of(UserEntity user, boolean editable) {
+  public static ProfileResponseDto of(UserEntity user, boolean editable, List<GuestBook> guestBookList) {
     return ProfileResponseDto.builder()
         .user_id(user.getUserId())
         .login_id(user.getLoginId())
@@ -41,6 +44,7 @@ public class ProfileResponseDto {
         .birthdate(user.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
         .sentence(user.getProfile().getSentence())
         .editable(editable)
+        .guestBook_list(guestBookList)
         .build();
   }
 
