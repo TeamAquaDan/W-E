@@ -6,6 +6,8 @@ import 'package:frontend/screens/mission_page/my_mission_page.dart';
 import 'package:frontend/screens/parents_page/parent_home_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../chat_page/chat_page.dart';
+
 class ParentPage extends StatefulWidget {
   const ParentPage({super.key});
 
@@ -72,14 +74,8 @@ class _ParentPageState extends State<ParentPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // 여기에 버튼을 눌렀을 때 실행할 작업을 추가합니다.
-          Fluttertoast.showToast(
-              msg: "FloatingActionButton이 클릭되었습니다.",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.blue,
-              textColor: Colors.white,
-              fontSize: 16.0
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ChatPage()),
           );
         },
         child: const Icon(Icons.add),
