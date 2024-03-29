@@ -13,6 +13,7 @@ import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.dto.request.LoginRequestDto;
 import org.whalebank.backend.domain.user.dto.request.SignUpRequestDto;
+import org.whalebank.backend.domain.user.dto.request.UpdatePasswordRequestDto;
 import org.whalebank.backend.domain.user.dto.response.LoginResponseDto;
 import org.whalebank.backend.domain.user.dto.response.ReissueResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
@@ -151,4 +152,18 @@ public class AuthServiceImpl implements AuthService {
     }
   }
 
+  @Override
+  @Transactional
+  public void updatePassword(String loginId, UpdatePasswordRequestDto request) {
+
+    UserEntity user = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    if (!encoder.matches(request.getPassword(), user.getLoginPassword())) {
+      throw new CustomException(ResponseCode.WRONG_LOGIN_PASSWORD);
+    }
+
+    String newPassword = encoder.encode(request.getNew_password());
+    user.setLoginPassword(newPassword);
+  }
 }
