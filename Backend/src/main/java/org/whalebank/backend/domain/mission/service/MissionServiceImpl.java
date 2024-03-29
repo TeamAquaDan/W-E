@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
+import org.whalebank.backend.domain.account.service.AccountService;
+import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
@@ -31,6 +34,7 @@ public class MissionServiceImpl implements MissionService {
   private final RoleRepository roleRepository;
   private final AuthRepository userRepository;
   private final FcmUtils fcmUtils;
+  private final AccountService accountService;
 
   @Override
   public MissionInfoResponseDto createMission(MissionCreateRequestDto reqDto, String loginId) {
@@ -86,6 +90,11 @@ public class MissionServiceImpl implements MissionService {
     // 자녀에게 푸시 알림 보내기
     UserEntity child = findMemberInGroup(group, "CHILD");
     if (reqDto.getStatus() == 1) { // 성공
+      // 송금
+      accountService.withdraw(loginId,
+          WithdrawRequestDto.of(group.getAutoPaymentEntity(), mission,
+              currentUser.getUserName()));
+      // 푸시 알림
       fcmUtils.sendNotificationByToken(child,
           FCMRequestDto.of("미션 성공!", String.format("'%s' 미션을 성공했어요!", mission.getMissionName()),
               FCMCategory.MISSION_RESULT));

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
+import org.whalebank.backend.domain.mission.MissionEntity;
 
 @Getter
 @Setter
@@ -53,6 +54,20 @@ public class WithdrawRequestDto {
         .recv_client_name(entity.getChildName())
         .req_trans_memo(entity.getChildName() + " 용돈")
         .recv_trans_memo(parentName + "님께 받은 용돈")
+        .build();
+  }
+
+  public static WithdrawRequestDto of(AutoPaymentEntity entity, MissionEntity mission, String parentName) {
+    return WithdrawRequestDto.builder()
+        .tran_amt(mission.getMissionReward())
+        .req_account_id(entity.getParentAccountId())
+        .req_account_num(entity.getParentAccountNum())
+        .req_account_password(entity.getParentAccountPassword())
+        .recv_client_bank_code("103")
+        .recv_client_account_num(entity.getRecvAccountNum())
+        .recv_client_name(entity.getChildName())
+        .req_trans_memo(entity.getChildName()+"님 " + mission.getMissionName()+ " 미션 성공 보상금액")
+        .recv_trans_memo(mission.getMissionName() + " 미션 성공 보상 금액")
         .build();
   }
 

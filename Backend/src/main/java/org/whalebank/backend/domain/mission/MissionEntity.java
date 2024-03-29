@@ -69,6 +69,7 @@ public class MissionEntity {
 
   public void manageMission(int status) {
     this.status = status;
+    this.completeDtm = LocalDateTime.now();
   }
 
 }
