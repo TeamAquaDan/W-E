@@ -31,5 +31,6 @@ public class GoalListResponseDto {
     private double percentage; // 달성률
     private int withdraw_amt;  // 출금한 저축 금액
     private String category;  // 카테고리
+    private int saved_amt;  // 저축한 금액
   }
 }
