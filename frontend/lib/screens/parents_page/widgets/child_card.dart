@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/allowance_patch_api.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
+import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/parents_page/widgets/allowance_info_form.dart';
+import 'package:frontend/screens/transfer_page/gruop_transfer_page.dart';
+import 'package:frontend/screens/transfer_page/transfer_page.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ChildCard extends StatefulWidget {
@@ -135,7 +139,11 @@ class _ChildCardState extends State<ChildCard> {
                           backgroundColor: MaterialStateProperty.all<Color>(
                               const Color(0xFF3F62DE)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(GroupTransferPage(
+                            accountNum: childDetail.accountNum!,
+                          ));
+                        },
                         child: const Text(
                           '이체',
                         ),
@@ -210,7 +218,7 @@ class _ChildCardState extends State<ChildCard> {
 
   void _updateGroupName(String newGroupName) async {
     try {
-      print('ㅁㄴㅇㅁㄴㅇㅁㄴㅇ ${widget.groupId} $newGroupName');
+      print('그룹별칭 수정 ${widget.groupId} $newGroupName');
       await patchAllowanceNickname(
         groupId: widget.groupId,
         groupNickname: newGroupName,

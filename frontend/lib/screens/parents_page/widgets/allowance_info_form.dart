@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/allowance_patch_api.dart';
+import 'package:frontend/screens/parents_page/parent_home_page.dart';
+import 'package:frontend/screens/parents_page/parent_page.dart';
+import 'package:get/get.dart';
 
 class AllowanceInfoForm extends StatefulWidget {
   final int groupId;
@@ -7,7 +10,8 @@ class AllowanceInfoForm extends StatefulWidget {
   final int allowanceAmt;
   final int paymentDate;
 
-  const AllowanceInfoForm({super.key, 
+  const AllowanceInfoForm({
+    super.key,
     required this.groupId,
     required this.isMonthly,
     required this.allowanceAmt,
@@ -133,6 +137,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
         allowanceAmt: _allowanceAmt,
         paymentDate: _paymentDate,
       );
+      Get.offAll(ParentPage());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('용돈 정보가 성공적으로 수정되었습니다.')),
       );
