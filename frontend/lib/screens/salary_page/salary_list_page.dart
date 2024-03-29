@@ -86,6 +86,7 @@ class _SalaryListPageState extends State<SalaryListPage> {
                   groupId: salary['group_id'],
                   userId: salary['user_id'],
                   userName: salary['user_name'],
+                  loadSalarysCallback: loadSalarys,
                 );
               },
             ),

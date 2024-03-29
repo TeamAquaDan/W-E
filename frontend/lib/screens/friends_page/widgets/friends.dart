@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/friends_page/widgets/change_nickname_friends.dart';
 
 class Friends extends StatelessWidget {
   const Friends({
     super.key,
+    required this.friendId,
     required this.friendLoginId,
     required this.friendName,
     required this.friendProfileImg,
     required this.friendNickname,
+    required this.loadFriendsCallback,
   });
 
+  final int friendId;
   final String friendName;
   final String friendLoginId;
   final String friendProfileImg;
   final String friendNickname;
+  final Function loadFriendsCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,14 @@ class Friends extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        showChangeNicknameFriendsDialog(context, friendNickname,
+                            friendId, loadFriendsCallback);
+                      },
+                      icon: Icon(Icons.edit),
+                      color: Colors.grey[500],
+                    )
                   ],
                 ),
               ),

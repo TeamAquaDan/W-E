@@ -147,6 +147,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                       Get.to(() => MyProfilePage(userId: friend['friend_id']));
                     },
                     child: Friends(
+                      friendId: friend['friend_id'],
                       friendLoginId: friend['friend_loginid'],
                       friendName: friend['friend_name'],
                       friendProfileImg: friend['friend_profileImg'] == null
@@ -155,6 +156,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                       friendNickname: friend['friend_nickname'] == null
                           ? friend['friend_name']
                           : friend['friend_nickname'],
+                      loadFriendsCallback: loadFriends,
                     ),
                   );
                 },
