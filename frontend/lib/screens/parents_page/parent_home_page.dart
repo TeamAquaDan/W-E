@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/parents_page/widgets/children_list.dart';
 import 'package:frontend/screens/parents_page/widgets/section_bar.dart';
 import 'package:frontend/widgets/carousel_with_indicator.dart';
+import 'package:frontend/widgets/my_img.dart';
 
 class ParentHomePage extends StatelessWidget {
   const ParentHomePage({super.key});
@@ -16,7 +17,9 @@ class ParentHomePage extends StatelessWidget {
               'assets/images/whale.png',
               height: 32,
             ),
-            const Text('Whale 부모 페이지'),
+            const Text('부모 페이지'),
+            const Spacer(),
+            MyProfileIcon(),
           ],
         ),
       ),
