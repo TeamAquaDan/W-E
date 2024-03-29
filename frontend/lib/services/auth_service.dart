@@ -17,6 +17,12 @@ class LoginResult {
 class AuthService {
   final Dio _dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final SecurityService _securityService = SecurityService();
+
+  Future<bool> hasPin() async {
+    String? pin = await _securityService.getPin();
+    return pin != null;
+  }
 
   Future<bool> signUp(String loginId, String password, String username,
       String birthdate, String personalNum) async {
