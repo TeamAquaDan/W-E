@@ -359,7 +359,6 @@ void main() async {
     String payload = message.data['category'];
     handleNotificationPayload(payload);
   });
-  
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -466,7 +465,21 @@ class MyApp extends StatelessWidget {
         future: _authService.tryAutoLogin(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            // return const CircularProgressIndicator();
+            // 인디케이터 고래로 바꾸기
+            return Container(
+              color: Colors.white,
+              child: Center(
+                child: Container(
+                  color: Colors.white,
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Image.asset('assets/images/indicator.gif'),
+                  ),
+                ),
+              ),
+            );
           } else if (snapshot.hasData && snapshot.data!.isSuccess) {
             // MyApp 위젯의 빌드가 완료되면, 초기 알림 클릭 처리를 진행
             // WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -484,14 +497,42 @@ class MyApp extends StatelessWidget {
             //   if (initialMessage != null)
             //     handleNotificationClick(initialMessage);
             // });
-            return const PinLoginPage();
+            // return const PinLoginPage();
+            // PIN 정보 확인
+            return FutureBuilder<bool>(
+              future: _authService.hasPin(), // 수정된 메서드 호출
+              builder: (context, pinSnapshot) {
+                if (pinSnapshot.connectionState == ConnectionState.waiting) {
+                  // return const CircularProgressIndicator();
+                  // 인디케이터 고래로 바꾸기
+                  return Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: Container(
+                        color: Colors.white,
+                        child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Image.asset('assets/images/indicator.gif'),
+                        ),
+                      ),
+                    ),
+                  );
+                } else if (pinSnapshot.hasData && pinSnapshot.data!) {
+                  // PIN 정보가 있는 경우, PIN 로그인 페이지로 이동
+                  return const PinLoginPage();
+                } else {
+                  // PIN 정보가 없는 경우, PIN 설정 페이지로 이동
+                  return const SetPinPage();
+                }
+              },
+            );
           } else {
             // 로그인 실패 또는 로그인 정보 없음 -> 로그인 페이지로 이동
             return const LoginPage();
           }
         },
       ),
-
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

@@ -51,6 +51,7 @@ dependencies:
   flutter_local_notifications: ^17.0.0
   firebase_database: ^10.4.10
   fl_chart: ^0.66.2
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,7 @@ flutter:
   assets:
     - assets/images/whale.png
     - assets/images/airplane.png
+    - assets/images/indicator.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

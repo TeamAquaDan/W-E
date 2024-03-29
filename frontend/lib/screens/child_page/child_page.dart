@@ -4,6 +4,9 @@ import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/child_page/child_home_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/mission_page/my_mission_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../chat_page/chat_page.dart';
 
 // import 'package:frontend/screens/statistics_page.dart';
 
@@ -69,6 +72,26 @@ class _ChildPageState extends State<ChildPage> {
         selectedItemColor: const Color(0xFF3F62DE),
         unselectedItemColor: const Color(0xFF7A97FF),
         onTap: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // 챗봇 페이지로 이동
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ChatPage()),
+          );
+          // // 여기에 버튼을 눌렀을 때 실행할 작업을 추가합니다.
+          // Fluttertoast.showToast(
+          //     msg: "FloatingActionButton이 클릭되었습니다.",
+          //     toastLength: Toast.LENGTH_SHORT,
+          //     gravity: ToastGravity.CENTER,
+          //     timeInSecForIosWeb: 1,
+          //     backgroundColor: Colors.blue,
+          //     textColor: Colors.white,
+          //     fontSize: 16.0
+          // );
+        },
+        child: const Icon(Icons.chat_bubble_outline_rounded),
+        backgroundColor: Colors.blue,
       ),
     );
   }
