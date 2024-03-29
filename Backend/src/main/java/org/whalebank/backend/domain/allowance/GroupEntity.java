@@ -83,4 +83,8 @@ public class GroupEntity {
     return entity;
   }
 
+  public void updateAllowanceAmt(int allowanceAmt) {
+    this.allowanceAmt = allowanceAmt;
+  }
+
 }

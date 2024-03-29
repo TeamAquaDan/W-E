@@ -88,4 +88,8 @@ public class AutoPaymentEntity {
     this.scheduledDate = nextPaymentDate;
   }
 
+  public void updateAllowanceAmt(int allowanceAmt) {
+    reservedAmt = allowanceAmt;
+  }
+
 }
