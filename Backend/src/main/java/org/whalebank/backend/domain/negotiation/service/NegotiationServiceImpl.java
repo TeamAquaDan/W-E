@@ -38,12 +38,20 @@ public class NegotiationServiceImpl implements NegotiationService {
   public NegoResponseDto requestNegotiation(NegoRequestDto reqDto, String loginId) {
     // 그룹 찾기
     GroupEntity group = verifyUserGroup(reqDto.getGroup_id(), loginId);
+    UserEntity child = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
     // 네고 엔티티 생성 & 저장
     negotiationRepository.save(NegotiationEntity.of(group, reqDto, group.getAllowanceAmt()));
 
+    // 부모에게 푸시 알림 전송
+    UserEntity parent = findUserInGroupByRole(group, "ADULT");
+    fcmUtils.sendNotificationByToken(parent, FCMRequestDto.of("용돈 인상 요청이 도착했어요!",
+        child.getUserName() + "님께서 " + numberFormat.format(reqDto.getNego_amt()) + "원을 요청했어요!",
+        FCMCategory.INCREASE_REQUEST));
+
     // 부모 이름 리턴
-    return NegoResponseDto.of(reqDto.getNego_amt(), findUserNameInGroupByRole(group, "ADULT"));
+    return NegoResponseDto.of(reqDto.getNego_amt(), parent.getUserName());
   }
 
   @Override
@@ -63,7 +71,7 @@ public class NegotiationServiceImpl implements NegotiationService {
         .orElseThrow(() -> new CustomException(ResponseCode.NEGO_NOT_FOUND));
 
     // 용돈 인상 요청자 이름 리턴
-    return NegoInfoResponseDto.of(entity, findUserNameInGroupByRole(group, "CHILD"));
+    return NegoInfoResponseDto.of(entity, findUserInGroupByRole(group, "CHILD").getUserName());
   }
 
   @Override
@@ -116,14 +124,13 @@ public class NegotiationServiceImpl implements NegotiationService {
     return group;
   }
 
-  private String findUserNameInGroupByRole(GroupEntity group, String role) {
+  private UserEntity findUserInGroupByRole(GroupEntity group, String role) {
     return group.getMemberEntityList()
         .stream()
         .filter(e -> e.getRole().equals(role))
         .findFirst()
         .get()
-        .getUser()
-        .getUserName();
+        .getUser();
   }
 
 }
