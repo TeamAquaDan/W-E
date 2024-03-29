@@ -82,13 +82,23 @@ class Salary extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    groupNickname,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        groupNickname,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.grey[700],
+                          ))
+                    ],
                   ),
                 ],
               ),

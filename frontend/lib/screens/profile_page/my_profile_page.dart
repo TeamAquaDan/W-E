@@ -12,7 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as pathImport;
 
 class MyProfilePage extends StatefulWidget {
-  const MyProfilePage({super.key});
+  const MyProfilePage({super.key, required this.userId});
+
+  final int userId;
 
   @override
   State<MyProfilePage> createState() => _MyProfilePageState();
@@ -74,11 +76,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
     final DioService dioService = DioService();
 
     try {
-      var userId = Get.find<UserController>().getUserId();
       final response = await dioService.dio.post(
         '${baseURL}api/user/profile',
         data: {
-          'user_id': userId,
+          'user_id': widget.userId,
         },
       );
       if (response.statusCode == 200) {
@@ -235,9 +236,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('내 프로필'),
-      ),
+      appBar: AppBar(title: Text('프로필 페이지')),
       body: SingleChildScrollView(
         child: myProfileList.isNotEmpty
             ? Column(
@@ -247,20 +246,27 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const SizedBox(height: 30), // 상단 여백
                   GestureDetector(
                     onTap: () {
-                      print('프로필 이미지 클릭됨');
-                      _showImagePickerModal(context); // 이미지 선택 모달 표시
+                      if (myProfileList[0]['editable'] == true) {
+                        _showImagePickerModal(context);
+                      } // 이미지 선택 모달 표시
                     },
-                    child: Container(
-                      width: 94,
-                      height: 94,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              myProfileList[0]['profile_img'] ?? ''),
-                          fit: BoxFit.fill,
+                    child: Center(
+                      child: Container(
+                        width: 94,
+                        height: 94,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 1),
+                          image: DecorationImage(
+                            image: NetworkImage(myProfileList[0]
+                                        ['profile_img'] ==
+                                    null
+                                ? 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png'
+                                : myProfileList[0]['profile_img']),
+                            fit: BoxFit.fill,
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(50), // 원형 이미지로 만들기
                         ),
-                        borderRadius: BorderRadius.circular(50), // 원형 이미지로 만들기
                       ),
                     ),
                   ),
@@ -327,8 +333,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
                   const SizedBox(height: 20),
 
-                  Get.find<UserController>().getUserId() ==
-                          myProfileList[0]['user_id']
+                  myProfileList[0]['editable'] == true
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

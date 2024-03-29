@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:get/get.dart';
 import '../services/auth_service.dart';
 // import '../widgets/nav_bar.dart';
@@ -41,7 +42,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
     String? savedPin = await _securityService.getPin();
     // 사용자 역할 정보를 로컬 스토리지에서 조회
     String? userRole = await _authService.getUserRole();
-    if (savedPin == _pinController.text) {      
+    if (savedPin == _pinController.text) {
       // 초기 알림 데이터가 없으면 사용자 역할에 따라 페이지 이동
       _navigateBasedOnRole(userRole);
     } else {
@@ -87,7 +88,8 @@ class _PinLoginPageState extends State<PinLoginPage> {
             Get.to(() => const SalaryListPage());
             break;
           case '600':
-            Get.to(() => const MyProfilePage());
+            var userId = Get.find<UserController>().getUserId();
+            Get.to(() => MyProfilePage(userId: userId));
             break;
           default:
             Get.to(() => const AlarmPage());
