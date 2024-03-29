@@ -66,7 +66,10 @@ public class AuthServiceImpl implements AuthService {
   public void signUp(SignUpRequestDto dto) {
     String userCI = createCI(dto.getBirthdate(), dto.getPersonal_num());
 
-    log.info("userCI: " + userCI);
+    if(repository.existsByUserCi(userCI) || repository.existsByLoginId(dto.getLogin_id())) {
+      throw new CustomException(ResponseCode.USER_ALREADY_SIGNUP);
+    }
+
     // 은행 db에 있는 회원인지?
     String phoneNumber = bankAccessUtil.getUserInfo(userCI);
 

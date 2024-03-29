@@ -23,6 +23,7 @@ public enum ResponseCode {
   DIFFERENT_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED.value(), "리프레시 토큰이 일치하지 않습니다"),
   ALREADY_MAIN_ACCOUNT(HttpStatus.CONFLICT.value(), "이미 주계좌로 등록된 계좌입니다"),
   WRONG_LOGIN_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "비밀번호가 일치하지 않습니다"),
+  USER_ALREADY_SIGNUP(HttpStatus.CONFLICT.value(), "이미 등록된 계정입니다."),
 
   // 친구
   FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "친구 요청이 존재하지 않습니다"),
