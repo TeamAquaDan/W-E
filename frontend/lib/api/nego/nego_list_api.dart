@@ -43,6 +43,29 @@ Future<List<dynamic>?> getNegoList({
 status=0인 인상 요청의 completed_dtm, comment은 null" 
 */
 
+Future<List<dynamic>?> getNegoDetail({
+  required int groupId,
+  required int negoId,
+}) async {
+  final DioService dioService = DioService();
+
+  try {
+    Response response =
+        await dioService.dio.get('${baseURL}api/$groupId/$negoId');
+
+    // Handle response
+    print('patchAllowanceInfo Response status: ${response.statusCode}');
+    print('patchAllowanceInfo Response data: ${response.data}');
+    // You can handle the response data here as needed
+    return response.data['data'];
+  } catch (error) {
+    // Handle error
+    print('patchAllowanceInfo 에러: $error');
+    // You can show an error message to the user or handle the error in another way
+  }
+  return null;
+}
+
 Future<void> patchNego({
   required int negoId,
   required int result,
