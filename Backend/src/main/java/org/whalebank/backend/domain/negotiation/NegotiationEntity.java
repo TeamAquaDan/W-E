@@ -69,4 +69,10 @@ public class NegotiationEntity {
 
   }
 
+  public void manageNegotiation(String comment, int status) {
+    this.completedDtm = LocalDateTime.now();
+    this.negoComment = comment;
+    this.status = status;
+  }
+
 }

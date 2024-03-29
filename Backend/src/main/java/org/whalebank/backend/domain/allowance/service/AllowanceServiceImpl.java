@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.whalebank.backend.domain.account.service.AccountService;
+import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
@@ -29,7 +29,6 @@ public class AllowanceServiceImpl implements AllowanceService{
 
   private final AuthRepository userRepository;
   private final GroupRepository groupRepository;
-  private final AccountService accountService;
   private final RoleRepository roleRepository;
 
   @Override
@@ -38,6 +37,14 @@ public class AllowanceServiceImpl implements AllowanceService{
     UserEntity adult = getCurrentUser(loginId);
     UserEntity child = userRepository.findById(reqDto.getUser_id())
             .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 부모 - 자녀 쌍이 이미 존재한다면 예외
+    List<RoleEntity> roleEntityList = roleRepository.findRolesByUserId(child.getUserId(),
+        Role.ADULT);
+    if (roleEntityList.stream().anyMatch(r -> r.getUser().getUserId() == adult.getUserId())) {
+      throw new CustomException(ResponseCode.ALREADY_ADDED_CHILD);
+    }
+
 
     // 그룹, 역할 생성
     GroupEntity group = GroupEntity.from(reqDto);
@@ -49,19 +56,22 @@ public class AllowanceServiceImpl implements AllowanceService{
       groupNickname = reqDto.getGroup_nickname();
     }
 
-//    System.out.println(reqDto.is_monthly + ", 입력받은 계좌 고유번호: "+reqDto.getAccount_id()+", 계좌번호: "+reqDto.getAccount_num());
-    RoleEntity adultRole = RoleEntity.of(adult, groupNickname, reqDto.getAccount_id(),
+    RoleEntity adultRole = RoleEntity.of(adult, adult.getUserName(), reqDto.getAccount_id(),
         reqDto.getAccount_num(), group);
 
     // 자녀 -> 부모 role 생성
-    RoleEntity childRole = RoleEntity.of(child, adult.getUserName(), child.getAccountId(),
+    RoleEntity childRole = RoleEntity.of(child, groupNickname, child.getAccountId(),
         child.getAccountNum(), group);
 
-    roleRepository.save(adultRole);
-    roleRepository.save(childRole);
-    // 예약 이체 생성
+    group.addRole(adultRole);
+    group.addRole(childRole);
 
-
+    AutoPaymentEntity autoPaymentEntity = group.setAutoPaymentEntity(
+        AutoPaymentEntity.of(childRole, adultRole,
+            reqDto.getAccount_password(), reqDto.getAllowance_amt()
+        ));
+    autoPaymentEntity.calculateNextAutoPaymentDate(reqDto.getIs_monthly(),
+        reqDto.getPayment_date());
 
     // 저장
     groupRepository.save(group);
@@ -106,12 +116,15 @@ public class AllowanceServiceImpl implements AllowanceService{
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
 
     // 그룹 아이디, 유저 아이디로 role 찾기
-    RoleEntity roleEntity = roleRepository.findByUserGroupAndUser(group, loginUser)
-        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
+    List<RoleEntity> roleEntities = roleRepository.findByUserGroupAndRole(group,
+        loginUser.getRole() == Role.ADULT ? Role.CHILD : Role.ADULT);
+    for(RoleEntity entity : roleEntities) {
+      entity.updateNickname(reqDto.getGroup_nickname());
+    }
 
-    roleEntity.updateNickname(reqDto.getGroup_nickname());
   }
 
+  // 자녀가 용돈 목록 조회
   @Override
   public List<AllowanceInfoResponseDto> getAllowanceList(String loginId) {
     UserEntity child = getCurrentUser(loginId);
@@ -166,7 +179,6 @@ public class AllowanceServiceImpl implements AllowanceService{
   private UserEntity getCurrentUser(String loginId) {
     return userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
-
-
   }
+
 }

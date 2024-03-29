@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.whalebank.backend.domain.user.UserEntity;
@@ -40,14 +41,13 @@ public class FriendshipEntity {
   @JoinColumn(name = "from_user_id")
   private UserEntity fromUser; // 친구 요청 요청자
 
-  @CreatedDate
+  @CreationTimestamp
   @Column(updatable = false)
   private LocalDateTime createdDtm;
 
   @ColumnDefault("0")
   private int status; // 요청 상태 0(대기중), 1(승인), 2(거절)
 
-  @UpdateTimestamp
   private LocalDateTime completedDtm; // 처리 일시
 
   public static FriendshipEntity of(UserEntity requester, UserEntity receiver) {

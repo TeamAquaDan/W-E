@@ -17,6 +17,7 @@ import org.whalebank.backend.domain.friend.dto.request.FriendManageRequestDto;
 import org.whalebank.backend.domain.friend.dto.request.UpdateFriendNicknameRequestDto;
 import org.whalebank.backend.domain.friend.dto.response.FriendManageResponseDto;
 import org.whalebank.backend.domain.friend.dto.response.FriendResponseDto;
+import org.whalebank.backend.domain.friend.dto.response.PendingRequestDto;
 import org.whalebank.backend.domain.friend.service.FriendService;
 import org.whalebank.backend.global.response.ApiResponse;
 
@@ -59,6 +60,12 @@ public class FriendController {
   public ApiResponse<?> updateFriendNickname(@AuthenticationPrincipal UserDetails loginUser,
       @RequestBody UpdateFriendNicknameRequestDto reqDto) {
     return ApiResponse.ok("친구 별칭 수정 성공", service.updateNickname(loginUser.getUsername(), reqDto));
+  }
+
+  @GetMapping("/pending-requests")
+  @Operation(summary = "친구 요청 목록 조회", description = "내가 받은 친구 요청 목록 중 대기 중인 요청만 조회한다")
+  public ApiResponse<List<PendingRequestDto>> getPendingFriendRequests(@AuthenticationPrincipal UserDetails loginUser) {
+    return ApiResponse.ok("대기 중인 친구 요청 조회 성공", service.findAllPendingRequest(loginUser.getUsername()));
   }
 
 }

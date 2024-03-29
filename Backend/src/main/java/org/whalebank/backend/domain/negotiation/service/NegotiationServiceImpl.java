@@ -1,5 +1,6 @@
 package org.whalebank.backend.domain.negotiation.service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
 import org.whalebank.backend.domain.negotiation.NegotiationEntity;
+import org.whalebank.backend.domain.negotiation.dto.request.NegoManageRequestDto;
 import org.whalebank.backend.domain.negotiation.dto.request.NegoRequestDto;
 import org.whalebank.backend.domain.negotiation.dto.response.NegoInfoResponseDto;
 import org.whalebank.backend.domain.negotiation.dto.response.NegoListResponseDto;
@@ -54,6 +56,24 @@ public class NegotiationServiceImpl implements NegotiationService {
 
     // 용돈 인상 요청자 이름 리턴
     return NegoInfoResponseDto.of(entity, findUserNameInGroupByRole(group, "CHILD"));
+  }
+
+  @Override
+  @Transactional
+  public void updateNegotiation(NegoManageRequestDto requestDto, String loginId) {
+    NegotiationEntity entity = negotiationRepository.findById(requestDto.getNego_id())
+        .orElseThrow(() -> new CustomException(ResponseCode.NEGO_NOT_FOUND));
+    entity.manageNegotiation(requestDto.getComment(), requestDto.getResult());
+
+    if(requestDto.getResult()==1) {
+      // 승인
+      // 금액 변경
+      entity.getGroup().updateAllowanceAmt(entity.getNegoAmt());
+      entity.getGroup().getAutoPaymentEntity().updateAllowanceAmt(entity.getNegoAmt());
+      // 푸시 알림 보내기
+    } else {
+      // 푸시 알림 보내기
+    }
   }
 
   private GroupEntity verifyUserGroup(int groupId, String loginId) {

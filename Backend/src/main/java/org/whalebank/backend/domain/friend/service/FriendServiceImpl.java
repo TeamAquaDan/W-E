@@ -13,6 +13,7 @@ import org.whalebank.backend.domain.friend.dto.request.FriendManageRequestDto;
 import org.whalebank.backend.domain.friend.dto.request.UpdateFriendNicknameRequestDto;
 import org.whalebank.backend.domain.friend.dto.response.FriendManageResponseDto;
 import org.whalebank.backend.domain.friend.dto.response.FriendResponseDto;
+import org.whalebank.backend.domain.friend.dto.response.PendingRequestDto;
 import org.whalebank.backend.domain.friend.dto.response.UpdateFriendNicknameResponseDto;
 import org.whalebank.backend.domain.friend.repository.FriendRepository;
 import org.whalebank.backend.domain.friend.repository.FriendshipRepository;
@@ -65,7 +66,7 @@ public class FriendServiceImpl implements FriendService {
 
     // receiver에게 푸시 알림 보내기
     fcmUtils.sendNotificationByToken(receiver, FCMRequestDto.of("친구 요청이 왔어요!",
-        String.format("%s님이 %s님에게 친구 요청을 보냈어요!", user.getUserCi(), receiver.getUserName()),
+        String.format("%s님이 %s님에게 친구 요청을 보냈어요!", user.getUserName(), receiver.getUserName()),
         FCMCategory.FRIEND_REQUEST_RECEIVED));
   }
 
@@ -125,5 +126,16 @@ public class FriendServiceImpl implements FriendService {
     entity.updateNickname(reqDto.getNickname());
 
     return UpdateFriendNicknameResponseDto.from(friendUser, entity.getFriendNickname());
+  }
+
+  @Override
+  public List<PendingRequestDto> findAllPendingRequest(String loginId) {
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    return friendshipRepository.findByToUserAndStatusOrderByCreatedDtmAsc(currentUser, 0)
+        .stream()
+        .map(PendingRequestDto::of)
+        .collect(Collectors.toList());
   }
 }

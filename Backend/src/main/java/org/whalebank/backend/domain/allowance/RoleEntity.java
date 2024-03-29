@@ -68,4 +68,8 @@ public class RoleEntity {
     this.groupNickname = newNickname;
   }
 
+  public void setGroup(GroupEntity group) {
+    this.userGroup = group;
+  }
+
 }
