@@ -95,6 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
               TextField(
                 controller: _rrNumberController,
                 decoration: const InputDecoration(labelText: '주민번호 뒷 7자리'),
+                obscureText: true,
               ),
               TextField(
                 controller: _loginIdController,
