@@ -38,6 +38,18 @@ class _AlarmPageState extends State<AlarmPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('알림 페이지'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.mark_email_read),
+            onPressed: () async {
+              await _dioService.dio.patch('${baseURL}api/noti/read-all');
+              // 상태 업데이트를 위한 페이지 새로고침
+              setState(() {
+                notifications = fetchNotifications();
+              });
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<Notification>>(
         future: notifications,
@@ -54,9 +66,22 @@ class _AlarmPageState extends State<AlarmPage> {
                 return ListTile(
                   title: Text(notification.name),
                   subtitle: Text(notification.content),
-                  trailing: notification.isRead ? null : const Icon(Icons.fiber_new),
-                  onTap: () {
-                    // 알림 클릭 시 로직 구현 (예: 읽음 처리)
+                  trailing:
+                      notification.isRead ? null : const Icon(Icons.fiber_new),
+                  tileColor:
+                      notification.isRead ? Colors.white : Colors.grey[300],
+                  onTap: () async {
+                    // 알림 클릭 시
+                    if (!notification.isRead) {
+                      // 알림 클릭 시 로직 구현
+                      await _dioService.dio
+                          .patch('${baseURL}api/noti/${notification.notiId}');
+                      // 상태 업데이트를 위한 페이지 새로고침
+                      setState(() {
+                        notifications = fetchNotifications();
+                      });
+                      // 알림에 따른 페이지 이동 로직 추가...
+                    }
                   },
                 );
               },
