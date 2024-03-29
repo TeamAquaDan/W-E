@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.mission.dto.request.MissionCreateRequestDto;
 import org.whalebank.backend.domain.mission.dto.request.MissionManageRequestDto;
@@ -35,10 +36,10 @@ public class MissionController {
     return ApiResponse.ok("미션 등록 성공", missionService.createMission(reqDto, loginUser.getUsername()));
   }
 
-  @GetMapping("/{group_id}")
+  @GetMapping("/search")
   @Operation(summary = "미션 조회(부모, 자녀 모두 가능)", description = "그룹에 속하는 모든 미션 목록 마감일 순으로 조회한다")
   public ApiResponse<List<MissionInfoResponseDto>> getAllMissionByGroupId(
-      @PathVariable("group_id") int groupId,
+      @RequestParam(value = "group_id", required = false, defaultValue = "0") int groupId,
       @AuthenticationPrincipal UserDetails loginUser) {
     return ApiResponse.ok("미션 조회 성공",
         missionService.getAllMission(groupId, loginUser.getUsername()));
