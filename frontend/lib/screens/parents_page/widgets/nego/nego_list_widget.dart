@@ -31,6 +31,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
         } else if (snapshot.hasData) {
           List<dynamic>? negoList = snapshot.data;
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: negoList!.length,
             itemBuilder: (context, index) {
               // 각 인상 요청 항목을 표시
