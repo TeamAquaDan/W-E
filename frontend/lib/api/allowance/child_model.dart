@@ -1,7 +1,7 @@
 class Child {
   final int userId;
   final int groupId;
-  final String profileImage;
+  final String? profileImage;
   final String groupNickname;
 
   Child({
@@ -16,7 +16,9 @@ class Child {
       userId: json['user_id'] as int,
       groupId: json['group_id'] as int,
       profileImage: json['profile_image'] as String? ?? '',
-      groupNickname: json['group_nickname'] as String,
+      groupNickname: json['group_nickname'] != null
+          ? json['group_nickname'] as String
+          : '기본 닉네임',
     );
   }
 }
@@ -24,7 +26,7 @@ class Child {
 class ChildDetail {
   final int userId;
   final int groupId;
-  final String? accountNum;
+  final String accountNum;
   final bool isMonthly;
   final int allowanceAmt;
   final int paymentDate;

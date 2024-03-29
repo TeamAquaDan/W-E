@@ -11,8 +11,8 @@ Future<List<Child>> getChildren() async {
     );
 
     // Handle response
-    print('Response status: ${response.statusCode}');
-    print('Response data: ${response.data}');
+    print('getChildren 결과 Response status: ${response.statusCode}');
+    print('getChildren 결과 Response data: ${response.data}');
 
     if (response.statusCode == 200) {
       List<dynamic> responseData = response.data['data'];
@@ -31,7 +31,7 @@ Future<List<Child>> getChildren() async {
     }
   } catch (error) {
     // Handle error
-    print('Error sending POST request: $error');
+    print('getChildren get 에러: $error');
     return [
       Child(
         userId: 0,
@@ -69,7 +69,7 @@ Future<ChildDetail> getChildDetail(int groupId, int userId) async {
     }
   } catch (error) {
     // Handle error
-    print('Error sending POST request: $error');
+    print('getChildDetail get 에러: $error');
     return ChildDetail(
         userId: 0,
         groupId: 0,
