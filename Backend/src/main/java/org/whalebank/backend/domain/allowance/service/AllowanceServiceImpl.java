@@ -1,11 +1,14 @@
 package org.whalebank.backend.domain.allowance.service;
 
 import jakarta.transaction.Transactional;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.account.service.AccountService;
+import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.dto.request.AddGroupRequestDto;
@@ -49,7 +52,6 @@ public class AllowanceServiceImpl implements AllowanceService{
       groupNickname = reqDto.getGroup_nickname();
     }
 
-//    System.out.println(reqDto.is_monthly + ", 입력받은 계좌 고유번호: "+reqDto.getAccount_id()+", 계좌번호: "+reqDto.getAccount_num());
     RoleEntity adultRole = RoleEntity.of(adult, groupNickname, reqDto.getAccount_id(),
         reqDto.getAccount_num(), group);
 
@@ -57,11 +59,15 @@ public class AllowanceServiceImpl implements AllowanceService{
     RoleEntity childRole = RoleEntity.of(child, adult.getUserName(), child.getAccountId(),
         child.getAccountNum(), group);
 
-    roleRepository.save(adultRole);
-    roleRepository.save(childRole);
-    // 예약 이체 생성
+    group.addRole(adultRole);
+    group.addRole(childRole);
 
-
+    AutoPaymentEntity autoPaymentEntity = group.setAutoPaymentEntity(
+        AutoPaymentEntity.of(childRole, adultRole,
+            reqDto.getAccount_password(), reqDto.getAllowance_amt()
+        ));
+    autoPaymentEntity.calculateNextAutoPaymentDate(reqDto.getIs_monthly(),
+        reqDto.getPayment_date());
 
     // 저장
     groupRepository.save(group);
@@ -166,7 +172,6 @@ public class AllowanceServiceImpl implements AllowanceService{
   private UserEntity getCurrentUser(String loginId) {
     return userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
-
-
   }
+
 }
