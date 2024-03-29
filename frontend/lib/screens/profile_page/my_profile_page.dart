@@ -102,7 +102,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       if (!isEditing) {
         // 편집 완료 시, API로 변경된 한 줄 소개 전송
         updateInfo();
-        Navigator.pop(context);
+        // Navigator.pop(context);
       }
     });
   }
@@ -142,6 +142,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
         data: formData,
       );
       if (response.statusCode == 200) {
+        setState(() {
+          loadProfiles();
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("이미지가 성공적으로 업로드되었습니다!")),
         );
