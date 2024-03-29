@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/account_book/account_book_page.dart';
 
 import 'package:frontend/screens/child_page/child_page.dart';
@@ -35,7 +36,8 @@ class MenuPage extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => const MyProfilePage());
+                var userId = Get.find<UserController>().getUserId();
+                Get.to(() => MyProfilePage(userId: userId));
               },
               child: const Text('My Profile Page'),
             ),

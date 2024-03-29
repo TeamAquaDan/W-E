@@ -78,6 +78,25 @@ class _FriendsRequestModalState extends State<FriendsRequestModal> {
               if (response.statusCode == 200) {
                 // 친구 요청하는 코드
                 print('존재하는 친구임 ㅇㅇ');
+                print('response.data: ${response.data['data']['user_id']}');
+                DioService dioService = DioService();
+                dioService.dio.post(
+                  '${baseURL}api/friend/register',
+                  data: {
+                    "user_id": response.data['data']['user_id'],
+                  },
+                ).then((res) {
+                  print('친구 요청 보냄 $res');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("친구 요청을 보냈습니다."),
+                    ),
+                  );
+                  Navigator.pop(context, true);
+                }).catchError((err) {
+                  print('친구 요청 보내기 실패 $err');
+                  Navigator.pop(context, true);
+                });
               } else if (response.statusCode == 404) {
                 // 사용자가 존재하지 않는 경우
                 print('존재하지 않는 친구임 ㅇㅇ');

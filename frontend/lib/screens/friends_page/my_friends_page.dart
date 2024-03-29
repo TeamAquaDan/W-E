@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/profile_page/my_profile_page.dart';
 import 'package:frontend/screens/friends_page/widgets/contacts_modal.dart';
 import 'package:frontend/screens/friends_page/widgets/friends.dart';
+import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
 
 class MyFriendsPage extends StatefulWidget {
@@ -47,25 +49,35 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
   }
 
   Future<List<dynamic>> fetchFriendsFromAPI() async {
+    DioService dioService = DioService();
+    try {
+      var response = await dioService.dio.get('${baseURL}api/friend');
+      print(response.data['data']);
+      return response.data['data']; // API로부터 받은 데이터를 반환합니다.
+    } catch (err) {
+      print(err);
+      return []; // 에러가 발생한 경우 빈 리스트를 반환합니다.
+    }
+
     // 예시 데이터 반환
-    return [
-      {
-        "friend_id": 1,
-        "friend_nickname": '김가영',
-        "friend_profileImg":
-            'https://i.namu.wiki/i/iWIojn1ABpv6dztK0OCtQ1DeGBX79f2GK7FP-sKzdL8jOmJ5OLamkEyn2B-rmo9GuEdFPCia0TS6bIY7AUtbx2HfG5ZnFscT-P0sc_0Stf92shBJrtq7v-e2F3we-SSO_0RFAlPz26FuMIOffVsRDw.webp',
-        "friend_name": "김가영",
-        "friend_loginid": 'kky123',
-      },
-      {
-        "friend_id": 2,
-        "friend_nickname": '나나',
-        "friend_profileImg":
-            'https://cdn2.colley.kr/item_88060_1_2_title_2.jpeg',
-        "friend_name": '박나린', // 오타 수정: "frined_name" -> "friend_name"
-        "friend_loginid": 'narinpark',
-      }
-    ];
+    // return [
+    //   {
+    //     "friend_id": 1,
+    //     "friend_nickname": '김가영',
+    //     "friend_profileImg":
+    //         'https://i.namu.wiki/i/iWIojn1ABpv6dztK0OCtQ1DeGBX79f2GK7FP-sKzdL8jOmJ5OLamkEyn2B-rmo9GuEdFPCia0TS6bIY7AUtbx2HfG5ZnFscT-P0sc_0Stf92shBJrtq7v-e2F3we-SSO_0RFAlPz26FuMIOffVsRDw.webp',
+    //     "friend_name": "김가영",
+    //     "friend_loginid": 'kky123',
+    //   },
+    //   {
+    //     "friend_id": 2,
+    //     "friend_nickname": '나나',
+    //     "friend_profileImg":
+    //         'https://cdn2.colley.kr/item_88060_1_2_title_2.jpeg',
+    //     "friend_name": '박나린',
+    //     "friend_loginid": 'narinpark',
+    //   }
+    // ];
   }
 
   @override
@@ -132,13 +144,17 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                       // 여기에 원하는 작업을 수행하세요. 예: 상세 페이지로 이동
                       print('${friend['friend_name']} 클릭됨');
                       // 예를 들어, 친구 상세 페이지로 네비게이트하는 코드를 추가할 수 있습니다.
-                      Get.to(() => const MyProfilePage());
+                      Get.to(() => MyProfilePage(userId: friend['friend_id']));
                     },
                     child: Friends(
                       friendLoginId: friend['friend_loginid'],
                       friendName: friend['friend_name'],
-                      friendProfileImg: friend['friend_profileImg'],
-                      friendNickname: friend['friend_nickname'],
+                      friendProfileImg: friend['friend_profileImg'] == null
+                          ? 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png'
+                          : friend['friend_profileImg'],
+                      friendNickname: friend['friend_nickname'] == null
+                          ? friend['friend_name']
+                          : friend['friend_nickname'],
                     ),
                   );
                 },

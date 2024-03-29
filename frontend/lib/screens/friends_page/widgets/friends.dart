@@ -31,7 +31,9 @@ class Friends extends StatelessWidget {
                   height: 40,
                   decoration: ShapeDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(friendProfileImg),
+                      image: NetworkImage(friendProfileImg.isNotEmpty
+                          ? friendProfileImg
+                          : 'https://example.com/default-image.png'),
                       fit: BoxFit.fill,
                     ),
                     shape: RoundedRectangleBorder(
@@ -46,7 +48,7 @@ class Friends extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      friendNickname,
+                      friendNickname.isEmpty ? friendName : friendNickname,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 18,
