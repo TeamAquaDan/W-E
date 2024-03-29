@@ -7,7 +7,9 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,6 +85,16 @@ public class UserController {
 
     service.createGuestBook(loginUser.getUsername(), request);
     return ApiResponse.ok("방명록 등록 성공");
+  }
+
+  @Operation(summary = "방명록 삭제")
+  @DeleteMapping("/guestbook/{guestbook_id}")
+  public ApiResponse<?> deleteGuestBook(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @PathVariable("guestbook_id") int guestBookId){
+
+    service.deleteGuestBook(loginUser.getUsername(), guestBookId);
+    return ApiResponse.ok("방명록 삭제 성공");
   }
 
 }

@@ -127,6 +127,33 @@ public class UserServiceImpl implements UserService {
 
   }
 
+  @Override
+  public void deleteGuestBook(String loginId, int guestBookId) {
+
+    // 현재 로그인한 사용자
+    UserEntity user = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 삭제하려는 방명록
+    GuestBookEntity guestBook = guestBookRepository.findById(guestBookId)
+        .orElseThrow(() -> new CustomException((ResponseCode.GUESTBOOK_NOT_FOUND)));
+
+    // 방명록이 있는 프로필의 사용자가 아니거나
+    // 방명록 작성자가 아니라면 삭제 불가
+    UserEntity profileUser = repository.findById(guestBook.getProfile().getUserId())
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    UserEntity writerUser = repository.findById(guestBook.getWriterId())
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    if (user != profileUser && user != writerUser) {
+      throw new CustomException(ResponseCode.NO_DELETE_PERMISSION);
+    }
+
+    guestBookRepository.delete(guestBook);
+
+  }
+
 
   public ProfileResponseDto getProfile(int userId, String loginId) {
     boolean editable = true;
@@ -150,6 +177,7 @@ public class UserServiceImpl implements UserService {
           .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
       return GuestBook.builder()
+          .guestbook_id(guestBookEntity.getGuestbookId())
           .writer_profile_img(writer.getProfile().getProfileImage())
           .writer_name(writer.getUserName())
           .content(guestBookEntity.getContent())

@@ -21,4 +21,6 @@ public interface UserService {
   void updateSentence(String loginId, String sentence);
 
   void createGuestBook(String loginId, GuestBookRequestDto request);
+
+  void deleteGuestBook(String loginId, int guestBookId);
 }

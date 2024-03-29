@@ -29,6 +29,7 @@ public class ProfileResponseDto {
   @Builder
   public static class GuestBook {
 
+    private int guestbook_id;
     private String writer_profile_img;  // 작성자 프로필 이미지
     private String writer_name; // 작성자 이름
     private String content;   // 방명록 내용
