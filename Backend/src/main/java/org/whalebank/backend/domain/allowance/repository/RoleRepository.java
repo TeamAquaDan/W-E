@@ -26,4 +26,6 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
       "AND r.role = :role")
   List<RoleEntity> findRolesByUserId(@Param("userId") int userId, @Param("role") Role role);
 
+  List<RoleEntity> findByUserGroupAndRole(GroupEntity group, Role role);
+
 }
