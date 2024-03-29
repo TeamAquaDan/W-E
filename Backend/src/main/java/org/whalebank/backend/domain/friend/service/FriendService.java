@@ -5,6 +5,7 @@ import org.whalebank.backend.domain.friend.dto.request.FriendManageRequestDto;
 import org.whalebank.backend.domain.friend.dto.request.UpdateFriendNicknameRequestDto;
 import org.whalebank.backend.domain.friend.dto.response.FriendManageResponseDto;
 import org.whalebank.backend.domain.friend.dto.response.FriendResponseDto;
+import org.whalebank.backend.domain.friend.dto.response.PendingRequestDto;
 import org.whalebank.backend.domain.friend.dto.response.UpdateFriendNicknameResponseDto;
 
 public interface FriendService {
@@ -20,4 +21,5 @@ public interface FriendService {
   UpdateFriendNicknameResponseDto updateNickname(String currentUser, UpdateFriendNicknameRequestDto reqDto);
 
 
+  List<PendingRequestDto> findAllPendingRequest(String loginId);
 }
