@@ -3,15 +3,26 @@ import 'package:frontend/api/mission/add_mission_api.dart';
 import 'package:frontend/models/mission/mission_model.dart';
 import 'package:intl/intl.dart';
 
-class MissionCard extends StatelessWidget {
+class MissionCard extends StatefulWidget {
   final MissionModel mission;
   final int groupId;
-  const MissionCard({super.key, required this.mission, required this.groupId});
+  final VoidCallback? onMissionStatusChanged;
+  const MissionCard(
+      {Key? key,
+      required this.mission,
+      required this.groupId,
+      this.onMissionStatusChanged})
+      : super(key: key);
 
+  @override
+  State<MissionCard> createState() => _MissionCardState();
+}
+
+class _MissionCardState extends State<MissionCard> {
   @override
   Widget build(BuildContext context) {
     var moneyFormat = NumberFormat('###,###,###,### 원');
-    Color cardColor = _getCardColor(mission.status);
+    Color cardColor = _getCardColor(widget.mission.status);
 
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -28,7 +39,7 @@ class MissionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      mission.missionName,
+                      widget.mission.missionName,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -37,7 +48,7 @@ class MissionCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      mission.deadlineDate,
+                      widget.mission.deadlineDate,
                       style: const TextStyle(
                         color: Color(0xFF555555),
                         fontSize: 16,
@@ -52,7 +63,7 @@ class MissionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      moneyFormat.format(mission.missionReward),
+                      moneyFormat.format(widget.mission.missionReward),
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -64,11 +75,12 @@ class MissionCard extends StatelessWidget {
                     Row(
                       children: [
                         ElevatedButton(
-                          onPressed: () {
-                            patchMission(
-                                groupId: groupId,
-                                missionId: mission.missionId,
+                          onPressed: () async {
+                            await patchMission(
+                                groupId: widget.groupId,
+                                missionId: widget.mission.missionId,
                                 status: 1);
+                            widget.onMissionStatusChanged?.call();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -84,11 +96,12 @@ class MissionCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton(
-                          onPressed: () {
-                            patchMission(
-                                groupId: groupId,
-                                missionId: mission.missionId,
+                          onPressed: () async {
+                            await patchMission(
+                                groupId: widget.groupId,
+                                missionId: widget.mission.missionId,
                                 status: 2);
+                            widget.onMissionStatusChanged?.call();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

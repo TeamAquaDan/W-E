@@ -16,6 +16,7 @@ Future addMission({
       "mission_reward": missionReward,
       "deadline_date": deadlineDate,
     };
+    print('미션추가 바디 :  $body');
     dio.Response response =
         await dioService.dio.post('${baseURL}api/mission', data: body);
 

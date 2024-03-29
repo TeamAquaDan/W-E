@@ -4,6 +4,7 @@ import 'package:frontend/screens/account_book/account_book_page.dart';
 
 import 'package:frontend/screens/child_page/child_page.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
+import 'package:frontend/screens/pin_login_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
 import 'package:frontend/api/test_html.dart';
@@ -99,7 +100,12 @@ class MenuPage extends StatelessWidget {
               onPressed: () {
                 Get.to(() => const AlarmPage());
               },
-              child: const Text('Notify'))
+              child: const Text('Notify')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(() => const PinLoginPage());
+              },
+              child: const Text('핀로그인/로그아웃'))
         ],
       ),
     );

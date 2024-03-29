@@ -8,8 +8,12 @@ import 'package:intl/intl.dart';
 
 class MissionAddCard extends StatefulWidget {
   final int groupId;
-
-  const MissionAddCard({super.key, required this.groupId});
+  final VoidCallback onMissionStatusChanged;
+  const MissionAddCard({
+    super.key,
+    required this.groupId,
+    required this.onMissionStatusChanged,
+  });
 
   @override
   _MissionAddCardState createState() => _MissionAddCardState();
@@ -63,6 +67,7 @@ class _MissionAddCardState extends State<MissionAddCard> {
                 controller: _missionNameController,
                 decoration: const InputDecoration(labelText: '미션 제목'),
               ),
+              const SizedBox(height: 16),
               TextField(
                 controller: _missionRewardController,
                 decoration: const InputDecoration(labelText: '보상금액'),
@@ -126,7 +131,8 @@ class _MissionAddCardState extends State<MissionAddCard> {
       _missionNameController.clear();
       _missionRewardController.clear();
       _deadlineDateController.clear();
-      Get.to(() => const ChildManagementPage());
+      // Get.to(() => const ChildManagementPage());
+      widget.onMissionStatusChanged?.call();
     } catch (error) {
       // 오류 처리
       print('Error adding mission: $error');
