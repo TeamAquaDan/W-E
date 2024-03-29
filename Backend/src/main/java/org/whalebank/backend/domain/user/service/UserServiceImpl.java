@@ -5,17 +5,24 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.whalebank.backend.domain.friend.FriendEntity;
+import org.whalebank.backend.domain.friend.FriendId;
+import org.whalebank.backend.domain.friend.repository.FriendRepository;
+import org.whalebank.backend.domain.user.GuestBookEntity;
 import org.whalebank.backend.domain.user.ProfileEntity;
 import org.whalebank.backend.domain.user.UserEntity;
+import org.whalebank.backend.domain.user.dto.request.GuestBookRequestDto;
 import org.whalebank.backend.domain.user.dto.request.RegisterMainAccountRequestDto;
 import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileImageResponseDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileResponseDto;
 import org.whalebank.backend.domain.user.dto.response.VerifyResponseDto;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
+import org.whalebank.backend.domain.user.repository.GuestBookRepository;
 import org.whalebank.backend.domain.user.repository.ProfileRepository;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.response.ResponseCode;
@@ -27,6 +34,8 @@ public class UserServiceImpl implements UserService {
   private final AuthRepository repository;
   private final ProfileRepository profileRepository;
   private final AmazonS3Client amazonS3Client;
+  private final FriendRepository friendRepository;
+  private final GuestBookRepository guestBookRepository;
 
   @Value("${cloud.aws.s3.bucket}")
   private String bucket;
@@ -83,6 +92,38 @@ public class UserServiceImpl implements UserService {
     user.updateSentence(sentence);
   }
 
+  @Override
+  @Transactional
+  public void createGuestBook(String loginId, GuestBookRequestDto request) {
+
+    // 작성자
+    UserEntity writer = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 작성 대상 프로필 사용자
+    UserEntity profileUser = repository.findById(request.getUser_id())
+        .orElseThrow(()-> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 본인 프로필에는 작성 불가능
+    if(writer == profileUser){
+      throw new CustomException(ResponseCode.SAME_USER);
+    }
+
+    // 작성자와 프로필 유저가 서로 친구가 아니면 작성 불가능
+    FriendEntity friend = friendRepository.findById(new FriendId(writer, profileUser))
+        .orElseThrow(()-> new CustomException(ResponseCode.FRIEND_NOT_FOUND));
+
+
+    // 작성자 프로필 엔티티 불러오기
+    ProfileEntity profile = profileRepository.findById(String.valueOf(profileUser.getUserId()))
+        .orElseThrow(()->new CustomException(ResponseCode.PROFILE_NOT_FOUND));
+
+    // 방명록 저장
+    GuestBookEntity guestBook = GuestBookEntity.createGuestBook(profile, writer, request);
+    guestBookRepository.save(guestBook);
+
+  }
+
 
   public ProfileResponseDto getProfile(int userId, String loginId) {
     boolean editable = true;
@@ -96,6 +137,8 @@ public class UserServiceImpl implements UserService {
           .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
       editable = false;
     }
+
+    // 내 프로필에 저장된 모든 방명록 불러오기
 
     return ProfileResponseDto.of(user, editable);
   }
@@ -114,7 +157,7 @@ public class UserServiceImpl implements UserService {
     UserEntity user = repository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    if(user.getAccountId()  == reqDto.getAccount_id()) {
+    if (user.getAccountId() == reqDto.getAccount_id()) {
       throw new CustomException(ResponseCode.ALREADY_MAIN_ACCOUNT);
     }
 

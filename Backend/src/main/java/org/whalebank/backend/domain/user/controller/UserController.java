@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.whalebank.backend.domain.user.dto.request.GuestBookRequestDto;
 import org.whalebank.backend.domain.user.dto.request.RegisterMainAccountRequestDto;
 import org.whalebank.backend.domain.user.dto.request.VerifyRequestDto;
 import org.whalebank.backend.domain.user.dto.response.ProfileImageResponseDto;
@@ -72,6 +73,16 @@ public class UserController {
       @RequestBody RegisterMainAccountRequestDto requestBody) {
     service.updateMainAccount(loginUser.getUsername(), requestBody);
     return ApiResponse.ok("주계좌 등록 성공");
+  }
+
+  @Operation(summary = "방명록 등록")
+  @PostMapping("/guestbook")
+  public ApiResponse<?> createGuestBook(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @RequestBody GuestBookRequestDto request) {
+
+    service.createGuestBook(loginUser.getUsername(), request);
+    return ApiResponse.ok("방명록 등록 성공");
   }
 
 }
