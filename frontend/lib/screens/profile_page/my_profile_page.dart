@@ -22,6 +22,7 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfilePageState extends State<MyProfilePage> {
   late List<dynamic> myProfileList = [];
   final TextEditingController bioController = TextEditingController();
+  final TextEditingController commentController = TextEditingController();
   bool isEditing = false;
   File? _selectedImage;
 
@@ -383,6 +384,103 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       : const SizedBox(height: 0, width: 0),
                   const SizedBox(height: 20), // 버튼과 하단 여백
                   // 필요한 경우 여기에 추가적인 위젯 배치
+
+                  if (myProfileList.isNotEmpty &&
+                      myProfileList[0]['guestbook_list'] != null)
+                    ListView.builder(
+                      shrinkWrap: true, // 내용의 크기에 맞게 ListView의 크기를 조정합니다.
+                      physics: NeverScrollableScrollPhysics(), // 스크롤을 막습니다.
+                      itemCount: myProfileList[0]['guestbook_list'].length,
+                      itemBuilder: (context, index) {
+                        var comment = myProfileList[0]['guestbook_list'][index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(comment[
+                                    'writer_img'] ??
+                                'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png'),
+                            // '기본_이미지_URL'을 코멘트 작성자의 기본 이미지 URL로 교체하세요.
+                          ),
+                          title: Container(
+                            child: Text(
+                              comment['writer_name'],
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              overflow:
+                                  TextOverflow.ellipsis, // 이름이 길 경우 생략 기호 처리
+                            ),
+                          ),
+                          subtitle: Container(
+                            child: Text(
+                              comment['content'],
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ),
+                          trailing: (myProfileList[0]['editable'] == true ||
+                                  comment['writer_id'] ==
+                                      Get.find<UserController>().getUserId())
+                              ? IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () async {
+                                    final DioService dioService = DioService();
+                                    try {
+                                      var response =
+                                          await dioService.dio.delete(
+                                        '${baseURL}api/user/guestbook/${comment['guestbook_id']}',
+                                      );
+                                      setState(() {
+                                        loadProfiles();
+                                      });
+                                    } catch (err) {
+                                      print(err);
+                                    }
+                                  },
+                                )
+                              : null, // 조건이 거짓일 때 null을 반환하여 아무것도 표시하지 않음
+                        );
+                      },
+                    ),
+
+                  // 코멘트 입력 필드와 게시 버튼
+                  myProfileList[0]['editable'] == false
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: commentController,
+                                  decoration: InputDecoration(
+                                    hintText: '코멘트를 입력하세요...',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final DioService dioService = DioService();
+                                  try {
+                                    var response = await dioService.dio.post(
+                                      '${baseURL}api/user/guestbook',
+                                      data: {
+                                        'user_id': widget.userId,
+                                        'content': commentController.text,
+                                      },
+                                    );
+                                    print(response);
+                                    setState(() {
+                                      loadProfiles();
+                                    });
+                                  } catch (err) {
+                                    print(err);
+                                  }
+                                },
+                                child: Text('게시'),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(height: 0, width: 0),
                 ],
               )
             : const Center(

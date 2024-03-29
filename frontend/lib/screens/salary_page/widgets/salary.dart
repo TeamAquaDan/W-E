@@ -1,4 +1,5 @@
 import 'package:frontend/screens/salary_page/salary_increase_page.dart';
+import 'package:frontend/screens/salary_page/widgets/change_nickname_parents.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ class Salary extends StatelessWidget {
     required this.groupId,
     required this.userId,
     required this.userName,
+    required this.loadSalarysCallback,
   });
 
   final bool isMonthly;
@@ -22,6 +24,7 @@ class Salary extends StatelessWidget {
   final int groupId;
   final int userId;
   final String userName;
+  final Function loadSalarysCallback;
 
   String formatNumber(int number) {
     final formatter = NumberFormat('#,###');
@@ -93,7 +96,10 @@ class Salary extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await showChangeNicknameParentsDialog(context,
+                                groupNickname, groupId, loadSalarysCallback);
+                          },
                           icon: Icon(
                             Icons.edit,
                             color: Colors.grey[700],
