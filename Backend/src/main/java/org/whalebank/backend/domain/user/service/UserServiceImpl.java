@@ -177,6 +177,7 @@ public class UserServiceImpl implements UserService {
           .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
       return GuestBook.builder()
+          .writer_id(writer.getUserId())
           .guestbook_id(guestBookEntity.getGuestbookId())
           .writer_profile_img(writer.getProfile().getProfileImage())
           .writer_name(writer.getUserName())

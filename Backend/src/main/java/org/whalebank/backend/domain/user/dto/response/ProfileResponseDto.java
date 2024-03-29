@@ -29,6 +29,7 @@ public class ProfileResponseDto {
   @Builder
   public static class GuestBook {
 
+    private int writer_id;  // 작성자 아이디
     private int guestbook_id;
     private String writer_profile_img;  // 작성자 프로필 이미지
     private String writer_name; // 작성자 이름
@@ -36,7 +37,8 @@ public class ProfileResponseDto {
   }
 
 
-  public static ProfileResponseDto of(UserEntity user, boolean editable, List<GuestBook> guestBookList) {
+  public static ProfileResponseDto of(UserEntity user, boolean editable,
+      List<GuestBook> guestBookList) {
     return ProfileResponseDto.builder()
         .user_id(user.getUserId())
         .login_id(user.getLoginId())
