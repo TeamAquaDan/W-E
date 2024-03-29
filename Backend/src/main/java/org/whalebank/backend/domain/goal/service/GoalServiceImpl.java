@@ -90,6 +90,9 @@ public class GoalServiceImpl implements GoalService {
         .map(g -> {
           String withdrawDate =
               g.getWithdrawDate() != null ? g.getWithdrawDate().toString() : null;
+          ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(
+              user.getBankAccessToken(), AccountIdRequestDto.create(g.getAccountId()));
+
           return new Goal(
               g.getGoalID(),
               g.getGoalName(),
@@ -100,7 +103,8 @@ public class GoalServiceImpl implements GoalService {
               g.getGoalDate().toString(),
               (g.getWithdrawAmt() * 1.0 / g.getGoalAmt()) * 100,
               g.getWithdrawAmt(),
-              g.getCategory()
+              g.getCategory(),
+              parkingBalance.getParking_balance_amt()
           );
         })
         .toList();
