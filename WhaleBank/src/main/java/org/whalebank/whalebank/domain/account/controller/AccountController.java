@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.whalebank.domain.account.dto.request.ParkingRequest;
+import org.whalebank.whalebank.domain.account.dto.request.PasswordVerifyRequest;
 import org.whalebank.whalebank.domain.account.dto.request.TransactionRequest;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse;
 import org.whalebank.whalebank.domain.account.dto.response.DetailResponse;
 import org.whalebank.whalebank.domain.account.dto.response.ParkingResponse;
+import org.whalebank.whalebank.domain.account.dto.response.PasswordVerifyResponse;
 import org.whalebank.whalebank.domain.account.dto.response.TransactionResponse;
 import org.whalebank.whalebank.domain.account.service.AccountService;
 
@@ -70,5 +72,12 @@ public class AccountController {
     return new ResponseEntity<>(
         accountService.getTransactions(request, transactionRequest),
         HttpStatus.OK);
+  }
+
+  @PostMapping("/password-verify")
+  public ResponseEntity<PasswordVerifyResponse> verifyPassword(HttpServletRequest request,
+      @RequestBody PasswordVerifyRequest passwordVerifyRequest) {
+    return new ResponseEntity<>(
+        accountService.verifyPassword(request, passwordVerifyRequest), HttpStatus.OK);
   }
 }

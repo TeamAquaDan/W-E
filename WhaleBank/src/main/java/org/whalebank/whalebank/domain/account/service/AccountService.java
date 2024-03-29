@@ -2,10 +2,12 @@ package org.whalebank.whalebank.domain.account.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.whalebank.whalebank.domain.account.dto.request.ParkingRequest;
+import org.whalebank.whalebank.domain.account.dto.request.PasswordVerifyRequest;
 import org.whalebank.whalebank.domain.account.dto.request.TransactionRequest;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse;
 import org.whalebank.whalebank.domain.account.dto.response.DetailResponse;
 import org.whalebank.whalebank.domain.account.dto.response.ParkingResponse;
+import org.whalebank.whalebank.domain.account.dto.response.PasswordVerifyResponse;
 import org.whalebank.whalebank.domain.account.dto.response.TransactionResponse;
 
 public interface AccountService {
@@ -21,4 +23,6 @@ public interface AccountService {
   ParkingResponse getParking(HttpServletRequest request, int accountId);
 
   TransactionResponse getTransactions(HttpServletRequest request, TransactionRequest transactionRequest);
+
+  PasswordVerifyResponse verifyPassword(HttpServletRequest request, PasswordVerifyRequest passwordVerifyRequest);
 }

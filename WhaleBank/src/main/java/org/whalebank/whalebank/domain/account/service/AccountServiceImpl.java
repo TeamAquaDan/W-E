@@ -12,16 +12,20 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.whalebank.whalebank.domain.account.AccountEntity;
 import org.whalebank.whalebank.domain.account.dto.request.ParkingRequest;
+import org.whalebank.whalebank.domain.account.dto.request.PasswordVerifyRequest;
 import org.whalebank.whalebank.domain.account.dto.request.TransactionRequest;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse;
 import org.whalebank.whalebank.domain.account.dto.response.AccountResponse.Account;
 import org.whalebank.whalebank.domain.account.dto.response.DetailResponse;
 import org.whalebank.whalebank.domain.account.dto.response.ParkingResponse;
+import org.whalebank.whalebank.domain.account.dto.response.PasswordVerifyResponse;
 import org.whalebank.whalebank.domain.account.dto.response.TransactionResponse;
 import org.whalebank.whalebank.domain.account.repository.AccountRepository;
+import org.whalebank.whalebank.domain.auth.AuthEntity;
 import org.whalebank.whalebank.domain.auth.repository.AuthRepository;
 import org.whalebank.whalebank.domain.auth.security.TokenProvider;
 import org.whalebank.whalebank.domain.transfer.TransferEntity;
@@ -232,6 +236,31 @@ public class AccountServiceImpl implements AccountService {
         .rsp_message("거래내역이 조회되었습니다.")
         .trans_cnt(transactions.size())
         .trans_list(transactions)
+        .build();
+  }
+
+  @Override
+  public PasswordVerifyResponse verifyPassword(HttpServletRequest request,
+      PasswordVerifyRequest passwordVerifyRequest) {
+
+    String token = request.getHeader("Authorization").replace("Bearer ", "");
+    String userId = tokenProvider.getUserId(token).get("sub", String.class);
+
+    AccountEntity account = accountRepository.findById(
+        String.valueOf(passwordVerifyRequest.getAccount_id())).get();
+
+    if (!account.getAccountPassword().equals(passwordVerifyRequest.getAccount_password())) {
+      return PasswordVerifyResponse
+          .builder()
+          .rsp_code(401)
+          .rsp_message("계좌 비밀번호가 틀렸습니다")
+          .build();
+    }
+
+    return PasswordVerifyResponse
+        .builder()
+        .rsp_code(200)
+        .rsp_message("계좌 비밀번호가 맞습니다")
         .build();
   }
 }
