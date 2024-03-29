@@ -56,12 +56,20 @@ public class MissionServiceImpl implements MissionService {
   @Override
   public List<MissionInfoResponseDto> getAllMission(int groupId, String loginId) {
     UserEntity currentUser = getUserByLoginId(loginId);
-    GroupEntity group = getGroupEntity(groupId, currentUser);
 
-    // 미션 목록
-    return missionRepository.findAllByGroupOrderByDeadlineDateAsc(group)
-        .stream().map(m -> MissionInfoResponseDto.from(m, findMissionProvider(group)))
-        .collect(Collectors.toList());
+    if(groupId==0) {
+      // 모든 미션 조회
+      return missionRepository.findAllMissionByUserOrderByDeadlineDateAsc(currentUser)
+          .stream().map(m -> MissionInfoResponseDto.from(m, findMissionProvider(m.getGroup())))
+          .collect(Collectors.toList());
+
+    } else {
+      GroupEntity group = getGroupEntity(groupId, currentUser);
+      // 미션 목록
+      return missionRepository.findAllByGroupOrderByDeadlineDateAsc(group)
+          .stream().map(m -> MissionInfoResponseDto.from(m, findMissionProvider(group)))
+          .collect(Collectors.toList());
+    }
   }
 
   @Override
