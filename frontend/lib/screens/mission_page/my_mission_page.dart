@@ -32,12 +32,13 @@ class _MyMissionPageState extends State<MyMissionPage> {
   Future<List<dynamic>> fetchMissionsFromAPI() async {
     final DioService dioService = DioService();
     try {
-      var response = await dioService.dio.get('${baseURL}api/mission');
-      print(response);
+      var response = await dioService.dio.get('${baseURL}api/mission/search');
+      print(response.data['data']);
+      return response.data['data'];
     } catch (err) {
       print(err);
+      return [];
     }
-    return [];
   }
 
   String formatNumber(int number) {
