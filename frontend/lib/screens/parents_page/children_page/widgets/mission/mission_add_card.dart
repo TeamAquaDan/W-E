@@ -74,10 +74,6 @@ class _MissionAddCardState extends State<MissionAddCard> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
               ),
-              // TextField(
-              //   controller: _deadlineDateController,
-              //   decoration: InputDecoration(labelText: '마감일 (yyyy-mm-dd)'),
-              // ),
               Row(
                 children: [
                   Text(
@@ -114,6 +110,9 @@ class _MissionAddCardState extends State<MissionAddCard> {
     String missionName = _missionNameController.text;
     int missionReward = int.tryParse(_missionRewardController.text) ?? 0;
     String deadlineDate = _deadlineDateController.text;
+    if (deadlineDate.trim() == '') {
+      deadlineDate = DateFormat('yyyy-MM-dd').format(_deadlineDate);
+    }
 
     try {
       await addMission(
@@ -131,6 +130,7 @@ class _MissionAddCardState extends State<MissionAddCard> {
       _deadlineDateController.clear();
       // Get.to(() => const ChildManagementPage());
       widget.onMissionStatusChanged.call();
+      Navigator.pop(context);
     } catch (error) {
       // 오류 처리
       print('Error adding mission: $error');

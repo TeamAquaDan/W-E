@@ -7,7 +7,7 @@ Future<List<MissionModel>> getMissionList(int groupId) async {
   final DioService dioService = DioService();
   try {
     dio.Response response = await dioService.dio.get(
-      '${baseURL}api/mission/$groupId',
+      '${baseURL}api/mission/search?group_id=$groupId',
     );
 
     // Handle response
@@ -25,20 +25,20 @@ Future<List<MissionModel>> getMissionList(int groupId) async {
         MissionModel(
             missionId: -1,
             missionName: '없어요',
-            missionReward: 123000,
-            deadlineDate: '2000-04-04',
+            missionReward: 404,
+            deadlineDate: '2000-00-00',
             status: 0,
             userName: '없어요')
       ];
     }
   } catch (error) {
     // Handle error
-    print('Error sending POST request: $error');
+    print('에러 getMissionList: $error');
     return [
       MissionModel(
           missionId: -1,
           missionName: '없어요',
-          missionReward: 123000,
+          missionReward: 404,
           deadlineDate: '2000-04-04',
           status: 0,
           userName: '없어요')

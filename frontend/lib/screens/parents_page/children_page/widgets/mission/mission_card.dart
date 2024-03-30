@@ -20,6 +20,10 @@ class MissionCard extends StatefulWidget {
 class _MissionCardState extends State<MissionCard> {
   @override
   Widget build(BuildContext context) {
+    if (widget.mission.missionId == -1) {
+      return SizedBox.shrink(); // missionId가 -1인 경우 아무것도 출력하지 않음
+    }
+
     var moneyFormat = NumberFormat('###,###,###,### 원');
     Color cardColor = _getCardColor(widget.mission.status);
 
