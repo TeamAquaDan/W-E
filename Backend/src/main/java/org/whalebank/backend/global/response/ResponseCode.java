@@ -36,6 +36,7 @@ public enum ResponseCode {
   WRONG_ACCOUNT_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "계좌 비밀번호가 올바르지 않습니다"),
   INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST.value(), "잔액이 부족합니다"),
   TRANSFER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST.value(), "이체 한도가 초과되었습니다"),
+  DUPLICATE_TRANSFER_FORBIDDEN(HttpStatus.CONFLICT.value(), "동일한 계좌로의 이체는 허용되지 않습니다"),
 
   // 가계부
   INVALID_TIME_FORMAT(HttpStatus.BAD_REQUEST.value(), "해당 월은 존재하지 않습니다"),
