@@ -52,6 +52,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final CategoryCalculateRepository categoryCalculateRepository;
   private final AccountBookRepository accountBookRepository;
   private final CardAccessUtil cardAccessUtil;
+  private final BankAccessUtil bankAccessUtil;
   private final AccountService accountService;
 
 
@@ -146,6 +147,12 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 계좌 비밀번호 확인
+    if (!bankAccessUtil.verifyAccountPassword(user.getBankAccessToken(), request.getAccount_id(),
+        request.getPassword())) {
+      throw new CustomException(ResponseCode.WRONG_ACCOUNT_PASSWORD);
+    }
 
     DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(request.getRoom_id())
         .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
