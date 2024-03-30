@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/mission_page/my_mission_page.dart';
 import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +22,7 @@ class MissionSectionBar extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Get.to(() => const MySavingGoalPage());
+              Get.to(() => const MyMissionPage());
             },
             style: TextButton.styleFrom(
               minimumSize: Size.zero,

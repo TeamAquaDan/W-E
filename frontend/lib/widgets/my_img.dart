@@ -66,13 +66,15 @@ class _MyProfileIconState extends State<MyProfileIcon> {
       },
       child: CircleAvatar(
         child: ClipOval(
-          child: Image.network(
-            myProfileList[0]['profile_img'] ??
-                'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png',
-            height: 100,
-            width: 100,
-            fit: BoxFit.cover,
-          ),
+          child: myProfileList.isNotEmpty
+              ? Image.network(
+                  myProfileList[0]['profile_img'] ??
+                      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png',
+                  height: 30,
+                  width: 30,
+                  fit: BoxFit.cover,
+                )
+              : Container(),
         ),
       ),
     );

@@ -71,12 +71,12 @@ class _MyMissionPageState extends State<MyMissionPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              // 액션 추가
-            },
-          ),
+          // leading: IconButton(
+          //   icon: const Icon(Icons.arrow_back),
+          //   onPressed: () {
+          //     // 액션 추가
+          //   },
+          // ),
           title: const Text('미션 목록'),
           bottom: const TabBar(
             unselectedLabelColor: Colors.grey,
