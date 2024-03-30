@@ -8,13 +8,14 @@ class AllowanceInfoForm extends StatefulWidget {
   final bool isMonthly;
   final int allowanceAmt;
   final int paymentDate;
-
+  final Function setData;
   const AllowanceInfoForm({
     super.key,
     required this.groupId,
     required this.isMonthly,
     required this.allowanceAmt,
     required this.paymentDate,
+    required this.setData,
   });
 
   @override
@@ -136,7 +137,9 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
         allowanceAmt: _allowanceAmt,
         paymentDate: _paymentDate,
       );
-      Get.offAll(const ParentPage());
+      // Get.offAll(const ParentPage());
+      await widget.setData();
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('용돈 정보가 성공적으로 수정되었습니다.')),
       );

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:frontend/services/dio_service.dart';
 import '../base_url.dart';
 
-Future<Response?> patchAllowanceInfo({
+Future<Map<String, dynamic>?> patchAllowanceInfo({
   required int groupId,
   required bool isMonthly,
   required int allowanceAmt,

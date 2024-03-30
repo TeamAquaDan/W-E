@@ -30,6 +30,16 @@ class _ChildCardState extends State<ChildCard> {
     _childDetailFuture = getChildDetail(widget.groupId, widget.userId);
   }
 
+  void setData() {
+    Future<ChildDetail> newChildDetailFuture =
+        getChildDetail(widget.groupId, widget.userId);
+    newChildDetailFuture.then((newChildDetail) {
+      setState(() {
+        _childDetailFuture = Future.value(newChildDetail);
+      });
+    });
+  }
+
   var moneyFormat = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
@@ -43,6 +53,7 @@ class _ChildCardState extends State<ChildCard> {
         } else {
           // 데이터가 성공적으로 로드되면 카드를 출력
           ChildDetail childDetail = snapshot.data!;
+
           return Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(width: 1, color: Color(0xFFC1C7CE)),
@@ -92,6 +103,7 @@ class _ChildCardState extends State<ChildCard> {
                                     isMonthly: childDetail.isMonthly,
                                     allowanceAmt: childDetail.allowanceAmt,
                                     paymentDate: childDetail.paymentDate,
+                                    setData: setData,
                                   ),
                               isScrollControlled: true);
                         },
