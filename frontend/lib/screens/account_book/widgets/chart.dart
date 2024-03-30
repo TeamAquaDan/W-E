@@ -3,40 +3,20 @@ import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/widgets/chart2.dart';
 
 class AccountBookChart extends StatefulWidget {
-  const AccountBookChart({super.key});
-
+  const AccountBookChart({super.key, required this.data});
+  final Map<String, dynamic> data;
   @override
   _AccountBookChartState createState() => _AccountBookChartState();
 }
 
 class _AccountBookChartState extends State<AccountBookChart> {
-  Map<String, dynamic> responseData = {};
-
-  void fetchData() async {
-    try {
-      var response = await getAccountBookChart(2024, 3);
-      setState(() {
-        responseData = response;
-      });
-      debugPrint('데이터 통신 결과 $responseData');
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: responseData.isEmpty
+      child: widget.data.isEmpty
           ? const CircularProgressIndicator()
           : Column(
-              children: [PieChartSample2(data: responseData['data'])],
+              children: [PieChartSample2(data: widget.data['data'])],
             ),
     );
   }

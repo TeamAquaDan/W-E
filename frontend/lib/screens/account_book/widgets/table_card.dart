@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 
 class AccountBookCard extends StatelessWidget {
   final Map<String, dynamic> accountBookData;
-
-  const AccountBookCard({super.key, required this.accountBookData});
+  final Function setData;
+  const AccountBookCard(
+      {super.key, required this.accountBookData, required this.setData});
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +34,17 @@ class AccountBookCard extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        Get.to(() =>
-                            FormAccountBook(accountBookData: accountBookData));
+                        Get.to(() => FormAccountBook(
+                              accountBookData: accountBookData,
+                              setData: setData,
+                            ));
                       },
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
                       onPressed: () {
                         deleteAccountBook(accountBookData['account_book_id']);
+                        setData();
                       },
                       icon: const Icon(Icons.delete),
                     ),

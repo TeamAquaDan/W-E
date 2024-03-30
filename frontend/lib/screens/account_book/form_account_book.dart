@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 
 class FormAccountBook extends StatefulWidget {
   final Map<String, dynamic>? accountBookData;
-  const FormAccountBook({super.key, this.accountBookData});
+  final Function setData;
+  const FormAccountBook(
+      {super.key, required this.setData, this.accountBookData});
   @override
   _FormAccountBookState createState() => _FormAccountBookState();
 }
@@ -258,8 +260,12 @@ class _FormAccountBookState extends State<FormAccountBook> {
     print(formattedDateTime);
     if (_isPatch) {
       patchAccountBook(newAccountBook, accountBookCategory!);
+      widget.setData();
+      Navigator.pop(context);
     } else {
       postAccountBook(newAccountBook);
+      widget.setData();
+      Navigator.pop(context);
     }
   }
 }

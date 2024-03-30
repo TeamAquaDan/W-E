@@ -3,37 +3,19 @@ import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/widgets/table_card.dart';
 
 class AccountBookTable extends StatefulWidget {
-  const AccountBookTable({super.key});
-
+  const AccountBookTable(
+      {super.key, required this.data, required this.setData});
+  final Map<String, dynamic> data;
+  final Function setData;
   @override
   _AccountBookTableState createState() => _AccountBookTableState();
 }
 
 class _AccountBookTableState extends State<AccountBookTable> {
-  Map<String, dynamic> responseData = {};
-
-  void fetchData() async {
-    try {
-      var response = await getAccountBook(2024, 3);
-      setState(() {
-        responseData = response;
-      });
-      debugPrint('데이터 통신 결과 $responseData');
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: responseData.isEmpty
+      child: widget.data.isEmpty
           ? const CircularProgressIndicator()
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -42,16 +24,19 @@ class _AccountBookTableState extends State<AccountBookTable> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("수입: ${responseData['data']['income_amt']}"),
-                    Text("지출: ${responseData['data']['expense_amt']}"),
+                    Text("수입: ${widget.data['data']['income_amt']}"),
+                    Text("지출: ${widget.data['data']['expense_amt']}"),
                   ],
                 ),
                 Column(
                   children: List.generate(
-                    responseData['data']['account_book_list'].length,
+                    widget.data['data']['account_book_list'] != null
+                        ? widget.data['data']['account_book_list'].length
+                        : 0,
                     (index) => AccountBookCard(
-                      accountBookData: responseData['data']['account_book_list']
+                      accountBookData: widget.data['data']['account_book_list']
                           [index],
+                      setData: widget.setData,
                     ),
                   ),
                 ),
