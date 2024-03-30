@@ -19,7 +19,7 @@ class ChildHomePage extends StatelessWidget {
               ),
               const Text('Whale 자녀 페이지'),
               const Spacer(),
-              MyProfileIcon(),
+              const MyProfileIcon(),
             ],
           ),
         ),

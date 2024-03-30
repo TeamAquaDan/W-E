@@ -6,9 +6,9 @@ class DutchPayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('더치페이'),
+        title: const Text('더치페이'),
       ),
-      body: Column(
+      body: const Column(
         children: [],
       ),
     );

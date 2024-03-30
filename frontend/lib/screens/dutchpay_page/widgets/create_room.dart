@@ -77,6 +77,8 @@ Future<List<dynamic>> getFriends() async {
 }
 
 class CreateDutchPayRoom extends StatefulWidget {
+  const CreateDutchPayRoom({super.key});
+
   @override
   _CreateDutchPayRoomState createState() => _CreateDutchPayRoomState();
 }
@@ -98,14 +100,14 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('더치페이 방 생성'),
+        title: const Text('더치페이 방 생성'),
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: '방 이름'),
+              decoration: const InputDecoration(labelText: '방 이름'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '방 이름을 입력해주세요';
@@ -118,7 +120,7 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
             ),
             const SizedBox(height: 16),
             TextFormField(
-              decoration: InputDecoration(labelText: '더치페이 할 날짜'),
+              decoration: const InputDecoration(labelText: '더치페이 할 날짜'),
               readOnly: true, // This will prohibit manual editing
               onTap: () async {
                 final date = await showDatePicker(
@@ -137,7 +139,7 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
             ),
             const SizedBox(height: 16),
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
@@ -162,7 +164,7 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                       members: members);
                 }
               },
-              child: Text('방 생성'),
+              child: const Text('방 생성'),
             ),
           ],
         ),
@@ -175,8 +177,8 @@ class MyCheckboxList extends StatefulWidget {
   final Future<List<dynamic>> friendsFuture;
   final List<int> members;
   final ValueChanged<List<int>> onMembersChanged;
-  MyCheckboxList(
-      {required this.friendsFuture,
+  const MyCheckboxList(
+      {super.key, required this.friendsFuture,
       required this.members,
       required this.onMembersChanged});
 
@@ -200,7 +202,7 @@ class _MyCheckboxListState extends State<MyCheckboxList> {
       future: _friendsFuture,
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

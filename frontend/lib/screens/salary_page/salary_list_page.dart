@@ -80,9 +80,7 @@ class _SalaryListPageState extends State<SalaryListPage> {
                   isMonthly: salary['is_monthly'],
                   allowanceAmt: salary['allowance_amt'],
                   paymentDate: salary['payment_date'],
-                  groupNickname: salary['group_nickname'] == null
-                      ? salary['user_name']
-                      : salary['group_nickname'],
+                  groupNickname: salary['group_nickname'] ?? salary['user_name'],
                   groupId: salary['group_id'],
                   userId: salary['user_id'],
                   userName: salary['user_name'],

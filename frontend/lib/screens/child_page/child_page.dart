@@ -4,7 +4,6 @@ import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/child_page/child_home_page.dart';
 import 'package:frontend/screens/menu_page.dart';
 import 'package:frontend/screens/mission_page/my_mission_page.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../chat_page/chat_page.dart';
 
@@ -77,11 +76,11 @@ class _ChildPageState extends State<ChildPage> {
         onPressed: () {
           // 챗봇 페이지로 이동
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => ChatPage()),
+            MaterialPageRoute(builder: (context) => const ChatPage()),
           );
         },
-        child: const Icon(Icons.chat_bubble_outline_rounded),
         backgroundColor: Colors.blue,
+        child: const Icon(Icons.chat_bubble_outline_rounded),
       ),
     );
   }

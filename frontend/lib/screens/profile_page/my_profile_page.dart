@@ -239,7 +239,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('프로필 페이지')),
+      appBar: AppBar(title: const Text('프로필 페이지')),
       body: SingleChildScrollView(
         child: myProfileList.isNotEmpty
             ? Column(
@@ -260,11 +260,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black, width: 1),
                           image: DecorationImage(
-                            image: NetworkImage(myProfileList[0]
-                                        ['profile_img'] ==
-                                    null
-                                ? 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png'
-                                : myProfileList[0]['profile_img']),
+                            image: NetworkImage(myProfileList[0]['profile_img'] ?? 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png'),
                             fit: BoxFit.fill,
                           ),
                           borderRadius:
@@ -392,7 +388,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       myProfileList[0]['guestbook_list'] != null)
                     ListView.builder(
                       shrinkWrap: true, // 내용의 크기에 맞게 ListView의 크기를 조정합니다.
-                      physics: NeverScrollableScrollPhysics(), // 스크롤을 막습니다.
+                      physics: const NeverScrollableScrollPhysics(), // 스크롤을 막습니다.
                       itemCount: myProfileList[0]['guestbook_list'].length,
                       itemBuilder: (context, index) {
                         var comment = myProfileList[0]['guestbook_list'][index];
@@ -406,7 +402,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           title: Container(
                             child: Text(
                               comment['writer_name'],
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                               overflow:
                                   TextOverflow.ellipsis, // 이름이 길 경우 생략 기호 처리
                             ),
@@ -421,7 +417,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   comment['writer_id'] ==
                                       Get.find<UserController>().getUserId())
                               ? IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: const Icon(Icons.delete, color: Colors.red),
                                   onPressed: () async {
                                     final DioService dioService = DioService();
                                     try {
@@ -452,13 +448,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               Expanded(
                                 child: TextField(
                                   controller: commentController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: '코멘트를 입력하세요...',
                                     border: OutlineInputBorder(),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               ElevatedButton(
                                 onPressed: () async {
                                   final DioService dioService = DioService();
@@ -478,7 +474,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     print(err);
                                   }
                                 },
-                                child: Text('게시'),
+                                child: const Text('게시'),
                               ),
                             ],
                           ),

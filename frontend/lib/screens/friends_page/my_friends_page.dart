@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/profile_page/my_profile_page.dart';
@@ -133,12 +132,12 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
             const SizedBox(height: 15),
             // 여기다가 추가하고 싶음 (gpt에게)
             Container(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               color: Colors.grey[200],
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("친구 요청 보기"),
+                  const Text("친구 요청 보기"),
                   IconButton(
                     icon: Icon(isPanelExpanded
                         ? Icons.expand_less
@@ -159,7 +158,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                 width: double.infinity,
                 color: Colors.grey[300],
                 child: requstedFriendsList.isEmpty
-                    ? Center(
+                    ? const Center(
                         // 친구 요청 목록이 비어있을 때
                         child: Text(
                           "현재 친구 요청이 없습니다",
@@ -170,7 +169,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                         itemCount: requstedFriendsList.length,
                         shrinkWrap: true, // 리스트의 높이를 내용물에 맞추도록 설정
                         physics:
-                            NeverScrollableScrollPhysics(), // 스크롤이 발생하지 않도록 설정
+                            const NeverScrollableScrollPhysics(), // 스크롤이 발생하지 않도록 설정
                         itemBuilder: (context, index) {
                           var request = requstedFriendsList[index];
                           return ListTile(
@@ -180,7 +179,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.check, color: Colors.green),
+                                  icon: const Icon(Icons.check, color: Colors.green),
                                   onPressed: () async {
                                     final DioService dioService = DioService();
                                     try {
@@ -195,7 +194,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                       if (response.statusCode == 200) {
                                         // API 호출 성공
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
+                                            .showSnackBar(const SnackBar(
                                           content: Text('친구 요청을 수락했습니다.'),
                                           backgroundColor: Colors.green,
                                         ));
@@ -204,7 +203,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                       } else {
                                         // API 호출 실패
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
+                                            .showSnackBar(const SnackBar(
                                           content: Text('친구 요청 수락에 실패했습니다.'),
                                           backgroundColor: Colors.red,
                                         ));
@@ -220,7 +219,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.close, color: Colors.red),
+                                  icon: const Icon(Icons.close, color: Colors.red),
                                   onPressed: () async {
                                     final DioService dioService = DioService();
                                     try {
@@ -235,7 +234,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                       if (response.statusCode == 200) {
                                         // API 호출 성공
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
+                                            .showSnackBar(const SnackBar(
                                           content: Text('친구 요청을 거절했습니다.'),
                                           backgroundColor: Colors.green,
                                         ));
@@ -244,7 +243,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                       } else {
                                         // API 호출 실패
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
+                                            .showSnackBar(const SnackBar(
                                           content: Text('친구 요청 거절에 실패했습니다.'),
                                           backgroundColor: Colors.red,
                                         ));
@@ -284,12 +283,8 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                       friendId: friend['friend_id'],
                       friendLoginId: friend['friend_loginid'],
                       friendName: friend['friend_name'],
-                      friendProfileImg: friend['friend_profileImg'] == null
-                          ? 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png'
-                          : friend['friend_profileImg'],
-                      friendNickname: friend['friend_nickname'] == null
-                          ? friend['friend_name']
-                          : friend['friend_nickname'],
+                      friendProfileImg: friend['friend_profileImg'] ?? 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png',
+                      friendNickname: friend['friend_nickname'] ?? friend['friend_name'],
                       loadFriendsCallback: loadFriends,
                     ),
                   );

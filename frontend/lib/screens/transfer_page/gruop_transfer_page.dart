@@ -11,7 +11,7 @@ import 'package:frontend/screens/transfer_page/widgets/transfet_password_form.da
 import 'package:get/get.dart';
 
 class GroupTransferPage extends StatefulWidget {
-  GroupTransferPage({super.key, required this.accountNum});
+  const GroupTransferPage({super.key, required this.accountNum});
   final String accountNum;
 
   @override

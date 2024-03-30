@@ -8,11 +8,10 @@ class MissionCard extends StatefulWidget {
   final int groupId;
   final VoidCallback? onMissionStatusChanged;
   const MissionCard(
-      {Key? key,
+      {super.key,
       required this.mission,
       required this.groupId,
-      this.onMissionStatusChanged})
-      : super(key: key);
+      this.onMissionStatusChanged});
 
   @override
   State<MissionCard> createState() => _MissionCardState();

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/allowance_patch_api.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
-import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/parents_page/widgets/allowance_info_form.dart';
 import 'package:frontend/screens/transfer_page/gruop_transfer_page.dart';
-import 'package:frontend/screens/transfer_page/transfer_page.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -141,7 +139,7 @@ class _ChildCardState extends State<ChildCard> {
                         ),
                         onPressed: () {
                           Get.to(GroupTransferPage(
-                            accountNum: childDetail.accountNum!,
+                            accountNum: childDetail.accountNum,
                           ));
                         },
                         child: const Text(

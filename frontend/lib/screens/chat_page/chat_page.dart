@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('챗봇 페이지'),
+        title: const Text('챗봇 페이지'),
       ),
       body: Column(
         children: [
@@ -23,22 +25,22 @@ class ChatPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Type a message...',
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
                     // Send message logic
                   },
-                  child: Text('Send'),
+                  child: const Text('Send'),
                 ),
               ],
             ),
@@ -54,7 +56,7 @@ class ChatBubble extends StatelessWidget {
   final bool isBotMessage;
   final String timestamp;
 
-  const ChatBubble({
+  const ChatBubble({super.key, 
     required this.message,
     required this.isBotMessage,
     required this.timestamp,
@@ -63,27 +65,27 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       alignment: isBotMessage ? Alignment.centerLeft : Alignment.centerRight,
       child: Column(
         crossAxisAlignment:
             isBotMessage ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: isBotMessage ? Colors.blue : Colors.green,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               message,
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             timestamp,
-            style: TextStyle(fontSize: 12, color: Colors.grey),
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
         ],
       ),

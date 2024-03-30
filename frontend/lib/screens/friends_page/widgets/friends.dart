@@ -76,7 +76,7 @@ class Friends extends StatelessWidget {
                         showChangeNicknameFriendsDialog(context, friendNickname,
                             friendId, loadFriendsCallback);
                       },
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                       color: Colors.grey[500],
                     )
                   ],

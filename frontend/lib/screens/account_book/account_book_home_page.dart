@@ -13,6 +13,7 @@ class AccountBookHomePage extends StatelessWidget {
         title: Row(
           children: [
             const Text('가계부'),
+            const Spacer(),
             IconButton(
                 onPressed: () {
                   Get.to(() => const FormAccountBook());

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/allowance_patch_api.dart';
-import 'package:frontend/screens/parents_page/parent_home_page.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:get/get.dart';
 
@@ -137,7 +136,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
         allowanceAmt: _allowanceAmt,
         paymentDate: _paymentDate,
       );
-      Get.offAll(ParentPage());
+      Get.offAll(const ParentPage());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('용돈 정보가 성공적으로 수정되었습니다.')),
       );

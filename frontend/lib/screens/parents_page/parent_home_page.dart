@@ -19,7 +19,7 @@ class ParentHomePage extends StatelessWidget {
             ),
             const Text('부모 페이지'),
             const Spacer(),
-            MyProfileIcon(),
+            const MyProfileIcon(),
           ],
         ),
       ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/api/mission/add_mission_api.dart';
-import 'package:frontend/screens/parents_page/children_page/child_management_page.dart';
-import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
 
@@ -132,7 +130,7 @@ class _MissionAddCardState extends State<MissionAddCard> {
       _missionRewardController.clear();
       _deadlineDateController.clear();
       // Get.to(() => const ChildManagementPage());
-      widget.onMissionStatusChanged?.call();
+      widget.onMissionStatusChanged.call();
     } catch (error) {
       // 오류 처리
       print('Error adding mission: $error');

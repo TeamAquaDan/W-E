@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/child_model.dart';
-import 'package:frontend/screens/parents_page/children_page/widgets/mission/mission_add_card.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/mission/mission_list.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
 

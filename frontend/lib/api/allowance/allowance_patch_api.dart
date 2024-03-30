@@ -43,7 +43,7 @@ Future patchAllowanceNickname({
     "group_id": groupId,
     "group_Nickname": groupNickname,
   };
-  print('그룹별칭 수정2 : ${body}');
+  print('그룹별칭 수정2 : $body');
   try {
     Response response = await dioService.dio.patch(
       '${baseURL}api/allowance/nickname',

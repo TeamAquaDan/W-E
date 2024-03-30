@@ -10,22 +10,22 @@ Future<String?> showChangeNicknameParentsDialog(BuildContext context,
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('별칭 변경'),
+        title: const Text('별칭 변경'),
         content: TextField(
           controller: nicknameController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: '새로운 별칭을 입력하세요',
           ),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('취소'),
+            child: const Text('취소'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           TextButton(
-            child: Text('확인'),
+            child: const Text('확인'),
             onPressed: () async {
               // async 추가
               final DioService dioService = DioService();

@@ -76,7 +76,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
                 onChanged: (value) {
                   comment = value;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Comment",
                 ),
               ),
@@ -87,7 +87,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
               child: const Text("거절"),
               onPressed: () {
                 patchNego(negoId: nego['nego_id'], result: 2, comment: comment);
-                Get.offAll(ParentPage());
+                Get.offAll(const ParentPage());
               },
             ),
             TextButton(
@@ -95,7 +95,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
               onPressed: () {
                 // 변경된 그룹 닉네임을 서버로 전송
                 patchNego(negoId: nego['nego_id'], result: 1, comment: comment);
-                Get.offAll(ParentPage());
+                Get.offAll(const ParentPage());
               },
             ),
           ],
