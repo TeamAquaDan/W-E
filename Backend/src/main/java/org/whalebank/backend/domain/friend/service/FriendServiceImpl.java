@@ -62,6 +62,16 @@ public class FriendServiceImpl implements FriendService {
     UserEntity user = getCurrentUser(requester); // 현재 사용자, 친구 신청한 사용자
     UserEntity receiver = userRepository.findById(receiverId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 이미 친구라면 예외
+    if(friendRepository.findById(new FriendId(user, receiver)).isPresent()) {
+      throw new CustomException(ResponseCode.ALREADY_FRIEND);
+    }
+    // 본인에게 친구 요청 불가능
+    if(user.getUserId() == receiverId) {
+      throw new CustomException(ResponseCode.INVALID_FRIENDSHIP_REQ);
+    }
+
     friendshipRepository.save(FriendshipEntity.of(user, receiver));
 
     // receiver에게 푸시 알림 보내기
@@ -83,17 +93,19 @@ public class FriendServiceImpl implements FriendService {
     UserEntity requester = userRepository.findById(reqDto.getUser_id()) // 친구 요청한 사용자
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    FriendshipEntity friendshipEntity = friendshipRepository.findByToUserAndFromUser(receiver, requester)
-        .orElseThrow(() -> new CustomException(ResponseCode.FRIENDSHIP_NOT_FOUND));
+    List<FriendshipEntity> friendshipList = friendshipRepository.findAllByToUserAndFromUserAndStatus(
+            receiver, requester, 0);
+    // 요청을 받은 적이 없다면 예외
+    if(friendshipList.isEmpty()) {
+        throw new CustomException(ResponseCode.FRIENDSHIP_NOT_FOUND);
+    }
 
     // 친구 요청 승인/거절한다
     if(reqDto.getStatus()==1) {
       // accepted
       // a와 b는 친구, b와 a는 친구
-      FriendEntity entity1 = FriendEntity.createEntity(requester, receiver);
-      FriendEntity entity2 = FriendEntity.createEntity(receiver, requester);
-      friendRepository.save(entity1);
-      friendRepository.save(entity2);
+      friendRepository.save(FriendEntity.createEntity(requester, receiver));
+      friendRepository.save(FriendEntity.createEntity(receiver, requester));
 
       // 요청자에게 푸시 알림 보내기
       fcmUtils.sendNotificationByToken(requester, FCMRequestDto.of(
@@ -107,7 +119,10 @@ public class FriendServiceImpl implements FriendService {
       throw new CustomException(ResponseCode.INVALID_FRIENDSHIP_REQ);
     }
 
-    friendshipEntity.updateStatus(reqDto.getStatus());
+    // 동일인에게 받은 요청들 모두 처리
+    for(FriendshipEntity entity: friendshipList) {
+      entity.updateStatus(reqDto.getStatus());
+    }
     return FriendManageResponseDto.of(reqDto.getStatus(), requester.getUserName());
   }
 
