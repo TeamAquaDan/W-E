@@ -6,8 +6,10 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +68,13 @@ public class FriendController {
   @Operation(summary = "친구 요청 목록 조회", description = "내가 받은 친구 요청 목록 중 대기 중인 요청만 조회한다")
   public ApiResponse<List<PendingRequestDto>> getPendingFriendRequests(@AuthenticationPrincipal UserDetails loginUser) {
     return ApiResponse.ok("대기 중인 친구 요청 조회 성공", service.findAllPendingRequest(loginUser.getUsername()));
+  }
+
+  @DeleteMapping("/{friend_id}")
+  @Operation(summary = "친구 삭제", description = "내 친구 목록에서 삭제함")
+  public ApiResponse<?> deleteFriend(@AuthenticationPrincipal UserDetails loginUser, @PathVariable("friend_id") int friendId) {
+    service.deleteFriend(loginUser.getUsername(), friendId);
+    return ApiResponse.ok("친구 삭제 성공");
   }
 
 }

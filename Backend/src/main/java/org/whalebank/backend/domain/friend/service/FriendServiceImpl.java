@@ -153,4 +153,15 @@ public class FriendServiceImpl implements FriendService {
         .map(PendingRequestDto::of)
         .collect(Collectors.toList());
   }
+
+  @Override
+  public void deleteFriend(String loginId, int friendId) {
+    UserEntity currentUser = userRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+    UserEntity friend = userRepository.findById(friendId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+    FriendEntity friendEntity = friendRepository.findById(new FriendId(currentUser, friend))
+        .orElseThrow(() -> new CustomException(ResponseCode.FRIEND_NOT_FOUND));
+    friendRepository.delete(friendEntity);
+  }
 }
