@@ -164,7 +164,7 @@ public class BankAccessUtil {
     if (res.rsp_code == 200) {
       return true;
     } else if (res.rsp_code == 401) {
-      throw new CustomException(ResponseCode.WRONG_ACCOUNT_PASSWORD);
+      return false;
     } else {
       throw new CustomException(ResponseCode.INTERNAL_SERVER_ERROR);
     }
