@@ -108,6 +108,7 @@ class _ChildCardState extends State<ChildCard> {
                                   AllowanceInfoForm(
                                     groupId: widget.groupId,
                                     groupNickname: widget.groupNickname,
+                                    accountNum: childDetail.accountNum,
                                     isMonthly: childDetail.isMonthly,
                                     allowanceAmt: childDetail.allowanceAmt,
                                     paymentDate: childDetail.paymentDate,
@@ -120,7 +121,7 @@ class _ChildCardState extends State<ChildCard> {
                           padding: EdgeInsets.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.settings,
                           color: Colors.white,
                         ),

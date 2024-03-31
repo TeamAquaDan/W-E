@@ -88,15 +88,13 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
             child: Center(child: CircularProgressIndicator())) // 로딩 화면을 표시합니다.
         : Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 '내 자녀 조회',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 25,
                   fontFamily: 'SB Aggro',
                   fontWeight: FontWeight.w400,
-                  height: 0.03,
-                  letterSpacing: 0.40,
                 ),
               ),
             ),
