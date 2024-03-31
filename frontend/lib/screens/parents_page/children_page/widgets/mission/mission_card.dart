@@ -27,104 +27,163 @@ class _MissionCardState extends State<MissionCard> {
     var moneyFormat = NumberFormat('###,###,###,### 원');
     Color cardColor = _getCardColor(widget.mission.status);
 
-    return Card(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      color: cardColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 8),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.mission.missionName,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      widget.mission.deadlineDate,
-                      style: const TextStyle(
-                        color: Color(0xFF555555),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      moneyFormat.format(widget.mission.missionReward),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    // 미션 관리 36
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            await patchMission(
-                                groupId: widget.groupId,
-                                missionId: widget.mission.missionId,
-                                status: 1);
-                            widget.onMissionStatusChanged?.call();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 131, 220, 183),
-                          ),
-                          child: const Text(
-                            '성공',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0), // 테두리 반경 설정
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: Container(
+                  color: Color(0xFF568EF8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Text(
+                          '미션을 성공했나요?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 27.50,
+                            fontFamily: 'SB Aggro',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await patchMission(
-                                groupId: widget.groupId,
-                                missionId: widget.mission.missionId,
-                                status: 2);
-                            widget.onMissionStatusChanged?.call();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 220, 131, 131),
-                          ),
-                          child: const Text(
-                            '실패',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
+                      ),
+                      Container(
+                        color: Color(0xFFEEEEEE),
+                        padding: EdgeInsets.symmetric(vertical: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                await patchMission(
+                                    groupId: widget.groupId,
+                                    missionId: widget.mission.missionId,
+                                    status: 2);
+                                widget.onMissionStatusChanged?.call();
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 153, 153, 153),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0)),
+                              ),
+                              child: const Text(
+                                '실패',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 27.50,
+                                  fontFamily: 'SB Aggro',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                await patchMission(
+                                    groupId: widget.groupId,
+                                    missionId: widget.mission.missionId,
+                                    status: 1);
+                                widget.onMissionStatusChanged?.call();
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF568EF8),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0)),
+                              ),
+                              child: const Text(
+                                '성공',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 27.50,
+                                  fontFamily: 'SB Aggro',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    )
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ],
+              ),
+
+              // actions: <Widget>[
+              //   TextButton(
+              //     child: Text('Close'),
+              //     onPressed: () {
+              //       Navigator.of(context).pop();
+              //     },
+              //   ),
+              // ],
+            );
+          },
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        color: cardColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 8),
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.mission.missionName,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        widget.mission.deadlineDate,
+                        style: const TextStyle(
+                          color: Color(0xFF555555),
+                          fontSize: 16,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        moneyFormat.format(widget.mission.missionReward),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      // 미션 관리 36
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -133,13 +192,13 @@ class _MissionCardState extends State<MissionCard> {
   Color _getCardColor(int status) {
     switch (status) {
       case 0:
-        return const Color(0xFF7A97FF);
+        return const Color(0xFF568EF8);
       case 1:
-        return const Color(0xFF83DCB7);
+        return const Color(0xFFE8E8E8);
       case 2:
-        return const Color(0xFFDC8787);
+        return const Color(0xFFE8E8E8);
       default:
-        return const Color(0xFF7A97FF);
+        return const Color(0xFF568EF8);
     }
   }
 }
