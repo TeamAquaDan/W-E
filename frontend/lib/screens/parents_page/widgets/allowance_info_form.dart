@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/allowance/allowance_patch_api.dart';
-import 'package:frontend/screens/parents_page/parent_page.dart';
-import 'package:get/get.dart';
 
 class AllowanceInfoForm extends StatefulWidget {
   final int groupId;

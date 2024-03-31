@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/widgets/chart2.dart';
 
 class AccountBookChart extends StatefulWidget {

@@ -88,7 +88,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
               ],
             ),
             AccountBookChart(data: responseChartData),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             AccountBookTable(
               data: responseData,
               setData: refreshData,

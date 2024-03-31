@@ -18,8 +18,8 @@ class ChildHomePage extends StatelessWidget {
                 'assets/images/whale.png',
                 height: 32,
               ),
-              Flexible(
-                child: const Text('자녀 페이지'),
+              const Flexible(
+                child: Text('자녀 페이지'),
               ),
               const Spacer(),
               const MyProfileIcon(),
@@ -35,7 +35,7 @@ class ChildHomePage extends StatelessWidget {
               const GoalCard(),
               const SizedBox(height: 16),
               const MissionSectionBar(),
-              MyMissionList()
+              const MyMissionList()
             ],
           ),
         ));
