@@ -35,6 +35,9 @@ import org.whalebank.backend.domain.dutchpay.repository.CategoryCalculateReposit
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRepository;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRoomRepository;
 import org.whalebank.backend.domain.dutchpay.repository.SelectedPaymentRepository;
+import org.whalebank.backend.domain.notification.FCMCategory;
+import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
+import org.whalebank.backend.domain.notification.service.FcmUtils;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
@@ -55,6 +58,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final CardAccessUtil cardAccessUtil;
   private final BankAccessUtil bankAccessUtil;
   private final AccountService accountService;
+  private final FcmUtils fcmUtils;
 
 
   @Override
@@ -92,6 +96,10 @@ public class DutchpayServiceImpl implements DutchpayService {
       DutchpayEntity dutchpay = DutchpayEntity.createRoom(member, dutchpayRoom);
 
       dutchpayRepository.save(dutchpay);
+
+      fcmUtils.sendNotificationByToken(member, FCMRequestDto.of("더치페이 방에 초대되었어요!",
+          dutchpayRoom.getDutchpayDate().toString() + " 더치페이 방이 만들어졌어요",
+          FCMCategory.INCREASE_REQUEST_RESULT));
     }
 
     // 요청으로 들어온 친구 목록의 프로필 사진이 리턴값에 포함
@@ -183,6 +191,16 @@ public class DutchpayServiceImpl implements DutchpayService {
     dutchpayRoom.setSetAmtCount(dutchpayRoom.getSetAmtCount() + 1);
 
     dutchpayRepository.save(dutchpay);
+
+    if (dutchpayRoom.getSetAmtCount() == dutchpayRepository.findByRoom(dutchpayRoom).size()) {
+
+      UserEntity manager = authRepository.findById(dutchpayRoom.getManagerId())
+          .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+      fcmUtils.sendNotificationByToken(manager, FCMRequestDto.of("정산을 시작해볼까요?",
+          "모든 멤버들이 " + dutchpayRoom.getDutchpayDate().toString() + " 정산 내역을 등록했어요",
+          FCMCategory.START_DUTCHPAY));
+    }
   }
 
   @Override
@@ -264,6 +282,18 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     // 모든 인원이 정산을 완료하면 true
     if (dutchpayRoom.getCompleted_count() == dutchpayList.size()) {
+
+      for (DutchpayEntity dutchpay : dutchpayList) {
+
+        UserEntity member = dutchpay.getUser();
+
+        fcmUtils.sendNotificationByToken(member,
+            FCMRequestDto.of("정산이 끝났어요!",
+                dutchpayRoom.getDutchpayDate().toString() + " 정산이 완료되었어요",
+                FCMCategory.DUTCHPAY_COMPLETED));
+
+      }
+
       dutchpayRoom.setCompleted(true);
     }
 
