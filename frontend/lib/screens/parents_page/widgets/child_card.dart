@@ -47,7 +47,10 @@ class _ChildCardState extends State<ChildCard> {
       future: _childDetailFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // 로딩 중이면 로딩 표시
+          return SizedBox(
+              height: 100,
+              width: 100,
+              child: const CircularProgressIndicator()); // 로딩 중이면 로딩 표시
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}'); // 에러가 발생하면 에러 메시지 출력
         } else {

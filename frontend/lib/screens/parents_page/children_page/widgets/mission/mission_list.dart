@@ -7,7 +7,7 @@ import 'package:frontend/screens/parents_page/children_page/widgets/mission/miss
 class MissionList extends StatefulWidget {
   final int groupId;
 
-  const MissionList({super.key, required this.groupId});
+  MissionList({super.key, required this.groupId});
 
   @override
   _MissionListState createState() => _MissionListState();
@@ -20,6 +20,16 @@ class _MissionListState extends State<MissionList> {
   void initState() {
     super.initState();
     _missionListFuture = getMissionList(widget.groupId);
+  }
+
+  @override
+  void didUpdateWidget(MissionList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.groupId != oldWidget.groupId) {
+      setState(() {
+        _missionListFuture = getMissionList(widget.groupId);
+      });
+    }
   }
 
   @override

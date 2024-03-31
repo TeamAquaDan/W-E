@@ -3,6 +3,7 @@ import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/create_room.dart';
+import 'package:frontend/screens/parents_page/children_page/children_carousel.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/screens/pin_login_page.dart';
 import 'package:frontend/services/dio_service.dart';
@@ -107,6 +108,11 @@ class MenuPage extends StatelessWidget {
                 Get.to(() => const CreateDutchPayRoom());
               },
               child: const Text('더치페이 방생성')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(ChildrenManagePage2());
+              },
+              child: const Text('자녀 조회 페이지')),
         ],
       ),
     );

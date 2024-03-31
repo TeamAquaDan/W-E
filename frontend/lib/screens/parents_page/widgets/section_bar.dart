@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/parents_page/children_page/child_management_page.dart';
+import 'package:frontend/screens/parents_page/children_page/children_carousel.dart';
 
 class SectionBar extends StatelessWidget {
   const SectionBar({super.key, required this.title});
@@ -45,7 +45,7 @@ class SectionBar extends StatelessWidget {
   void toParentsChildren(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ChildManagementPage()),
+      MaterialPageRoute(builder: (context) => ChildrenManagePage2()),
     );
   }
 }

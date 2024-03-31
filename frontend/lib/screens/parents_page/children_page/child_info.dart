@@ -12,12 +12,6 @@ class ChildInfo extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ChildCard(
-              groupId: data.groupId,
-              userId: data.userId,
-              groupNickname: data.groupNickname),
-
-          // MissionAddCard(groupId: data.groupId),
           MissionList(
             groupId: data.groupId,
           )
