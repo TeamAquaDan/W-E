@@ -14,6 +14,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'profile_page/my_profile_page.dart';
 import 'salary_page/salary_list_page.dart';
+import 'package:flutter_secure_keyboard/flutter_secure_keyboard.dart';
 
 class PinLoginPage extends StatefulWidget {
   const PinLoginPage({super.key});
@@ -23,10 +24,13 @@ class PinLoginPage extends StatefulWidget {
 }
 
 class _PinLoginPageState extends State<PinLoginPage> {
-  final _pinController = TextEditingController();
+  // final _pinController = TextEditingController();
   final SecurityService _securityService = SecurityService();
   final AuthService _authService = AuthService();
   RemoteMessage? _initialMessage;
+  final _secureKeyboardController = SecureKeyboardController();
+  final _pinController = TextEditingController();
+  final _pinCodeTextFieldFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -129,41 +133,60 @@ class _PinLoginPageState extends State<PinLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('PIN 입력')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _pinController,
-              obscureText: true,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'PIN 입력'),
-            ),
-            ElevatedButton(
-              onPressed: _checkPin,
-              child: const Text('로그인'),
-            ),
-            TextButton(
-              onPressed: _navigatedToPinSetting,
-              child: const Text('PIN 설정'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await _authService.logout(); // 로그아웃 수행
-                developer.log('로그아웃 되었습니다.', name: 'logout');
+    return WithSecureKeyboard(
+      controller: _secureKeyboardController,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('PIN 입력')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                // controller: _pinController,
+                controller: _pinController,
+                focusNode: _pinCodeTextFieldFocusNode,
+                enableInteractiveSelection: false,
+                obscureText: true,
+                onTap: () {
+                  _secureKeyboardController.show(
+                    type: SecureKeyboardType.NUMERIC,
+                    focusNode: _pinCodeTextFieldFocusNode,
+                    initText: _pinController.text,
+                    hintText: 'pinCode',
+                    // Use onDoneKeyPressed to allow text to be entered when you press the done key,
+                    // or to do something like encryption.
+                    onDoneKeyPressed: (List<int> charCodes) {
+                      _pinController.text = String.fromCharCodes(charCodes);
+                    },
+                  );
+                },
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'PIN 입력'),
+              ),
+              ElevatedButton(
+                onPressed: _checkPin,
+                child: const Text('로그인'),
+              ),
+              TextButton(
+                onPressed: _navigatedToPinSetting,
+                child: const Text('PIN 설정'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await _authService.logout(); // 로그아웃 수행
+                  developer.log('로그아웃 되었습니다.', name: 'logout');
 
-                // 로그아웃 후 리다이렉션 처리, 예: 로그인 페이지로 이동
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const LoginPage()), // LoginPage는 로그인 페이지의 클래스 이름입니다. 실제 앱에 맞게 조정해야 합니다.
-                );
-              },
-              child: const Text('로그아웃'),
-            )
-          ],
+                  // 로그아웃 후 리다이렉션 처리, 예: 로그인 페이지로 이동
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const LoginPage()), // LoginPage는 로그인 페이지의 클래스 이름입니다. 실제 앱에 맞게 조정해야 합니다.
+                  );
+                },
+                child: const Text('로그아웃'),
+              )
+            ],
+          ),
         ),
       ),
     );
