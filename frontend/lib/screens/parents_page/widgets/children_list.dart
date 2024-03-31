@@ -38,15 +38,18 @@ class _ChildrenListState extends State<ChildrenList> {
         itemCount: children.length,
         itemBuilder: (BuildContext context, int index) {
           Child child = children[index];
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ChildCard(
-                  groupId: child.groupId,
-                  userId: child.userId,
-                  groupNickname: child.groupNickname),
-              NegoListWidget(groupId: child.groupId)
-            ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ChildCard(
+                    groupId: child.groupId,
+                    userId: child.userId,
+                    groupNickname: child.groupNickname),
+                NegoListWidget(groupId: child.groupId)
+              ],
+            ),
           );
         },
       ),

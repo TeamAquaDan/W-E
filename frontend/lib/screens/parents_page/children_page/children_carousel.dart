@@ -1,14 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/api/account/account_list_api.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
-import 'package:frontend/models/account/account_list_data.dart';
-import 'package:frontend/screens/parents_page/children_page/child_info.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/mission/mission_list.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/add_child_form.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
-import 'package:frontend/widgets/bank_book.dart';
 
 class ChildrenManagePage2 extends StatefulWidget {
   ChildrenManagePage2({super.key});
@@ -92,7 +88,17 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
             child: Center(child: CircularProgressIndicator())) // 로딩 화면을 표시합니다.
         : Scaffold(
             appBar: AppBar(
-              title: Text('내 자녀 조회'),
+              title: Text(
+                '내 자녀 조회',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontFamily: 'SB Aggro',
+                  fontWeight: FontWeight.w400,
+                  height: 0.03,
+                  letterSpacing: 0.40,
+                ),
+              ),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -117,10 +123,11 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
                     items: itemList,
                     carouselController: _controller,
                     options: CarouselOptions(
-                        height: 198,
-                        // aspectRatio: 1.97,
+                        // height: 200,
+                        aspectRatio: 1.97,
                         autoPlay: false,
-                        viewportFraction: 1,
+                        viewportFraction: 0.8,
+                        enlargeCenterPage: true,
                         onPageChanged: (index, reason) {
                           setState(() {
                             _current = index;

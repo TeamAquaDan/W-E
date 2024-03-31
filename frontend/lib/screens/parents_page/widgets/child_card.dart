@@ -63,7 +63,7 @@ class _ChildCardState extends State<ChildCard> {
               borderRadius: BorderRadius.circular(20),
             ),
             color: const Color(0xFF7A97FF),
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
@@ -84,9 +84,10 @@ class _ChildCardState extends State<ChildCard> {
                           Text(
                             widget.groupNickname,
                             style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontFamily: 'SB Aggro',
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           IconButton(
@@ -126,31 +127,46 @@ class _ChildCardState extends State<ChildCard> {
                       ),
                     ],
                   ),
-                  Text('자녀 계좌 번호: ${childDetail.accountNum}'),
+                  Text(
+                    '${childDetail.accountNum}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontFamily: 'SB Aggro',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Text(
                     '용돈 지급 : ${childDetail.isMonthly //
                         ? '매달 ${childDetail.paymentDate}일' //
                         : '매주 ${_convertToDayOfWeek(childDetail.paymentDate)}요일'}',
                     style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontFamily: 'SB Aggro',
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         moneyFormat.format(childDetail.allowanceAmt),
                         style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'SB Aggro',
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      FilledButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFF3F62DE)),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: EdgeInsets.all(8),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         onPressed: () {
                           Get.to(GroupTransferPage(
