@@ -90,20 +90,24 @@ class _ChildCardState extends State<ChildCard> {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {
-                                _editGroupName(context);
-                              },
-                              icon: const Icon(Icons.edit))
+                          // IconButton(
+                          //     onPressed: () {
+                          //       _editGroupName(context);
+                          //     },
+                          //     icon: const Icon(
+                          //       Icons.edit,
+                          //       color: Colors.white,
+                          //     ))
                         ],
                       ),
-                      TextButton(
+                      IconButton(
                         onPressed: () {
                           showModalBottomSheet(
                               context: context,
                               builder: (BuildContext context) =>
                                   AllowanceInfoForm(
                                     groupId: widget.groupId,
+                                    groupNickname: widget.groupNickname,
                                     isMonthly: childDetail.isMonthly,
                                     allowanceAmt: childDetail.allowanceAmt,
                                     paymentDate: childDetail.paymentDate,
@@ -116,13 +120,9 @@ class _ChildCardState extends State<ChildCard> {
                           padding: EdgeInsets.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
-                        child: const Text(
-                          '수정하기',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        icon: Icon(
+                          Icons.settings,
+                          color: Colors.white,
                         ),
                       ),
                     ],

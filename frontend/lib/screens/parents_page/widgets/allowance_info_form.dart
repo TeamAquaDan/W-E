@@ -3,6 +3,7 @@ import 'package:frontend/api/allowance/allowance_patch_api.dart';
 
 class AllowanceInfoForm extends StatefulWidget {
   final int groupId;
+  final String groupNickname;
   final bool isMonthly;
   final int allowanceAmt;
   final int paymentDate;
@@ -10,6 +11,7 @@ class AllowanceInfoForm extends StatefulWidget {
   const AllowanceInfoForm({
     super.key,
     required this.groupId,
+    required this.groupNickname,
     required this.isMonthly,
     required this.allowanceAmt,
     required this.paymentDate,
@@ -29,7 +31,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
 
   late TextEditingController _allowanceAmtController;
   late TextEditingController _paymentDateController;
-
+  late TextEditingController groupNameController;
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,8 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
         TextEditingController(text: _allowanceAmt.toString());
     _paymentDateController =
         TextEditingController(text: _paymentDate.toString());
+    // groupNameController.text = widget.groupNickname;
+    groupNameController = TextEditingController(text: widget.groupNickname);
   }
 
   @override
@@ -55,6 +59,21 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              const Text(
+                '자녀 정보 수정하기',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: 'SB Aggro',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: groupNameController,
+                decoration: const InputDecoration(labelText: '용돈 금액'),
+              ),
+              const SizedBox(height: 8),
               DropdownButtonFormField<bool>(
                 value: _isMonthly,
                 items: const [
@@ -81,6 +100,54 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                 },
               ),
               const SizedBox(height: 12),
+              _isMonthly
+                  ? TextFormField(
+                      controller: _paymentDateController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: '용돈 지급일'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '용돈 지급일을 입력하세요';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _paymentDate = int.parse(value!);
+                      },
+                    )
+                  : DropdownButtonFormField<int>(
+                      value: _paymentDate,
+                      items: [
+                        for (int i = 1; i <= 7; i++)
+                          DropdownMenuItem(
+                            value: i,
+                            child: Text(
+                              {
+                                1: '월요일',
+                                2: '화요일',
+                                3: '수요일',
+                                4: '목요일',
+                                5: '금요일',
+                                6: '토요일',
+                                7: '일요일',
+                              }[i]!,
+                            ),
+                          ),
+                      ],
+                      onChanged: (int? value) {
+                        setState(() {
+                          _paymentDate = value!;
+                        });
+                      },
+                      decoration: const InputDecoration(labelText: '용돈 지급일'),
+                      validator: (value) {
+                        if (value == null) {
+                          return '용돈 지급일을 선택하세요';
+                        }
+                        return null;
+                      },
+                    ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _allowanceAmtController,
                 keyboardType: TextInputType.number,
@@ -95,30 +162,39 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                   _allowanceAmt = int.parse(value!);
                 },
               ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _paymentDateController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: '용돈 지급일'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '용돈 지급일을 입력하세요';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _paymentDate = int.parse(value!);
-                },
-              ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    _submitForm();
-                  }
-                },
-                child: const Text('정보 수정'),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Color(0xFF568EF8)), // 버튼 색상 변경
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0), // 테두리 반경 설정
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      _submitForm();
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Text(
+                      '정보 수정',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'GangwonEduPower',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -135,7 +211,13 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
         allowanceAmt: _allowanceAmt,
         paymentDate: _paymentDate,
       );
-      // Get.offAll(const ParentPage());
+      if (groupNameController.text != widget.groupNickname) {
+        await patchAllowanceNickname(
+          groupId: widget.groupId,
+          groupNickname: groupNameController.text,
+        );
+      }
+
       await widget.setData();
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
