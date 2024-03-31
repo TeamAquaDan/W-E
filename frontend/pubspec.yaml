@@ -55,6 +55,7 @@ dependencies:
   path: ^1.8.0
   fluttertoast: ^8.2.4
   month_picker_dialog: ^2.11.1
+  flutter_secure_keyboard: ^3.0.0
 
 dev_dependencies:
   flutter_test:

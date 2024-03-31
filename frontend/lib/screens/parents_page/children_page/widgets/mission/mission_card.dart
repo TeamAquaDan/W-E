@@ -26,7 +26,10 @@ class _MissionCardState extends State<MissionCard> {
 
     var moneyFormat = NumberFormat('###,###,###,### 원');
     Color cardColor = _getCardColor(widget.mission.status);
-
+    Color textColor = _getTextColor(widget.mission.status);
+    final DateTime now = DateTime.now();
+    final DateTime deadline = DateTime.parse(widget.mission.deadlineDate);
+    final int dDay = deadline.difference(now).inDays;
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -137,49 +140,62 @@ class _MissionCardState extends State<MissionCard> {
           padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 8),
           child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisSize: MainAxisSize.max,
                 children: [
                   const SizedBox(height: 8),
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget.mission.missionName,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 30,
+                          fontFamily: 'SB Aggro',
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      Text(
-                        widget.mission.deadlineDate,
-                        style: const TextStyle(
-                          color: Color(0xFF555555),
-                          fontSize: 16,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
                       Text(
                         moneyFormat.format(widget.mission.missionReward),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 30,
+                          fontFamily: 'SB Aggro',
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      // 미션 관리 36
                     ],
                   ),
+                  const Spacer(),
+                  widget.mission.status == 0
+                      ? Text(
+                          'D-$dDay',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontFamily: 'GangwonEduPower',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            widget.mission.status == 1
+                                ? const Icon(Icons.check)
+                                : const Icon(Icons.close),
+                            const Text(
+                              '종료',
+                              style: TextStyle(
+                                color: Color(0xFF919191),
+                                fontSize: 30,
+                                fontFamily: 'SB Aggro',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                 ],
               ),
             ],
@@ -199,6 +215,19 @@ class _MissionCardState extends State<MissionCard> {
         return const Color(0xFFE8E8E8);
       default:
         return const Color(0xFF568EF8);
+    }
+  }
+
+  Color _getTextColor(int status) {
+    switch (status) {
+      case 0:
+        return Colors.white;
+      case 1:
+        return const Color(0xFF919191);
+      case 2:
+        return const Color(0xFF919191);
+      default:
+        return Colors.white;
     }
   }
 }
