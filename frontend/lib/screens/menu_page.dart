@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/dutchpay_page/dutchpay_page.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/create_room.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/screens/pin_login_page.dart';
@@ -104,9 +105,9 @@ class MenuPage extends StatelessWidget {
               child: const Text('핀로그인/로그아웃')),
           ElevatedButton(
               onPressed: () {
-                Get.to(() => const CreateDutchPayRoom());
+                Get.to(() => const DutchPayPage());
               },
-              child: const Text('더치페이 방생성')),
+              child: const Text('더치페이')),
         ],
       ),
     );
