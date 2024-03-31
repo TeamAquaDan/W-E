@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.request.SelfDutchpayRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
@@ -105,5 +106,17 @@ public class DutchpayController {
     return ApiResponse.ok("자동 정산 성공", dutchpayRoom);
   }
 
+  @Operation(summary = "수동 정산")
+  @PatchMapping("/self/{dutchpay_id}")
+  public ApiResponse<List<DutchpayDetailResponseDto>> selfDutchpay(
+      @AuthenticationPrincipal UserDetails loginUser,
+      @RequestBody SelfDutchpayRequestDto request,
+      @PathVariable("dutchpay_id") int dutchpayId) {
+
+    List<DutchpayDetailResponseDto> dutchpayRoom = dutchpayService.selfDutchpay(
+        loginUser.getUsername(), request, dutchpayId);
+
+    return ApiResponse.ok("수동 정산 성공", dutchpayRoom);
+  }
 
 }

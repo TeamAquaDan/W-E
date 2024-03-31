@@ -27,6 +27,7 @@ import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto.Transaction;
+import org.whalebank.backend.domain.dutchpay.dto.request.SelfDutchpayRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
@@ -272,6 +273,40 @@ public class DutchpayServiceImpl implements DutchpayService {
 
   }
 
+  @Override
+  @Transactional
+  public List<DutchpayDetailResponseDto> selfDutchpay(String loginId,
+      SelfDutchpayRequestDto request, int dutchpayId) {
+
+    // 로그인한 유저
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 정산할 더치페이
+    DutchpayEntity selfDutchpay = dutchpayRepository.findById(dutchpayId)
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_NOT_FOUND));
+
+    // 본인이 아니라면 정산 불가능
+    if (user != selfDutchpay.getUser()) {
+      throw new CustomException(ResponseCode.SELF_DUTCHPAY_ACCESS_DENIED);
+    }
+
+    // 정산할 더치페이 방
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(
+            selfDutchpay.getRoom().getRoomId())
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    // 더치페이 방에 등록된 더치페이 리스트
+    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByRoom(dutchpayRoom);
+
+    // 개인별 정산 금액 계산하는 함수
+    calculateDutchpayAmount(dutchpayList);
+
+    return dutchpayList.stream()
+        .map(DutchpayDetailResponseDto::from)
+        .collect(Collectors.toList());
+  }
+
   @Transactional
   public void categoryCalculate(List<SelectedPaymentEntity> selectedPaymentList) {
 
@@ -320,6 +355,11 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     // 기준이 될 더치페이
     for (DutchpayEntity request : dutchpayList) {
+
+      // 이미 정산 완료라면 넘어감
+      if (request.isCompleted()) {
+        continue;
+      }
 
       int requestAmt = request.getTotalAmt() / dutchpayList.size();  // 사용한 금액 1/N
 

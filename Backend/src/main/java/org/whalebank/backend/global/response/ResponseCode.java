@@ -69,6 +69,7 @@ public enum ResponseCode {
   UNREGISTERED_MEMBERS(HttpStatus.BAD_REQUEST.value(), "아직 내역을 등록하지 않은 인원이 있습니다"),
   ALREADY_REGISTERED(HttpStatus.BAD_REQUEST.value(), "이미 등록한 내역입니다"),
   DUTCHPAY_FINISHED(HttpStatus.BAD_REQUEST.value(), "이미 더치페이가 완료된 방입니다"),
+  SELF_DUTCHPAY_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "수동정산 권한이 없습니다"),
 
   // 알림
   NOTI_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "알림이 존재하지 않습니다"),

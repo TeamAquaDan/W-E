@@ -4,6 +4,7 @@ import java.util.List;
 import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto;
+import org.whalebank.backend.domain.dutchpay.dto.request.SelfDutchpayRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
@@ -23,4 +24,7 @@ public interface DutchpayService {
   List<PaymentResponseDto> viewPayments(String loginId, PaymentRequestDto request);
 
   List<DutchpayDetailResponseDto> autoDutchpay(String loginId, int roomId);
+
+  List<DutchpayDetailResponseDto> selfDutchpay(String loginId, SelfDutchpayRequestDto request,
+      int dutchpayId);
 }
