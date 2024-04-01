@@ -102,5 +102,5 @@ pipeline {
     //             sh 'docker run -d -p 62347:8080 --name card card'
     //         }
     //     }
-    // }
+    }
 }
