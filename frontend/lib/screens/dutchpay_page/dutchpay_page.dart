@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/create_room.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_detail_page.dart';
@@ -7,7 +6,7 @@ import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
 
 class DutchPayPage extends StatefulWidget {
-  const DutchPayPage({Key? key}) : super(key: key);
+  const DutchPayPage({super.key});
 
   @override
   _DutchPayPageState createState() => _DutchPayPageState();
@@ -56,7 +55,7 @@ class _DutchPayPageState extends State<DutchPayPage> {
                 // Action to perform on button press. You could navigate to a page to create a new room.
                 // For example:
                 // Navigator.push(context, MaterialPageRoute(builder: (context) => CreateRoomPage()));
-                Get.to(() => CreateDutchPayRoom());
+                Get.to(() => const CreateDutchPayRoom());
               },
               child: const Text('Create a new room'),
             ),
@@ -66,13 +65,13 @@ class _DutchPayPageState extends State<DutchPayPage> {
                 itemBuilder: (context, index) {
                   var room = dutchpayRooms[index];
                   return ListTile(
-                    leading: Icon(Icons
+                    leading: const Icon(Icons
                         .room_outlined), // Displays an icon before the title.
                     title: Text(room['room_name']
                         .toString()), // Display the name of the room.
 
                     // Display the total amount and number of participants below the name.
-                    trailing: Icon(Icons
+                    trailing: const Icon(Icons
                         .arrow_forward), // Displays an icon at the end of the ListTile.
                     onTap: () {
                       Get.to(() => DutchPayDetailPage(roomId: room['room_id']));

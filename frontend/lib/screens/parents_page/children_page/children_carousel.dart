@@ -9,11 +9,6 @@ import 'package:frontend/screens/parents_page/widgets/child_card.dart';
 class ChildrenManagePage2 extends StatefulWidget {
   ChildrenManagePage2({super.key});
 
-  final List<ChildCard> _accountListData = [
-    ChildCard(groupId: -1, userId: -1, groupNickname: '통신에러'),
-    ChildCard(groupId: -1, userId: -1, groupNickname: '통신에러2'),
-  ];
-
   @override
   State<StatefulWidget> createState() {
     return _ChildrenManagePage2State();
@@ -49,26 +44,15 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
       List<Child> res = await getChildren();
       print('통신결과: $res');
       setState(() {
-        if (res == null) {
-          itemList = [
-            //계좌 목록 조회 17
-            for (int i = 0; i < widget._accountListData.length; i++)
-              ChildCard(
-                  groupId: widget._accountListData[i].groupId,
-                  userId: widget._accountListData[i].userId,
-                  groupNickname: widget._accountListData[i].groupNickname),
-          ];
-        } else {
-          itemList = [
-            //계좌 목록 조회 17
-            for (int i = 0; i < res.length; i++)
-              ChildCard(
-                  groupId: res[i].groupId,
-                  userId: res[i].userId,
-                  groupNickname: res[i].groupNickname),
-          ];
-          children = res;
-        }
+        itemList = [
+          //계좌 목록 조회 17
+          for (int i = 0; i < res.length; i++)
+            ChildCard(
+                groupId: res[i].groupId,
+                userId: res[i].userId,
+                groupNickname: res[i].groupNickname),
+        ];
+        children = res;
       });
     } catch (error) {
       // 에러가 발생한 경우 에러 처리를 수행합니다.
@@ -114,15 +98,15 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
                             );
                           },
                           icon: const Icon(Icons.add)),
-                      Text('자녀 추가하기')
+                      const Text('자녀 추가하기')
                     ],
                   ),
                   CarouselSlider(
                     items: itemList,
                     carouselController: _controller,
                     options: CarouselOptions(
-                        // height: 200,
-                        aspectRatio: 1.97,
+                        height: 186,
+                        // aspectRatio: 1.97,
                         autoPlay: false,
                         viewportFraction: 0.8,
                         enlargeCenterPage: true,

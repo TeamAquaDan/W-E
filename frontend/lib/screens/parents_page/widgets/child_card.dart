@@ -47,10 +47,10 @@ class _ChildCardState extends State<ChildCard> {
       future: _childDetailFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SizedBox(
+          return const SizedBox(
               height: 100,
               width: 100,
-              child: const CircularProgressIndicator()); // 로딩 중이면 로딩 표시
+              child: CircularProgressIndicator()); // 로딩 중이면 로딩 표시
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}'); // 에러가 발생하면 에러 메시지 출력
         } else {
@@ -129,8 +129,8 @@ class _ChildCardState extends State<ChildCard> {
                     ],
                   ),
                   Text(
-                    '${childDetail.accountNum}',
-                    style: TextStyle(
+                    childDetail.accountNum,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontFamily: 'SB Aggro',
@@ -166,7 +166,7 @@ class _ChildCardState extends State<ChildCard> {
                       TextButton(
                         style: TextButton.styleFrom(
                           minimumSize: Size.zero,
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         onPressed: () {

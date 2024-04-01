@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/allowance/allowance_patch_api.dart';
 
 class AllowanceInfoForm extends StatefulWidget {
@@ -54,7 +52,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _accountNum =
+    final TextEditingController accountNum =
         TextEditingController(text: widget.accountNum);
     return SingleChildScrollView(
       padding:
@@ -84,7 +82,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
               const SizedBox(height: 12),
               TextField(
                 // controller: groupNameController,
-                controller: _accountNum,
+                controller: accountNum,
                 readOnly: true,
                 decoration: const InputDecoration(labelText: '계좌번호'),
               ),

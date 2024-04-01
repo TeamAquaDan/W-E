@@ -100,7 +100,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   Widget build(BuildContext context) {
     return _isLoading
         ? const SizedBox(
-            height: 192,
+            height: 200,
             child: Center(child: CircularProgressIndicator())) // 로딩 화면을 표시합니다.
         : Column(
             children: [
@@ -108,10 +108,11 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                 items: itemList,
                 carouselController: _controller,
                 options: CarouselOptions(
-                    height: 176,
+                    height: 183,
                     // aspectRatio: 1.97,
                     autoPlay: false,
-                    viewportFraction: 1,
+                    viewportFraction: 0.8,
+                    enlargeCenterPage: true,
                     onPageChanged: (index, reason) {
                       setState(() {
                         _current = index;

@@ -41,7 +41,7 @@ Future patchAllowanceNickname({
   final DioService dioService = DioService();
   final Map<String, dynamic> body = {
     "group_id": groupId,
-    "group_Nickname": groupNickname,
+    "group_nickname": groupNickname,
   };
   print('그룹별칭 수정2 : $body');
   try {

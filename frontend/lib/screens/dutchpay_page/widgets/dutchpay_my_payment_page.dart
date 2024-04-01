@@ -47,12 +47,12 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Payments'),
+        title: const Text('My Payments'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () => showMyPaymentsDialog(),
-          child: Text('Show My Payments'),
+          child: const Text('Show My Payments'),
         ),
       ),
     );
@@ -63,8 +63,8 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('My Payments'),
-          content: Container(
+          title: const Text('My Payments'),
+          content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
               shrinkWrap: true,
@@ -83,7 +83,7 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );

@@ -26,7 +26,7 @@ class _BankBook extends State<BankBook> {
         borderRadius: BorderRadius.circular(12),
       ),
       color: const Color(0xFFA0CAFD),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      // margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         children: [
           Positioned(
@@ -48,7 +48,9 @@ class _BankBook extends State<BankBook> {
                     });
                     print('스테이트 변경 $isMain, ${widget.setChange}');
                   },
-                  icon: isMain ? const Icon(Icons.star) : const Icon(Icons.star_border),
+                  icon: isMain
+                      ? const Icon(Icons.star)
+                      : const Icon(Icons.star_border),
                 ),
                 IconButton(
                   style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),

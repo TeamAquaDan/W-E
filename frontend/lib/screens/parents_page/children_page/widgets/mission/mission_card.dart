@@ -41,30 +41,27 @@ class _MissionCardState extends State<MissionCard> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: Container(
-                  color: Color(0xFF568EF8),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Text(
-                          '미션을 성공했나요?',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 27.50,
-                            fontFamily: 'SB Aggro',
-                            fontWeight: FontWeight.w400,
-                          ),
+                      const Text(
+                        '미션을 성공했나요?',
+                        style: TextStyle(
+                          color: Color(0xFF54595E),
+                          fontSize: 24.95,
+                          fontFamily: 'SB Aggro',
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      Container(
-                        color: Color(0xFFEEEEEE),
-                        padding: EdgeInsets.symmetric(vertical: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
                               onPressed: () async {
                                 await patchMission(
                                     groupId: widget.groupId,
@@ -83,13 +80,16 @@ class _MissionCardState extends State<MissionCard> {
                                 '실패',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 27.50,
+                                  fontSize: 16,
                                   fontFamily: 'SB Aggro',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            ElevatedButton(
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: ElevatedButton(
                               onPressed: () async {
                                 await patchMission(
                                     groupId: widget.groupId,
@@ -107,14 +107,14 @@ class _MissionCardState extends State<MissionCard> {
                                 '성공',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 27.50,
+                                  fontSize: 16,
                                   fontFamily: 'SB Aggro',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
