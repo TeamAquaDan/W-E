@@ -212,8 +212,10 @@ public class DutchpayServiceImpl implements DutchpayService {
     DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(roomId)
         .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
 
+    int size = dutchpayRepository.findByRoom(dutchpayRoom).size();
+
     return dutchpayRepository.findByRoom(dutchpayRoom).stream()
-        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user))
+        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user, size))
         .collect(Collectors.toList());
   }
 
@@ -296,7 +298,7 @@ public class DutchpayServiceImpl implements DutchpayService {
     }
 
     return dutchpayList.stream()
-        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user))
+        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user, dutchpayList.size()))
         .collect(Collectors.toList());
 
   }
@@ -331,7 +333,7 @@ public class DutchpayServiceImpl implements DutchpayService {
     calculateDutchpayAmount(dutchpayList);
 
     return dutchpayList.stream()
-        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user))
+        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user, dutchpayList.size()))
         .collect(Collectors.toList());
   }
 
