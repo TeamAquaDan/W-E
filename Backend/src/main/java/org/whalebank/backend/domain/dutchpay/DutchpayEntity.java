@@ -36,6 +36,9 @@ public class DutchpayEntity {
   @ColumnDefault("false")
   private boolean isCompleted; // 개인 정산금액 송금여부
 
+  @ColumnDefault("false")
+  private boolean isRegister; // 개인 정산금액 등록 여부
+
   private int accountId;    // 출금 계좌 고유번호
 
   private String accountNum;  // 출금 계좌번호

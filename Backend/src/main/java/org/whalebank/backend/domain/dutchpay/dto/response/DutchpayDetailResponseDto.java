@@ -16,6 +16,7 @@ public class DutchpayDetailResponseDto {
   private String user_name;  // 이름
   private int total_amt; // 결제총액
   private boolean is_completed;  // 정산금액 송금여부
+  private boolean is_register;  // 정산금액 등록 여부
   private boolean is_login_user;  // 로그인한 유저와 같은 사람인지 여부
   private int member_num; // 총 인원 수
   private int set_amt_count;  // 총 금액 등록 인원 수
@@ -28,6 +29,7 @@ public class DutchpayDetailResponseDto {
         .user_name(dutchpay.getUser().getUserName())
         .total_amt(dutchpay.getTotalAmt())
         .is_completed(dutchpay.isCompleted())
+        .is_register(dutchpay.isRegister())
         .is_login_user(dutchpay.getUser().equals(user))
         .member_num(memberNum)
         .set_amt_count(dutchpay.getRoom().getSetAmtCount())

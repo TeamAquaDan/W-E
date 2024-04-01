@@ -186,6 +186,7 @@ public class DutchpayServiceImpl implements DutchpayService {
     dutchpay.setAccountId(request.getAccount_id());
     dutchpay.setAccountNum(request.getAccount_num());
     dutchpay.setAccountPassword(request.getPassword());
+    dutchpay.setRegister(true);
     dutchpay.setTotalAmt(totalAmt);
 
     dutchpayRoom.setSetAmtCount(dutchpayRoom.getSetAmtCount() + 1);
