@@ -2,7 +2,6 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,gradle,java,crystal
 
 ### Crystal ###
-/docs/
 /lib/
 /bin/
 /.shards/
