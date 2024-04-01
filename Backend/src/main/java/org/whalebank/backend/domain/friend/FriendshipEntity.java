@@ -14,11 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.whalebank.backend.domain.user.UserEntity;
 
 @Entity
@@ -59,5 +56,6 @@ public class FriendshipEntity {
 
   public void updateStatus(int status) {
     this.status = status; // 1:승인, 2:거절
+    completedDtm = LocalDateTime.now();
   }
 }

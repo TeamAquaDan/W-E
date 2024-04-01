@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.whalebank.whalebank.domain.account.AccountEntity;
@@ -262,5 +263,13 @@ public class AccountServiceImpl implements AccountService {
         .rsp_code(200)
         .rsp_message("계좌 비밀번호가 맞습니다")
         .build();
+  }
+
+  @Scheduled(cron = "0 0 0 * * *")
+  public void resetWithdrawableAmt() {
+    // 매일 00시 출금 가능액을 1일 한도액으로 리셋
+    for (AccountEntity account : accountRepository.findAll()) {
+      account.resetWithdrawableAmt();
+    }
   }
 }

@@ -23,11 +23,13 @@ public enum ResponseCode {
   DIFFERENT_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED.value(), "리프레시 토큰이 일치하지 않습니다"),
   ALREADY_MAIN_ACCOUNT(HttpStatus.CONFLICT.value(), "이미 주계좌로 등록된 계좌입니다"),
   WRONG_LOGIN_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "비밀번호가 일치하지 않습니다"),
+  USER_ALREADY_SIGNUP(HttpStatus.CONFLICT.value(), "이미 등록된 계정입니다."),
 
   // 친구
   FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "친구 요청이 존재하지 않습니다"),
   INVALID_FRIENDSHIP_REQ(HttpStatus.BAD_REQUEST.value(), "요청 값이 올바르지 않습니다"),
   FRIEND_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "친구 관계가 아닙니다"),
+  ALREADY_FRIEND(HttpStatus.CONFLICT.value(), "이미 친구로 등록된 사용자입니다"),
 
   // 은행
   BANK_USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "은행 고객이 아닙니다"),
@@ -35,6 +37,7 @@ public enum ResponseCode {
   WRONG_ACCOUNT_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "계좌 비밀번호가 올바르지 않습니다"),
   INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST.value(), "잔액이 부족합니다"),
   TRANSFER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST.value(), "이체 한도가 초과되었습니다"),
+  DUPLICATE_TRANSFER_FORBIDDEN(HttpStatus.CONFLICT.value(), "동일한 계좌로의 이체는 허용되지 않습니다"),
 
   // 가계부
   INVALID_TIME_FORMAT(HttpStatus.BAD_REQUEST.value(), "해당 월은 존재하지 않습니다"),
@@ -66,6 +69,7 @@ public enum ResponseCode {
   UNREGISTERED_MEMBERS(HttpStatus.BAD_REQUEST.value(), "아직 내역을 등록하지 않은 인원이 있습니다"),
   ALREADY_REGISTERED(HttpStatus.BAD_REQUEST.value(), "이미 등록한 내역입니다"),
   DUTCHPAY_FINISHED(HttpStatus.BAD_REQUEST.value(), "이미 더치페이가 완료된 방입니다"),
+  SELF_DUTCHPAY_ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "수동정산 권한이 없습니다"),
 
   // 알림
   NOTI_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "알림이 존재하지 않습니다"),

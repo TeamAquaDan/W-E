@@ -27,6 +27,7 @@ import org.whalebank.backend.domain.dutchpay.dto.request.DutchpayRoomRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.PaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.request.RegisterPaymentRequestDto.Transaction;
+import org.whalebank.backend.domain.dutchpay.dto.request.SelfDutchpayRequestDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayDetailResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.DutchpayRoomResponseDto;
 import org.whalebank.backend.domain.dutchpay.dto.response.PaymentResponseDto;
@@ -34,6 +35,9 @@ import org.whalebank.backend.domain.dutchpay.repository.CategoryCalculateReposit
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRepository;
 import org.whalebank.backend.domain.dutchpay.repository.DutchpayRoomRepository;
 import org.whalebank.backend.domain.dutchpay.repository.SelectedPaymentRepository;
+import org.whalebank.backend.domain.notification.FCMCategory;
+import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
+import org.whalebank.backend.domain.notification.service.FcmUtils;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
@@ -52,7 +56,9 @@ public class DutchpayServiceImpl implements DutchpayService {
   private final CategoryCalculateRepository categoryCalculateRepository;
   private final AccountBookRepository accountBookRepository;
   private final CardAccessUtil cardAccessUtil;
+  private final BankAccessUtil bankAccessUtil;
   private final AccountService accountService;
+  private final FcmUtils fcmUtils;
 
 
   @Override
@@ -90,6 +96,10 @@ public class DutchpayServiceImpl implements DutchpayService {
       DutchpayEntity dutchpay = DutchpayEntity.createRoom(member, dutchpayRoom);
 
       dutchpayRepository.save(dutchpay);
+
+      fcmUtils.sendNotificationByToken(member, FCMRequestDto.of("더치페이 방에 초대되었어요!",
+          dutchpayRoom.getDutchpayDate().toString() + " 더치페이 방이 만들어졌어요",
+          FCMCategory.INCREASE_REQUEST_RESULT));
     }
 
     // 요청으로 들어온 친구 목록의 프로필 사진이 리턴값에 포함
@@ -147,6 +157,12 @@ public class DutchpayServiceImpl implements DutchpayService {
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
+    // 계좌 비밀번호 확인
+    if (!bankAccessUtil.verifyAccountPassword(user.getBankAccessToken(), request.getAccount_id(),
+        request.getPassword())) {
+      throw new CustomException(ResponseCode.WRONG_ACCOUNT_PASSWORD);
+    }
+
     DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(request.getRoom_id())
         .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
 
@@ -175,6 +191,16 @@ public class DutchpayServiceImpl implements DutchpayService {
     dutchpayRoom.setSetAmtCount(dutchpayRoom.getSetAmtCount() + 1);
 
     dutchpayRepository.save(dutchpay);
+
+    if (dutchpayRoom.getSetAmtCount() == dutchpayRepository.findByRoom(dutchpayRoom).size()) {
+
+      UserEntity manager = authRepository.findById(dutchpayRoom.getManagerId())
+          .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+      fcmUtils.sendNotificationByToken(manager, FCMRequestDto.of("정산을 시작해볼까요?",
+          "모든 멤버들이 " + dutchpayRoom.getDutchpayDate().toString() + " 정산 내역을 등록했어요",
+          FCMCategory.START_DUTCHPAY));
+    }
   }
 
   @Override
@@ -186,10 +212,8 @@ public class DutchpayServiceImpl implements DutchpayService {
     DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(roomId)
         .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
 
-    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByRoom(dutchpayRoom);
-
-    return dutchpayList.stream()
-        .map(DutchpayDetailResponseDto::from)
+    return dutchpayRepository.findByRoom(dutchpayRoom).stream()
+        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user))
         .collect(Collectors.toList());
   }
 
@@ -256,13 +280,59 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     // 모든 인원이 정산을 완료하면 true
     if (dutchpayRoom.getCompleted_count() == dutchpayList.size()) {
+
+      for (DutchpayEntity dutchpay : dutchpayList) {
+
+        UserEntity member = dutchpay.getUser();
+
+        fcmUtils.sendNotificationByToken(member,
+            FCMRequestDto.of("정산이 끝났어요!",
+                dutchpayRoom.getDutchpayDate().toString() + " 정산이 완료되었어요",
+                FCMCategory.DUTCHPAY_COMPLETED));
+
+      }
+
       dutchpayRoom.setCompleted(true);
     }
 
     return dutchpayList.stream()
-        .map(DutchpayDetailResponseDto::from)
+        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user))
         .collect(Collectors.toList());
 
+  }
+
+  @Override
+  @Transactional
+  public List<DutchpayDetailResponseDto> selfDutchpay(String loginId,
+      SelfDutchpayRequestDto request, int dutchpayId) {
+
+    // 로그인한 유저
+    UserEntity user = authRepository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    // 정산할 더치페이
+    DutchpayEntity selfDutchpay = dutchpayRepository.findById(dutchpayId)
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_NOT_FOUND));
+
+    // 본인이 아니라면 정산 불가능
+    if (user != selfDutchpay.getUser()) {
+      throw new CustomException(ResponseCode.SELF_DUTCHPAY_ACCESS_DENIED);
+    }
+
+    // 정산할 더치페이 방
+    DutchpayRoomEntity dutchpayRoom = dutchpayRoomRepository.findById(
+            selfDutchpay.getRoom().getRoomId())
+        .orElseThrow(() -> new CustomException(ResponseCode.DUTCHPAY_ROOM_NOT_FOUND));
+
+    // 더치페이 방에 등록된 더치페이 리스트
+    List<DutchpayEntity> dutchpayList = dutchpayRepository.findByRoom(dutchpayRoom);
+
+    // 개인별 정산 금액 계산하는 함수
+    calculateDutchpayAmount(dutchpayList);
+
+    return dutchpayList.stream()
+        .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user))
+        .collect(Collectors.toList());
   }
 
   @Transactional
@@ -313,6 +383,11 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     // 기준이 될 더치페이
     for (DutchpayEntity request : dutchpayList) {
+
+      // 이미 정산 완료라면 넘어감
+      if (request.isCompleted()) {
+        continue;
+      }
 
       int requestAmt = request.getTotalAmt() / dutchpayList.size();  // 사용한 금액 1/N
 

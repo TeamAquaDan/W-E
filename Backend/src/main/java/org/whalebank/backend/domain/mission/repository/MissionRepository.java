@@ -1,5 +1,6 @@
 package org.whalebank.backend.domain.mission.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,7 @@ public interface MissionRepository extends JpaRepository<MissionEntity, Integer>
   List<MissionEntity> findAllMissionByUserOrderByDeadlineDateAsc(@Param("user") UserEntity user);
 
   List<MissionEntity> findAllByGroupOrderByDeadlineDateAsc(GroupEntity group);
+
+  List<MissionEntity> findAllByStatusAndDeadlineDate(int status, LocalDate deadLine);
 
 }

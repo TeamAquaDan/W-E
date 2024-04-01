@@ -89,4 +89,8 @@ public class AccountEntity {
   public void addTransfer(TransferEntity transfer) {
     this.transferList.add(transfer);
   }
+
+  public void resetWithdrawableAmt() {
+    this.withdrawableAmt = this.getDayLimitAmt();
+  }
 }

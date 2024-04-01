@@ -24,6 +24,7 @@ import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
+import org.whalebank.backend.global.openfeign.bank.BankAccessUtil;
 import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
@@ -33,6 +34,7 @@ public class AllowanceServiceImpl implements AllowanceService{
   private final AuthRepository userRepository;
   private final GroupRepository groupRepository;
   private final RoleRepository roleRepository;
+  private final BankAccessUtil bankAccessUtil;
   private final FcmUtils fcmUtils;
 
   @Override
@@ -48,7 +50,10 @@ public class AllowanceServiceImpl implements AllowanceService{
     if (roleEntityList.stream().anyMatch(r -> r.getUser().getUserId() == adult.getUserId())) {
       throw new CustomException(ResponseCode.ALREADY_ADDED_CHILD);
     }
-
+    // 계좌 번호, 계좌 비밀번호 검사
+    if(!bankAccessUtil.verifyAccountPassword(adult.getBankAccessToken(), reqDto.getAccount_id(), reqDto.getAccount_password())) {
+      throw new CustomException(ResponseCode.WRONG_ACCOUNT_PASSWORD);
+    }
 
     // 그룹, 역할 생성
     GroupEntity group = GroupEntity.from(reqDto);

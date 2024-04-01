@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
@@ -64,7 +63,7 @@ public class NotificationEntity {
         .createdDtm(LocalDateTime.now())
         .notiName(reqDto.getTitle())
         .notiContent(reqDto.getContent())
-        .notiContent(reqDto.getContent())
+        .notiCategory(reqDto.getCategory())
         .isRead(false)
         .user(user)
         .build();

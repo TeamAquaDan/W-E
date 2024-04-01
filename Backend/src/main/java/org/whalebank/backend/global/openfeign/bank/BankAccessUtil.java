@@ -2,7 +2,6 @@ package org.whalebank.backend.global.openfeign.bank;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
@@ -12,6 +11,7 @@ import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.TransactionRequest;
+import org.whalebank.backend.global.openfeign.bank.request.VerifyRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
@@ -22,6 +22,7 @@ import org.whalebank.backend.global.openfeign.bank.response.InquiryResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ParkingBalanceResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse;
+import org.whalebank.backend.global.openfeign.bank.response.VerifyResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 import org.whalebank.backend.global.response.ResponseCode;
 
@@ -153,6 +154,20 @@ public class BankAccessUtil {
       throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
     }
     return res;
+  }
+
+  public boolean verifyAccountPassword(String token, int accountId, String accountPassword) {
+    VerifyResponseDto res = bankClient.verifyAccountPassword(token,
+            VerifyRequestDto.of(accountId, accountPassword))
+        .getBody();
+
+    if (res.rsp_code == 200) {
+      return true;
+    } else if (res.rsp_code == 401) {
+      return false;
+    } else {
+      throw new CustomException(ResponseCode.INTERNAL_SERVER_ERROR);
+    }
   }
 
 }

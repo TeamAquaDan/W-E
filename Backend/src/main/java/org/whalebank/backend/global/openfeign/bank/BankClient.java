@@ -15,6 +15,7 @@ import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ReissueRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.TransactionRequest;
+import org.whalebank.backend.global.openfeign.bank.request.VerifyRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.WithdrawRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccessTokenResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountDetailResponse;
@@ -25,6 +26,7 @@ import org.whalebank.backend.global.openfeign.bank.response.InquiryResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ParkingBalanceResponse;
 import org.whalebank.backend.global.openfeign.bank.response.ReissueResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse;
+import org.whalebank.backend.global.openfeign.bank.response.VerifyResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.WithdrawResponse;
 
 @FeignClient(name = "whalebank", url = "${whale.bank.url}/whale/bank", configuration = OpenFeignConfig.class)
@@ -105,5 +107,13 @@ public interface BankClient {
       @RequestHeader("Authorization") String token,
       @RequestBody AccountIdRequestDto request
   );
+
+  // 계좌 비밀번호 일치 여부 확인
+  @PostMapping("/accounts/password-verify")
+  ResponseEntity<VerifyResponseDto> verifyAccountPassword(
+      @RequestHeader("Authorization") String token,
+      @RequestBody VerifyRequestDto request
+  );
+
 
 }

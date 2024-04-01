@@ -22,4 +22,6 @@ public interface FriendService {
 
 
   List<PendingRequestDto> findAllPendingRequest(String loginId);
+
+  void deleteFriend(String loginId, int friendId);
 }

@@ -1,13 +1,14 @@
 package org.whalebank.backend.domain.mission.service;
 
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
 import org.whalebank.backend.domain.account.service.AccountService;
-import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
@@ -141,4 +142,17 @@ public class MissionServiceImpl implements MissionService {
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
     return group;
   }
+
+  // 만료된 미션 실패 처리
+  @Transactional
+  @Scheduled(cron = "0 0 0 * * *")
+  public void setExpiredMissionStatusFail() {
+    // 만료날짜가 어제인 미션들 중 진행중인 미션만 가져옴
+    LocalDate yesterday = LocalDate.now().minusDays(1);
+    // 실패 처리
+    for (MissionEntity mission : missionRepository.findAllByStatusAndDeadlineDate(0, yesterday)) {
+      mission.manageMission(2); // fail
+    }
+  }
+
 }

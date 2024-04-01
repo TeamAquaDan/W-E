@@ -10,4 +10,8 @@ public interface AuthRepository extends JpaRepository<UserEntity, Integer> {
 
   Optional<UserEntity> findByPhoneNumAndUserName(String phoneNum, String username);
 
+  boolean existsByUserCi(String userCI);
+
+  boolean existsByLoginId(String loginId);
+
 }
