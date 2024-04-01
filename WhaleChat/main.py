@@ -13,7 +13,7 @@ class UserInput(BaseModel):
 async def test():
     async with httpx.AsyncClient(timeout=180.0) as client:
         response = await client.get("http://222.107.238.75:8000/gpu/test")
-        return response
+        return JSONResponse(status_code=response.status_code, content=response.json())
     return "fastapi 성공"
 
 
@@ -30,4 +30,4 @@ async def chat(input_data: UserInput):
     # gpu서버로 요청 전송
     async with httpx.AsyncClient(timeout=180.0) as client:
         response = await client.post(gpu_server_url, json=data)
-        return JSONResponse(status_code=200, content=response.json())
+        return JSONResponse(status_code=response.status_code, content=response.json())
