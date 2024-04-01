@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AccountBookCard2 extends StatelessWidget {
+class AccountBookCard extends StatelessWidget {
   final List<dynamic> data;
-  const AccountBookCard2({super.key, required this.data});
+  const AccountBookCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    // print('ㅂㄴㅊㅂㄴㅊㅂㄴㅊㄴㅂ $data');
     final formatter = NumberFormat('###,###,###,### 원');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),

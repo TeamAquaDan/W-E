@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 class PieChartSample2 extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -12,58 +13,81 @@ class PieChartSample2 extends StatefulWidget {
 
 class PieChart2State extends State<PieChartSample2> {
   int touchedIndex = -1;
-
+  final formatter = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: Row(
-        children: <Widget>[
-          const SizedBox(
-            width: 28,
-          ),
-          Expanded(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: PieChart(
-                PieChartData(
-                  pieTouchData: PieTouchData(
-                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                      setState(() {
-                        if (!event.isInterestedForInteractions ||
-                            pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
-                          touchedIndex = -1;
-                          return;
-                        }
-                        touchedIndex = pieTouchResponse
-                            .touchedSection!.touchedSectionIndex;
-                      });
-                    },
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 1.4,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: PieChart(
+                    PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                          setState(() {
+                            if (!event.isInterestedForInteractions ||
+                                pieTouchResponse == null ||
+                                pieTouchResponse.touchedSection == null) {
+                              touchedIndex = -1;
+                              return;
+                            }
+                            touchedIndex = pieTouchResponse
+                                .touchedSection!.touchedSectionIndex;
+                          });
+                        },
+                      ),
+                      borderData: FlBorderData(
+                        show: false,
+                      ),
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 40,
+                      sections: showingSections(),
+                    ),
                   ),
-                  borderData: FlBorderData(
-                    show: false,
-                  ),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 40,
-                  sections: showingSections(),
                 ),
               ),
-            ),
+              // const SizedBox(height: 80),
+            ],
           ),
-          const SizedBox(
-            width: 18,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 24),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    '전체',
+                    style: TextStyle(
+                      color: Color(0xFF919191),
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    formatter.format(widget.data['expense_amt']),
+                    style: const TextStyle(
+                      color: Color(0xFF919191),
+                      fontSize: 20,
+                    ),
+                  )
+                ],
+              ),
+              const Divider()
+            ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildIndicators(),
-          ),
-          const SizedBox(
-            width: 18,
-          ),
-        ],
-      ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _buildIndicators(),
+        ),
+      ],
     );
   }
 
@@ -138,13 +162,13 @@ class PieChart2State extends State<PieChartSample2> {
     final Map<String, int> categoryExpenses =
         Map<String, int>.from(widget.data['statistics_list']);
     final List<Widget> indicators = [];
-
-    categoryExpenses.forEach((category, _) {
+    categoryExpenses.forEach((category, value) {
       final color = getColorByCategory(category);
       final text = getCategoryName(category);
+      final money = value;
       indicators.add(
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 24),
           child: Row(
             children: <Widget>[
               Container(
@@ -154,7 +178,15 @@ class PieChart2State extends State<PieChartSample2> {
               ),
               const SizedBox(width: 8),
               Text(
-                text,
+                '$text ${(money / widget.data['expense_amt'] * 100).toStringAsFixed(2)}%',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                formatter.format(money),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

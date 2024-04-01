@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/account_book/widgets/chart2.dart';
+import 'package:frontend/screens/chart_page/widgets/chart2.dart';
 
 class AccountBookChart extends StatefulWidget {
   const AccountBookChart({super.key, required this.data});
@@ -15,7 +15,9 @@ class _AccountBookChartState extends State<AccountBookChart> {
       child: widget.data.isEmpty
           ? const CircularProgressIndicator()
           : Column(
-              children: [PieChartSample2(data: widget.data['data'])],
+              children: [
+                PieChartSample2(data: widget.data['data']),
+              ],
             ),
     );
   }

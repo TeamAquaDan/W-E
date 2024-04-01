@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/form_account_book.dart';
-import 'package:frontend/screens/account_book/widgets/account_book_card2.dart';
-import 'package:frontend/screens/account_book/widgets/table.dart';
+import 'package:frontend/screens/account_book/widgets/account_book_card.dart';
+import 'package:frontend/screens/chart_page/chart_page.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -84,9 +84,24 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
         ? Container()
         : Scaffold(
             appBar: AppBar(
+              // automaticallyImplyLeading: false,
               title: Row(
                 children: [
+                  const Spacer(),
                   const Text('가계부'),
+                  const Spacer(),
+                  TextButton(
+                      onPressed: () {
+                        Get.to(() => const ChartPage());
+                      },
+                      child: const Text(
+                        '통계',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 22,
+                        ),
+                      )),
+                  // const ChartPage(),
                   const Spacer(),
                   IconButton(
                       onPressed: () {
@@ -315,7 +330,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                     ),
                   ),
 
-                  AccountBookCard2(
+                  AccountBookCard(
                     data: filteredData ?? [],
                   )
                 ],
