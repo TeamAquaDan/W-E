@@ -45,6 +45,7 @@ public class DutchpayEntity {
 
   private String accountPassword;  // 출금 계좌 비밀번호
 
+  @ColumnDefault("0")
   private int totalAmt;   // 내 결제 총액
 
   @ManyToOne(fetch = FetchType.LAZY)
