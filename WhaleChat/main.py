@@ -40,7 +40,9 @@ def check_word_num():
 def daily_word():
     word = words_random.iloc[word_num]['inputs']
     response = words_random.iloc[word_num]['response']
-    data = {word: response}
+    data = {"word": word,
+            "response": response,
+            }
     return JSONResponse(status_code=200, content=data)
 
 @app.post("/fastapi/chatbot")
