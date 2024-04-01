@@ -28,5 +28,5 @@ async def chat(input_data: UserInput):
     
     # gpu서버로 요청 전송
     async with httpx.AsyncClient(timeout=60.0) as client:
-        response = await client.post(gpu_server_url, json=data)
+        response = await client.post(gpu_server_url, data=data)
     return JSONResponse(status_code=200, content=response.json())
