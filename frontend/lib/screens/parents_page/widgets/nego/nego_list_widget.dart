@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/nego/nego_list_api.dart';
-import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/screens/parents_page/widgets/nego/nego_card.dart';
-import 'package:get/get.dart';
 
 class NegoListWidget extends StatefulWidget {
   final int groupId;

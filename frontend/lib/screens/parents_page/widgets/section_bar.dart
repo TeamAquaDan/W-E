@@ -45,7 +45,7 @@ class SectionBar extends StatelessWidget {
   void toParentsChildren(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ChildrenManagePage2()),
+      MaterialPageRoute(builder: (context) => const ChildrenManagePage2()),
     );
   }
 }

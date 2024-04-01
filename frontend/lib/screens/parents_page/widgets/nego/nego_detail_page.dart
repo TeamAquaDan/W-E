@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/nego/nego_list_api.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:get/get.dart';
@@ -117,7 +116,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           backgroundColor:
                               const Color.fromARGB(255, 153, 153, 153),
                           shape: RoundedRectangleBorder(
@@ -145,7 +144,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           backgroundColor: const Color(0xFF568EF8),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12.0)),

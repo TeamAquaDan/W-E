@@ -7,7 +7,9 @@ Future<String> request() async {
   print('${baseURL}test/hello');
   Response response;
   // response = await dio.get('https://j10e103.p.ssafy.io/api/hello');
-  response = await dio.get('${baseURL}api/hello');
+  response = await dio.get('https://j10e103.p.ssafy.io/fastapi/dailyword');
+  // response = await dio.post('http://j10e103.p.ssafy.io:8282/fastapi/chatbot',
+  // data: {'user_input': 'AI는 뭘로 구성했어?'});
   print(response.data.toString());
 
   return response.data; // hello world

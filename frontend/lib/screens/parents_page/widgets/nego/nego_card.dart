@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/api/nego/nego_list_api.dart';
-import 'package:frontend/screens/parents_page/parent_page.dart';
 import 'package:frontend/screens/parents_page/widgets/nego/nego_detail_page.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +26,7 @@ class NegoCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 '새로운 용돈 인상 신청이 왔어요!',
                 style: TextStyle(
                   color: Colors.white,
@@ -39,7 +37,7 @@ class NegoCard extends StatelessWidget {
               ),
               Text(
                 '요청 금액 : ${nego['nego_amt']}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 17,
                   fontFamily: 'SB Aggro',

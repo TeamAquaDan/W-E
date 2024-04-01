@@ -110,7 +110,7 @@ class MenuPage extends StatelessWidget {
               child: const Text('더치페이 ')),
           ElevatedButton(
               onPressed: () {
-                Get.to(ChildrenManagePage2());
+                Get.to(const ChildrenManagePage2());
               },
               child: const Text('자녀 조회 페이지')),
         ],

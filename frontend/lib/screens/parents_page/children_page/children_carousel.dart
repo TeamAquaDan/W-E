@@ -7,7 +7,7 @@ import 'package:frontend/screens/parents_page/children_page/widgets/add_child_fo
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
 
 class ChildrenManagePage2 extends StatefulWidget {
-  ChildrenManagePage2({super.key});
+  const ChildrenManagePage2({super.key});
 
   @override
   State<StatefulWidget> createState() {

@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
