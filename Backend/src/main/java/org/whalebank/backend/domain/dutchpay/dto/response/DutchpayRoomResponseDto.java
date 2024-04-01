@@ -19,6 +19,7 @@ public class DutchpayRoomResponseDto {
   private int member_num; // 총 인원수
   private List<String> profile_img; // 친구 프로필사진
 
+
   public static DutchpayRoomResponseDto from(DutchpayRoomEntity dutchpayRoom,
       List<String> profileImg) {
     return DutchpayRoomResponseDto
