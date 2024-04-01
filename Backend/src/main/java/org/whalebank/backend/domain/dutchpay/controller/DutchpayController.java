@@ -3,6 +3,7 @@ package org.whalebank.backend.domain.dutchpay.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,7 +53,9 @@ public class DutchpayController {
   @PostMapping("/my-payments")
   public ApiResponse<List<PaymentResponseDto>> getPayments(
       @AuthenticationPrincipal UserDetails loginUser,
-      @RequestParam int dutchpayRoomId) {
+      @RequestBody Map<String, Integer> requestBody) {
+
+    int dutchpayRoomId = requestBody.get("room_id");
 
     return ApiResponse.ok("결제 내역 조회 성공",
         dutchpayService.getPayments(loginUser.getUsername(), dutchpayRoomId));
