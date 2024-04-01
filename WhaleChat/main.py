@@ -1,12 +1,10 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-
+import httpx, asyncio
 
 app = FastAPI()
 
-model = AutoModelForCausalLM.from_pretrained('/app/model')
-tokenizer = AutoTokenizer.from_pretrained('/app/model')
 
 class UserInput(BaseModel):
     user_input: str
@@ -17,31 +15,18 @@ def test():
 
 
 @app.post("/fastapi/chatbot")
-def chat(input_data: UserInput):
+async def chat(input_data: UserInput):
     user_input = input_data.user_input
+    gpu_server_url = "http://70.12.130.131:8001/gpu/chatbot"
+
+    template = "이 시스템은 금융과 관련된 용어를 설명하는 시스템입니다. 금용용어을 어려워하는 어린이들을 위해 금융 용어들을 쉽게 설명해야합니다.그리고 we가 제공하는 서비스에 대해 명확하게 설명해야합니다. "
+    
     if not user_input:
-        raise HTTPException(status_code=400, detail="user_input은 비어 있을 수 없습니다.")
+        raise HTTPException(status_code=400, detail="질문은 비어 있을 수 없습니다.")
 
-    template = "당신은 w-e 서비스의 주요기능을 설명하고 금융용어를 쉽게 설명해주는 웨일뱅크의 청소년 선생이야. 주어진 질문에 이해하기 쉽게 설명해. "
-    question = user_input
-    question = template+question
-    # 질문을 토크나이저로 인코딩하여 모델에 입력 가능한 형태로 변환
-    input_ids = tokenizer.encode(question, return_tensors='pt')
-
-    # 답변 생성
-    output_ids = model.generate(
-        input_ids,
-        do_sample=False,
-        max_length=200,
-        num_beams=5,
-        pad_token_id=tokenizer.eos_token_id,
-        temperature=0.7,
-        # top_k=top_k,
-        top_p=0.9,
-        num_return_sequences=1,
-        no_repeat_ngram_size=2,
-    )
-
-    # 생성된 답변 디코딩
-    response = tokenizer.decode(output_ids[0], skip_special_tokens=True)
-    return {"response": response}
+    data = {"question": template + user_input}
+    
+    # gpu서버로 요청 전송
+    async with httpx.AsyncClient() as client:
+        response = await client.post(gpu_server_url, json=data)
+    return JSONResponse(status_code=200, content=response.json())
