@@ -86,7 +86,8 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
   }
 
   void _showAccountSelection() {
-    showAccountCarouselDialog(context, (String accountId, String accountName) {
+    showAccountCarouselDialog(context,
+        (String accountId, String accountName, String accountNum) {
       // 계좌 ID와 이름을 상태 변수에 저장
       print("Selected Account ID: $accountId, Account Name: $accountName");
       setState(() {

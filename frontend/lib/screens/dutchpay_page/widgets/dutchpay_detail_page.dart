@@ -53,37 +53,105 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
       appBar: AppBar(
         title: const Text('Dutch Pay Detail Page'),
       ),
-      body: ListView.builder(
-        itemCount: dutchpayDetail.length,
-        itemBuilder: (context, index) {
-          var detail = dutchpayDetail[index];
-          return ListTile(
-            leading: detail['profile_image'] == null
-                ? const CircleAvatar(child: Icon(Icons.person))
-                : CircleAvatar(
-                    backgroundImage: NetworkImage(detail['profile_image'])),
-            title: Text(detail['user_name']),
-            subtitle: Text('Total Amount: ${detail['total_amt']}'),
-            trailing: detail['_completed']
-                ? const Icon(Icons.check, color: Colors.green)
-                : const Icon(Icons.close, color: Colors.red),
-            tileColor: detail['_login_user']
-                ? Colors.lightBlue.shade100
-                : null, // _login_user가 true면 배경색을 달리함
-            onTap: () {
-              if (detail['_login_user']) {
-                Get.to(() => DutchPayMyPaymentPage(
-                      roomId: widget.roomId,
-                    ));
-              } else {
-                Get.to(() => DutchPayPaymentPage(
-                      roomId: widget.roomId,
-                      dutchpayId: detail['dutchpay_id'],
-                    ));
-              }
-            },
-          );
-        },
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: dutchpayDetail.length,
+              itemBuilder: (context, index) {
+                var detail = dutchpayDetail[index];
+                return ListTile(
+                  leading: detail['profile_image'] == null
+                      ? const CircleAvatar(child: Icon(Icons.person))
+                      : CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(detail['profile_image'])),
+                  title: Text(detail['user_name']),
+                  subtitle: Text('Total Amount: ${detail['total_amt']}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      detail['_completed'] == false
+                          ? TextButton(
+                              onPressed: () {
+                                final DioService dioService = DioService();
+                                try {
+                                  var response = dioService.dio.patch(
+                                      '${baseURL}api/dutchpay/self/${detail['dutchpay_id']}',
+                                      data: {
+                                        'account_num': '010334567890',
+                                        'account_password': '7948'
+                                      });
+                                  print(response);
+                                } catch (err) {
+                                  print(err);
+                                }
+                              },
+                              child: Text('강제정산'))
+                          : SizedBox(width: 0, height: 0),
+                      detail['_register']
+                          ? const Icon(Icons.check, color: Colors.green)
+                          : const Icon(Icons.close, color: Colors.red),
+                    ],
+                  ),
+                  tileColor: detail['_login_user']
+                      ? Colors.lightBlue.shade100
+                      : null, // _login_user가 true면 배경색을 달리함
+                  onTap: () {
+                    if (detail['_login_user']) {
+                      Get.to(() => DutchPayMyPaymentPage(
+                            roomId: widget.roomId,
+                          ));
+                    } else {
+                      Get.to(() => DutchPayPaymentPage(
+                            roomId: widget.roomId,
+                            dutchpayId: detail['dutchpay_id'],
+                          ));
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+          TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('정산하기'),
+                      content: Text('정산을 진행하시겠습니까?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('No'),
+                          onPressed: () {
+                            // "No"를 선택했을 때의 행동
+                            Navigator.of(context).pop(); // 대화상자 닫기
+                          },
+                        ),
+                        TextButton(
+                          child: Text('Yes'),
+                          onPressed: () {
+                            // "Yes"를 선택했을 때의 행동
+                            final DioService dioService = DioService();
+                            try {
+                              var response = dioService.dio.patch(
+                                  '${baseURL}api/dutchpay/${widget.roomId}');
+                              print(response);
+                            } catch (err) {
+                              print(err);
+                            }
+                            Navigator.of(context).pop(); // 대화상자 닫기
+                            // 정산 로직을 여기에 구현...
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text('정산하기'))
+        ],
       ),
     );
   }
