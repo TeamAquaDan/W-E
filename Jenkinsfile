@@ -6,26 +6,26 @@ pipeline {
     }
 
     stages {
-        // stage('Build WhaleChat'){
-        //     steps {
-        //         echo 'Building WhaleChat'
-        //         dir('WhaleChat') {
-        //             sh 'docker build -t chat .'
-        //         }
-        //     }
-        // }
+        stage('Build WhaleChat'){
+            steps {
+                echo 'Building WhaleChat'
+                dir('WhaleChat') {
+                    sh 'docker build -t chat .'
+                }
+            }
+        }
 
-        // stage('Deploy WhaleChat') {
-        //     steps {
-        //         // 배포 관련 작업을 여기에 추가
-        //         echo 'Deploying WhaleChat...'
-        //         // 빌드가 진행되면 기존의 컨테이너 중지 및 제거 & 컨테이너가 없어도 실패하지 않고계속 수행
-        //         sh 'docker stop chat || true'
-        //         sh 'docker rm chat || true'
-        //         // 백엔드 이미지 실행
-        //         sh 'docker run -d -p 8000:8000 -v /home/ubuntu/we_model/we_model:/app/model --name chat chat'
-        //     }
-        // }
+        stage('Deploy WhaleChat') {
+            steps {
+                // 배포 관련 작업을 여기에 추가
+                echo 'Deploying WhaleChat...'
+                // 빌드가 진행되면 기존의 컨테이너 중지 및 제거 & 컨테이너가 없어도 실패하지 않고계속 수행
+                sh 'docker stop chat || true'
+                sh 'docker rm chat || true'
+                // 백엔드 이미지 실행
+                sh 'docker run -d -p 8282:8282 -v /home/ubuntu/we_model/we_model:/app/model --name chat chat'
+            }
+        }
         // 빌드
         stage('Build Service') {
             steps {
