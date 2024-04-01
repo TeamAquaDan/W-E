@@ -1,7 +1,28 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_url.dart';
+import 'package:frontend/api/test_html.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final TextEditingController _controller = TextEditingController();
+  Future<String> postChatBot(String userInput) async {
+    debugPrint('postChatBot');
+    Response response;
+    // response = await dio.get('${baseURL}fastapi/dailyword');
+    response = await dio
+        .post('${baseURL}fastapi/chatbot', data: {'user_input': userInput});
+
+    print(response.data.toString());
+
+    return response.data['response'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +34,7 @@ class ChatPage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: messages.length, 
+              itemCount: messages.length,
               itemBuilder: (context, index) {
                 final message = messages[index];
                 return ChatBubble(
@@ -28,23 +49,43 @@ class ChatPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: TextField(
+                    controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Type a message...',
+                      hintText: '챗봇과 대화를 시작하세요!',
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: () {
-                    // Send message logic
+                  onPressed: () async {
+                    setState(() {
+                      messages.add(
+                        Message(
+                          text: _controller.text,
+                          isBotMessage: false,
+                          timestamp: '10:00 AM',
+                        ),
+                      );
+                    });
+                    String res = await postChatBot(_controller.text);
+                    setState(() {
+                      messages.add(
+                        Message(
+                          text: res,
+                          isBotMessage: true,
+                          timestamp: '10:00 AM',
+                        ),
+                      );
+                    });
+                    // _controller.clear();
                   },
                   child: const Text('Send'),
                 ),
               ],
             ),
-          ),          
+          ),
         ],
       ),
     );
@@ -56,7 +97,8 @@ class ChatBubble extends StatelessWidget {
   final bool isBotMessage;
   final String timestamp;
 
-  const ChatBubble({super.key, 
+  const ChatBubble({
+    super.key,
     required this.message,
     required this.isBotMessage,
     required this.timestamp,

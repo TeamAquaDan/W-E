@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/dailyword.dart';
 import 'package:frontend/screens/dutchpay_page/dutchpay_page.dart';
 import 'package:frontend/screens/parents_page/children_page/children_carousel.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
@@ -52,7 +53,7 @@ class MenuPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              var res = await request();
+              var res = await requestTest();
               Get.snackbar('통신 테스트 결과', res);
             },
             child: const Text('get요청 테스트'),
@@ -113,6 +114,11 @@ class MenuPage extends StatelessWidget {
                 Get.to(const ChildrenManagePage2());
               },
               child: const Text('자녀 조회 페이지')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(const DailyWord());
+              },
+              child: const Text('일일 단어')),
         ],
       ),
     );
