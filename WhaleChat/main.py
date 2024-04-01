@@ -24,7 +24,7 @@ async def chat(input_data: UserInput):
     if not user_input:
         raise HTTPException(status_code=400, detail="질문은 비어 있을 수 없습니다.")
 
-    data = {"question": template + user_input}
+    data = {"user_input": template + user_input}
     
     # gpu서버로 요청 전송
     async with httpx.AsyncClient() as client:
