@@ -5,7 +5,7 @@ import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:intl/intl.dart';
 
 class SavingGoalAccountCarousel extends StatelessWidget {
-  final Function(String, String) onSelectAccount;
+  final Function(String, String, String) onSelectAccount;
 
   const SavingGoalAccountCarousel({super.key, required this.onSelectAccount});
 
@@ -18,8 +18,8 @@ class SavingGoalAccountCarousel extends StatelessWidget {
       return formatter.format(number);
     }
 
-    Future<void> showConfirmationDialog(
-        BuildContext context, String accountId, String accountName) async {
+    Future<void> showConfirmationDialog(BuildContext context, String accountId,
+        String accountName, String accountNum) async {
       bool? confirmed = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
@@ -34,7 +34,8 @@ class SavingGoalAccountCarousel extends StatelessWidget {
               TextButton(
                 child: const Text('확인'),
                 onPressed: () {
-                  onSelectAccount(accountId, accountName); // 콜백 함수 호출
+                  onSelectAccount(
+                      accountId, accountName, accountNum); // 콜백 함수 호출
                   Navigator.of(context).pop(true); // 확인 후 다이얼로그 닫기
                 },
               ),
@@ -65,6 +66,7 @@ class SavingGoalAccountCarousel extends StatelessWidget {
                       context,
                       account['account_id'].toString(),
                       account['account_name'].toString(),
+                      account['account_num'].toString(),
                     ),
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -136,7 +138,7 @@ class SavingGoalAccountCarousel extends StatelessWidget {
 }
 
 void showAccountCarouselDialog(
-    BuildContext context, Function(String, String) onSelectAccount) {
+    BuildContext context, Function(String, String, String) onSelectAccount) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
