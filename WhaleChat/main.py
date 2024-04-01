@@ -12,7 +12,7 @@ class UserInput(BaseModel):
 @app.get("/fastapi/test")
 async def test():
     async with httpx.AsyncClient(timeout=180.0) as client:
-        response = await client.post("http://222.107.238.75:8000/gpu/test")
+        response = await client.get("http://222.107.238.75:8000/gpu/test")
         return response
     return "fastapi 성공"
 
