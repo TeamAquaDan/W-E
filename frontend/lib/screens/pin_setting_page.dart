@@ -33,7 +33,7 @@ class _SetPinPageState extends State<SetPinPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: <Widget>[
+          children: <Widget>[ 
             TextField(
               controller: _pinController,
               obscureText: true,

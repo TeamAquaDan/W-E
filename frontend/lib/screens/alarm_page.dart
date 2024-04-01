@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../models/store/user/user_controller.dart';
 import '../services/dio_service.dart';
 import '../api/base_url.dart';
+import 'dutchpay_page/dutchpay_page.dart';
+import 'friends_page/my_friends_page.dart';
+import 'mission_page/my_mission_page.dart';
+import 'parents_page/parent_page.dart';
+import 'parents_page/widgets/nego/nego_detail_page.dart';
+import 'profile_page/my_profile_page.dart';
+import 'salary_page/salary_list_page.dart';
 
 class AlarmPage extends StatefulWidget {
   const AlarmPage({super.key});
@@ -17,6 +26,49 @@ class _AlarmPageState extends State<AlarmPage> {
   void initState() {
     super.initState();
     notifications = fetchNotifications();
+  }
+
+  void navigateBasedOnCategory(String category) {
+    print(category);
+    switch (category) {
+      case '100':
+        Get.to(() => const MyFriendsPage());
+        break;
+      case '101':
+        Get.to(() => const MyFriendsPage());
+        break;
+      case '300':
+        Get.to(() => const MyMissionPage());
+        break;
+      case '301':
+        Get.to(() => const MyMissionPage());
+        break;
+      case '400':
+        Get.to(() => const ParentPage());
+        break;
+      case '401':
+        Get.to(() => const SalaryListPage());
+        break;
+      case '500':
+        Get.to(() => const DutchPayPage());
+        break;
+      case '501':
+        Get.to(() => const DutchPayPage());
+        break;
+      case '502':
+        Get.to(() => const DutchPayPage());
+        break;
+      case '600':
+        var userId = Get.find<UserController>().getUserId();
+        Get.to(() => MyProfilePage(userId: userId));
+        break;
+      case '700':
+        Get.to(() => const SalaryListPage());
+        break;
+      default:
+        Get.to(() => const AlarmPage());
+        break;
+    }
   }
 
   Future<List<Notification>> fetchNotifications() async {
@@ -80,8 +132,9 @@ class _AlarmPageState extends State<AlarmPage> {
                       setState(() {
                         notifications = fetchNotifications();
                       });
-                      // 알림에 따른 페이지 이동 로직 추가...
                     }
+                    // 알림에 따른 페이지 이동 로직 추가...
+                      navigateBasedOnCategory(notification.category);
                   },
                 );
               },

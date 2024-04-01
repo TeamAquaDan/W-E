@@ -30,7 +30,24 @@ class _SignUpPageState extends State<SignUpPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.')),
       );
-      return; // 함수 실행 중단
+      return;
+    }
+    // 아이디 형식 검증
+    if (!RegExp(r'^[a-zA-Z0-9]{5,20}$').hasMatch(_loginIdController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('아이디는 5~20자의 영문자와 숫자만 사용 가능합니다.')),
+      );
+      return;
+    }
+
+    // 비밀번호 형식 검증
+    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$')
+        .hasMatch(_passwordController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('비밀번호는 최소 8자 이상이며, 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.')),
+      );
+      return;
     }
     bool success = await _authService.signUp(
       _loginIdController.text,

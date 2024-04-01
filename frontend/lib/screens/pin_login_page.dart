@@ -7,7 +7,9 @@ import 'package:frontend/screens/login_page.dart';
 import 'dart:developer' as developer;
 import 'alarm_page.dart';
 import 'child_page/child_page.dart';
+import 'dutchpay_page/dutchpay_page.dart';
 import 'friends_page/my_friends_page.dart';
+import 'mission_page/my_mission_page.dart';
 import 'parents_page/parent_page.dart';
 import 'pin_setting_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -85,19 +87,43 @@ class _PinLoginPageState extends State<PinLoginPage> {
       // 여기에 실제 페이지 이동 로직 추가
       if (category != null) {
         switch (category) {
-          case '100':
-            Get.to(() => const MyFriendsPage());
-            break;
-          case '400':
-            Get.to(() => const SalaryListPage());
-            break;
-          case '600':
-            var userId = Get.find<UserController>().getUserId();
-            Get.to(() => MyProfilePage(userId: userId));
-            break;
-          default:
-            Get.to(() => const AlarmPage());
-            break;
+      case '100':
+        Get.to(() => const MyFriendsPage());
+        break;
+      case '101':
+        Get.to(() => const MyFriendsPage());
+        break;
+      case '300':
+        Get.to(() => const MyMissionPage());
+        break;
+      case '301':
+        Get.to(() => const MyMissionPage());
+        break;
+      case '400':
+        Get.to(() => const ParentPage());
+        break;
+      case '401':
+        Get.to(() => const SalaryListPage());
+        break;
+      case '500':
+        Get.to(() => const DutchPayPage());
+        break;
+      case '501':
+        Get.to(() => const DutchPayPage());
+        break;
+      case '502':
+        Get.to(() => const DutchPayPage());
+        break;
+      case '600':
+        var userId = Get.find<UserController>().getUserId();
+        Get.to(() => MyProfilePage(userId: userId));
+        break;
+      case '700':
+        Get.to(() => const SalaryListPage());
+        break;
+      default:
+        Get.to(() => const AlarmPage());
+        break;
         }
       }
     }
