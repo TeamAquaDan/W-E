@@ -27,7 +27,7 @@ class AccountBookCard2 extends StatelessWidget {
                         height: 0,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 12),
                     Text(
                       x['account_book_title'],
                       style: TextStyle(
@@ -40,9 +40,13 @@ class AccountBookCard2 extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      '- ${formatter.format((x['account_book_amt']))}',
+                      x['account_book_category'] == '100'
+                          ? '+ ${formatter.format((x['account_book_amt']))}'
+                          : '- ${formatter.format((x['account_book_amt']))}',
                       style: TextStyle(
-                        color: Color(0xFF0C0C0C),
+                        color: x['account_book_category'] == '100'
+                            ? Color(0xFF568EF8)
+                            : Color(0xFF0C0C0C),
                         fontSize: 20,
                         fontFamily: 'SB Aggro',
                         fontWeight: FontWeight.w400,

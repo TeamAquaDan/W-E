@@ -60,22 +60,25 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    switch (tabState) {
-      case 0:
-        filteredData = responseData['data']['account_book_list'];
-        break;
-      case 1:
-        filteredData = responseData['data']['account_book_list']
-            .where((item) => item['account_book_category'] == '100')
-            .toList();
-        break;
-      case 2:
-        filteredData = responseData['data']['account_book_list']
-            .where((item) => item['account_book_category'] != '100')
-            .toList();
-        break;
-      default:
-        filteredData = responseData['data']['account_book_list'];
+    if (responseData != null && responseData['data'] != null) {
+      filteredData = responseData['data']['account_book_list'];
+      switch (tabState) {
+        case 0:
+          filteredData = responseData['data']['account_book_list'];
+          break;
+        case 1:
+          filteredData = responseData['data']['account_book_list']
+              .where((item) => item['account_book_category'] == '100')
+              .toList();
+          break;
+        case 2:
+          filteredData = responseData['data']['account_book_list']
+              .where((item) => item['account_book_category'] != '100')
+              .toList();
+          break;
+        default:
+          filteredData = responseData['data']['account_book_list'];
+      }
     }
     return _isLoading
         ? Container()
@@ -204,12 +207,12 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: ElevatedButton(
+                          child: FilledButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   tabState == 0
                                       ? Color(0xFF568EF8)
-                                      : Colors.white),
+                                      : Color(0xFFD9D9D9)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -239,12 +242,12 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                           ),
                         ),
                         Expanded(
-                          child: ElevatedButton(
+                          child: FilledButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   tabState == 1
                                       ? Color(0xFF568EF8)
-                                      : Colors.white),
+                                      : Color(0xFFD9D9D9)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -274,12 +277,12 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                           ),
                         ),
                         Expanded(
-                          child: ElevatedButton(
+                          child: FilledButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   tabState == 2
                                       ? Color(0xFF568EF8)
-                                      : Colors.white),
+                                      : Color(0xFFD9D9D9)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
