@@ -98,7 +98,7 @@ public class DutchpayServiceImpl implements DutchpayService {
       dutchpayRepository.save(dutchpay);
 
       fcmUtils.sendNotificationByToken(member, FCMRequestDto.of("더치페이 방에 초대되었어요!",
-          dutchpayRoom.getDutchpayDate().toString() + " 더치페이 방이 만들어졌어요",
+          "더치페이 방 " + dutchpayRoom.getRoomName() + "이 만들어졌어요",
           FCMCategory.INCREASE_REQUEST_RESULT));
     }
 
@@ -199,7 +199,7 @@ public class DutchpayServiceImpl implements DutchpayService {
           .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
       fcmUtils.sendNotificationByToken(manager, FCMRequestDto.of("정산을 시작해볼까요?",
-          "모든 멤버들이 " + dutchpayRoom.getDutchpayDate().toString() + " 정산 내역을 등록했어요",
+          dutchpayRoom.getRoomName() + "의 모든 참여자들이 정산 내역을 등록했어요",
           FCMCategory.START_DUTCHPAY));
     }
   }
@@ -341,7 +341,7 @@ public class DutchpayServiceImpl implements DutchpayService {
 
         fcmUtils.sendNotificationByToken(member,
             FCMRequestDto.of("정산이 끝났어요!",
-                dutchpayRoom.getDutchpayDate().toString() + " 정산이 완료되었어요",
+                dutchpayRoom.getRoomName() + " 방의 정산이 완료되었어요",
                 FCMCategory.DUTCHPAY_COMPLETED));
 
       }
