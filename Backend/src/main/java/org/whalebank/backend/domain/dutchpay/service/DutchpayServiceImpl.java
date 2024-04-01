@@ -333,6 +333,22 @@ public class DutchpayServiceImpl implements DutchpayService {
     // 개인별 정산 금액 계산하는 함수
     calculateDutchpayAmount(dutchpayList);
 
+    if (dutchpayRoom.getCompleted_count() == dutchpayList.size()) {
+
+      for (DutchpayEntity dutchpay : dutchpayList) {
+
+        UserEntity member = dutchpay.getUser();
+
+        fcmUtils.sendNotificationByToken(member,
+            FCMRequestDto.of("정산이 끝났어요!",
+                dutchpayRoom.getDutchpayDate().toString() + " 정산이 완료되었어요",
+                FCMCategory.DUTCHPAY_COMPLETED));
+
+      }
+
+      dutchpayRoom.setCompleted(true);
+    }
+
     return dutchpayList.stream()
         .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user, dutchpayList.size()))
         .collect(Collectors.toList());
