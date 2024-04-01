@@ -18,6 +18,7 @@ public class NegoListResponseDto {
   public int status; // 0(대기중), 1(승인), 2(거절)
   public String comment; // 승인/거절 사유
   public int allowance_amt; // 요청 당시 용돈 금액
+  public String nego_reason; // 용돈 인상 요청 이유
 
   public static NegoListResponseDto from(NegotiationEntity entity) {
     return NegoListResponseDto.builder()
@@ -28,6 +29,7 @@ public class NegoListResponseDto {
         .status(entity.getStatus())
         .comment((entity.getStatus()==0) ? null : entity.getNegoComment())
         .allowance_amt(entity.getCurrentAllowanceAmt())
+        .nego_reason(entity.getNegoReason())
         .build();
   }
 
