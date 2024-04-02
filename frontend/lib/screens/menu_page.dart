@@ -16,6 +16,8 @@ import 'package:frontend/screens/saving_goal_page/my_saving_goal_page.dart';
 import 'package:frontend/screens/salary_page/salary_list_page.dart';
 
 import 'alarm_page.dart';
+import 'child_menu_page.dart';
+import 'parent_menu_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -119,6 +121,16 @@ class MenuPage extends StatelessWidget {
                 Get.to(const DailyWord());
               },
               child: const Text('일일 단어')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(ChildMenuPage());
+              },
+              child: const Text('자녀 메뉴')),
+          ElevatedButton(
+              onPressed: () {
+                Get.to(ParentMenuPage());
+              },
+              child: const Text('부모 메뉴')),
         ],
       ),
     );

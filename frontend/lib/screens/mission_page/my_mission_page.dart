@@ -71,13 +71,8 @@ class _MyMissionPageState extends State<MyMissionPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //   icon: const Icon(Icons.arrow_back),
-          //   onPressed: () {
-          //     // 액션 추가
-          //   },
-          // ),
           title: const Text('미션 목록'),
+          centerTitle: true,
           bottom: const TabBar(
             unselectedLabelColor: Colors.grey,
             labelColor: Colors.black,
@@ -111,12 +106,24 @@ class _MyMissionPageState extends State<MyMissionPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
-                  child: Text(
-                    '미션으로 ${formatNumber(totalOngoingMissionReward)}원을 얻을 수 있어요!',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '미션으로',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '총 ${formatNumber(totalOngoingMissionReward)}원을 얻을 수 있어요!',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Expanded(
@@ -140,12 +147,24 @@ class _MyMissionPageState extends State<MyMissionPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
-                  child: Text(
-                    '지금까지 미션으로 ${formatNumber(totalCompletedMissionReward)}원을 얻었어요!',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '미션으로',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '총 ${formatNumber(totalCompletedMissionReward)}원을 얻었어요!',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Expanded(

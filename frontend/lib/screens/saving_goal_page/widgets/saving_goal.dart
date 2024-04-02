@@ -30,14 +30,6 @@ class SavingGoal extends StatelessWidget {
     return formatter.format(number);
   }
 
-  Color formatColor(int status) {
-    if (status == 1) {
-      return const Color.fromARGB(255, 104, 178, 101);
-    } else {
-      return const Color.fromARGB(255, 211, 106, 106);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return status == 0
@@ -45,7 +37,7 @@ class SavingGoal extends StatelessWidget {
             children: [
               Container(
                 decoration: ShapeDecoration(
-                  color: const Color(0xff97d8ff),
+                  color: const Color(0xff568EF8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -56,38 +48,56 @@ class SavingGoal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 5), // 상단과 제목 사이의 간격 (상단에는 빈 공간이 있어서 5로 설정
                     Row(
                       children: [
                         Text(
                           goalName,
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30), // 제목과 진행 바 사이의 간격
+                    const SizedBox(height: 5), // 제목과 진행 바 사이의 간격
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        '${percentage.toStringAsFixed(2)}%',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5), // 백분율과 진행 바 사이의 간격
+                    LinearProgressIndicator(
+                      value: percentage / 100, // 70% 진행
+                      backgroundColor: const Color(0xFFF4F9FB),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xFF46A1F5)),
+                      minHeight: 5,
+                    ),
+                    const SizedBox(height: 10), // 진행 바와 금액 사이의 간격
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
                           '현재 금액',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
                           '${formatNumber(savedAmt)} 원',
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -99,44 +109,24 @@ class SavingGoal extends StatelessWidget {
                         const Text(
                           '목표 금액',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
                           '${formatNumber(goalAmt)} 원',
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10), // 진행 바 상단의 간격
-                    LinearProgressIndicator(
-                      value: percentage / 100, // 70% 진행
-                      backgroundColor: const Color(0xFFF4F9FB),
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color(0xFF46A1F5)),
-                      minHeight: 5,
-                    ),
+
                     const SizedBox(height: 5), // 진행 바와 백분율 사이의 간격
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        '$percentage%',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -146,7 +136,7 @@ class SavingGoal extends StatelessWidget {
             children: [
               Container(
                 decoration: ShapeDecoration(
-                  color: formatColor(status),
+                  color: const Color(0xffE8E8E8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -157,33 +147,56 @@ class SavingGoal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      goalName,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
+                    SizedBox(height: 5), // 상단과 제목 사이의 간격 (상단에는 빈 공간이 있어서 5로 설정
+                    Row(
+                      children: [
+                        Text(
+                          goalName,
+                          style: const TextStyle(
+                            color: Color(0xff919191),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5), // 제목과 진행 바 사이의 간격
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        '${percentage.toStringAsFixed(2)}%',
+                        style: const TextStyle(
+                          color: Color(0xff919191),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
+                    SizedBox(height: 5), // 백분율과 진행 바 사이의 간격
+                    LinearProgressIndicator(
+                      value: percentage / 100, // 70% 진행
+                      backgroundColor: const Color(0xFFF4F9FB),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xFF919191)),
+                      minHeight: 5,
+                    ),
+                    const SizedBox(height: 10), // 진행 바와 금액 사이의 간격
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          '인출 금액',
+                          '현재 금액',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Color(0xff919191),
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          '$savedAmt 원',
+                          '${formatNumber(savedAmt)} 원',
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Color(0xff919191),
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -195,46 +208,24 @@ class SavingGoal extends StatelessWidget {
                         const Text(
                           '목표 금액',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Color(0xff919191),
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          '$goalAmt 원',
+                          '${formatNumber(goalAmt)} 원',
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
+                            color: Color(0xff919191),
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          '인출 날짜',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          withdrawDate,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                    const SizedBox(height: 10), // 진행 바 상단의 간격
+
+                    const SizedBox(height: 5), // 진행 바와 백분율 사이의 간격
                   ],
                 ),
               ),

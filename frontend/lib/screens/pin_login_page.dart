@@ -7,6 +7,7 @@ import 'package:frontend/screens/login_page.dart';
 import 'dart:developer' as developer;
 import 'alarm_page.dart';
 import 'child_page/child_page.dart';
+import 'dailyword.dart';
 import 'dutchpay_page/dutchpay_page.dart';
 import 'friends_page/my_friends_page.dart';
 import 'mission_page/my_mission_page.dart';

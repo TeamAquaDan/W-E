@@ -132,6 +132,7 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('저축 목표'),
+          centerTitle: true,
           bottom: const TabBar(
             unselectedLabelColor: Colors.grey,
             labelColor: Colors.black,

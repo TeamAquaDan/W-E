@@ -44,6 +44,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
           child: SingleChildScrollView(
             // 스크롤 가능한 뷰 추가
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start, // 자식 위젯들을 왼쪽 정렬
               children: [
                 // 타이틀 텍스트
@@ -54,8 +55,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                         text: widget.groupNickname,
                         style: const TextStyle(
                           color: Color(0xFF0014FF),
-                          fontSize: 20,
-                          fontFamily: 'Roboto',
+                          fontSize: 23,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -63,8 +63,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                         text: ' (${widget.userName}) ',
                         style: const TextStyle(
                           color: Color(0xFF8B7777),
-                          fontSize: 20,
-                          fontFamily: 'Roboto',
+                          fontSize: 23,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -72,8 +71,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                         text: '님께',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: 'Roboto',
+                          fontSize: 23,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -86,8 +84,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                   '${formatNumber(widget.negoAmt)}원을',
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Roboto',
+                    fontSize: 23,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -97,8 +94,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                   '요청할래요!',
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Roboto',
+                    fontSize: 23,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -114,7 +110,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                     fontSize: 20,
                   ),
                   decoration: InputDecoration(
-                    hintText: "이유를 입력하세요",
+                    hintText: "이유를 작성해주세요",
                     hintStyle: const TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255)),
                     fillColor: const Color.fromARGB(179, 86, 77, 77),
@@ -124,17 +120,18 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  maxLines: 7, // 여러 줄의 텍스트 입력을 허용
+                  maxLines: 9, // 여러 줄의 텍스트 입력을 허용
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
                 // 요청하기 버튼
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0014FF), // 버튼 색상
+                      backgroundColor: const Color(0xFF568EF8), // 버튼 색상
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(10),
                       ),
+                      minimumSize: Size(double.infinity, 50),
                     ),
                     onPressed: () async {
                       print(_textController.text);
@@ -158,9 +155,8 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                       '요청하기',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),

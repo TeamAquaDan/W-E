@@ -15,17 +15,49 @@ Future<String?> showChangeNicknameFriendsDialog(BuildContext context,
           controller: nicknameController,
           decoration: const InputDecoration(
             hintText: '새로운 별칭을 입력하세요',
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue),
+            ),
           ),
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('취소'),
+            child: const Text(
+              '취소',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            style: TextButton.styleFrom(
+              backgroundColor: Color(0xFF999999),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           TextButton(
-            child: const Text('확인'),
+            child: const Text(
+              '확인',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            style: TextButton.styleFrom(
+              backgroundColor: Color(0xFF568EF8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
             onPressed: () async {
               // async 추가
               final DioService dioService = DioService();
