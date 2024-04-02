@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.notification.FCMCategory;
 import org.whalebank.backend.domain.notification.NotificationEntity;
@@ -59,6 +60,14 @@ public class NotiServiceimpl implements NotiService{
       if (!entity.isRead()) {
         entity.readNotification();
       }
+    }
+  }
+
+  @Scheduled(cron = "0 0 10 * * *")
+  public void sendTodayWordNotification() {
+    for(UserEntity user : userRepository.findAll()) {
+      if(user.getFcmToken() == null) continue;
+      fcmUtils.sendNotificationByToken(user,FCMRequestDto.of("오늘의 금융 단어는?","오늘의 단어를 확인해보세요!",FCMCategory.TODAY_WORD));
     }
   }
 }

@@ -26,7 +26,7 @@ public class AutoPaymentUtils {
   private final AccountService accountService;
   private final FcmUtils fcmUtils;
 
-  @Scheduled(cron = "0 0 10 * * *")
+  @Scheduled(cron = "0 30 10 * * *")
   public void allowanceAutoPayment() {
     // 오늘 날짜에 해당하는 자동이체만 가져와서
     LocalDate today = LocalDate.now();
