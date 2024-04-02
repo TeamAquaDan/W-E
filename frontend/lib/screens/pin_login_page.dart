@@ -185,7 +185,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 40,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
@@ -237,7 +237,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),

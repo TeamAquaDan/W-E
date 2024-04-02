@@ -15,6 +15,8 @@ import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'screens/alarm_page.dart';
+import 'screens/bank_history_page/bank_history_page.dart';
+import 'screens/bank_history_page/widgets/bank_history_table.dart';
 import 'screens/dailyword.dart';
 import 'screens/dutchpay_page/dutchpay_page.dart';
 import 'screens/friends_page/my_friends_page.dart';
@@ -59,6 +61,9 @@ void handleNotificationClick(RemoteMessage? message, bool isLoggedIn) {
         case '101':
           Get.to(() => const MyFriendsPage());
           break;
+        // case '200':
+        //   Get.to(() => const BankHistoryTable());
+        //   break;
         case '300':
           Get.to(() => const MyMissionPage());
           break;

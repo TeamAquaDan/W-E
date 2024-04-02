@@ -105,7 +105,7 @@ class _AlarmPageState extends State<AlarmPage> {
               style: TextStyle(
                 color: Color(0xFF4D4D4D),
                 fontSize: 15,
-                fontFamily: 'SB Aggro',
+                fontFamily: 'Aggro',
                 fontWeight: FontWeight.w400,
                 height: 0,
               ),
@@ -150,7 +150,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                   ? Color(0xFF919191)
                                   : Colors.white,
                               fontSize: 17,
-                              fontFamily: 'SB Aggro',
+                              fontFamily: 'Aggro',
                               fontWeight: FontWeight.w400,
                               height: 0,
                             ),
@@ -162,7 +162,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                   ? Color(0xFF919191)
                                   : Colors.white,
                               fontSize: 17,
-                              fontFamily: 'SB Aggro',
+                              fontFamily: 'Aggro',
                               fontWeight: FontWeight.w400,
                               height: 0,
                             ),
