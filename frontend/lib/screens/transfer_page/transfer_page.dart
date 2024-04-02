@@ -109,8 +109,8 @@ class TransferPageState extends State<TransferPage> {
                     child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: '계좌번호',
-                          labelStyle: TextStyle(fontSize: 16),
-                          border: OutlineInputBorder(),
+                          // labelStyle: TextStyle(fontSize: 16),
+                          // border: OutlineInputBorder(),
                         ),
                         onSaved: (newValue) {
                           setState(() => account_num = newValue!);
