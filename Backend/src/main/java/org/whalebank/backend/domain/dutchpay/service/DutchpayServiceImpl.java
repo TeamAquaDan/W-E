@@ -99,7 +99,7 @@ public class DutchpayServiceImpl implements DutchpayService {
 
       fcmUtils.sendNotificationByToken(member, FCMRequestDto.of("더치페이 방에 초대되었어요!",
           "더치페이 방 " + dutchpayRoom.getRoomName() + "이 만들어졌어요",
-          FCMCategory.INCREASE_REQUEST_RESULT));
+          FCMCategory.DUTCHPAY_ROOM_CREATE));
     }
 
     // 요청으로 들어온 친구 목록의 프로필 사진이 리턴값에 포함
