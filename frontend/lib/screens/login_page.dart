@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
 import 'package:frontend/screens/parents_page/parent_page.dart';
+import 'package:frontend/widgets/auth_text_field.dart';
 import '../services/auth_service.dart';
 import 'signup_page.dart';
 import 'pin_login_page.dart';
@@ -169,105 +170,17 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    TextField(
-                      controller: loginIdController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        ), // 테두리 설정
-                        fillColor: Color(0xFFF4F6FB), // 배경색 설정
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          borderSide: BorderSide(
-                            color: _isLoginFailed
-                                ? Colors.red
-                                : Colors.grey, // 로그인 실패 시 테두리 색상을 빨간색으로 설정
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          borderSide: BorderSide(
-                            color: _isLoginFailed
-                                ? Colors.red
-                                : Color(
-                                    0xFF568EF8), // 로그인 실패 시 테두리 색상을 빨간색으로 설정
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Positioned(
-                      left: 16,
-                      top: 10.20,
-                      child: Text(
-                        '아이디',
-                        style: TextStyle(
-                          color: Color(0xFF505050),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 0.11,
-                          letterSpacing: 0.40,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                AuthTextField(
+                    controller: loginIdController,
+                    isFailed: _isLoginFailed,
+                    label: '아이디',
+                    isBlind: false),
                 const SizedBox(height: 15),
-                Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    TextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          borderSide: BorderSide(
-                            color: _isLoginFailed
-                                ? Colors.red
-                                : Colors.grey, // 로그인 실패 시 테두리 색상을 빨간색으로 설정
-                          ), // 모서리 둥글게 설정
-                        ), // 테두리 설정
-                        fillColor: Color(0xFFF4F6FB), // 배경색 설정
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          borderSide: BorderSide(
-                            color: _isLoginFailed
-                                ? Colors.red
-                                : Colors.grey, // 로그인 실패 시 테두리 색상을 빨간색으로 설정
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          borderSide: BorderSide(
-                            color: _isLoginFailed
-                                ? Colors.red
-                                : Color(
-                                    0xFF568EF8), // 로그인 실패 시 테두리 색상을 빨간색으로 설정
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Positioned(
-                      left: 16,
-                      top: 10.20,
-                      child: Text(
-                        '비밀번호',
-                        style: TextStyle(
-                          color: Color(0xFF505050),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 0.11,
-                          letterSpacing: 0.40,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                AuthTextField(
+                    controller: passwordController,
+                    isFailed: _isLoginFailed,
+                    label: '비밀번호',
+                    isBlind: true),
                 const SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,

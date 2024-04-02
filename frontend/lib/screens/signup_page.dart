@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/auth_text_field.dart';
 import '../services/auth_service.dart';
 import 'login_page.dart';
 import 'dart:developer' as developer;
@@ -22,7 +23,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final _birthdateController = TextEditingController();
   final _rrNumberController = TextEditingController();
   final AuthService _authService = AuthService();
-
+  bool isFailed = false;
+  final FocusNode _birthdateFocusNode = FocusNode();
+  final FocusNode _rrNumberFocusNode = FocusNode();
   Future<void> _signUp() async {
     // 비밀번호와 비밀번호 확인이 같은지 확인
     if (_passwordController.text != _confirmPasswordController.text) {
@@ -101,33 +104,47 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
-              TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(labelText: '실명'),
-              ),
+              AuthTextField(
+                  controller: _usernameController,
+                  isFailed: isFailed,
+                  label: '실명',
+                  isBlind: false),
               TextField(
                 controller: _birthdateController,
                 decoration: const InputDecoration(labelText: '주민번호 앞 6자리'),
+                maxLength: 6,
+                keyboardType: TextInputType.number,
+                focusNode: _birthdateFocusNode,
+                onChanged: (value) {
+                  if (_birthdateController.text.length >= 6) {
+                    _birthdateFocusNode.unfocus();
+                    FocusScope.of(context).requestFocus(_rrNumberFocusNode);
+                  }
+                },
               ),
               TextField(
                 controller: _rrNumberController,
                 decoration: const InputDecoration(labelText: '주민번호 뒷 7자리'),
+                maxLength: 7,
+                keyboardType: TextInputType.number,
                 obscureText: true,
+                focusNode: _rrNumberFocusNode,
               ),
-              TextField(
-                controller: _loginIdController,
-                decoration: const InputDecoration(labelText: '아이디'),
-              ),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: '비밀번호'),
-                obscureText: true,
-              ),
-              TextField(
-                controller: _confirmPasswordController,
-                decoration: const InputDecoration(labelText: '비밀번호 확인'),
-                obscureText: true,
-              ),
+              AuthTextField(
+                  controller: _loginIdController,
+                  isFailed: isFailed,
+                  label: '아이디',
+                  isBlind: false),
+              AuthTextField(
+                  controller: _passwordController,
+                  isFailed: isFailed,
+                  label: '비밀번호',
+                  isBlind: true),
+              AuthTextField(
+                  controller: _confirmPasswordController,
+                  isFailed: isFailed,
+                  label: '비밀번호 확인',
+                  isBlind: true),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
