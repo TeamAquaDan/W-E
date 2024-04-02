@@ -44,22 +44,34 @@ class Mission extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF7A97FF),
+              color: const Color(0xFF568EF8),
               borderRadius: BorderRadius.circular(20),
             ),
             margin: const EdgeInsets.fromLTRB(16, 18, 16, 0),
-            padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 17),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  missionName,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w700,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      missionName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${formatNumber(missionReward)}원',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,35 +79,17 @@ class Mission extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'D-$dDay ',
+                          'D - $dDay ',
                           style: const TextStyle(
-                            fontSize: 22,
-                            fontFamily: 'Roboto',
+                            fontSize: 30,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(
-                          '~${formatDeadlineDate(deadlineDate)}',
-                          style: const TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 16,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
                       ],
-                    ),
-                    Text(
-                      '${formatNumber(missionReward)}원',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                      ),
                     ),
                   ],
                 ),
@@ -105,7 +99,7 @@ class Mission extends StatelessWidget {
         ],
       );
     } else {
-      Color missionColor = missionStatus == 1 ? Colors.green : Colors.red;
+      Color missionColor = Color(0xFFE8E8E8);
       return Column(
         children: [
           Container(
@@ -118,33 +112,44 @@ class Mission extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  missionName,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w700,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      missionName,
+                      style: const TextStyle(
+                        color: Color(0xFF919191),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    missionStatus == 1
+                        ? Icon(
+                            Icons.check,
+                            color: Color(0xFF919191),
+                          )
+                        : Icon(
+                            Icons.close,
+                            color: Color(0xFF919191),
+                          )
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      formatDeadlineDate(deadlineDate),
+                      '${formatNumber(missionReward)}원',
                       style: const TextStyle(
-                        color: Color(0xFF555555),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
+                        color: Color(0xFF919191),
+                        fontSize: 22,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     Text(
-                      '${formatNumber(missionReward)}원',
+                      '종료',
                       style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontFamily: 'Roboto',
+                        color: Color(0xFF919191),
+                        fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

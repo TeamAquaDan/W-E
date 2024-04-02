@@ -24,9 +24,12 @@ class Friends extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xFF568EF8),
+          ),
+          height: 70,
           margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-          color: const Color.fromARGB(255, 255, 255, 255),
           child: Row(
             children: [
               Padding(
@@ -47,6 +50,7 @@ class Friends extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(width: 20),
               Expanded(
                 // 첫 번째 텍스트와 두 번째 텍스트를 담을 공간 확장
                 child: Row(
@@ -55,9 +59,8 @@ class Friends extends StatelessWidget {
                     Text(
                       friendNickname.isEmpty ? friendName : friendNickname,
                       style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Roboto',
+                        color: Colors.white,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -65,9 +68,8 @@ class Friends extends StatelessWidget {
                     Text(
                       '($friendName)',
                       style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Roboto',
+                        color: Colors.white,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -77,20 +79,12 @@ class Friends extends StatelessWidget {
                             friendId, loadFriendsCallback);
                       },
                       icon: const Icon(Icons.edit),
-                      color: Colors.grey[500],
+                      color: Colors.white38,
                     )
                   ],
                 ),
               ),
-              Text(
-                '@ $friendLoginId',
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 101, 92, 92),
-                  fontSize: 16,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+
               const SizedBox(width: 24), // 오른쪽 여백 조정
             ],
           ),
