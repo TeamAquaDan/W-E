@@ -5,6 +5,7 @@ import 'package:frontend/screens/saving_goal_page/widgets/saving_goal.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_detail.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_none_noadd.dart';
 import 'package:frontend/screens/saving_goal_page/widgets/saving_goal_plus.dart';
+import 'package:frontend/widgets/custom_tab_bar.dart';
 import 'package:get/get.dart';
 
 class MySavingGoalPage extends StatefulWidget {
@@ -18,11 +19,18 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
   late List<Map<String, dynamic>> mySavingGoals = []; // 여기에 API 응답 데이터를 저장합니다.
   bool isLoading = true;
   final GoalListController goalListController = Get.put(GoalListController());
+  int selectedTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
     loadSavingGoals(); // initState에서 데이터 로딩을 시작합니다.
+  }
+
+  void onTabChanged(int index) {
+    setState(() {
+      selectedTabIndex = index;
+    });
   }
 
   Future<void> loadSavingGoals() async {
@@ -133,54 +141,34 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         appBar: AppBar(
           title: const Text('저축 목표'),
           centerTitle: true,
-          bottom: const TabBar(
-            unselectedLabelColor: Colors.grey,
-            labelColor: Colors.black,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: Colors.transparent,
-            tabs: [
-              Tab(
-                child: Text(
-                  '현재 목표',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  '지난 목표',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight),
+            child: CustomTabBar(
+              selectedTabIndex: selectedTabIndex,
+              onTabChanged: onTabChanged,
+              tabLabels: ['현재 목표', '지난 목표'],
+            ),
           ),
         ),
-        body: TabBarView(
-          children: [
+        body: selectedTabIndex == 0
+            ?
             // 현재 진행중인 목표 탭
             ListView(
-              children: [
-                ...currentGoalWidgets,
-                SavingGoalPlus(
-                  onAddGoal: reloadGoals,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-            ListView(
-              children: [
-                ...completedGoalWidgets,
-              ],
-            ),
-          ],
-        ),
+                children: [
+                  ...currentGoalWidgets,
+                  SavingGoalPlus(
+                    onAddGoal: reloadGoals,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              )
+            : ListView(
+                children: [
+                  ...completedGoalWidgets,
+                ],
+              ),
       ),
     );
   }
