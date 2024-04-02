@@ -12,7 +12,6 @@ import 'profile_page/my_profile_page.dart';
 import 'salary_page/salary_list_page.dart';
 import 'saving_goal_page/my_saving_goal_page.dart';
 
-
 class ParentMenuPage extends StatelessWidget {
   final AuthService _authService = AuthService();
 
@@ -27,9 +26,9 @@ class ParentMenuPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
         child: ListView(
-          children: [            
+          children: [
             ListTile(
-              title: const Text('내 자녀 목록'), 
+              title: const Text('내 아이 목록'),
               onTap: () {
                 // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
                 Get.to(() => const ChildrenManagePage2());
@@ -37,7 +36,7 @@ class ParentMenuPage extends StatelessWidget {
             ),
             Divider(color: dividerColor),
             ListTile(
-              title: const Text('오늘의 단어'), 
+              title: const Text('오늘의 단어'),
               onTap: () {
                 // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
                 Get.to(() => const DailyWord());
@@ -49,7 +48,7 @@ class ParentMenuPage extends StatelessWidget {
               onTap: () async {
                 // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
                 await _authService.logout(); // 로그아웃 수행
-                    Get.offAll(() => LoginPage());
+                Get.offAll(() => LoginPage());
               },
             ),
             Divider(color: dividerColor),

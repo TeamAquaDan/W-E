@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
       // 로그인 성공 시, 사용자 역할에 따라 페이지 네비게이션
       if (loginResult.role == 'CHILD') {
-        // 자녀 페이지로 이동
+        // 아이 페이지로 이동
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const ChildPage()),

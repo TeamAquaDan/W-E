@@ -52,10 +52,10 @@ class _AddChildFormState extends State<AddChildForm> {
             children: <Widget>[
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: '자녀의 아이디'),
+                decoration: const InputDecoration(labelText: '아이의 아이디'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '자녀의 아이디를 입력하세요';
+                    return '아이의 아이디를 입력하세요';
                   }
                   return null;
                 },
@@ -222,12 +222,12 @@ class _AddChildFormState extends State<AddChildForm> {
         accountPassword: _accountPassword,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('자녀 정보가 성공적으로 추가되었습니다.')),
+        const SnackBar(content: Text('아이 정보가 성공적으로 추가되었습니다.')),
       );
     } catch (error) {
-      print('자녀 정보 추가 에러: $error');
+      print('아이 정보 추가 에러: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('자녀 정보 추가 중 오류가 발생했습니다.')),
+        const SnackBar(content: Text('아이 정보 추가 중 오류가 발생했습니다.')),
       );
     }
   }

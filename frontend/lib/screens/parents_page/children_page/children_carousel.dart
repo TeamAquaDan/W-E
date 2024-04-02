@@ -73,7 +73,7 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
         : Scaffold(
             appBar: AppBar(
               title: const Text(
-                '내 자녀 조회',
+                '내 아이 조회',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 25,
@@ -98,7 +98,7 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
                             );
                           },
                           icon: const Icon(Icons.add)),
-                      const Text('자녀 추가하기')
+                      const Text('아이 추가하기')
                     ],
                   ),
                   CarouselSlider(

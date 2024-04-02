@@ -27,10 +27,10 @@ class ParentHomePage extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[ 
+            children: <Widget>[
               CarouselWithIndicator(),
               const SizedBox(height: 16),
-              const SectionBar(title: '자녀 용돈 목록'),
+              const SectionBar(title: '아이 용돈 목록'),
               const ChildrenList(),
               // const SizedBox(height: 16),
               // const SectionBar(title: '진행 중인 미션'),
