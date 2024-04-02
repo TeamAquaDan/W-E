@@ -6,6 +6,7 @@ import 'package:frontend/screens/chart_page/widgets/chart.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class ChartPage extends StatefulWidget {
   const ChartPage({super.key});
@@ -65,12 +66,13 @@ class _ChartPageState extends State<ChartPage> {
         : Scaffold(
             appBar: AppBar(
               // automaticallyImplyLeading: false,
+              centerTitle: true,
               title: Row(
                 children: [
                   const Spacer(),
                   TextButton(
                       onPressed: () {
-                        Get.to(() => const AccountBookHomePage());
+                        Get.back();
                       },
                       child: const Text(
                         '가계부',
@@ -95,6 +97,55 @@ class _ChartPageState extends State<ChartPage> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
+                  Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    color: const Color(0xFF568EF8),
+                    child: InkWell(
+                      onTap: () {
+                        showMonthPicker(
+                          context: context,
+                          firstDate: DateTime(DateTime.now().year - 1, 1),
+                          lastDate: DateTime(DateTime.now().year + 1, 12),
+                          initialDate: DateTime.now(),
+                        ).then((date) {
+                          if (date != null) {
+                            year = date.year;
+                            month = date.month;
+                            refreshData(); // 데이터 갱신
+                          }
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '$year년 $month월',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 33,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(width: 32),
+                            const Icon(
+                              Icons.calendar_month,
+                              size: 38.0,
+                              color: Colors.white,
+                            )
+                            // Container(
+                            //   width: 1.5, // 원하는 너비로 설정
+                            //   height: 37,
+                            //   color: Colors.white,
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   AccountBookChart(data: responseChartData),
                   const SizedBox(height: 8),
                 ],

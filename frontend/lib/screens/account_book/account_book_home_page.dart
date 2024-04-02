@@ -85,6 +85,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
         : Scaffold(
             appBar: AppBar(
               // automaticallyImplyLeading: false,
+              centerTitle: true,
               title: Row(
                 children: [
                   const Spacer(),
