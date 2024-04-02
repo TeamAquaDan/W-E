@@ -122,9 +122,6 @@ class _PinLoginPageState extends State<PinLoginPage> {
           case '700':
             Get.to(() => const SalaryListPage());
             break;
-          case '800':
-            Get.to(() => const DailyWord());
-            break;
           default:
             Get.to(() => const AlarmPage());
             break;
@@ -161,65 +158,219 @@ class _PinLoginPageState extends State<PinLoginPage> {
     }
   }
 
+  String pin = '';
   @override
   Widget build(BuildContext context) {
     return WithSecureKeyboard(
       controller: _secureKeyboardController,
       child: Scaffold(
-        appBar: AppBar(title: const Text('PIN 입력')),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              TextField(
-                // controller: _pinController,
-                controller: _pinController,
-                focusNode: _pinCodeTextFieldFocusNode,
-                enableInteractiveSelection: false,
-                obscureText: true,
-                onTap: () {
-                  _secureKeyboardController.show(
-                    type: SecureKeyboardType.NUMERIC,
-                    focusNode: _pinCodeTextFieldFocusNode,
-                    initText: _pinController.text,
-                    hintText: 'pinCode',
-                    // Use onDoneKeyPressed to allow text to be entered when you press the done key,
-                    // or to do something like encryption.
-                    onDoneKeyPressed: (List<int> charCodes) {
-                      _pinController.text = String.fromCharCodes(charCodes);
+        appBar: AppBar(
+          backgroundColor: Color(0xFF568EF8),
+        ),
+        body: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              // height: 100,
+              decoration: BoxDecoration(color: Color(0xFF568EF8)),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                    child: Text(
+                      '간편로그인',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontFamily: 'SB Aggro',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              children: <Widget>[
+                GestureDetector(
+                    onTap: () {
+                      showPinKeyBoard();
                     },
-                  );
-                },
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'PIN 입력'),
-              ),
-              ElevatedButton(
-                onPressed: _checkPin,
-                child: const Text('로그인'),
-              ),
-              TextButton(
-                onPressed: _navigatedToPinSetting,
-                child: const Text('PIN 설정'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await _authService.logout(); // 로그아웃 수행
-                  developer.log('로그아웃 되었습니다.', name: 'logout');
-                  Get.offAll(() => LoginPage());
+                    child: PinKeyboard(
+                      pinController: _pinController,
+                    )),
+                Opacity(
+                  opacity: 1.0,
+                  child: TextField(
+                    maxLength: 6,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     pin = value;
+                    //   });
+                    // },
+                    // controller: _pinController,
+                    controller: _pinController,
+                    focusNode: _pinCodeTextFieldFocusNode,
+                    enableInteractiveSelection: false,
+                    obscureText: true,
+                    onTap: () {
+                      showPinKeyBoard();
+                    },
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'PIN 입력'),
+                  ),
+                ),
+                Container(
+                  width: 300.0,
+                  height: 56.0,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF568EF8), // 버튼의 배경색
+                    ),
+                    onPressed: _checkPin,
+                    child: const Text(
+                      '로그인',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'SB Aggro',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: _navigatedToPinSetting,
+                  child: const Text(
+                    'PIN 설정',
+                    style: TextStyle(
+                      color: Color(0xFF568EF8),
+                      // fontSize: 16,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await _authService.logout(); // 로그아웃 수행
+                    developer.log('로그아웃 되었습니다.', name: 'logout');
 
-                  // 로그아웃 후 리다이렉션 처리, 예: 로그인 페이지로 이동
-                  // Navigator.of(context).pushReplacement(
-                  //   MaterialPageRoute(
-                  //       builder: (context) =>
-                  //           const LoginPage()), // LoginPage는 로그인 페이지의 클래스 이름입니다. 실제 앱에 맞게 조정해야 합니다.
-                  // );
-                },
-                child: const Text('로그아웃'),
-              )
-            ],
-          ),
+                    // 로그아웃 후 리다이렉션 처리, 예: 로그인 페이지로 이동
+                    Get.offAll(() => const LoginPage());
+                  },
+                  child: const Text('로그아웃'),
+                )
+              ],
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  void showPinKeyBoard() {
+    _secureKeyboardController.show(
+      type: SecureKeyboardType.NUMERIC,
+      focusNode: _pinCodeTextFieldFocusNode,
+      onKeyPressed: (SecureKeyboardKey key) {
+        if (key.action == SecureKeyboardKeyAction.BACKSPACE) {
+          if (_pinController.text.isNotEmpty) {
+            _pinController.text = _pinController.text
+                .substring(0, _pinController.text.length - 1);
+            pin = _pinController.text;
+          }
+        } else if (key.action == SecureKeyboardKeyAction.CLEAR) {
+          _pinController.text = '';
+          pin = _pinController.text;
+        } else {
+          if (_pinController.text.length < 6) {
+            _pinController.text += key.text ?? '';
+            pin = _pinController.text;
+          }
+        }
+      },
+    );
+  }
+  // void showPinKeyBoard() {
+  //   _secureKeyboardController.show(
+  //     type: SecureKeyboardType.NUMERIC,
+  //     focusNode: _pinCodeTextFieldFocusNode,
+  //     // initText: _pinController.text,
+  //     // hintText: 'pinCode',
+  //     onKeyPressed: (SecureKeyboardKey key) {
+  //       if (key.action == SecureKeyboardKeyAction.BACKSPACE) {
+  //         setState(() {
+  //           if (_pinController.text.isNotEmpty) {
+  //             _pinController.text = _pinController.text
+  //                 .substring(0, _pinController.text.length - 1);
+  //             pin = _pinController.text;
+  //           }
+  //         });
+  //       } else if (key.action == SecureKeyboardKeyAction.CLEAR) {
+  //         setState(() {
+  //           _pinController.text = '';
+  //           pin = _pinController.text;
+  //         });
+  //       } else {
+  //         if (pin.length < 6) {
+  //           setState(() {
+  //             pin += key.text ?? '';
+  //             _pinController.text = pin;
+  //           });
+  //         }
+  //       }
+  //     },
+  //     // onDoneKeyPressed: (List<int> charCodes) {
+  //     //   _pinController.text = String.fromCharCodes(charCodes);
+  //     // },
+  //   );
+  // }
+}
+
+class PinKeyboard extends StatefulWidget {
+  final TextEditingController pinController;
+
+  PinKeyboard({required this.pinController});
+
+  @override
+  _PinKeyboardState createState() => _PinKeyboardState();
+}
+
+class _PinKeyboardState extends State<PinKeyboard> {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: widget.pinController,
+      builder: (context, value, child) {
+        return Container(
+          color: Colors.white,
+          height: 200,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+                6,
+                (index) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 30),
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: index < widget.pinController.text.length
+                              ? Colors.blue
+                              : Colors.grey,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )),
+          ),
+        );
+      },
     );
   }
 }

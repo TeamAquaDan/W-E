@@ -92,10 +92,24 @@ class _AlarmPageState extends State<AlarmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('알림 페이지'),
+        title: const Text(
+          '수신함',
+          style: TextStyle(fontSize: 25),
+        ),
+        centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.mark_email_read),
+          TextButton(
+            child: const Text(
+              '모두 읽음',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF4D4D4D),
+                fontSize: 15,
+                fontFamily: 'SB Aggro',
+                fontWeight: FontWeight.w400,
+                height: 0,
+              ),
+            ),
             onPressed: () async {
               await _dioService.dio.patch('${baseURL}api/noti/read-all');
               // 상태 업데이트를 위한 페이지 새로고침
@@ -118,13 +132,45 @@ class _AlarmPageState extends State<AlarmPage> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 Notification notification = snapshot.data![index];
-                return ListTile(
-                  title: Text(notification.name),
-                  subtitle: Text(notification.content),
-                  trailing:
-                      notification.isRead ? null : const Icon(Icons.fiber_new),
-                  tileColor:
-                      notification.isRead ? Colors.white : Colors.grey[300],
+                return InkWell(
+                  child: Card(
+                    color: notification.isRead
+                        ? Color(0xFFE8E8E8)
+                        : Color(0xFF568EF8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 17, horizontal: 23),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            notification.name,
+                            style: TextStyle(
+                              color: notification.isRead
+                                  ? Color(0xFF919191)
+                                  : Colors.white,
+                              fontSize: 17,
+                              fontFamily: 'SB Aggro',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                          Text(
+                            notification.content,
+                            style: TextStyle(
+                              color: notification.isRead
+                                  ? Color(0xFF919191)
+                                  : Colors.white,
+                              fontSize: 17,
+                              fontFamily: 'SB Aggro',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   onTap: () async {
                     // 알림 클릭 시
                     if (!notification.isRead) {
@@ -140,6 +186,28 @@ class _AlarmPageState extends State<AlarmPage> {
                     navigateBasedOnCategory(notification.category);
                   },
                 );
+                // ListTile(
+                //   title: Text(notification.name),
+                //   subtitle: Text(notification.content),
+                //   trailing:
+                //       notification.isRead ? null : const Icon(Icons.fiber_new),
+                //   tileColor:
+                //       notification.isRead ? Colors.white : Colors.grey[300],
+                // onTap: () async {
+                //   // 알림 클릭 시
+                //   if (!notification.isRead) {
+                //     // 알림 클릭 시 로직 구현
+                //     await _dioService.dio
+                //         .patch('${baseURL}api/noti/${notification.notiId}');
+                //     // 상태 업데이트를 위한 페이지 새로고침
+                //     setState(() {
+                //       notifications = fetchNotifications();
+                //     });
+                //   }
+                //   // 알림에 따른 페이지 이동 로직 추가...
+                //   navigateBasedOnCategory(notification.category);
+                // },
+                // );
               },
             );
           }

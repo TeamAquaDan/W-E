@@ -103,7 +103,7 @@ class _TransferPasswordFormState extends State<TransferPasswordForm> {
                           var res =
                               await postTransfer('accessToken', widget.data);
                           if (res == null) {
-                            Get.snackbar('송금 에러', '송금 에러');
+                            Get.snackbar('송금 실패', '비밀번호가 틀렸어요!');
                           } else {
                             if (Get.find<UserRoleController>().getUserRole() ==
                                 'ADULT') {
