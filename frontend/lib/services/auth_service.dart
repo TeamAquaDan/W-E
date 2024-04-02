@@ -5,6 +5,7 @@ import 'dart:developer' as developer;
 import 'package:frontend/main.dart';
 import 'package:frontend/models/store/userRole/user_role.dart';
 import 'package:get/get.dart';
+import 'dio_service.dart';
 
 // 로그인 결과 처리
 class LoginResult {
@@ -18,10 +19,32 @@ class AuthService {
   final Dio _dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final SecurityService _securityService = SecurityService();
+  final DioService _dioService = DioService();
 
   Future<bool> hasPin() async {
     String? pin = await _securityService.getPin();
     return pin != null;
+  }
+
+  Future<bool> refreshToken() async {
+    print('토큰 재발급');
+    try {
+      String? refreshToken = await _storage.read(key: 'refresh_token');
+      if (refreshToken == null) return false;
+
+      final response = await _dioService.dio.post(
+        'https://j10e103.p.ssafy.io/api/auth/reissue',
+        data: {'refresh_token': refreshToken},
+      );
+      if (response.statusCode == 200) {
+        String newAccessToken = response.data['access_token'];
+        await _storage.write(key: 'access_token', value: newAccessToken);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<bool> signUp(String loginId, String password, String username,
