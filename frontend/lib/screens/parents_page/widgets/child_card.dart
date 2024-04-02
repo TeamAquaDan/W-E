@@ -86,7 +86,7 @@ class _ChildCardState extends State<ChildCard> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 30,
-                              fontFamily: 'SB Aggro',
+                              fontFamily: 'Aggro',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -133,7 +133,7 @@ class _ChildCardState extends State<ChildCard> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
-                      fontFamily: 'SB Aggro',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w400,
                       height: 0,
                     ),
@@ -146,7 +146,7 @@ class _ChildCardState extends State<ChildCard> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
-                      fontFamily: 'SB Aggro',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -159,7 +159,7 @@ class _ChildCardState extends State<ChildCard> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontFamily: 'SB Aggro',
+                          fontFamily: 'Aggro',
                           fontWeight: FontWeight.w400,
                         ),
                       ),

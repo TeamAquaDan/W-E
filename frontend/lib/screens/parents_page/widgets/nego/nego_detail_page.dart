@@ -54,7 +54,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                         style: const TextStyle(
                           color: Color(0xFF8B7777),
                           fontSize: 20,
-                          fontFamily: 'Roboto',
+                          fontFamily: 'Aggro',
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -63,7 +63,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Roboto',
+                          fontFamily: 'Aggro',
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -77,7 +77,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
-                    fontFamily: 'Roboto',
+                    fontFamily: 'Aggro',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -88,7 +88,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
-                    fontFamily: 'Roboto',
+                    fontFamily: 'Aggro',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -127,7 +127,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 27.50,
-                            fontFamily: 'SB Aggro',
+                            fontFamily: 'Aggro',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -154,7 +154,7 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 27.50,
-                            fontFamily: 'SB Aggro',
+                            fontFamily: 'Aggro',
                             fontWeight: FontWeight.w400,
                             height: 0,
                           ),

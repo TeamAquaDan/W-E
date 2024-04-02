@@ -48,7 +48,7 @@ class _ChildMissionCardState extends State<ChildMissionCard> {
                       style: TextStyle(
                         color: textColor,
                         fontSize: 30,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -57,7 +57,7 @@ class _ChildMissionCardState extends State<ChildMissionCard> {
                       style: TextStyle(
                         color: textColor,
                         fontSize: 30,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -84,7 +84,7 @@ class _ChildMissionCardState extends State<ChildMissionCard> {
                             style: TextStyle(
                               color: Color(0xFF919191),
                               fontSize: 30,
-                              fontFamily: 'SB Aggro',
+                              fontFamily: 'Aggro',
                               fontWeight: FontWeight.w400,
                             ),
                           )

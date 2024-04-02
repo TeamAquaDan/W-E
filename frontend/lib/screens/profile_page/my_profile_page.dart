@@ -279,7 +279,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 32,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -288,7 +288,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     style: const TextStyle(
                       color: Colors.black, // 색상 코드 수정
                       fontSize: 23,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -299,7 +299,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF4F6FB),
-                      border: Border.all(color: const Color(0xFF616161), width: 0.5),
+                      border: Border.all(
+                          color: const Color(0xFF616161), width: 0.5),
                       borderRadius: BorderRadius.circular(17),
                     ),
                     // 한 줄 소개 표시/편집 컨테이너
@@ -404,10 +405,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       itemBuilder: (context, index) {
                         var comment = myProfileList[0]['guestbook_list'][index];
                         return Container(
-                          margin:
-                              const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 5),
                           child: ListTile(
-                            contentPadding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(20, 5, 10, 5),
                             tileColor: const Color(0xFF568EF8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12.0),
@@ -577,8 +579,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     style: TextButton.styleFrom(
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(0))),
-                      padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이 조절
-                      backgroundColor: const Color(0xFF568EF8), // 버튼 배경색을 파란색으로 설정
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 16), // 버튼 높이 조절
+                      backgroundColor:
+                          const Color(0xFF568EF8), // 버튼 배경색을 파란색으로 설정
                     ),
                     onPressed: () async {
                       if (commentController.text.isNotEmpty) {

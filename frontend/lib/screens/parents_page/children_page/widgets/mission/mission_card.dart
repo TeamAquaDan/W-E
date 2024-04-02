@@ -52,7 +52,7 @@ class _MissionCardState extends State<MissionCard> {
                         style: TextStyle(
                           color: Color(0xFF54595E),
                           fontSize: 24.95,
-                          fontFamily: 'SB Aggro',
+                          fontFamily: 'Aggro',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -81,7 +81,7 @@ class _MissionCardState extends State<MissionCard> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
-                                  fontFamily: 'SB Aggro',
+                                  fontFamily: 'Aggro',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -108,7 +108,7 @@ class _MissionCardState extends State<MissionCard> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
-                                  fontFamily: 'SB Aggro',
+                                  fontFamily: 'Aggro',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -154,7 +154,7 @@ class _MissionCardState extends State<MissionCard> {
                         style: TextStyle(
                           color: textColor,
                           fontSize: 30,
-                          fontFamily: 'SB Aggro',
+                          fontFamily: 'Aggro',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -163,7 +163,7 @@ class _MissionCardState extends State<MissionCard> {
                         style: TextStyle(
                           color: textColor,
                           fontSize: 30,
-                          fontFamily: 'SB Aggro',
+                          fontFamily: 'Aggro',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -190,7 +190,7 @@ class _MissionCardState extends State<MissionCard> {
                               style: TextStyle(
                                 color: Color(0xFF919191),
                                 fontSize: 30,
-                                fontFamily: 'SB Aggro',
+                                fontFamily: 'Aggro',
                                 fontWeight: FontWeight.w400,
                               ),
                             )

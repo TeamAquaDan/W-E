@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
                         // 힌트 텍스트 스타일 설정
                         color: Color.fromARGB(255, 97, 97, 97),
                         fontSize: 13,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                       ),
                       border: OutlineInputBorder(

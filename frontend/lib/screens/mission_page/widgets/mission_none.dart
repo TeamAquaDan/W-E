@@ -22,7 +22,7 @@ class MissionNone extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
-                  fontFamily: 'Roboto',
+                  fontFamily: 'Aggro',
                   fontWeight: FontWeight.w700,
                 ),
                 overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 경우 생략
@@ -51,7 +51,7 @@ class MissionNone extends StatelessWidget {
                     style: TextButton.styleFrom(
                       textStyle: const TextStyle(
                         fontSize: 12,
-                        fontFamily: 'Roboto',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                       ),
                     ),

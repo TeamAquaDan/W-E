@@ -69,7 +69,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                 '자녀 정보 수정하기',
                 style: TextStyle(
                   fontSize: 22,
-                  fontFamily: 'SB Aggro',
+                  fontFamily: 'Aggro',
                   fontWeight: FontWeight.w400,
                   height: 0,
                 ),

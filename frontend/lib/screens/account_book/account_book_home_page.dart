@@ -147,8 +147,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
-                                    fontFamily: 'SB Aggro',
-                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Aggro',
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                                 Text(
@@ -156,8 +156,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 33,
-                                    fontFamily: 'SB Aggro',
-                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Aggro',
+                                    fontWeight: FontWeight.w700,
                                     height: 0,
                                   ),
                                 ),
@@ -181,7 +181,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
-                                  fontFamily: 'SB Aggro',
+                                  fontFamily: 'Aggro',
                                   fontWeight: FontWeight.w400,
                                   height: 0,
                                 ),
@@ -191,7 +191,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
-                                  fontFamily: 'SB Aggro',
+                                  fontFamily: 'Aggro',
                                   fontWeight: FontWeight.w400,
                                   height: 0,
                                 ),
@@ -248,8 +248,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                     ? Colors.white
                                     : const Color(0xFF919191),
                                 fontSize: 15,
-                                fontFamily: 'SB Aggro',
-                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Aggro',
+                                fontWeight: FontWeight.w700,
                                 height: 0.07,
                                 letterSpacing: 0.40,
                               ),
@@ -283,8 +283,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                     ? Colors.white
                                     : const Color(0xFF919191),
                                 fontSize: 15,
-                                fontFamily: 'SB Aggro',
-                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Aggro',
+                                fontWeight: FontWeight.w700,
                                 height: 0.07,
                                 letterSpacing: 0.40,
                               ),
@@ -318,8 +318,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                     ? Colors.white
                                     : const Color(0xFF919191),
                                 fontSize: 15,
-                                fontFamily: 'SB Aggro',
-                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Aggro',
+                                fontWeight: FontWeight.w700,
                                 height: 0.07,
                                 letterSpacing: 0.40,
                               ),

@@ -70,7 +70,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     style: const TextStyle(
                       color: Color(0xFF0014FF),
                       fontSize: 20,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -80,7 +80,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     style: const TextStyle(
                       color: Color(0xFF8B7777),
                       fontSize: 20,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -90,7 +90,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -123,7 +123,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 20,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -133,7 +133,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
-                    fontFamily: 'Roboto',
+                    fontFamily: 'Aggro',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -146,7 +146,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20,
-                fontFamily: 'Roboto',
+                fontFamily: 'Aggro',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -169,7 +169,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -209,7 +209,7 @@ class _SalaryIncreasePageState extends State<SalaryIncreasePage> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Aggro',
                       fontWeight: FontWeight.w700,
                     ),
                   ),

@@ -77,7 +77,7 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 25,
-                  fontFamily: 'SB Aggro',
+                  fontFamily: 'Aggro',
                   fontWeight: FontWeight.w400,
                 ),
               ),

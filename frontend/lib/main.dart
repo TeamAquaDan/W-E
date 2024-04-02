@@ -243,6 +243,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Auth',
+      theme: ThemeData(
+        fontFamily: 'Aggro',
+      ),
       // theme: ThemeData(
       //   colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3F62DE)),
       //   primarySwatch: Colors.blue,

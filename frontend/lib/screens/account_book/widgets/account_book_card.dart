@@ -21,7 +21,7 @@ class AccountBookCard extends StatelessWidget {
                       x['account_book_dtm'].substring(5),
                       style: const TextStyle(
                         fontSize: 16,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
@@ -32,7 +32,7 @@ class AccountBookCard extends StatelessWidget {
                       style: const TextStyle(
                         color: Color(0xFF0C0C0C),
                         fontSize: 20,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
@@ -47,7 +47,7 @@ class AccountBookCard extends StatelessWidget {
                             ? const Color(0xFF568EF8)
                             : const Color(0xFF0C0C0C),
                         fontSize: 20,
-                        fontFamily: 'SB Aggro',
+                        fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
