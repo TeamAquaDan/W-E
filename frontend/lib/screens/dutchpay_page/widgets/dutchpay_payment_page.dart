@@ -75,7 +75,7 @@ class _DutchPayPaymentPageState extends State<DutchPayPaymentPage> {
               itemBuilder: (BuildContext context, int index) {
                 var payment = payments[index];
                 return ListTile(
-                  title: Text('${payment['member_store_name'].toString()}'),
+                  title: Text(payment['member_store_name'].toString()),
                   subtitle: Text('${payment['trans_amt'].toString()}원'),
                 );
               },

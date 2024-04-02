@@ -40,17 +40,17 @@ class DailyWord extends StatelessWidget {
                   children: [
                     Text(
                       '${snapshot.data!['word']}',
-                      style: TextStyle(fontSize: 32),
+                      style: const TextStyle(fontSize: 32),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       '${snapshot.data!['response']}',
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
                         onPressed: () {
-                          Get.to(() => ChatPage());
+                          Get.to(() => const ChatPage());
                         },
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,

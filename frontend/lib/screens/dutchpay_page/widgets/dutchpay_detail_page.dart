@@ -87,8 +87,8 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                                   print(err);
                                 }
                               },
-                              child: Text('강제정산'))
-                          : SizedBox(width: 0, height: 0),
+                              child: const Text('강제정산'))
+                          : const SizedBox(width: 0, height: 0),
                       detail['_register']
                           ? const Icon(Icons.check, color: Colors.green)
                           : const Icon(Icons.close, color: Colors.red),
@@ -119,18 +119,18 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text('정산하기'),
-                      content: Text('정산을 진행하시겠습니까?'),
+                      title: const Text('정산하기'),
+                      content: const Text('정산을 진행하시겠습니까?'),
                       actions: <Widget>[
                         TextButton(
-                          child: Text('No'),
+                          child: const Text('No'),
                           onPressed: () {
                             // "No"를 선택했을 때의 행동
                             Navigator.of(context).pop(); // 대화상자 닫기
                           },
                         ),
                         TextButton(
-                          child: Text('Yes'),
+                          child: const Text('Yes'),
                           onPressed: () {
                             // "Yes"를 선택했을 때의 행동
                             final DioService dioService = DioService();
@@ -150,7 +150,7 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                   },
                 );
               },
-              child: Text('정산하기'))
+              child: const Text('정산하기'))
         ],
       ),
     );
