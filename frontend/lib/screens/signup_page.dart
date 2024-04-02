@@ -109,49 +109,162 @@ class _SignUpPageState extends State<SignUpPage> {
                   isFailed: isFailed,
                   label: '실명',
                   isBlind: false),
-              TextField(
-                controller: _birthdateController,
-                decoration: const InputDecoration(labelText: '주민번호 앞 6자리'),
-                maxLength: 6,
-                keyboardType: TextInputType.number,
-                focusNode: _birthdateFocusNode,
-                onChanged: (value) {
-                  if (_birthdateController.text.length >= 6) {
-                    _birthdateFocusNode.unfocus();
-                    FocusScope.of(context).requestFocus(_rrNumberFocusNode);
-                  }
-                },
+              const SizedBox(height: 12),
+              Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 360,
+                    height: 64,
+                    // color: const Color(0xFFF4F6FB),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F6FB),
+                      border: Border.all(color: Colors.grey // 테두리 색상
+                          ),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(15) // 모서리 둥글기
+                              ),
+                    ),
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    // ),
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextField(
+                          controller: _birthdateController,
+                          // maxLengthEnforcement: MaxLengthEnforcement.none,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            counterText: '',
+                          ),
+                          maxLength: 6,
+                          keyboardType: TextInputType.number,
+                          focusNode: _birthdateFocusNode,
+                          onChanged: (value) {
+                            if (_birthdateController.text.length >= 6) {
+                              _birthdateFocusNode.unfocus();
+                              FocusScope.of(context)
+                                  .requestFocus(_rrNumberFocusNode);
+                            }
+                          },
+                        ),
+                      ),
+                      const Text(' -  '),
+                      Expanded(
+                        child: TextField(
+                          controller: _rrNumberController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            counterText: '',
+                          ),
+                          maxLength: 7,
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
+                          focusNode: _rrNumberFocusNode,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // TextField(
+
+                  //   decoration: InputDecoration(
+                  //     border: const OutlineInputBorder(
+                  //       borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                  //     ), // 테두리 설정
+                  //     fillColor: const Color(0xFFF4F6FB), // 배경색 설정
+                  //     filled: true,
+
+                  //   ),
+                  // ),
+                  const Positioned(
+                    left: 16,
+                    top: 13,
+                    child: Text(
+                      '주민번호',
+                      style: TextStyle(
+                        color: Color(0xFF505050),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 0.11,
+                        letterSpacing: 0.40,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              TextField(
-                controller: _rrNumberController,
-                decoration: const InputDecoration(labelText: '주민번호 뒷 7자리'),
-                maxLength: 7,
-                keyboardType: TextInputType.number,
-                obscureText: true,
-                focusNode: _rrNumberFocusNode,
-              ),
+              // TextField(
+              //   controller: _birthdateController,
+              //   decoration: const InputDecoration(labelText: '주민번호 앞 6자리'),
+              //   maxLength: 6,
+              //   keyboardType: TextInputType.number,
+              //   focusNode: _birthdateFocusNode,
+              //   onChanged: (value) {
+              //     if (_birthdateController.text.length >= 6) {
+              //       _birthdateFocusNode.unfocus();
+              //       FocusScope.of(context).requestFocus(_rrNumberFocusNode);
+              //     }
+              //   },
+              // ),
+              // TextField(
+              //   controller: _rrNumberController,
+              //   decoration: const InputDecoration(labelText: '주민번호 뒷 7자리'),
+              //   maxLength: 7,
+              //   keyboardType: TextInputType.number,
+              //   obscureText: true,
+              //   focusNode: _rrNumberFocusNode,
+              // ),
+              const SizedBox(height: 12),
               AuthTextField(
                   controller: _loginIdController,
                   isFailed: isFailed,
                   label: '아이디',
                   isBlind: false),
+              const SizedBox(height: 12),
               AuthTextField(
                   controller: _passwordController,
                   isFailed: isFailed,
                   label: '비밀번호',
                   isBlind: true),
+              const SizedBox(height: 12),
               AuthTextField(
                   controller: _confirmPasswordController,
                   isFailed: isFailed,
                   label: '비밀번호 확인',
                   isBlind: true),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _signUp();
-                },
-                child: const Text('회원가입'),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _signUp();
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xFF568EF8)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // 테두리 곡률 설정
+                      ),
+                    ), // 버튼 색상 설정
+                  ),
+                  child: const Text(
+                    '회원가입',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
               ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     _signUp();
+              //   },
+              //   child: const Text('회원가입'),
+              // ),
             ],
           ),
         ),
