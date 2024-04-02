@@ -25,6 +25,7 @@ class _ChatPageState extends State<ChatPage> {
     return response.data['response'];
   }
 
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +47,16 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
+          _isLoading
+              ? const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('답변을 생각하고 있어요!'),
+                    SizedBox(width: 8),
+                    CircularProgressIndicator(),
+                  ],
+                )
+              : Container(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
@@ -97,10 +108,9 @@ class _ChatPageState extends State<ChatPage> {
                             // timestamp: '10:00 AM',
                           ),
                         );
+                        _isLoading = true;
                       });
-
                       String res = await postChatBot(userInput);
-                      _controller.text = '';
                       setState(() {
                         messages.add(
                           Message(
@@ -109,18 +119,19 @@ class _ChatPageState extends State<ChatPage> {
                             // timestamp: '10:00 AM',
                           ),
                         );
+                        _isLoading = false;
                       });
                     },
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all(EdgeInsets.zero),
                       backgroundColor: MaterialStateProperty.all(
-                          Color(0xFF568EF8)), // 배경색 설정
+                          const Color(0xFF568EF8)), // 배경색 설정
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         // 테두리 반경 설정
                         borderRadius: BorderRadius.circular(10),
                       )),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.send,
                       color: Colors.white, // 아이콘 색상을 하얀색으로 변경
                     ),
