@@ -185,7 +185,6 @@ class _PinLoginPageState extends State<PinLoginPage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 40,
-                        fontFamily: 'SB Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
@@ -204,7 +203,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                       pinController: _pinController,
                     )),
                 Opacity(
-                  opacity: 1.0,
+                  opacity: 0.0,
                   child: TextField(
                     maxLength: 6,
                     // onChanged: (value) {
