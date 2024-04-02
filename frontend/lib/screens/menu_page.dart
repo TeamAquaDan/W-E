@@ -64,7 +64,7 @@ class MenuPage extends StatelessWidget {
             onPressed: () {
               Get.to(() => const ChildPage());
             },
-            child: const Text('자녀 페이지'),
+            child: const Text('아이 페이지'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -115,7 +115,7 @@ class MenuPage extends StatelessWidget {
               onPressed: () {
                 Get.to(const ChildrenManagePage2());
               },
-              child: const Text('자녀 조회 페이지')),
+              child: const Text('아이 조회 페이지')),
           ElevatedButton(
               onPressed: () {
                 Get.to(const DailyWord());
@@ -125,7 +125,7 @@ class MenuPage extends StatelessWidget {
               onPressed: () {
                 Get.to(ChildMenuPage());
               },
-              child: const Text('자녀 메뉴')),
+              child: const Text('아이 메뉴')),
           ElevatedButton(
               onPressed: () {
                 Get.to(ParentMenuPage());

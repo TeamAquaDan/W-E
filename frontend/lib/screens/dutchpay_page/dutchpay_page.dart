@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/create_room.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_detail_page.dart';
@@ -46,37 +47,119 @@ class _DutchPayPageState extends State<DutchPayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Dutch Pay Page'),
+          title: const Text('더치페이'),
+          centerTitle: true,
         ),
         body: Column(
           children: [
-            ElevatedButton(
-              onPressed: () {
-                // Action to perform on button press. You could navigate to a page to create a new room.
-                // For example:
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => CreateRoomPage()));
-                Get.to(() => const CreateDutchPayRoom());
-              },
-              child: const Text('Create a new room'),
-            ),
             Expanded(
               child: ListView.builder(
-                itemCount: dutchpayRooms.length,
+                itemCount: dutchpayRooms.length + 1,
                 itemBuilder: (context, index) {
-                  var room = dutchpayRooms[index];
-                  return ListTile(
-                    leading: const Icon(Icons
-                        .room_outlined), // Displays an icon before the title.
-                    title: Text(room['room_name']
-                        .toString()), // Display the name of the room.
+                  if (index < dutchpayRooms.length) {
+                    var room = dutchpayRooms[index];
+                    List<String> profileImages =
+                        (room['profile_img'] as List<dynamic>? ?? [])
+                            .map((imgUrl) =>
+                                imgUrl as String? ?? '${baseProfileURL}')
+                            .toList();
 
-                    // Display the total amount and number of participants below the name.
-                    trailing: const Icon(Icons
-                        .arrow_forward), // Displays an icon at the end of the ListTile.
-                    onTap: () {
-                      Get.to(() => DutchPayDetailPage(roomId: room['room_id']));
-                    },
-                  );
+                    return GestureDetector(
+                      onTap: () {
+                        // Place your navigation or action here
+                        Get.to(
+                            () => DutchPayDetailPage(roomId: room['room_id']));
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.all(8), // 카드 주변의 여백을 설정합니다.
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Color(0xff568EF8),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 18, horizontal: 26),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${room['room_name']}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                '${room['dutchpay_date'].toString().replaceAll('-', '.')}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                height: 60, // Set a fixed height for the Stack
+                                child: Stack(
+                                  children: profileImages.map((imgUrl) {
+                                    int index = profileImages.indexOf(imgUrl);
+                                    return Positioned(
+                                      right: 30.0 *
+                                          index, // This will give a cascading effect
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            imgUrl == null
+                                                ? '${baseProfileURL}'
+                                                : imgUrl),
+                                        radius:
+                                            25, // Adjust the size of each avatar
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Color(0xff568EF8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 22, horizontal: 16),
+                        child: Column(
+                          children: [
+                            Text(
+                              '더치페이 시작하기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            SizedBox(height: 15),
+                            IconButton(
+                              onPressed: () {
+                                Get.to(() => const CreateDutchPayRoom());
+                              },
+                              icon: const Icon(Icons.add_circle_rounded),
+                              color: Color(0xff1051CE),
+                              iconSize: 55,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
             ),

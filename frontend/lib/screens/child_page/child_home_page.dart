@@ -19,7 +19,7 @@ class ChildHomePage extends StatelessWidget {
                 height: 32,
               ),
               const Flexible(
-                child: Text('자녀 페이지'),
+                child: Text('아이 페이지'),
               ),
               const Spacer(),
               const MyProfileIcon(),

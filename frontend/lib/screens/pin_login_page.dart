@@ -204,7 +204,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                       pinController: _pinController,
                     )),
                 Opacity(
-                  opacity: 1.0,
+                  opacity: 0.0,
                   child: TextField(
                     maxLength: 6,
                     // onChanged: (value) {

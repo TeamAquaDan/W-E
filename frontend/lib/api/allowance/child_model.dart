@@ -46,7 +46,7 @@ class ChildDetail {
       groupId: json['group_id'] as int,
       accountNum: json['account_num'] != null
           ? json['account_num'] as String
-          : '자녀가 아직 계좌를 등록 안 했습니다',
+          : '아이가 아직 계좌를 등록 안 했습니다',
       isMonthly: json['is_monthly'] as bool,
       allowanceAmt: json['allowance_amt'] as int,
       paymentDate: json['payment_date'] as int,
@@ -56,7 +56,7 @@ class ChildDetail {
     return {
       'user_id': userId,
       'group_id': groupId,
-      'account_num': accountNum ?? '자녀가 아직 계좌를 등록 안 했습니다',
+      'account_num': accountNum ?? '아이가 아직 계좌를 등록 안 했습니다',
       'is_monthly': isMonthly,
       'allowance_amt': allowanceAmt,
       'payment_date': paymentDate,

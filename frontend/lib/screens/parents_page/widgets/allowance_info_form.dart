@@ -66,7 +66,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
             children: <Widget>[
               const SizedBox(height: 16),
               const Text(
-                '자녀 정보 수정하기',
+                '아이 정보 수정하기',
                 style: TextStyle(
                   fontSize: 22,
                   fontFamily: 'Aggro',
@@ -77,7 +77,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
               const SizedBox(height: 12),
               TextField(
                 controller: groupNameController,
-                decoration: const InputDecoration(labelText: '자녀 이름'),
+                decoration: const InputDecoration(labelText: '아이 이름'),
               ),
               const SizedBox(height: 12),
               TextField(

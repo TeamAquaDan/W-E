@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/profile_page/my_profile_page.dart';
 import 'package:frontend/screens/friends_page/widgets/contacts_modal.dart';
@@ -179,7 +180,8 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
             Visibility(
               visible: isPanelExpanded, // 패널 확장 상태에 따라 보이기/숨기기
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 decoration: const BoxDecoration(
                   color: Color(0xFF568EF8),
                   borderRadius: BorderRadius.vertical(
@@ -223,7 +225,8 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                   children: [
                                     TextButton(
                                       style: TextButton.styleFrom(
-                                        backgroundColor: const Color(0xFFD9D9D9),
+                                        backgroundColor:
+                                            const Color(0xFFD9D9D9),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -277,7 +280,8 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                     const SizedBox(width: 5),
                                     TextButton(
                                       style: TextButton.styleFrom(
-                                        backgroundColor: const Color(0xFF568EF8),
+                                        backgroundColor:
+                                            const Color(0xFF568EF8),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -355,8 +359,8 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                       friendId: friend['friend_id'],
                       friendLoginId: friend['friend_loginid'],
                       friendName: friend['friend_name'],
-                      friendProfileImg: friend['friend_profileImg'] ??
-                          'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png',
+                      friendProfileImg:
+                          friend['friend_profileImg'] ?? '${baseProfileURL}',
                       friendNickname:
                           friend['friend_nickname'] ?? friend['friend_name'],
                       loadFriendsCallback: loadFriends,

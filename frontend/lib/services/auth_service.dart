@@ -63,6 +63,7 @@ class AuthService {
       return response.statusCode == 200;
     } catch (e) {
       print('에러 : $e');
+
       return false;
     }
   }
