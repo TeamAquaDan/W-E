@@ -15,6 +15,7 @@ import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'screens/alarm_page.dart';
+import 'screens/dailyword.dart';
 import 'screens/dutchpay_page/dutchpay_page.dart';
 import 'screens/friends_page/my_friends_page.dart';
 import 'screens/mission_page/my_mission_page.dart';
@@ -52,43 +53,46 @@ void handleNotificationClick(RemoteMessage? message, bool isLoggedIn) {
     final category = message.data['category'];
     if (category != null) {
       switch (category) {
-      case '100':
-        Get.to(() => const MyFriendsPage());
-        break;
-      case '101':
-        Get.to(() => const MyFriendsPage());
-        break;
-      case '300':
-        Get.to(() => const MyMissionPage());
-        break;
-      case '301':
-        Get.to(() => const MyMissionPage());
-        break;
-      case '400':
-        Get.to(() => const ParentPage());
-        break;
-      case '401':
-        Get.to(() => const SalaryListPage());
-        break;
-      case '500':
-        Get.to(() => const DutchPayPage());
-        break;
-      case '501':
-        Get.to(() => const DutchPayPage());
-        break;
-      case '502':
-        Get.to(() => const DutchPayPage());
-        break;
-      case '600':
-        var userId = Get.find<UserController>().getUserId();
-        Get.to(() => MyProfilePage(userId: userId));
-        break;
-      case '700':
-        Get.to(() => const SalaryListPage());
-        break;
-      default:
-        Get.to(() => const AlarmPage());
-        break;
+        case '100':
+          Get.to(() => const MyFriendsPage());
+          break;
+        case '101':
+          Get.to(() => const MyFriendsPage());
+          break;
+        case '300':
+          Get.to(() => const MyMissionPage());
+          break;
+        case '301':
+          Get.to(() => const MyMissionPage());
+          break;
+        case '400':
+          Get.to(() => const ParentPage());
+          break;
+        case '401':
+          Get.to(() => const SalaryListPage());
+          break;
+        case '500':
+          Get.to(() => const DutchPayPage());
+          break;
+        case '501':
+          Get.to(() => const DutchPayPage());
+          break;
+        case '502':
+          Get.to(() => const DutchPayPage());
+          break;
+        case '600':
+          var userId = Get.find<UserController>().getUserId();
+          Get.to(() => MyProfilePage(userId: userId));
+          break;
+        case '700':
+          Get.to(() => const SalaryListPage());
+          break;
+        case '800':
+          Get.to(() => const DailyWord());
+          break;
+        default:
+          Get.to(() => const AlarmPage());
+          break;
       }
     }
   }
@@ -125,6 +129,8 @@ void handleNotificationPayload(String payload) {
     Get.to(() => MyProfilePage(userId: userId));
   } else if (payload == '700') {
     Get.to(() => const SalaryListPage());
+  } else if (payload == '800') {
+    Get.to(() => const DailyWord());
   } else {
     Get.to(() => const AlarmPage());
   }

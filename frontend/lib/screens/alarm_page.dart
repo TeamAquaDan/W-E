@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../models/store/user/user_controller.dart';
 import '../services/dio_service.dart';
 import '../api/base_url.dart';
+import 'dailyword.dart';
 import 'dutchpay_page/dutchpay_page.dart';
 import 'friends_page/my_friends_page.dart';
 import 'mission_page/my_mission_page.dart';
@@ -64,6 +65,9 @@ class _AlarmPageState extends State<AlarmPage> {
         break;
       case '700':
         Get.to(() => const SalaryListPage());
+        break;
+      case '800':
+        Get.to(() => const DailyWord());
         break;
       default:
         Get.to(() => const AlarmPage());
@@ -134,7 +138,7 @@ class _AlarmPageState extends State<AlarmPage> {
                       });
                     }
                     // 알림에 따른 페이지 이동 로직 추가...
-                      navigateBasedOnCategory(notification.category);
+                    navigateBasedOnCategory(notification.category);
                   },
                 );
               },
