@@ -7,6 +7,8 @@ import org.whalebank.backend.domain.user.UserEntity;
 
 public interface NotiRepository extends JpaRepository<NotificationEntity, Integer> {
 
+  List<NotificationEntity> findAllByUserOrderByCreatedDtmDesc(UserEntity user);
+
   List<NotificationEntity> findAllByUser(UserEntity user);
 
 }

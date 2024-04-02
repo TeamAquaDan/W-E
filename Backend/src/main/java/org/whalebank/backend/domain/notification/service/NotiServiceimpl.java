@@ -29,7 +29,7 @@ public class NotiServiceimpl implements NotiService{
     UserEntity user = userRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    return notiRepository.findAllByUser(user)
+    return notiRepository.findAllByUserOrderByCreatedDtmDesc(user)
         .stream().map(NotiResponseDto::from)
         .collect(Collectors.toList());
   }
