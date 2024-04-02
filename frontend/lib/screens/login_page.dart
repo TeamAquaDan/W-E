@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
       content: AwesomeSnackbarContent(
-        title: '로그인 실패!',
+        title: '로그인 실패',
         message: '정확한 아이디와 비밀번호를 입력해주세요',
 
         /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants

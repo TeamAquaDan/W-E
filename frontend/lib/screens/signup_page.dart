@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/auth_text_field.dart';
 import '../services/auth_service.dart';
@@ -30,26 +31,29 @@ class _SignUpPageState extends State<SignUpPage> {
     // 비밀번호와 비밀번호 확인이 같은지 확인
     if (_passwordController.text != _confirmPasswordController.text) {
       // 사용자에게 경고 메시지 표시
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.')),
+      // );
+      _callSnackBar('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
       return;
     }
     // 아이디 형식 검증
     if (!RegExp(r'^[a-zA-Z0-9]{5,20}$').hasMatch(_loginIdController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('아이디는 5~20자의 영문자와 숫자만 사용 가능합니다.')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('아이디는 5~20자의 영문자와 숫자만 사용 가능합니다.')),
+      // );
+      _callSnackBar('아이디는 5~20자의 영문자와 숫자만 사용 가능합니다.');
       return;
     }
 
     // 비밀번호 형식 검증
     if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$')
         .hasMatch(_passwordController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('비밀번호는 최소 8자 이상이며, 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       content: Text('비밀번호는 최소 8자 이상이며, 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.')),
+      // );
+      _callSnackBar('비밀번호는 최소 8자 이상이며, 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.');
       return;
     }
     bool success = await _authService.signUp(
@@ -78,9 +82,13 @@ class _SignUpPageState extends State<SignUpPage> {
       _navigateToLoginScreen();
     } else {
       // 회원가입 실패
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('회원가입 실패. 다시 시도해주세요.')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('회원가입 실패. 다시 시도해주세요.')),
+      // );
+      setState(() {
+        isFailed = true;
+      });
+      _callSnackBar('회원가입 실패. 다시 시도해주세요.');
     }
   }
 
@@ -91,6 +99,26 @@ class _SignUpPageState extends State<SignUpPage> {
         builder: (context) => const LoginPage(),
       ),
     );
+  }
+
+  void _callSnackBar(String msg) {
+    final snackBar = SnackBar(
+      /// need to set following properties for best effect of awesome_snackbar_content
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: '회원가입 실패',
+        message: msg,
+
+        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+        contentType: ContentType.failure,
+      ),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
   }
 
   @override
@@ -119,7 +147,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     // color: const Color(0xFFF4F6FB),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF4F6FB),
-                      border: Border.all(color: Colors.grey // 테두리 색상
+                      border: Border.all(
+                          color: isFailed ? Colors.red : Colors.grey // 테두리 색상
                           ),
                       borderRadius:
                           BorderRadius.all(Radius.circular(15) // 모서리 둥글기
