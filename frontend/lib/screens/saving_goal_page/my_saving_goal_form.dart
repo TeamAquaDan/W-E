@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/api/save/goal_add_api.dart';
 import 'package:frontend/models/save/goal_add.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
@@ -23,6 +25,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
   DateTime? _selectedDate;
   String? _selectedAccount;
   String? _selectedAccountName;
+  String? _selectedAccountNum;
   String? _selectedCategoryCode; // 선택된 카테고리 코드
   final NumberFormat _numberFormat = NumberFormat.decimalPattern('ko');
 
@@ -93,6 +96,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
       setState(() {
         _selectedAccount = accountId;
         _selectedAccountName = accountName; // 계좌 이름 저장
+        _selectedAccountNum = accountNum;
       });
     });
   }
@@ -118,159 +122,244 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Text(
+              '저축 목표 등록하기',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 10),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Expanded(
                   flex: 2, // 목표명 필드에 더 많은 공간을 할당
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      labelText: '목표명',
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '목표 이름',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff999999),
+                        ),
+                      ),
+                      TextField(
+                        controller: _controller,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(width: 10), // 필드 사이의 간격
                 Expanded(
                   flex: 1, // 카테고리 드롭다운에 할당된 공간
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: _selectedCategoryCode,
-                    hint: const Text('카테고리 선택'),
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedCategoryCode = newValue;
-                      });
-                    },
-                    items: _categories.entries
-                        .map<DropdownMenuItem<String>>((entry) {
-                      return DropdownMenuItem<String>(
-                        value: entry.key,
-                        child: Text(entry.value),
-                      );
-                    }).toList(),
-                    underline: Container(
-                      // height: 1,
-                      color: Colors.grey,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '카테고리',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff999999),
+                        ),
+                      ),
+                      DropdownButton<String>(
+                        isExpanded: true,
+                        value: _selectedCategoryCode,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedCategoryCode = newValue;
+                          });
+                        },
+                        items: _categories.entries
+                            .map<DropdownMenuItem<String>>((entry) {
+                          return DropdownMenuItem<String>(
+                            value: entry.key,
+                            child: Text(
+                              entry.value,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        underline: Container(
+                          // height: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 20),
             Row(
-              children: <Widget>[
+              children: [
                 Expanded(
-                  flex: 2,
-                  child: TextField(
-                    controller: _amountController,
-                    decoration: const InputDecoration(
-                      labelText: '금액',
-                    ),
-                    keyboardType: TextInputType.number,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('계좌선택',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff999999),
+                          )),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: _showAccountSelection,
+                            icon: Icon(Icons.payment),
+                          ),
+                          Text(
+                            _selectedAccountNum ?? '계좌를 선택하세요',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
                 const SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    // Container 추가
-                    child: TextButton(
-                      onPressed: () {
-                        _showAccountSelection();
-                      },
-                      child: Text(_selectedAccountName ?? '계좌 선택'),
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: [
                 Expanded(
                   flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text(
-                      _selectedDate == null
-                          ? '목표 기간을 선택하세요'
-                          : '목표 기간: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}',
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '목표 기간',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff999999),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: _presentDatePicker,
+                            icon: Icon(Icons.date_range),
+                          ),
+                          Text(
+                            _selectedDate == null
+                                ? '목표 기간을 선택하세요'
+                                : '목표 기간: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
-                  flex: 1,
-                  child: TextButton(
-                    onPressed: _presentDatePicker,
-                    child: const Text('날짜 선택'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '금액',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff999999),
+                        ),
+                      ),
+                      TextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 40),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('취소'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    int goalAmt = int.parse(_amountController.text
-                        .replaceAll(RegExp(r'[^0-9]'), ''));
-                    String categoryCode = _selectedCategoryCode ?? '';
-                    int accountId = int.parse(_selectedAccount ?? '');
+                Expanded(
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xff568EF8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () async {
+                      int goalAmt = int.parse(_amountController.text
+                          .replaceAll(RegExp(r'[^0-9]'), ''));
+                      String categoryCode = _selectedCategoryCode ?? '';
+                      int accountId = int.parse(_selectedAccount ?? '');
 
-                    // _selectedDate를 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
-                    String formattedGoalDate = _selectedDate != null
-                        ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
-                        : '';
+                      // _selectedDate를 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
+                      String formattedGoalDate = _selectedDate != null
+                          ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
+                          : '';
 
-                    PostAddGoalBody goalBody = PostAddGoalBody(
-                      goal_name: _controller.text,
-                      goal_amt: goalAmt,
-                      goal_date: formattedGoalDate, // 변환된 날짜 문자열을 사용합니다.
-                      category: categoryCode,
-                      account_id: accountId,
-                    );
+                      PostAddGoalBody goalBody = PostAddGoalBody(
+                        goal_name: _controller.text,
+                        goal_amt: goalAmt,
+                        goal_date: formattedGoalDate, // 변환된 날짜 문자열을 사용합니다.
+                        category: categoryCode,
+                        account_id: accountId,
+                      );
 
-                    try {
-                      print(
-                          'Goal Name: ${goalBody.goal_name}, Type: ${goalBody.goal_name.runtimeType}');
-                      print(
-                          'Goal Amount: ${goalBody.goal_amt}, Type: ${goalBody.goal_amt.runtimeType}');
-                      print(
-                          'Goal Date: ${goalBody.goal_date}, Type: ${goalBody.goal_date.runtimeType}');
-                      print(
-                          'Category: ${goalBody.category}, Type: ${goalBody.category.runtimeType}');
-                      print(
-                          'Account ID: ${goalBody.account_id}, Type: ${goalBody.account_id.runtimeType}');
+                      try {
+                        print(
+                            'Goal Name: ${goalBody.goal_name}, Type: ${goalBody.goal_name.runtimeType}');
+                        print(
+                            'Goal Amount: ${goalBody.goal_amt}, Type: ${goalBody.goal_amt.runtimeType}');
+                        print(
+                            'Goal Date: ${goalBody.goal_date}, Type: ${goalBody.goal_date.runtimeType}');
+                        print(
+                            'Category: ${goalBody.category}, Type: ${goalBody.category.runtimeType}');
+                        print(
+                            'Account ID: ${goalBody.account_id}, Type: ${goalBody.account_id.runtimeType}');
 
-                      var response = await postGoal(goalBody);
-                      if (response != null) {
+                        var response = await postGoal(goalBody);
+                        if (response != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
+                          );
+                          widget.onAddGoal();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("목표 등록에 실패했습니다.")),
+                          );
+                        }
+                      } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("목표가 성공적으로 등록되었습니다!")),
-                        );
-                        widget.onAddGoal();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("목표 등록에 실패했습니다.")),
+                          SnackBar(content: Text("오류가 발생했습니다: $e")),
                         );
                       }
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("오류가 발생했습니다: $e")),
-                      );
-                    }
-                    Navigator.pop(context);
-                  },
-                  child: const Text('등록'),
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      '등록하기',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

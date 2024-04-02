@@ -52,24 +52,12 @@ class _SalaryListPageState extends State<SalaryListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('용돈 내역'),
+        title: const Text('용돈 목록'),
+        centerTitle: true,
       ),
       body: Column(
         children: [
           const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(30, 17, 17, 17),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '이번 달 용돈 : 50000원',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
           Expanded(
             // 스크롤 가능한 리스트를 위해 Expanded 위젯 사용
             child: ListView.builder(
@@ -80,7 +68,8 @@ class _SalaryListPageState extends State<SalaryListPage> {
                   isMonthly: salary['is_monthly'],
                   allowanceAmt: salary['allowance_amt'],
                   paymentDate: salary['payment_date'],
-                  groupNickname: salary['group_nickname'] ?? salary['user_name'],
+                  groupNickname:
+                      salary['group_nickname'] ?? salary['user_name'],
                   groupId: salary['group_id'],
                   userId: salary['user_id'],
                   userName: salary['user_name'],

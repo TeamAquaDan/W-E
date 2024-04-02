@@ -61,74 +61,133 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
     return dDay; // 종료일 - 오늘의 날짜 차이를 일수로 반환
   }
 
-  void showDepositDialog(int goalId) async {
+  void showDepositDialog(int goalId, String goalName) async {
     TextEditingController amountController = TextEditingController();
-    await showDialog(
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // 바텀 시트를 전체 화면으로 확장 가능하게 설정
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('저금하기'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Text('저금할 금액을 입력하세요.'),
-              TextField(
-                controller: amountController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  // Custom formatter to add comma
-                  TextInputFormatter.withFunction((oldValue, newValue) {
-                    if (newValue.text.isEmpty) {
-                      return newValue.copyWith(text: '');
-                    } else if (newValue.text.compareTo(oldValue.text) != 0) {
-                      final int value =
-                          int.parse(newValue.text.replaceAll(',', ''));
-                      final String newText =
-                          NumberFormat('#,###').format(value);
-                      return newValue.copyWith(
-                          text: newText,
-                          selection:
-                              TextSelection.collapsed(offset: newText.length));
-                    }
-                    return newValue;
-                  })
+        // 바텀 시트의 최소 높이를 확보하기 위해 Padding 위젯 사용
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets, // 키보드 높이에 맞춰서 패딩 적용
+          child: SingleChildScrollView(
+            // 스크롤 가능한 바텀 시트 내용
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text(
+                    '저축하기',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff424347),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    '목표 이름',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xff999999),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    goalName,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff3e3e3e)),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    '저축할 금액',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xff999999),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  TextField(
+                    controller: amountController,
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff3e3e3e),
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      TextInputFormatter.withFunction((oldValue, newValue) {
+                        if (newValue.text.isEmpty) {
+                          return newValue.copyWith(text: '');
+                        } else if (newValue.text.compareTo(oldValue.text) !=
+                            0) {
+                          final int value =
+                              int.parse(newValue.text.replaceAll(',', ''));
+                          final String newText =
+                              NumberFormat('#,###').format(value);
+                          return newValue.copyWith(
+                              text: newText,
+                              selection: TextSelection.collapsed(
+                                  offset: newText.length));
+                        }
+                        return newValue;
+                      })
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          child: const Text(
+                            '저축하기',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color(0xff568EF8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                          ),
+                          onPressed: () {
+                            final DioService dioService = DioService();
+                            dioService.dio.patch(
+                              '${baseURL}api/goal/save',
+                              data: {
+                                'goal_id': goalId,
+                                'save_amt': int.parse(
+                                    amountController.text.replaceAll(',', '')),
+                              },
+                            ).then((response) {
+                              print('전송 성공! $response');
+                              Navigator.of(context).pop(); // 바텀 시트 닫기
+                              setState(() {
+                                _goalDetailsFuture =
+                                    loadGoalDetail(); // 목표 상세 다시 불러오기
+                              });
+                            }).catchError((error) {
+                              print(error);
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
-                decoration: const InputDecoration(
-                  hintText: '금액',
-                ),
               ),
-            ],
+            ),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('취소'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('저금하기'),
-              onPressed: () {
-                final DioService dioService = DioService();
-                dioService.dio.patch(
-                  '${baseURL}api/goal/save',
-                  data: {
-                    'goal_id': goalId,
-                    'save_amt':
-                        int.parse(amountController.text.replaceAll(',', '')),
-                  },
-                ).then((response) {
-                  print('전송 성공! $response');
-                  Navigator.of(context).pop(); // Close the dialog
-                  setState(() {
-                    _goalDetailsFuture =
-                        loadGoalDetail(); // Re-fetch the goal details
-                  });
-                }).catchError((error) {
-                  print(error);
-                });
-              },
-            ),
-          ],
         );
       },
     );
@@ -139,7 +198,8 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('목표 상세'),
+        title: const Text('저축 목표'),
+        centerTitle: true,
       ),
       body: FutureBuilder<Map<dynamic, dynamic>>(
         future: _goalDetailsFuture,
@@ -211,32 +271,77 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('포기하기'),
-                                      content: const Text('정말 포기하시겠습니까?'),
+                                      title:
+                                          Center(child: const Text('포기하실건가요?')),
                                       actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('취소'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            final DioService dioService =
-                                                DioService();
-                                            dioService.dio.patch(
-                                                '${baseURL}api/goal',
-                                                data: {
-                                                  'goal_id':
-                                                      goalDetails['goal_id'],
-                                                  'status': 2,
-                                                }).then((res) {
-                                              print('포기 성공! $res');
-                                              Get.to(() => const MySavingGoalPage());
-                                            }).catchError((err) {});
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('포기하기'),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 30,
+                                                  vertical: 10,
+                                                ),
+                                                backgroundColor:
+                                                    Color(0xff999999),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                final DioService dioService =
+                                                    DioService();
+                                                dioService.dio.patch(
+                                                    '${baseURL}api/goal',
+                                                    data: {
+                                                      'goal_id': goalDetails[
+                                                          'goal_id'],
+                                                      'status': 2,
+                                                    }).then((res) {
+                                                  print('포기 성공! $res');
+                                                  Get.to(() =>
+                                                      const MySavingGoalPage());
+                                                }).catchError((err) {});
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                '포기',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 30,
+                                                  vertical: 10,
+                                                ),
+                                                backgroundColor:
+                                                    Color(0xff568ef8),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                '아뇨',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     );
@@ -265,14 +370,15 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                             const SizedBox(width: 15),
                             TextButton(
                               onPressed: () {
-                                showDepositDialog(goalDetails['goal_id']);
+                                showDepositDialog(goalDetails['goal_id'],
+                                    goalDetails['goal_name']);
                               },
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
-                                backgroundColor: const Color(0xffD7D7D7),
+                                backgroundColor: const Color(0xff568EF8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ), // 배경 색상
@@ -280,7 +386,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                               child: const Text(
                                 '저금하기',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
                                 ),
