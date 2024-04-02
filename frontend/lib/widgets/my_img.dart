@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/profile_page/my_profile_page.dart';
@@ -68,8 +69,7 @@ class _MyProfileIconState extends State<MyProfileIcon> {
         child: ClipOval(
           child: myProfileList.isNotEmpty
               ? Image.network(
-                  myProfileList[0]['profile_img'] ??
-                      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png',
+                  myProfileList[0]['profile_img'] ?? '${baseProfileURL}',
                   height: 30,
                   width: 30,
                   fit: BoxFit.cover,

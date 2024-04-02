@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:intl/intl.dart';
@@ -90,9 +92,21 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
   String dutchpayDateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
   List<int> members = [];
   Future<List<dynamic>> friendsFuture = getFriends();
+  List<dynamic> filteredFriends = []; // 여기에 필터링된 친구들의 정보를 저장합니다.
+
   void updateMembers(List<int> newMembers) {
     setState(() {
       members = newMembers;
+      updateFilteredFriends();
+    });
+  }
+
+  void updateFilteredFriends() async {
+    final friends = await getFriends();
+    setState(() {
+      filteredFriends = friends
+          .where((friend) => members.contains(friend["friend_id"]))
+          .toList();
     });
   }
 
@@ -100,73 +114,183 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('더치페이 방 생성'),
+        title: const Text('더치페이 방 만들기'),
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: const InputDecoration(labelText: '방 이름'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '방 이름을 입력해주세요';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                roomName = value!;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(labelText: '더치페이 할 날짜'),
-              readOnly: true, // This will prohibit manual editing
-              onTap: () async {
-                final date = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(DateTime.now().year - 1),
-                    lastDate: DateTime.now());
-                if (date != null) {
-                  setState(() {
-                    dutchpayDate = date;
-                    dutchpayDateString = DateFormat('yyyy-MM-dd').format(date);
-                  });
-                }
-              },
-              controller: TextEditingController(text: dutchpayDateString),
-            ),
-            const SizedBox(height: 16),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return MyCheckboxList(
-                      friendsFuture: friendsFuture,
-                      members: members,
-                      onMembersChanged: updateMembers,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 28),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '방 이름',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff999999),
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '방 이름을 입력해주세요';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  roomName = value!;
+                },
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '날짜 선택',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff999999),
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                ),
+                readOnly: true, // This will prohibit manual editing
+                onTap: () async {
+                  final date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(DateTime.now().year - 1),
+                      lastDate: DateTime.now());
+                  if (date != null) {
+                    setState(() {
+                      dutchpayDate = date;
+                      dutchpayDateString =
+                          DateFormat('yyyy-MM-dd').format(date);
+                    });
+                  }
+                },
+                controller: TextEditingController(text: dutchpayDateString),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '함께한 친구',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff999999),
+                ),
+              ),
+              Center(
+                child: TextButton(
+                  child: Text(
+                    '＋ 친구 추가하기',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff568EF8),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      members = [];
+                    });
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MyCheckboxList(
+                          friendsFuture: friendsFuture,
+                          members: members,
+                          onMembersChanged: updateMembers,
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
-            Text(members.toString()),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  postDutchPayRoom(
-                      roomName: roomName,
-                      dutchpayDate: dutchpayDateString,
-                      members: members);
-                }
-              },
-              child: const Text('방 생성'),
-            ),
-          ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: filteredFriends.length,
+                  itemBuilder: (context, index) {
+                    final friend = filteredFriends[index];
+                    final friendId = friend["friend_id"];
+
+                    return Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin: const EdgeInsets.only(bottom: 8), // 간격 조정
+                      decoration: BoxDecoration(
+                        color: Color(0xff568ef8),
+                        borderRadius: BorderRadius.circular(15), // 둥근 모서리 추가
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              friend["friend_profileImg"] ??
+                                  '${baseProfileURL}'),
+                        ),
+                        title: Row(
+                          children: [
+                            SizedBox(width: 40),
+                            Text(
+                              '${friend["friend_nickname"]} (${friend['friend_name']})',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 23,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
+              Container(
+                width: double.infinity,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0xff568EF8),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 32,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    '방 만들기',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -177,10 +301,13 @@ class MyCheckboxList extends StatefulWidget {
   final Future<List<dynamic>> friendsFuture;
   final List<int> members;
   final ValueChanged<List<int>> onMembersChanged;
-  const MyCheckboxList(
-      {super.key, required this.friendsFuture,
-      required this.members,
-      required this.onMembersChanged});
+
+  const MyCheckboxList({
+    super.key,
+    required this.friendsFuture,
+    required this.members,
+    required this.onMembersChanged,
+  });
 
   @override
   _MyCheckboxListState createState() => _MyCheckboxListState();
@@ -188,7 +315,7 @@ class MyCheckboxList extends StatefulWidget {
 
 class _MyCheckboxListState extends State<MyCheckboxList> {
   late Future<List<dynamic>> _friendsFuture;
-  Map<int, bool> checkboxStates = {};
+  Map<int, bool> _selectedFriends = {};
 
   @override
   void initState() {
@@ -200,40 +327,114 @@ class _MyCheckboxListState extends State<MyCheckboxList> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
       future: _friendsFuture,
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          List<dynamic> friends = snapshot.data!;
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: friends.length,
-            itemBuilder: (context, index) {
-              int friendId = friends[index]["friend_id"];
-              if (!checkboxStates.containsKey(friendId)) {
-                checkboxStates[friendId] = false;
-              }
+          List<dynamic> friends = snapshot.data ?? [];
+          return Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 32,
+              horizontal: 16,
+            ), // ListView 전체에 패딩 적용
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '친구 목록',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(height: 15),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: friends.length,
+                  itemBuilder: (context, index) {
+                    final friendId = friends[index]["friend_id"];
+                    final isSelected = _selectedFriends[friendId] ?? false;
 
-              return CheckboxListTile(
-                title: Text(friends[index]["friend_nickname"]),
-                value: checkboxStates[friendId],
-                onChanged: (bool? value) {
-                  setState(() {
-                    checkboxStates[friendId] = value!;
-                    if (value == true) {
-                      if (!widget.members.contains(friendId)) {
-                        widget.members.add(friendId);
-                      }
-                    } else {
-                      widget.members.remove(friendId);
-                    }
-                    widget.onMembersChanged(widget.members);
-                  });
-                },
-              );
-            },
+                    return Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin:
+                          const EdgeInsets.only(bottom: 8), // 여기서 간격을 조정합니다.
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected ? Color(0xff568ef8) : Color(0xffC9C9C9),
+                        borderRadius:
+                            BorderRadius.circular(15), // 선택적으로 둥근 모서리 추가
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(friends[index]
+                                  ["friend_profileImg"] ??
+                              '${baseProfileURL}'),
+                        ),
+                        title: Row(
+                          children: [
+                            SizedBox(width: 40),
+                            Text(
+                              '${friends[index]["friend_nickname"]} (${friends[index]['friend_name']})',
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Colors.white
+                                    : Color(0xff919191),
+                                fontSize: 23,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          setState(() {
+                            // 선택 상태 토글
+                            _selectedFriends[friendId] = !isSelected;
+                            if (_selectedFriends[friendId] == true) {
+                              widget.members.add(friendId);
+                            } else {
+                              widget.members.remove(friendId);
+                            }
+                            widget.onMembersChanged(widget.members);
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 35),
+                Container(
+                  width: double.infinity,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xff568EF8),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      '선택 완료',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         }
       },
