@@ -4,10 +4,19 @@ import 'package:get/get.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:intl/intl.dart';
 
-class SavingGoalAccountCarousel extends StatelessWidget {
+class SavingGoalAccountCarousel extends StatefulWidget {
   final Function(String, String, String) onSelectAccount;
 
   const SavingGoalAccountCarousel({super.key, required this.onSelectAccount});
+
+  @override
+  State<SavingGoalAccountCarousel> createState() =>
+      _SavingGoalAccountCarouselState();
+}
+
+class _SavingGoalAccountCarouselState extends State<SavingGoalAccountCarousel> {
+  int _current = 0; // 현재 페이지 인덱스 상태 변수
+  final CarouselController _carouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +43,7 @@ class SavingGoalAccountCarousel extends StatelessWidget {
               TextButton(
                 child: const Text('확인'),
                 onPressed: () {
-                  onSelectAccount(
+                  widget.onSelectAccount(
                       accountId, accountName, accountNum); // 콜백 함수 호출
                   Navigator.of(context).pop(true); // 확인 후 다이얼로그 닫기
                 },
@@ -119,7 +128,34 @@ class SavingGoalAccountCarousel extends StatelessWidget {
                   enlargeCenterPage: true,
                   enableInfiniteScroll: false,
                   viewportFraction: 0.85,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index; // 현재 페이지 인덱스 업데이트
+                    });
+                  },
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:
+                    accountController.accountsData.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    onTap: () => _carouselController.animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black)
+                            .withOpacity(_current == entry.key ? 0.9 : 0.4),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
               const SizedBox(height: 20),
               ElevatedButton(

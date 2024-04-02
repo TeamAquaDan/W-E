@@ -14,7 +14,7 @@ class SavingGoalPlus extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(26, 18, 26, 12),
           margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 88, 163, 209),
+            color: const Color(0xff568EF8),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -23,9 +23,8 @@ class SavingGoalPlus extends StatelessWidget {
               const Text(
                 '목표를 추가해주세요!',
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: 'Roboto',
+                  color: Colors.white,
+                  fontSize: 22,
                   fontWeight: FontWeight.w700,
                 ),
                 overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 경우 생략
@@ -48,8 +47,8 @@ class SavingGoalPlus extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.add_circle_rounded),
-                    color: Colors.black54,
-                    iconSize: 45,
+                    color: Color(0xff1051CE),
+                    iconSize: 55,
                   )
                 ],
               ),
