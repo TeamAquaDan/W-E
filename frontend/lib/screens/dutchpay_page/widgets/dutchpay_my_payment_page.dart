@@ -77,40 +77,6 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
     );
   }
 
-  // void showMyPaymentsDialog() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('My Payments'),
-  //         content: Container(
-  //           width: double.maxFinite,
-  //           child: ListView.builder(
-  //             shrinkWrap: true,
-  //             itemCount: payments.length,
-  //             itemBuilder: (BuildContext context, int index) {
-  //               var payment = payments[index];
-  //               return ListTile(
-  //                 title: Text('${payment['member_store_name'].toString()}'),
-  //                 subtitle: Text('${payment['trans_amt'].toString()}원'),
-  //                 onTap: () {
-  //                   confirmPaymentDialog(context, payment);
-  //                 },
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () => Navigator.of(context).pop(),
-  //             child: Text('Close'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   // 사용자 결정을 묻는 대화상자를 표시하는 함수
   void confirmPaymentDialog(BuildContext context, dynamic payment) {
     TextEditingController textFieldController =

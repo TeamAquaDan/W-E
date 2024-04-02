@@ -22,6 +22,10 @@ class _DutchPayPageState extends State<DutchPayPage> {
     loadRooms(); // initState에서 데이터 로딩을 시작합니다.
   }
 
+  void reloadRooms() {
+    loadRooms();
+  }
+
   Future<void> loadRooms() async {
     // 여기에 REST API 요청을 수행하는 코드를 작성합니다.
     // 예시로, 다음은 가상의 데이터 로딩 함수입니다.
@@ -67,8 +71,12 @@ class _DutchPayPageState extends State<DutchPayPage> {
                     return GestureDetector(
                       onTap: () {
                         // Place your navigation or action here
-                        Get.to(
-                            () => DutchPayDetailPage(roomId: room['room_id']));
+                        Get.to(() => DutchPayDetailPage(
+                            roomId: room['room_id'],
+                            roomName: room['room_name'],
+                            dutchpayDate: room['dutchpay_date']
+                                .toString()
+                                .replaceAll('-', '.')));
                       },
                       child: Card(
                         margin: const EdgeInsets.all(8), // 카드 주변의 여백을 설정합니다.
@@ -141,15 +149,20 @@ class _DutchPayPageState extends State<DutchPayPage> {
                             Text(
                               '더치페이 시작하기',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: const Color.fromARGB(255, 100, 85, 85),
                                 fontSize: 30,
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
                             SizedBox(height: 15),
                             IconButton(
-                              onPressed: () {
-                                Get.to(() => const CreateDutchPayRoom());
+                              onPressed: () async {
+                                var result = await Get.to(() =>
+                                    CreateDutchPayRoom(
+                                        onRoomCreated: reloadRooms));
+                                if (result == true) {
+                                  reloadRooms();
+                                }
                               },
                               icon: const Icon(Icons.add_circle_rounded),
                               color: Color(0xff1051CE),

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
+import 'package:frontend/screens/dutchpay_page/dutchpay_page.dart';
 import 'package:frontend/services/dio_service.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 Future postDutchPayRoom(
@@ -79,7 +81,9 @@ Future<List<dynamic>> getFriends() async {
 }
 
 class CreateDutchPayRoom extends StatefulWidget {
-  const CreateDutchPayRoom({super.key});
+  const CreateDutchPayRoom({super.key, required this.onRoomCreated});
+
+  final Function? onRoomCreated;
 
   @override
   _CreateDutchPayRoomState createState() => _CreateDutchPayRoomState();
@@ -276,8 +280,19 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      var result = await postDutchPayRoom(
+                          roomName: roomName,
+                          dutchpayDate: dutchpayDateString,
+                          members: members);
+                      if (result != null && result["status"] == 200) {
+                        widget.onRoomCreated?.call();
+                        Navigator.pop(
+                            context, true); // 변경: 성공적으로 방을 생성하고 나서 true를 반환합니다.
+                      }
+                    }
                   },
                   child: Text(
                     '방 만들기',
