@@ -137,11 +137,11 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: isPanelExpanded == true
-                    ? BorderRadius.vertical(top: Radius.circular(10))
+                    ? const BorderRadius.vertical(top: Radius.circular(10))
                     : BorderRadius.circular(10),
-                color: requstedFriendsList.length == 0
-                    ? Color(0xFFC9C9C9)
-                    : Color(0xFF568EF8),
+                color: requstedFriendsList.isEmpty
+                    ? const Color(0xFFC9C9C9)
+                    : const Color(0xFF568EF8),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,17 +149,17 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                   Text(
                     "새로운 친구 요청",
                     style: TextStyle(
-                      color: requstedFriendsList.length == 0
-                          ? Color(0xFF919191)
-                          : Color(0xFFFFFFFF),
+                      color: requstedFriendsList.isEmpty
+                          ? const Color(0xFF919191)
+                          : const Color(0xFFFFFFFF),
                       fontWeight: FontWeight.w900,
                       fontSize: 18,
                     ),
                   ),
-                  requstedFriendsList.length == 0
+                  requstedFriendsList.isEmpty
                       ? IconButton(
-                          icon: Icon(Icons.expand_more),
-                          color: Color(0xFF919191),
+                          icon: const Icon(Icons.expand_more),
+                          color: const Color(0xFF919191),
                           onPressed: () {},
                         )
                       : IconButton(
@@ -179,8 +179,8 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
             Visibility(
               visible: isPanelExpanded, // 패널 확장 상태에 따라 보이기/숨기기
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: const BoxDecoration(
                   color: Color(0xFF568EF8),
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(10),
@@ -223,7 +223,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                   children: [
                                     TextButton(
                                       style: TextButton.styleFrom(
-                                        backgroundColor: Color(0xFFD9D9D9),
+                                        backgroundColor: const Color(0xFFD9D9D9),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -274,10 +274,10 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                         }
                                       },
                                     ),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     TextButton(
                                       style: TextButton.styleFrom(
-                                        backgroundColor: Color(0xFF568EF8),
+                                        backgroundColor: const Color(0xFF568EF8),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),

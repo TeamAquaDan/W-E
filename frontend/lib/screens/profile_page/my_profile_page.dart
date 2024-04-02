@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
-import 'package:frontend/screens/friends_page/my_friends_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dioImport;
@@ -240,7 +239,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('프로필 페이지'),
+        title: const Text('프로필 페이지'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -299,8 +298,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     margin: const EdgeInsets.symmetric(horizontal: 30),
                     padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF4F6FB),
-                      border: Border.all(color: Color(0xFF616161), width: 0.5),
+                      color: const Color(0xFFF4F6FB),
+                      border: Border.all(color: const Color(0xFF616161), width: 0.5),
                       borderRadius: BorderRadius.circular(17),
                     ),
                     // 한 줄 소개 표시/편집 컨테이너
@@ -338,7 +337,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                               isEditing = true;
                                             });
                                           },
-                                          icon: Icon(Icons.edit))
+                                          icon: const Icon(Icons.edit))
                                       : const SizedBox(width: 0, height: 0),
                                 ],
                               ),
@@ -348,7 +347,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
                   const SizedBox(height: 20),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
                     child: const Divider(
                       height: 1,
                       thickness: 2,
@@ -357,15 +356,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const SizedBox(height: 5), // 버튼과 하단 여백
                   // 필요한 경우 여기에 추가적인 위젯 배치
                   if (myProfileList[0]['editable'])
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(30, 0, 20, 0),
+                    margin: const EdgeInsets.fromLTRB(30, 0, 20, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '방명록',
                           style: TextStyle(
                             color: Colors.black, // 색상 코드 수정
@@ -378,7 +377,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 onPressed: () {
                                   _showWriteCommentModal();
                                 },
-                                child: Text(
+                                child: const Text(
                                   '＋ 작성하기',
                                   style: TextStyle(
                                     color: Colors.black, // 색상 코드 수정
@@ -386,12 +385,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   ),
                                 ),
                               )
-                            : SizedBox(width: 0, height: 0),
+                            : const SizedBox(width: 0, height: 0),
                       ],
                     ),
                   ),
                   if (myProfileList[0]['editable'])
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
 
@@ -406,10 +405,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         var comment = myProfileList[0]['guestbook_list'][index];
                         return Container(
                           margin:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                              const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                           child: ListTile(
-                            contentPadding: EdgeInsets.fromLTRB(20, 5, 10, 5),
-                            tileColor: Color(0xFF568EF8),
+                            contentPadding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                            tileColor: const Color(0xFF568EF8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
@@ -436,7 +435,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             subtitle: Container(
                               child: Text(
                                 comment['content'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                 ),
@@ -539,8 +538,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                SizedBox(height: 10),
-                Row(
+                const SizedBox(height: 10),
+                const Row(
                   children: [
                     SizedBox(width: 10),
                     Text(
@@ -562,7 +561,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   decoration: InputDecoration(
                     hintText: "댓글을 입력하세요",
                     hintStyle: const TextStyle(color: Color(0xFF919191)),
-                    fillColor: Color.fromARGB(255, 218, 214, 214),
+                    fillColor: const Color.fromARGB(255, 218, 214, 214),
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(17),
@@ -571,15 +570,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
                   maxLines: 2, // 여러 줄의 텍스트 입력을 허용
                 ),
-                SizedBox(height: 30),
-                Container(
+                const SizedBox(height: 30),
+                SizedBox(
                   width: double.infinity, // 버튼이 가로 길이 전체를 차지하도록 설정
                   child: TextButton(
                     style: TextButton.styleFrom(
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(0))),
-                      padding: EdgeInsets.symmetric(vertical: 16), // 버튼 높이 조절
-                      backgroundColor: Color(0xFF568EF8), // 버튼 배경색을 파란색으로 설정
+                      padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이 조절
+                      backgroundColor: const Color(0xFF568EF8), // 버튼 배경색을 파란색으로 설정
                     ),
                     onPressed: () async {
                       if (commentController.text.isNotEmpty) {
@@ -612,7 +611,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           ),

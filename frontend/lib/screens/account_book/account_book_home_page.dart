@@ -60,7 +60,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (responseData != null && responseData['data'] != null) {
+    if (responseData['data'] != null) {
       filteredData = responseData['data']['account_book_list'];
       switch (tabState) {
         case 0:
@@ -211,10 +211,10 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                   // ),
                   Container(
                     height: 41,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    padding: EdgeInsets.all(0),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.all(0),
                     decoration: ShapeDecoration(
-                      color: Color(0xFFD9D9D9),
+                      color: const Color(0xFFD9D9D9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -226,8 +226,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   tabState == 0
-                                      ? Color(0xFF568EF8)
-                                      : Color(0xFFD9D9D9)),
+                                      ? const Color(0xFF568EF8)
+                                      : const Color(0xFFD9D9D9)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -246,7 +246,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                               style: TextStyle(
                                 color: tabState == 0
                                     ? Colors.white
-                                    : Color(0xFF919191),
+                                    : const Color(0xFF919191),
                                 fontSize: 15,
                                 fontFamily: 'SB Aggro',
                                 fontWeight: FontWeight.w400,
@@ -261,8 +261,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   tabState == 1
-                                      ? Color(0xFF568EF8)
-                                      : Color(0xFFD9D9D9)),
+                                      ? const Color(0xFF568EF8)
+                                      : const Color(0xFFD9D9D9)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -281,7 +281,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                               style: TextStyle(
                                 color: tabState == 1
                                     ? Colors.white
-                                    : Color(0xFF919191),
+                                    : const Color(0xFF919191),
                                 fontSize: 15,
                                 fontFamily: 'SB Aggro',
                                 fontWeight: FontWeight.w400,
@@ -296,8 +296,8 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   tabState == 2
-                                      ? Color(0xFF568EF8)
-                                      : Color(0xFFD9D9D9)),
+                                      ? const Color(0xFF568EF8)
+                                      : const Color(0xFFD9D9D9)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -316,7 +316,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                               style: TextStyle(
                                 color: tabState == 2
                                     ? Colors.white
-                                    : Color(0xFF919191),
+                                    : const Color(0xFF919191),
                                 fontSize: 15,
                                 fontFamily: 'SB Aggro',
                                 fontWeight: FontWeight.w400,

@@ -64,7 +64,7 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
             itemBuilder: (BuildContext context, int index) {
               var payment = payments[index];
               return ListTile(
-                title: Text('${payment['member_store_name'].toString()}'),
+                title: Text(payment['member_store_name'].toString()),
                 subtitle: Text('${payment['trans_amt'].toString()}원'),
                 onTap: () {
                   confirmPaymentDialog(context, payment);
@@ -113,14 +113,14 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
 
   // 사용자 결정을 묻는 대화상자를 표시하는 함수
   void confirmPaymentDialog(BuildContext context, dynamic payment) {
-    TextEditingController _textFieldController =
+    TextEditingController textFieldController =
         TextEditingController(); // 입력을 관리할 TextEditingController
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('결제 정보 입력'),
+          title: const Text('결제 정보 입력'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -136,32 +136,32 @@ class _DutchPayMyPaymentPageState extends State<DutchPayMyPaymentPage> {
                     });
                   });
                 },
-                child: Text('통장 선택'),
+                child: const Text('통장 선택'),
               ),
               _accountName == null
-                  ? Text('통장을 선택해주세요.')
+                  ? const Text('통장을 선택해주세요.')
                   : Text('선택된 통장: $_accountName'),
               TextField(
                 keyboardType: TextInputType.number,
-                controller: _textFieldController, // TextField에 컨트롤러 연결
-                decoration: InputDecoration(hintText: "통장 비밀번호"),
+                controller: textFieldController, // TextField에 컨트롤러 연결
+                decoration: const InputDecoration(hintText: "통장 비밀번호"),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(), // 대화상자를 닫습니다.
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 // 입력된 값을 가져와서 처리합니다. 예를 들어, API 호출에 사용
-                String verificationCode = _textFieldController.text;
+                String verificationCode = textFieldController.text;
                 // 여기서 verificationCode와 함께 결제를 진행할 수 있습니다.
                 performPayment(verificationCode, payment); // 수정된 함수 호출
                 Navigator.of(context).pop(); // 대화상자를 닫습니다.
               },
-              child: Text('Confirm'),
+              child: const Text('Confirm'),
             ),
           ],
         );

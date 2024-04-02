@@ -8,7 +8,6 @@ import 'dutchpay_page/dutchpay_page.dart';
 import 'friends_page/my_friends_page.dart';
 import 'mission_page/my_mission_page.dart';
 import 'parents_page/parent_page.dart';
-import 'parents_page/widgets/nego/nego_detail_page.dart';
 import 'profile_page/my_profile_page.dart';
 import 'salary_page/salary_list_page.dart';
 

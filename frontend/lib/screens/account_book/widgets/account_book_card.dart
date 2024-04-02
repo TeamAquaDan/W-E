@@ -19,7 +19,7 @@ class AccountBookCard extends StatelessWidget {
                   children: [
                     Text(
                       x['account_book_dtm'].substring(5),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontFamily: 'SB Aggro',
                         fontWeight: FontWeight.w400,
@@ -29,7 +29,7 @@ class AccountBookCard extends StatelessWidget {
                     const SizedBox(width: 12),
                     Text(
                       x['account_book_title'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF0C0C0C),
                         fontSize: 20,
                         fontFamily: 'SB Aggro',
@@ -44,8 +44,8 @@ class AccountBookCard extends StatelessWidget {
                           : '- ${formatter.format((x['account_book_amt']))}',
                       style: TextStyle(
                         color: x['account_book_category'] == '100'
-                            ? Color(0xFF568EF8)
-                            : Color(0xFF0C0C0C),
+                            ? const Color(0xFF568EF8)
+                            : const Color(0xFF0C0C0C),
                         fontSize: 20,
                         fontFamily: 'SB Aggro',
                         fontWeight: FontWeight.w400,
