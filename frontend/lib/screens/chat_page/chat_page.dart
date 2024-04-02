@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/api/test_html.dart';
 import 'package:frontend/widgets/my_img.dart';
@@ -175,7 +176,7 @@ class ChatBubble extends StatelessWidget {
                   ? CircleAvatar(
                       child: ClipOval(
                           child: Image.network(
-                        'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyfdKI%2FbtsGbRH96Xy%2FH3KbM1y85UhvkGtKT3KWu0%2Fimg.png',
+                        '${baseProfileURL}',
                         height: 30,
                         width: 30,
                         fit: BoxFit.cover,
