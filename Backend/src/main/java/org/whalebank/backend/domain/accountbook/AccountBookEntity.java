@@ -76,6 +76,11 @@ public class AccountBookEntity {
   }
 
   private static String convertCodetoCategory(String code) {
+    if (code.startsWith("407")) {
+      return "005";
+    } else if (code.startsWith("402")) {
+      return "003";
+    }
     return switch (code.substring(0, 2)) {
       case "30", "31", "32" -> "003"; // 생활
       case "90", "91" -> "004"; // 주거/통신
@@ -85,6 +90,8 @@ public class AccountBookEntity {
       case "20", "21", "22" -> "009";
       case "50", "51", "52" -> "013";
       case "80", "81" -> "014";
+      case "85" -> "001";
+      case "86" -> "002";
       default -> "000";
     };
   }
