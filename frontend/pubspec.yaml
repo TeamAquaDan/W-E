@@ -106,6 +106,8 @@ flutter:
           weight: 400
         - asset: assets/font/SB 어그로 M.ttf
           weight: 700
+        - asset: assets/font/SB 어그로 B.ttf
+          weight: 900
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
