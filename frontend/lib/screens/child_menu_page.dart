@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/mission_page/my_mission_page.dart';
 import 'package:get/get.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 
@@ -10,7 +11,6 @@ import 'login_page.dart';
 import 'profile_page/my_profile_page.dart';
 import 'salary_page/salary_list_page.dart';
 import 'saving_goal_page/my_saving_goal_page.dart';
-
 
 class ChildMenuPage extends StatelessWidget {
   final AuthService _authService = AuthService();
@@ -28,10 +28,11 @@ class ChildMenuPage extends StatelessWidget {
         child: ListView(
           children: [
             ListTile(
-              title: const Text('더치페이'),
+              title: const Text('마이페이지'),
               onTap: () {
-                // '더치페이' 메뉴 항목 클릭 시 수행할 동작
-                Get.to(const DutchPayPage());
+                // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
+                var userId = Get.find<UserController>().getUserId();
+                Get.to(() => MyProfilePage(userId: userId));
               },
             ),
             Divider(color: dividerColor),
@@ -44,11 +45,10 @@ class ChildMenuPage extends StatelessWidget {
             ),
             Divider(color: dividerColor),
             ListTile(
-              title: const Text('마이페이지'),
+              title: const Text('더치페이'),
               onTap: () {
-                // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
-                var userId = Get.find<UserController>().getUserId();
-            Get.to(() => MyProfilePage(userId: userId));
+                // '더치페이' 메뉴 항목 클릭 시 수행할 동작
+                Get.to(const DutchPayPage());
               },
             ),
             Divider(color: dividerColor),
@@ -57,6 +57,14 @@ class ChildMenuPage extends StatelessWidget {
               onTap: () {
                 // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
                 Get.to(() => const SalaryListPage());
+              },
+            ),
+            Divider(color: dividerColor),
+            ListTile(
+              title: const Text('미션 목록'),
+              onTap: () {
+                // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
+                Get.to(() => const MyMissionPage());
               },
             ),
             Divider(color: dividerColor),
@@ -81,7 +89,7 @@ class ChildMenuPage extends StatelessWidget {
               onTap: () async {
                 // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
                 await _authService.logout(); // 로그아웃 수행
-                    Get.offAll(() => LoginPage());
+                Get.offAll(() => LoginPage());
               },
             ),
             Divider(color: dividerColor),

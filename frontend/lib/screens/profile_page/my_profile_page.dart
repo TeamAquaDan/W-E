@@ -183,15 +183,42 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
               const SizedBox(height: 20), // 이미지와 버튼 사이의 간격
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 10,
+                      ),
+                      backgroundColor: Color(0xff777777),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.pop(context); // 모달 닫기
                     },
-                    child: const Text('취소'),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                   TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 10,
+                      ),
+                      backgroundColor: Color(0xff568ef8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     onPressed: () {
                       uploadImage(image);
                       Navigator.pop(context); // 모달 닫기
@@ -199,7 +226,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         loadProfiles();
                       });
                     },
-                    child: const Text('확인'),
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ],
               ),

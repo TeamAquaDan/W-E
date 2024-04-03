@@ -152,16 +152,17 @@ class _DutchPayPageState extends State<DutchPayPage> {
                               SizedBox(
                                 height: 60, // Set a fixed height for the Stack
                                 child: Stack(
-                                  children: profileImages.map((imgUrl) {
-                                    int index = profileImages.indexOf(imgUrl);
+                                  children: profileImages
+                                      .asMap()
+                                      .entries
+                                      .map((entry) {
+                                    int index = entry.key;
+                                    String imgUrl = entry.value;
                                     return Positioned(
-                                      right: 30.0 *
+                                      right: 40.0 *
                                           index, // This will give a cascading effect
                                       child: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            imgUrl == null
-                                                ? '${baseProfileURL}'
-                                                : imgUrl),
+                                        backgroundImage: NetworkImage(imgUrl),
                                         radius:
                                             25, // Adjust the size of each avatar
                                       ),
