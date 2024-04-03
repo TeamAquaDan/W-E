@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/salary_page/widgets/salary.dart';
 import 'package:frontend/services/dio_service.dart';
+import 'package:intl/intl.dart';
 
 class SalaryListPage extends StatefulWidget {
   const SalaryListPage({super.key});
@@ -17,6 +19,11 @@ class _SalaryListPageState extends State<SalaryListPage> {
   void initState() {
     super.initState();
     loadSalarys(); // initState에서 데이터 로딩을 시작합니다.
+  }
+
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,###');
+    return formatter.format(number);
   }
 
   Future<void> loadSalarys() async {
@@ -48,12 +55,13 @@ class _SalaryListPageState extends State<SalaryListPage> {
     }
   }
 
-  void showSalaryDetailBottomSheet(BuildContext context, int groupId) async {
+  void showSalaryDetailBottomSheet(BuildContext context, int groupId,
+      String groupNickname, String userName) async {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.45,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FutureBuilder<List<dynamic>>(
@@ -67,16 +75,102 @@ class _SalaryListPageState extends State<SalaryListPage> {
                 } else {
                   // 데이터가 성공적으로 불러와진 경우
                   var salaryDetails = snapshot.data ?? [];
-                  return ListView.builder(
-                    itemCount: salaryDetails.length,
-                    itemBuilder: (context, index) {
-                      var detail = salaryDetails[index];
-                      // 각 항목을 구성하는 위젯 반환
-                      return ListTile(
-                        title: Text(detail['title']),
-                        subtitle: Text('금액: ${detail['amount']}'),
-                      );
-                    },
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          ' $groupNickname($userName)에게 요청한 내역',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: salaryDetails.length,
+                            itemBuilder: (context, index) {
+                              var detail = salaryDetails[index];
+                              // 각 항목을 구성하는 위젯 반환
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xff999999),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListTile(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '요청 일시: ${detail['create_dtm']}',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '기존 용돈: ${formatNumber(detail['allowance_amt'])}원',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          detail['status'] == 0
+                                              ? const Text(
+                                                  ' (요청중)',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : detail['status'] == 1
+                                                  ? const Text(
+                                                      ' (승인됨)',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    )
+                                                  : const Text(
+                                                      ' (거절됨)',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '요청 금액: ${formatNumber(detail['nego_amt'])}원',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            '사유 : ${detail['comment']}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
               },
@@ -94,7 +188,7 @@ class _SalaryListPageState extends State<SalaryListPage> {
       print(groupId);
       print(groupId.runtimeType); // int 타입인지 확인 (int 타입이어야 함
       final DioService dioService = DioService();
-      var response = await dioService.dio.get('${baseURL}/api/nego/${groupId}');
+      var response = await dioService.dio.get('${baseURL}api/nego/${groupId}');
       if (response.statusCode == 200) {
         print(response);
         return response.data['data']; // 예시 응답 구조
@@ -132,6 +226,8 @@ class _SalaryListPageState extends State<SalaryListPage> {
                     onTap: () => showSalaryDetailBottomSheet(
                       context,
                       salary['group_id'],
+                      salary['group_nickname'] ?? salary['user_name'],
+                      salary['user_name'],
                     ),
                     child: Salary(
                       isMonthly: salary['is_monthly'],
