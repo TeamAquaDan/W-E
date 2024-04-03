@@ -4,7 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -270,6 +272,39 @@ public class AccountServiceImpl implements AccountService {
         .builder()
         .rsp_code(200)
         .rsp_message("계좌 비밀번호가 맞습니다")
+        .build();
+  }
+
+  @Override
+  public TransactionResponse getDepositList(HttpServletRequest request,
+      LocalDateTime searchTimestamp) {
+    String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+    String userId = tokenProvider.getUserId(token).get("sub", String.class);
+
+    List<AccountEntity> accountList = accountRepository.findByUserId(userId);
+
+    List<TransactionResponse.Transaction> transactions = new ArrayList<>();
+
+    for (AccountEntity account : accountList) {
+      List<TransferEntity> depositList = account.getTransferList();
+
+      List<TransactionResponse.Transaction> transactionList = depositList.stream()
+          .filter(t -> t.getTransDtm().isAfter(searchTimestamp) && t.getTransType() == 3)
+          .map(t -> new TransactionResponse.Transaction(t.getTransDtm(), t.getTransId(),
+              t.getTransType(), t.getTransAmt(), t.getBalanceAmt(), t.getTransMemo())).sorted()
+          .toList();
+
+      transactions.addAll(transactionList);
+
+    }
+
+    return TransactionResponse
+        .builder()
+        .rsp_code(200)
+        .rsp_message("입금내역이 조회되었습니다.")
+        .trans_cnt(transactions.size())
+        .trans_list(transactions)
         .build();
   }
 
