@@ -226,19 +226,58 @@ class _ChildCardState extends State<ChildCard> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text("취소"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("저장"),
-              onPressed: () {
-                // 변경된 그룹 닉네임을 서버로 전송
-                _updateGroupName(groupNameController.text);
-                Navigator.of(context).pop();
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 10,
+                    ),
+                    backgroundColor: Color(0xff777777),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    "취소",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 10,
+                    ),
+                    backgroundColor: Color(0xff568ef8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    "저장",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    // 변경된 그룹 닉네임을 서버로 전송
+                    _updateGroupName(groupNameController.text);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           ],
         );

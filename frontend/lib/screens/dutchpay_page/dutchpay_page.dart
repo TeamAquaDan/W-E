@@ -54,131 +54,138 @@ class _DutchPayPageState extends State<DutchPayPage> {
           title: const Text('더치페이'),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: dutchpayRooms.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Card(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Color(0xff568EF8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 22, horizontal: 16),
-                        child: Column(
-                          children: [
-                            Text(
-                              '더치페이 시작하기',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            IconButton(
-                              onPressed: () async {
-                                var result = await Get.to(() =>
-                                    CreateDutchPayRoom(
-                                        onRoomCreated: reloadRooms));
-                                if (result == true) {
-                                  reloadRooms();
-                                }
-                              },
-                              icon: const Icon(Icons.add_circle_rounded),
-                              color: Color(0xff1051CE),
-                              iconSize: 55,
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    var room = dutchpayRooms[index - 1];
-                    List<String> profileImages =
-                        (room['profile_img'] as List<dynamic>? ?? [])
-                            .map((imgUrl) =>
-                                imgUrl as String? ?? '${baseProfileURL}')
-                            .toList();
-
-                    return GestureDetector(
-                      onTap: () {
-                        // Place your navigation or action here
-                        Get.to(() => DutchPayDetailPage(
-                              roomId: room['room_id'],
-                              roomName: room['room_name'],
-                              dutchpayDate: room['dutchpay_date']
-                                  .toString()
-                                  .replaceAll('-', '.'),
-                              managerId: room['manager_id'],
-                            ));
-                      },
-                      child: Card(
-                        margin: const EdgeInsets.all(8), // 카드 주변의 여백을 설정합니다.
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await loadRooms();
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: dutchpayRooms.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Card(
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Color(0xff568EF8),
                           ),
                           padding: const EdgeInsets.symmetric(
-                              vertical: 18, horizontal: 26),
+                              vertical: 22, horizontal: 16),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${room['room_name']}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
                               Text(
-                                '${room['dutchpay_date'].toString().replaceAll('-', '.')}',
+                                '더치페이 시작하기',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              SizedBox(
-                                height: 60, // Set a fixed height for the Stack
-                                child: Stack(
-                                  children: profileImages.map((imgUrl) {
-                                    int index = profileImages.indexOf(imgUrl);
-                                    return Positioned(
-                                      right: 30.0 *
-                                          index, // This will give a cascading effect
-                                      child: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            imgUrl == null
-                                                ? '${baseProfileURL}'
-                                                : imgUrl),
-                                        radius:
-                                            25, // Adjust the size of each avatar
-                                      ),
-                                    );
-                                  }).toList(),
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
+                              SizedBox(height: 15),
+                              IconButton(
+                                onPressed: () async {
+                                  var result = await Get.to(() =>
+                                      CreateDutchPayRoom(
+                                          onRoomCreated: reloadRooms));
+                                  if (result == true) {
+                                    reloadRooms();
+                                  }
+                                },
+                                icon: const Icon(Icons.add_circle_rounded),
+                                color: Color(0xff1051CE),
+                                iconSize: 55,
+                              )
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  }
-                },
+                      );
+                    } else {
+                      var room = dutchpayRooms[index - 1];
+                      List<String> profileImages =
+                          (room['profile_img'] as List<dynamic>? ?? [])
+                              .map((imgUrl) =>
+                                  imgUrl as String? ?? '${baseProfileURL}')
+                              .toList();
+
+                      return GestureDetector(
+                        onTap: () {
+                          // Place your navigation or action here
+                          Get.to(() => DutchPayDetailPage(
+                                roomId: room['room_id'],
+                                roomName: room['room_name'],
+                                dutchpayDate: room['dutchpay_date']
+                                    .toString()
+                                    .replaceAll('-', '.'),
+                                managerId: room['manager_id'],
+                              ));
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.all(8), // 카드 주변의 여백을 설정합니다.
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color(0xff568EF8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 18, horizontal: 26),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${room['room_name']}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '${room['dutchpay_date'].toString().replaceAll('-', '.')}',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                SizedBox(
+                                  height:
+                                      60, // Set a fixed height for the Stack
+                                  child: Stack(
+                                    children: profileImages
+                                        .asMap()
+                                        .entries
+                                        .map((entry) {
+                                      int index = entry.key;
+                                      String imgUrl = entry.value;
+                                      return Positioned(
+                                        right: 40.0 *
+                                            index, // This will give a cascading effect
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(imgUrl),
+                                          radius:
+                                              25, // Adjust the size of each avatar
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

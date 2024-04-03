@@ -5,6 +5,7 @@ import 'package:frontend/api/allowance/children_api.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/mission/mission_list.dart';
 import 'package:frontend/screens/parents_page/children_page/widgets/add_child_form.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
+import 'package:frontend/screens/parents_page/widgets/no_child_card.dart';
 
 class ChildrenManagePage2 extends StatefulWidget {
   const ChildrenManagePage2({super.key});
@@ -85,67 +86,78 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
               ),
             ),
             body: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
                   Row(
                     children: [
                       const Spacer(),
-                      IconButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  const AddChildForm(),
-                              isScrollControlled: true,
-                            );
-                          },
-                          icon: const Icon(Icons.add)),
-                      const Text('아이 추가하기')
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                const AddChildForm(),
+                            isScrollControlled: true,
+                          );
+                        },
+                        child: Row(
+                          children: [Icon(Icons.add), Text('아이 추가하기  ')],
+                        ),
+                      )
                     ],
                   ),
-                  CarouselSlider(
-                    items: itemList,
-                    carouselController: _controller,
-                    options: CarouselOptions(
-                        height: 186,
-                        // aspectRatio: 1.97,
-                        autoPlay: false,
-                        viewportFraction: 0.8,
-                        enlargeCenterPage: true,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _current = index;
-                          });
-                        }),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: itemList.asMap().entries.map((entry) {
-                      return GestureDetector(
-                        onTap: () => _controller.animateToPage(entry.key),
-                        child: Container(
-                          width: 12.0,
-                          height: 12.0,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 4.0),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black)
-                                  .withOpacity(
-                                      _current == entry.key ? 0.9 : 0.4)),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  MissionList(
-                    groupId: children[_current].groupId,
-                  )
+                  itemList.isNotEmpty
+                      ? Column(
+                          children: [
+                            CarouselSlider(
+                              items: itemList,
+                              carouselController: _controller,
+                              options: CarouselOptions(
+                                  height: 186,
+                                  // aspectRatio: 1.97,
+                                  autoPlay: false,
+                                  viewportFraction: 0.8,
+                                  enlargeCenterPage: true,
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _current = index;
+                                    });
+                                  }),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: itemList.asMap().entries.map((entry) {
+                                return GestureDetector(
+                                  onTap: () =>
+                                      _controller.animateToPage(entry.key),
+                                  child: Container(
+                                    width: 12.0,
+                                    height: 12.0,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 4.0),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: (Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black)
+                                            .withOpacity(_current == entry.key
+                                                ? 0.9
+                                                : 0.4)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            MissionList(
+                              groupId: children[_current].groupId,
+                            ),
+                          ],
+                        )
+                      : NoChildCard(),
                 ],
               ),
             ),

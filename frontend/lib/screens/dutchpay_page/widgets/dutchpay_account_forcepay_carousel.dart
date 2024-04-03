@@ -10,23 +10,23 @@ import 'package:get/get.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:intl/intl.dart';
 
-class DutchPayAccountCarousel extends StatefulWidget {
-  final List<Map<String, dynamic>> transactions;
-  final int roomId;
+class DutchPayAccountForcepayCarousel extends StatefulWidget {
+  final int dutchpayId;
   final Function callback;
 
-  const DutchPayAccountCarousel(
-      {super.key,
-      required this.transactions,
-      required this.roomId,
-      required this.callback});
+  const DutchPayAccountForcepayCarousel({
+    super.key,
+    required this.dutchpayId,
+    required this.callback,
+  });
 
   @override
-  State<DutchPayAccountCarousel> createState() =>
-      _DutchPayAccountCarouselState();
+  State<DutchPayAccountForcepayCarousel> createState() =>
+      _DutchPayAccountForcepayCarouselState();
 }
 
-class _DutchPayAccountCarouselState extends State<DutchPayAccountCarousel> {
+class _DutchPayAccountForcepayCarouselState
+    extends State<DutchPayAccountForcepayCarousel> {
   int _current = 0; // 현재 페이지 인덱스 상태 변수
   final CarouselController _carouselController = CarouselController();
   final TextEditingController _accountPasswordController =
@@ -59,33 +59,22 @@ class _DutchPayAccountCarouselState extends State<DutchPayAccountCarousel> {
 
         final DioService dioService = DioService();
         try {
-          print('transactions:');
-          print('transactions:');
-          print('transactions:');
-          print('transactions:');
-          print(widget.transactions);
-          print(widget.transactions.runtimeType);
-          print(widget.roomId);
-          print(widget.roomId.runtimeType);
           print(int.parse(accountId));
           print(int.parse(accountId).runtimeType);
           print(accountNum);
           print(accountNum.runtimeType);
           print(accountPassword);
           print(accountPassword.runtimeType);
-          var response = await dioService.dio.post(
-            '${baseURL}api/dutchpay/register',
+          var response = await dioService.dio.patch(
+            '${baseURL}api/dutchpay/self/${widget.dutchpayId}',
             data: {
-              'room_id': widget.roomId,
-              'account_id': int.parse(accountId),
               'account_num': accountNum,
-              'password': accountPassword,
-              'transactions': widget.transactions,
+              'account_password': accountPassword,
             },
           );
           print(response);
+          widget.callback();
           print('내역 추가 완료');
-          widget.callback(); // 콜백 함수 호출
         } catch (err) {
           print(err);
         }
@@ -255,14 +244,13 @@ class _DutchPayAccountCarouselState extends State<DutchPayAccountCarousel> {
   }
 }
 
-void showAccountCarouselDialogDutchPay(BuildContext context,
-    List<Map<String, dynamic>> transactions, int roomId, Function callback) {
+void showAccountCarouselDialogForcePay(
+    BuildContext context, int dutchpayId, Function callback) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return DutchPayAccountCarousel(
-        transactions: transactions,
-        roomId: roomId,
+      return DutchPayAccountForcepayCarousel(
+        dutchpayId: dutchpayId,
         callback: callback,
       );
     },

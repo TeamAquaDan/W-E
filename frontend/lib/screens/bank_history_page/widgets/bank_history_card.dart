@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 class BankHistoryCard extends StatelessWidget {
   BankHistoryCard({super.key, required this.data});
   final AccountHistoryData data;
-  var moneyFormat = NumberFormat('###,###,###,### 원');
   @override
   Widget build(BuildContext context) {
+    var moneyFormat = data.trans_type == 2
+        ? NumberFormat('- ###,###,###,### 원')
+        : NumberFormat('+ ###,###,###,### 원');
     return Card(
       color: const Color.fromARGB(255, 255, 255, 255),
       surfaceTintColor: Colors.white,
@@ -29,12 +31,14 @@ class BankHistoryCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Text(
-                  data.trans_memo,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w700),
+                Expanded(
+                  child: Text(
+                    data.trans_memo,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                const Spacer(),
                 Text(
                   moneyFormat.format(data.trans_amt),
                   style: TextStyle(

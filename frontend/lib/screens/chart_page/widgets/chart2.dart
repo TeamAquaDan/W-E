@@ -45,7 +45,7 @@ class PieChart2State extends State<PieChartSample2> {
                         show: false,
                       ),
                       sectionsSpace: 0,
-                      centerSpaceRadius: 40,
+                      centerSpaceRadius: 60,
                       sections: showingSections(),
                     ),
                   ),
@@ -64,7 +64,7 @@ class PieChart2State extends State<PieChartSample2> {
                   const Text(
                     '전체',
                     style: TextStyle(
-                      color: Color(0xFF919191),
+                      color: Color(0xFF3c3c3c),
                       fontSize: 20,
                     ),
                   ),
@@ -72,7 +72,7 @@ class PieChart2State extends State<PieChartSample2> {
                   Text(
                     formatter.format(widget.data['expense_amt']),
                     style: const TextStyle(
-                      color: Color(0xFF919191),
+                      color: Color(0xFF3c3c3c),
                       fontSize: 20,
                     ),
                   )
@@ -115,47 +115,6 @@ class PieChart2State extends State<PieChartSample2> {
         ),
       );
     });
-  }
-
-  Color getColorByCategory(String category) {
-    switch (category) {
-      case '001':
-        return Colors.blue;
-      case '002':
-        return Colors.yellow;
-      case '003':
-        return Colors.purple;
-      case '004':
-        return Colors.green;
-      case '005':
-        return Colors.red;
-      case '006':
-        return Colors.orange;
-      case '007':
-        return Colors.indigo;
-      case '008':
-        return Colors.teal;
-      case '009':
-        return Colors.cyan;
-      case '010':
-        return Colors.deepPurple;
-      case '011':
-        return Colors.amber;
-      case '012':
-        return Colors.lime;
-      case '013':
-        return Colors.lightGreen;
-      case '014':
-        return Colors.deepOrange;
-      case '015':
-        return Colors.pink;
-      case '000':
-        return Colors.grey;
-      case '100':
-        return Colors.brown;
-      default:
-        return Colors.grey;
-    }
   }
 
   List<Widget> _buildIndicators() {
@@ -239,6 +198,47 @@ class PieChart2State extends State<PieChartSample2> {
         return '수입';
       default:
         return 'Unknown';
+    }
+  }
+
+  Color getColorByCategory(String category) {
+    switch (category) {
+      case '001':
+        return Colors.deepOrange;
+      case '002':
+        return Colors.orange;
+      case '003':
+        return Colors.purple;
+      case '004':
+        return Colors.green;
+      case '005':
+        return Colors.red;
+      case '006':
+        return Colors.pink;
+      case '007':
+        return Colors.pinkAccent;
+      case '008':
+        return Colors.teal;
+      case '009':
+        return Colors.cyan;
+      case '010':
+        return Colors.deepPurple;
+      case '011':
+        return Colors.amber;
+      case '012':
+        return Colors.yellow;
+      case '013':
+        return Colors.lightGreen;
+      case '014':
+        return Colors.red;
+      case '015':
+        return Colors.blueGrey;
+      case '000':
+        return Colors.grey;
+      case '100':
+        return Colors.green;
+      default:
+        return Colors.grey;
     }
   }
 }

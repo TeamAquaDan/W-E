@@ -18,7 +18,7 @@ class CustomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabWidth = MediaQuery.of(context).size.width / tabLabels.length;
+    final tabWidth = (MediaQuery.of(context).size.width / tabLabels.length) - 8;
     final _indicatorPosition = tabWidth * selectedTabIndex;
 
     return Container(
@@ -57,7 +57,7 @@ class CustomTabBar extends StatelessWidget {
                         style: TextStyle(
                           color: selectedTabIndex == index
                               ? Colors.white
-                              : Color(0xff919191),
+                              : Color(0xFF3c3c3c),
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
                         )),

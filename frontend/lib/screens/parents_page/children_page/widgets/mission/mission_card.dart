@@ -188,7 +188,7 @@ class _MissionCardState extends State<MissionCard> {
                             const Text(
                               '종료',
                               style: TextStyle(
-                                color: Color(0xFF919191),
+                                color: Color(0xFF3c3c3c),
                                 fontSize: 30,
                                 fontFamily: 'Aggro',
                                 fontWeight: FontWeight.w400,
@@ -223,9 +223,9 @@ class _MissionCardState extends State<MissionCard> {
       case 0:
         return Colors.white;
       case 1:
-        return const Color(0xFF919191);
+        return const Color(0xFF3c3c3c);
       case 2:
-        return const Color(0xFF919191);
+        return const Color(0xFF3c3c3c);
       default:
         return Colors.white;
     }

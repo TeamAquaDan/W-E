@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class NegoCard extends StatelessWidget {
-  const NegoCard({super.key, required this.nego});
+  const NegoCard({super.key, required this.nego, required this.groupNickname});
   final Map<String, dynamic> nego;
+  final String groupNickname;
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,7 @@ class NegoCard extends StatelessWidget {
     Color textColor = _getTextColor(nego['status']);
     return InkWell(
       onTap: () {
-        Get.to(NegoDetailPage(
-          nego: nego,
-        ));
+        Get.to(NegoDetailPage(nego: nego, groupNickname: groupNickname));
       },
       child: Card(
         color: cardColor,
@@ -70,9 +69,9 @@ class NegoCard extends StatelessWidget {
       case 0:
         return Colors.white;
       case 1:
-        return const Color(0xFF919191);
+        return const Color(0xFF3c3c3c);
       case 2:
-        return const Color(0xFF919191);
+        return const Color(0xFF3c3c3c);
       default:
         return Colors.white;
     }

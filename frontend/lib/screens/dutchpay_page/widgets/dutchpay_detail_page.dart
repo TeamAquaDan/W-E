@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_account_carousel.dart';
+import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_account_forcepay_carousel.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_my_payment_page.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_payment_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DutchPayDetailPage extends StatefulWidget {
   const DutchPayDetailPage(
@@ -46,6 +49,25 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
         _selectedPayments.add(index);
       }
     });
+  }
+
+  bool _allRegistered() {
+    return dutchpayDetail.every((detail) => detail['_register'] == true);
+  }
+
+  bool _allAutoDutchpayed() {
+    return dutchpayDetail.every((detail) => detail['auto_dutchpay'] == true);
+  }
+
+  bool _checkRegisteredForLoggedInUser() {
+    return dutchpayDetail
+        .where((detail) => detail['_login_user'] == true)
+        .every((detail) => detail['_register'] == true);
+  }
+
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,###');
+    return formatter.format(number);
   }
 
   Future<void> loadRoomDetails() async {
@@ -124,29 +146,37 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return PaymentSelectionSheet(
-                          payments: payments,
-                          selectedPayments: _selectedPayments,
-                          paymentDate: widget.dutchpayDate,
-                          togglePaymentSelection: _togglePaymentSelection,
-                          roomId: widget.roomId,
-                        );
-                      },
-                    );
-                    loadRoomDetails();
-                  },
-                  child: Text(
-                    '＋ 내역 추가하기',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
+                !_checkRegisteredForLoggedInUser()
+                    ? TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return PaymentSelectionSheet(
+                                payments: payments,
+                                selectedPayments: _selectedPayments,
+                                paymentDate: widget.dutchpayDate,
+                                togglePaymentSelection: _togglePaymentSelection,
+                                roomId: widget.roomId,
+                                reloadRoomDetails: loadRoomDetails,
+                              );
+                            },
+                          );
+                          loadRoomDetails();
+                        },
+                        child: Text(
+                          '＋ 내역 추가하기',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    : Text(
+                        '＋ 내역 추가하기',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
               ],
             ),
             SizedBox(height: 16),
@@ -159,13 +189,15 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                     margin: EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
                       color: detail['_register'] == false
-                          ? Color(0xffc9c9c9)
+                          ? Color(0xFFc9c9c9)
                           : Color(0xff568ef8),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
                       leading: detail['profile_image'] == null
-                          ? const CircleAvatar(child: Icon(Icons.person))
+                          ? CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage('${baseProfileURL}'))
                           : CircleAvatar(
                               backgroundImage:
                                   NetworkImage(detail['profile_image'])),
@@ -173,140 +205,168 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                         detail['user_name'],
                         style: TextStyle(
                           color: detail['_register'] == false
-                              ? Color(0xff919191)
+                              ? Color(0xFF3c3c3c)
                               : Colors.white,
+                          fontSize: 20,
                         ),
                       ),
                       subtitle: Text(
-                        '${detail['total_amt']} 원',
+                        '${formatNumber(detail['total_amt'])} 원',
                         style: TextStyle(
                           color: detail['_register'] == false
-                              ? Color(0xff919191)
+                              ? Color(0xFF3c3c3c)
                               : Colors.white,
+                          fontSize: 17,
                         ),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           (detail['_completed'] == false &&
-                                  detail['_login_user'] == true)
+                                  detail['_login_user'] == true &&
+                                  _allRegistered() &&
+                                  _allAutoDutchpayed())
                               ? TextButton(
                                   onPressed: () {
-                                    final DioService dioService = DioService();
-                                    try {
-                                      var response = dioService.dio.patch(
-                                          '${baseURL}api/dutchpay/self/${detail['dutchpay_id']}',
-                                          data: {
-                                            'account_num': '010334567890',
-                                            'account_password': '7948'
-                                          });
-                                      print(response);
-                                    } catch (err) {
-                                      print(err);
-                                    }
+                                    showAccountCarouselDialogForcePay(context,
+                                        detail['dutchpay_id'], loadRoomDetails);
                                   },
-                                  child: const Text('강제정산'))
+                                  child: const Text(
+                                    '강제정산',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 230, 229, 229),
+                                      fontSize: 17,
+                                    ),
+                                  ))
                               : const SizedBox(width: 0, height: 0),
                           detail['_completed']
-                              ? const Icon(Icons.check, color: Colors.green)
-                              : const Icon(Icons.close, color: Colors.red),
+                              ? const Icon(Icons.check,
+                                  color: Color.fromARGB(255, 5, 60, 7))
+                              : const Icon(Icons.close,
+                                  color: Color.fromARGB(255, 118, 24, 17)),
                         ],
                       ),
-                      onTap: () async {
-                        final DioService dioService = DioService();
-                        try {
-                          var response = await dioService.dio.get(
-                            '${baseURL}api/dutchpay/payments',
-                            data: {
-                              'room_id': widget.roomId,
-                              'dutchpay_id': detail['dutchpay_id']
-                            },
-                          );
-                          // API 응답 데이터에서 리스트를 추출
-                          List<dynamic> items = response.data[
-                              'data']; // 'list'는 예시 키입니다. 실제 응답 구조에 따라 변경해야 합니다.
+                      onTap: detail['_register'] && detail['total_amt'] != 0
+                          ? () async {
+                              final DioService dioService = DioService();
+                              try {
+                                var response = await dioService.dio.post(
+                                  '${baseURL}api/dutchpay/payments',
+                                  data: {
+                                    'room_id': widget.roomId,
+                                    'dutchpay_id': detail['dutchpay_id']
+                                  },
+                                );
+                                // API 응답 데이터에서 리스트를 추출
+                                List<dynamic> items = response.data[
+                                    'data']; // 'list'는 예시 키입니다. 실제 응답 구조에 따라 변경해야 합니다.
 
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('응답 데이터 목록'),
-                                content: Container(
-                                  width: double.maxFinite, // 다이얼로그 너비 최대로 설정
-                                  child: ListView.builder(
-                                    shrinkWrap:
-                                        true, // 다이얼로그 크기에 맞게 ListView 크기 조절
-                                    itemCount: items.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      // 여기서 items[index]는 한 아이템의 데이터입니다.
-                                      // 예제에서는 간단히 문자열로 가정합니다. 실제 데이터 구조에 맞게 조정하세요.
-                                      return Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 4),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 8,
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                            '${detail['user_name']} 님의 결제 내역'),
+                                        content: Container(
+                                          width: double
+                                              .maxFinite, // 다이얼로그 너비 최대로 설정
+                                          child: ListView.builder(
+                                            shrinkWrap:
+                                                true, // 다이얼로그 크기에 맞게 ListView 크기 조절
+                                            itemCount: items.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              // 여기서 items[index]는 한 아이템의 데이터입니다.
+                                              // 예제에서는 간단히 문자열로 가정합니다. 실제 데이터 구조에 맞게 조정하세요.
+                                              return Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 4),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 16,
+                                                  vertical: 8,
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xFFc9c9c9),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: ListTile(
+                                                    title: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Text(
+                                                          items[index][
+                                                              'member_store_name'],
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xFF3c3c3c),
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 17,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '${formatNumber(items[index]['trans_amt'])} 원',
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xFF3c3c3c),
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 17,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ), // 'name'은 예시 필드입니다. 실제 필드에 맞게 변경하세요.
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
-                                        child: ListTile(
-                                          title: Row(
-                                            children: [
-                                              Text(items[index]
-                                                  ['member_store_name']),
-                                              Text(
-                                                  '${items[index]['trans_amt']}'),
-                                            ],
-                                          ), // 'name'은 예시 필드입니다. 실제 필드에 맞게 변경하세요.
-                                        ),
+                                        actions: <Widget>[],
                                       );
-                                    },
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: Text('닫기'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } catch (err) {
-                          print(err);
-                          // 에러 처리를 위한 다이얼로그 표시
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return AlertDialog(
-                          //       title: Text('오류 발생'),
-                          //       content: SingleChildScrollView(
-                          //         child: ListBody(
-                          //           children: <Widget>[
-                          //             Text('API 요청 중 오류가 발생했습니다.'),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //       actions: <Widget>[
-                          //         TextButton(
-                          //           child: Text('닫기'),
-                          //           onPressed: () {
-                          //             Navigator.of(context).pop();
-                          //           },
-                          //         ),
-                          //       ],
-                          //     );
-                          //   },
-                          // );
-                        }
-                      },
+                                    });
+                              } catch (err) {
+                                print(err);
+                                // 에러 처리를 위한 다이얼로그 표시
+                                // showDialog(
+                                //   context: context,
+                                //   builder: (BuildContext context) {
+                                //     return AlertDialog(
+                                //       title: Text('오류 발생'),
+                                //       content: SingleChildScrollView(
+                                //         child: ListBody(
+                                //           children: <Widget>[
+                                //             Text('API 요청 중 오류가 발생했습니다.'),
+                                //           ],
+                                //         ),
+                                //       ),
+                                //       actions: <Widget>[
+                                //         TextButton(
+                                //           child: Text('닫기'),
+                                //           onPressed: () {
+                                //             Navigator.of(context).pop();
+                                //           },
+                                //         ),
+                                //       ],
+                                //     );
+                                //   },
+                                // );
+                              }
+                            }
+                          : () {},
                     ),
                   );
                 },
               ),
             ),
-            Get.find<UserController>().getUserId() == widget.managerId
+            Get.find<UserController>().getUserId() == widget.managerId &&
+                    _allRegistered() &&
+                    !_allAutoDutchpayed()
                 ? Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -323,28 +383,72 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                               title: const Text('정산하기'),
                               content: const Text('정산을 진행하시겠습니까?'),
                               actions: <Widget>[
-                                TextButton(
-                                  child: const Text('No'),
-                                  onPressed: () {
-                                    // "No"를 선택했을 때의 행동
-                                    Navigator.of(context).pop(); // 대화상자 닫기
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Yes'),
-                                  onPressed: () {
-                                    // "Yes"를 선택했을 때의 행동
-                                    final DioService dioService = DioService();
-                                    try {
-                                      var response = dioService.dio.patch(
-                                          '${baseURL}api/dutchpay/${widget.roomId}');
-                                      print(response);
-                                    } catch (err) {
-                                      print(err);
-                                    }
-                                    Navigator.of(context).pop(); // 대화상자 닫기
-                                    // 정산 로직을 여기에 구현...
-                                  },
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                        backgroundColor: Color(0xff777777),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        '취소',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        // "No"를 선택했을 때의 행동
+                                        Navigator.of(context).pop(); // 대화상자 닫기
+                                      },
+                                    ),
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                        backgroundColor: Color(0xff568ef8),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        '확인',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        // "Yes"를 선택했을 때의 행동
+                                        final DioService dioService =
+                                            DioService();
+                                        try {
+                                          var response = await dioService.dio.patch(
+                                              '${baseURL}api/dutchpay/${widget.roomId}');
+                                          print(response);
+                                          loadRoomDetails();
+                                        } catch (err) {
+                                          print(err);
+                                        }
+                                        Navigator.of(context).pop(); // 대화상자 닫기
+                                        // 정산 로직을 여기에 구현...
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             );
@@ -377,6 +481,7 @@ class PaymentSelectionSheet extends StatefulWidget {
   final Function(int) togglePaymentSelection;
   final String paymentDate;
   final int roomId;
+  final Function reloadRoomDetails;
 
   const PaymentSelectionSheet({
     Key? key,
@@ -385,6 +490,7 @@ class PaymentSelectionSheet extends StatefulWidget {
     required this.togglePaymentSelection,
     required this.paymentDate,
     required this.roomId,
+    required this.reloadRoomDetails,
   }) : super(key: key);
 
   @override
@@ -419,7 +525,7 @@ class _PaymentSelectionSheetState extends State<PaymentSelectionSheet> {
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: isSelected ? Color(0xff568ef8) : Color(0xffc9c9c9),
+                    color: isSelected ? Color(0xff568ef8) : Color(0xFFc9c9c9),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   margin: EdgeInsets.symmetric(vertical: 4),
@@ -431,7 +537,7 @@ class _PaymentSelectionSheetState extends State<PaymentSelectionSheet> {
                           payment['member_store_name'].toString(),
                           style: TextStyle(
                             color:
-                                isSelected ? Colors.white : Color(0xff919191),
+                                isSelected ? Colors.white : Color(0xFF3c3c3c),
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
@@ -440,7 +546,7 @@ class _PaymentSelectionSheetState extends State<PaymentSelectionSheet> {
                           '${payment['trans_amt'].toString()}원',
                           style: TextStyle(
                             color:
-                                isSelected ? Colors.white : Color(0xff919191),
+                                isSelected ? Colors.white : Color(0xFF3c3c3c),
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
@@ -481,7 +587,11 @@ class _PaymentSelectionSheetState extends State<PaymentSelectionSheet> {
                   });
                   print(transactions);
                   showAccountCarouselDialogDutchPay(
-                      context, transactions, widget.roomId);
+                    context,
+                    transactions,
+                    widget.roomId,
+                    widget.reloadRoomDetails,
+                  );
                 },
                 child: Text(
                   '선택 완료',

@@ -25,6 +25,7 @@ class ChildHomePage extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               CarouselWithIndicator(),

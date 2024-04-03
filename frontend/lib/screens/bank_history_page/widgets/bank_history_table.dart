@@ -99,7 +99,6 @@ class _BankHistoryTable extends State<BankHistoryTable> {
                   setDropDownValue: setDropDownValue,
                 ),
                 const Spacer(),
-                Text(dropdownValue)
               ]),
               for (int i = 0; i < filteredDataList.length; i++)
                 BankHistoryCard(data: filteredDataList[i])

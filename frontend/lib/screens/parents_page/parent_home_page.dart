@@ -24,6 +24,7 @@ class ParentHomePage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

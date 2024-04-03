@@ -35,6 +35,7 @@ class AccountBookCard extends StatelessWidget {
                         fontFamily: 'Aggro',
                         fontWeight: FontWeight.w400,
                         height: 0,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const Spacer(),

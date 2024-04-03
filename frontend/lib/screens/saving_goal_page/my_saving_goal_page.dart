@@ -89,13 +89,15 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         },
         child: SavingGoal(
           goalId: goal['goal_id'],
-          goalName: goal['goal_name'],
+          goalName: goal['goal_name'] ?? '',
           goalAmt: goal['goal_amt'],
           status: goal['status'],
-          startDate: goal['start_date'],
+          startDate: goal['start_date'] ?? '',
           withdrawDate: goal['withdraw_date'] ?? '',
-          endDate: goal['end_date'],
+          goalDate: goal['end_date'] ?? '',
           percentage: goal['percentage'],
+          withdrawAmt: goal['withdraw_amt'],
+          category: goal['category'] ?? '',
           savedAmt: goal['saved_amt'],
         ),
       );
@@ -109,13 +111,15 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
     List<Widget> completedGoalWidgets = completedGoals.map<Widget>((goal) {
       return SavingGoal(
         goalId: goal['goal_id'],
-        goalName: goal['goal_name'],
+        goalName: goal['goal_name'] ?? '',
         goalAmt: goal['goal_amt'],
         status: goal['status'],
-        startDate: goal['start_date'],
-        withdrawDate: goal['withdraw_date'],
-        endDate: goal['end_date'],
+        startDate: goal['start_date'] ?? '',
+        withdrawDate: goal['withdraw_date'] ?? '',
+        goalDate: goal['end_date'] ?? '',
         percentage: goal['percentage'],
+        withdrawAmt: goal['withdraw_amt'],
+        category: goal['category'] ?? '',
         savedAmt: goal['saved_amt'],
       );
     }).toList();
@@ -153,21 +157,31 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         body: selectedTabIndex == 0
             ?
             // 현재 진행중인 목표 탭
-            ListView(
-                children: [
-                  ...currentGoalWidgets,
-                  SavingGoalPlus(
-                    onAddGoal: reloadGoals,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+            RefreshIndicator(
+                onRefresh: () async {
+                  await loadSavingGoals();
+                },
+                child: ListView(
+                  children: [
+                    SavingGoalPlus(
+                      onAddGoal: reloadGoals,
+                    ),
+                    ...currentGoalWidgets,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
               )
-            : ListView(
-                children: [
-                  ...completedGoalWidgets,
-                ],
+            : RefreshIndicator(
+                onRefresh: () async {
+                  await loadSavingGoals();
+                },
+                child: ListView(
+                  children: [
+                    ...completedGoalWidgets,
+                  ],
+                ),
               ),
       ),
     );

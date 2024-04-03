@@ -31,11 +31,15 @@ Future<List<Map<String, dynamic>>?> getGoalList(int status) async {
                     'status': item['status'],
                     'start_date': item['start_date'],
                     'withdraw_date': item['withdraw_date'] ?? '',
-                    'end_date':
+                    'goal_date':
                         item['goal_date'], // Renaming 'goal_date' to 'end_date'
                     'percentage': item['percentage'],
+                    'withdraw_amt': item['withdraw_amt'],
+                    'category': item['category'],
                     'saved_amt': item[
-                        'withdraw_amt'], // Renaming 'withdraw_amt' to 'saved_amt'
+                        'saved_amt'], // Renaming 'withdraw_amt' to 'saved_amt'
+
+                    // Renaming 'withdraw_amt' to 'saved_amt'
                   };
                 } else {
                   print('Error: Item is not a Map<String, dynamic>');

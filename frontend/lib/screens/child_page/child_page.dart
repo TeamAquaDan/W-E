@@ -17,10 +17,9 @@ class ChildPage extends StatefulWidget {
 class _ChildPageState extends State<ChildPage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    // const MyHomePage(title: 'Whale 서비스명'),
-    const ChildHomePage(), //ChildHomePage
-    const DutchPayPage(),
+    const ChildHomePage(),
     const AccountBookHomePage(),
+    const DutchPayPage(),
     const AlarmPage(),
     ChildMenuPage(),
   ];
@@ -44,12 +43,12 @@ class _ChildPageState extends State<ChildPage> {
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.groups_2),
-            label: '더치 페이',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.monetization_on),
             label: '가계부',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.groups_2),
+            label: '더치 페이',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
@@ -73,7 +72,14 @@ class _ChildPageState extends State<ChildPage> {
           );
         },
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.chat_bubble_outline_rounded),
+        child: Transform(
+          transform: Matrix4.identity()..scale(-1.0, 1.0),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.chat_bubble,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }

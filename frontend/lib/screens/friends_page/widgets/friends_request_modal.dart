@@ -57,71 +57,110 @@ class _FriendsRequestModalState extends State<FriendsRequestModal> {
         ),
       ),
       actions: <Widget>[
-        TextButton(
-          child: const Text('아니오'),
-          onPressed: () {
-            Navigator.of(context).pop(false); // 다이얼로그를 닫고, false 반환
-          },
-        ),
-        TextButton(
-          child: const Text('예'),
-          onPressed: () async {
-            final DioService dioService = DioService();
-            try {
-              var response = await dioService.dio.post(
-                '${baseURL}api/user/verify',
-                data: {
-                  "phone_num": _phoneNumberController.text,
-                  "username": _nameController.text,
-                },
-              );
-              if (response.statusCode == 200) {
-                // 친구 요청하는 코드
-                print('존재하는 친구임 ㅇㅇ');
-                print('response.data: ${response.data['data']['user_id']}');
-                DioService dioService = DioService();
-                dioService.dio.post(
-                  '${baseURL}api/friend/register',
-                  data: {
-                    "user_id": response.data['data']['user_id'],
-                  },
-                ).then((res) {
-                  print('친구 요청 보냄 $res');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("친구 요청을 보냈습니다."),
-                    ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 10,
+                ),
+                backgroundColor: Color(0xff777777),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                '취소',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false); // 다이얼로그를 닫고, false 반환
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 10,
+                ),
+                backgroundColor: Color(0xff568ef8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                '확인',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              onPressed: () async {
+                final DioService dioService = DioService();
+                try {
+                  var response = await dioService.dio.post(
+                    '${baseURL}api/user/verify',
+                    data: {
+                      "phone_num": _phoneNumberController.text,
+                      "username": _nameController.text,
+                    },
                   );
-                  Navigator.pop(context, true);
-                }).catchError((err) {
-                  print('친구 요청 보내기 실패 $err');
-                  Navigator.pop(context, true);
-                });
-              } else if (response.statusCode == 404) {
-                // 사용자가 존재하지 않는 경우
-                print('존재하지 않는 친구임 ㅇㅇ');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("사용자가 존재하지 않습니다."),
-                  ),
-                );
-              }
-            } catch (e) {
-              if (e is DioError) {
-                // DioError를 통해 에러를 더 세분화하여 처리
-                if (e.response?.statusCode == 404) {
-                  // 사용자가 존재하지 않는 경우
-                  print('존재하지 않는 친구임 ㅇㅇ');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("사용자가 존재하지 않습니다."),
-                    ),
-                  );
+                  if (response.statusCode == 200) {
+                    // 친구 요청하는 코드
+                    print('존재하는 친구임 ㅇㅇ');
+                    print('response.data: ${response.data['data']['user_id']}');
+                    DioService dioService = DioService();
+                    dioService.dio.post(
+                      '${baseURL}api/friend/register',
+                      data: {
+                        "user_id": response.data['data']['user_id'],
+                      },
+                    ).then((res) {
+                      print('친구 요청 보냄 $res');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("친구 요청을 보냈습니다."),
+                        ),
+                      );
+                      Navigator.pop(context, true);
+                    }).catchError((err) {
+                      print('친구 요청 보내기 실패 $err');
+                      Navigator.pop(context, true);
+                    });
+                  } else if (response.statusCode == 404) {
+                    // 사용자가 존재하지 않는 경우
+                    print('존재하지 않는 친구임 ㅇㅇ');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("사용자가 존재하지 않습니다."),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (e is DioError) {
+                    // DioError를 통해 에러를 더 세분화하여 처리
+                    if (e.response?.statusCode == 404) {
+                      // 사용자가 존재하지 않는 경우
+                      print('존재하지 않는 친구임 ㅇㅇ');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("사용자가 존재하지 않습니다."),
+                        ),
+                      );
+                    }
+                  }
+                  Navigator.of(context).pop(true); // 다이얼로그를 닫고, true 반환
                 }
-              }
-              Navigator.of(context).pop(true); // 다이얼로그를 닫고, true 반환
-            }
-          },
+              },
+            ),
+          ],
         ),
       ],
     );
