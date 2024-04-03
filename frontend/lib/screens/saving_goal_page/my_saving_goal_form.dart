@@ -44,20 +44,6 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
     "000": "기타"
   };
 
-  final Map<String, dynamic> _categoryImoge = {
-    "001": "🎁",
-    "002": "📱",
-    "003": "📎",
-    "004": "👕",
-    "005": "🎮",
-    "006": "🏠",
-    "007": "🍔",
-    "008": "📚",
-    "009": "💍",
-    "010": "💄",
-    "000": "🐳"
-  };
-
   @override
   void initState() {
     super.initState();
