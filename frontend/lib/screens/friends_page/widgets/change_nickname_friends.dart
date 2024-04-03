@@ -24,60 +24,65 @@ Future<String?> showChangeNicknameFriendsDialog(BuildContext context,
           ),
         ),
         actions: <Widget>[
-          TextButton(
-            child: const Text(
-              '취소',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                child: const Text(
+                  '취소',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xff777777),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-            ),
-            style: TextButton.styleFrom(
-              backgroundColor: Color(0xFF999999),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+              TextButton(
+                child: const Text(
+                  '확인',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xFF568EF8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () async {
+                  // async 추가
+                  final DioService dioService = DioService();
+                  try {
+                    // await 키워드를 사용하여 비동기 요청의 결과를 기다림
+                    var response = await dioService.dio.patch(
+                      '${baseURL}api/friend/nickname',
+                      data: {
+                        'user_id': userId,
+                        'nickname': nicknameController.text,
+                      },
+                    );
+                    // 요청이 성공적으로 완료되면 응답을 콘솔에 출력
+                    print(response.data);
+                    onSuccess();
+                  } catch (e) {
+                    print(e);
+                  }
+                  Navigator.of(context).pop(nicknameController.text);
+                },
               ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            child: const Text(
-              '확인',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            style: TextButton.styleFrom(
-              backgroundColor: Color(0xFF568EF8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () async {
-              // async 추가
-              final DioService dioService = DioService();
-              try {
-                // await 키워드를 사용하여 비동기 요청의 결과를 기다림
-                var response = await dioService.dio.patch(
-                  '${baseURL}api/friend/nickname',
-                  data: {
-                    'user_id': userId,
-                    'nickname': nicknameController.text,
-                  },
-                );
-                // 요청이 성공적으로 완료되면 응답을 콘솔에 출력
-                print(response.data);
-                onSuccess();
-              } catch (e) {
-                print(e);
-              }
-              Navigator.of(context).pop(nicknameController.text);
-            },
+            ],
           ),
         ],
       );

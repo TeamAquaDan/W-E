@@ -147,7 +147,7 @@ class _AlarmPageState extends State<AlarmPage> {
                             notification.name,
                             style: TextStyle(
                               color: notification.isRead
-                                  ? Color(0xFF919191)
+                                  ? Color(0xFF3c3c3c)
                                   : Colors.white,
                               fontSize: 17,
                               fontFamily: 'Aggro',
@@ -159,7 +159,7 @@ class _AlarmPageState extends State<AlarmPage> {
                             notification.content,
                             style: TextStyle(
                               color: notification.isRead
-                                  ? Color(0xFF919191)
+                                  ? Color(0xFF3c3c3c)
                                   : Colors.white,
                               fontSize: 17,
                               fontFamily: 'Aggro',

@@ -125,7 +125,7 @@ class Salary extends StatelessWidget {
                     child: const Text(
                       '용돈 인상',
                       style: TextStyle(
-                        color: Color(0xFF919191),
+                        color: Color(0xFF3c3c3c),
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),

@@ -29,12 +29,12 @@ Future<String?> showChangeNicknameParentsDialog(BuildContext context,
               '취소',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
               ),
             ),
             style: TextButton.styleFrom(
-              backgroundColor: Color(0xFF999999),
+              backgroundColor: Color(0xff777777),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -48,7 +48,7 @@ Future<String?> showChangeNicknameParentsDialog(BuildContext context,
               '확인',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
               ),
             ),

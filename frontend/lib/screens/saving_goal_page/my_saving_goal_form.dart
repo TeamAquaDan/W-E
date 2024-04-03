@@ -142,7 +142,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff999999),
+                          color: Color(0xff777777),
                         ),
                       ),
                       TextField(
@@ -166,7 +166,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff999999),
+                          color: Color(0xff777777),
                         ),
                       ),
                       DropdownButton<String>(
@@ -211,7 +211,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff999999),
+                            color: Color(0xff777777),
                           )),
                       Row(
                         children: [
@@ -247,7 +247,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff999999),
+                          color: Color(0xff777777),
                         ),
                       ),
                       Row(
@@ -279,7 +279,7 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff999999),
+                          color: Color(0xff777777),
                         ),
                       ),
                       TextField(
