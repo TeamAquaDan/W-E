@@ -11,7 +11,7 @@ class CustomTabBar extends StatelessWidget {
     required this.selectedTabIndex,
     required this.onTabChanged,
     required this.tabLabels,
-    this.selectedTabColor = Colors.blue,
+    this.selectedTabColor = const Color(0xFF568ef8),
   })  : assert(
             tabLabels.length > 1, 'You must provide at least two tab labels.'),
         super(key: key);
@@ -25,7 +25,7 @@ class CustomTabBar extends StatelessWidget {
       height: kToolbarHeight - 8.0,
       margin: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Color(0xffd9d9d9),
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Stack(
@@ -51,13 +51,16 @@ class CustomTabBar extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () => onTabChanged(index),
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                     alignment: Alignment.center,
                     child: Text(tabLabels[index],
                         style: TextStyle(
-                            color: selectedTabIndex == index
-                                ? Colors.white
-                                : Colors.black)),
+                          color: selectedTabIndex == index
+                              ? Colors.white
+                              : Color(0xff919191),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        )),
                   ),
                 ),
               ),
