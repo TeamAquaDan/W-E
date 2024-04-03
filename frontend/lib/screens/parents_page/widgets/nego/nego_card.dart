@@ -15,7 +15,9 @@ class NegoCard extends StatelessWidget {
     Color textColor = _getTextColor(nego['status']);
     return InkWell(
       onTap: () {
-        Get.to(NegoDetailPage(nego: nego, groupNickname: groupNickname));
+        if (nego['status'] == 0) {
+          Get.to(NegoDetailPage(nego: nego, groupNickname: groupNickname));
+        }
       },
       child: Card(
         color: cardColor,
