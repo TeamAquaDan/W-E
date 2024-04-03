@@ -18,9 +18,7 @@ class ChildHomePage extends StatelessWidget {
                 'assets/images/whale.png',
                 height: 32,
               ),
-              const Flexible(
-                child: Text('아이 페이지'),
-              ),
+              Text('아이 페이지'),
               const Spacer(),
               const MyProfileIcon(),
             ],

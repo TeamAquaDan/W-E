@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
 import 'dart:developer' as developer;
 import 'package:frontend/main.dart';
@@ -33,7 +34,7 @@ class AuthService {
       if (refreshToken == null) return false;
 
       final response = await _dioService.dio.post(
-        'https://j10e103.p.ssafy.io/api/auth/reissue',
+        '${baseURL}api/auth/reissue',
         data: {'refresh_token': refreshToken},
       );
       if (response.statusCode == 200) {
@@ -51,7 +52,7 @@ class AuthService {
       String birthdate, String personalNum) async {
     try {
       final response = await _dio.post(
-        'https://j10e103.p.ssafy.io/api/auth/signup',
+        '${baseURL}api/auth/signup',
         data: {
           'login_id': loginId,
           'password': password,
@@ -71,7 +72,7 @@ class AuthService {
   // Future<bool> login(String loginId, String password, String fcmToken) async {
   //   try {
   //     final response = await _dio.post(
-  //       'https://j10e103.p.ssafy.io/api/auth/login',
+  //       '${baseURL}api/auth/login',
   //       data: {
   //         'login_id': loginId,
   //         'password': password,
@@ -104,7 +105,7 @@ class AuthService {
       String loginId, String password, String fcmToken) async {
     try {
       final response = await _dio.post(
-        'https://j10e103.p.ssafy.io/api/auth/login',
+        '${baseURL}api/auth/login',
         data: {
           'login_id': loginId,
           'password': password,
