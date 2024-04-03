@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.account.dto.request.WithdrawRequestDto;
 import org.whalebank.backend.domain.account.dto.response.AccountDetailResponseDto;
@@ -48,6 +49,7 @@ import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DutchpayServiceImpl implements DutchpayService {
 
   private final AuthRepository authRepository;
@@ -66,6 +68,7 @@ public class DutchpayServiceImpl implements DutchpayService {
   public DutchpayRoomResponseDto createDutchpayRoom(String loginId,
       DutchpayRoomRequestDto request) {
 
+    log.info("방 생성 시작");
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
@@ -157,12 +160,14 @@ public class DutchpayServiceImpl implements DutchpayService {
   @Transactional
   public void registerPayments(String loginId, RegisterPaymentRequestDto request) {
 
-    System.out.println("register payment 입장~ ");
+    log.info("register payment 입장~");
+    //System.out.println("register payment 입장~ ");
 
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    System.out.println("User name: " + user.getUserName());
+    log.info("User name: "+user.getUserName());
+//    System.out.println("User name: " + user.getUserName());
 
     // 계좌 비밀번호 확인
     if (!bankAccessUtil.verifyAccountPassword(user.getBankAccessToken(), request.getAccount_id(),
@@ -200,7 +205,8 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     dutchpayRepository.save(dutchpay);
 
-    System.out.println("내역 등록 성공 ");
+    log.info("내역 등록 성공");
+//    System.out.println("내역 등록 성공 ");
 
     if (dutchpayRoom.getSetAmtCount() == dutchpayRepository.findByRoom(dutchpayRoom).size()) {
 
