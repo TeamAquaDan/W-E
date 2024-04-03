@@ -124,351 +124,368 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
         title: const Text('더치페이'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.roomName,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await loadRoomDetails();
+          await loadPayments();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.roomName,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              widget.dutchpayDate,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+              Text(
+                widget.dutchpayDate,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                !_checkRegisteredForLoggedInUser()
-                    ? TextButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return PaymentSelectionSheet(
-                                payments: payments,
-                                selectedPayments: _selectedPayments,
-                                paymentDate: widget.dutchpayDate,
-                                togglePaymentSelection: _togglePaymentSelection,
-                                roomId: widget.roomId,
-                                reloadRoomDetails: loadRoomDetails,
-                              );
-                            },
-                          );
-                          loadRoomDetails();
-                        },
-                        child: Text(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  !_checkRegisteredForLoggedInUser()
+                      ? TextButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return PaymentSelectionSheet(
+                                  payments: payments,
+                                  selectedPayments: _selectedPayments,
+                                  paymentDate: widget.dutchpayDate,
+                                  togglePaymentSelection:
+                                      _togglePaymentSelection,
+                                  roomId: widget.roomId,
+                                  reloadRoomDetails: loadRoomDetails,
+                                );
+                              },
+                            );
+                            loadRoomDetails();
+                          },
+                          child: Text(
+                            '＋ 내역 추가하기',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        )
+                      : Text(
                           '＋ 내역 추가하기',
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                      )
-                    : Text(
-                        '＋ 내역 추가하기',
-                        style: TextStyle(
-                          fontSize: 16,
+                ],
+              ),
+              SizedBox(height: 16),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: dutchpayDetail.length,
+                  itemBuilder: (context, index) {
+                    var detail = dutchpayDetail[index];
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        color: detail['_register'] == false
+                            ? Color(0xFFc9c9c9)
+                            : Color(0xff568ef8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        leading: detail['profile_image'] == null
+                            ? CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage('${baseProfileURL}'))
+                            : CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(detail['profile_image'])),
+                        title: Text(
+                          detail['user_name'],
+                          style: TextStyle(
+                            color: detail['_register'] == false
+                                ? Color(0xFF3c3c3c)
+                                : Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: dutchpayDetail.length,
-                itemBuilder: (context, index) {
-                  var detail = dutchpayDetail[index];
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
-                      color: detail['_register'] == false
-                          ? Color(0xFFc9c9c9)
-                          : Color(0xff568ef8),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ListTile(
-                      leading: detail['profile_image'] == null
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage('${baseProfileURL}'))
-                          : CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(detail['profile_image'])),
-                      title: Text(
-                        detail['user_name'],
-                        style: TextStyle(
-                          color: detail['_register'] == false
-                              ? Color(0xFF3c3c3c)
-                              : Colors.white,
-                          fontSize: 20,
+                        subtitle: Text(
+                          '${formatNumber(detail['total_amt'])} 원',
+                          style: TextStyle(
+                            color: detail['_register'] == false
+                                ? Color(0xFF3c3c3c)
+                                : Colors.white,
+                            fontSize: 17,
+                          ),
                         ),
-                      ),
-                      subtitle: Text(
-                        '${formatNumber(detail['total_amt'])} 원',
-                        style: TextStyle(
-                          color: detail['_register'] == false
-                              ? Color(0xFF3c3c3c)
-                              : Colors.white,
-                          fontSize: 17,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            (detail['_completed'] == false &&
+                                    detail['_login_user'] == true &&
+                                    _allRegistered() &&
+                                    _allAutoDutchpayed())
+                                ? TextButton(
+                                    onPressed: () {
+                                      showAccountCarouselDialogForcePay(
+                                          context,
+                                          detail['dutchpay_id'],
+                                          loadRoomDetails);
+                                    },
+                                    child: const Text(
+                                      '강제정산',
+                                      style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 230, 229, 229),
+                                        fontSize: 17,
+                                      ),
+                                    ))
+                                : const SizedBox(width: 0, height: 0),
+                            detail['_completed']
+                                ? const Icon(Icons.check,
+                                    color: Color.fromARGB(255, 5, 60, 7))
+                                : const Icon(Icons.close,
+                                    color: Color.fromARGB(255, 118, 24, 17)),
+                          ],
                         ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          (detail['_completed'] == false &&
-                                  detail['_login_user'] == true &&
-                                  _allRegistered() &&
-                                  _allAutoDutchpayed())
-                              ? TextButton(
-                                  onPressed: () {
-                                    showAccountCarouselDialogForcePay(context,
-                                        detail['dutchpay_id'], loadRoomDetails);
-                                  },
-                                  child: const Text(
-                                    '강제정산',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 230, 229, 229),
-                                      fontSize: 17,
-                                    ),
-                                  ))
-                              : const SizedBox(width: 0, height: 0),
-                          detail['_completed']
-                              ? const Icon(Icons.check,
-                                  color: Color.fromARGB(255, 5, 60, 7))
-                              : const Icon(Icons.close,
-                                  color: Color.fromARGB(255, 118, 24, 17)),
-                        ],
-                      ),
-                      onTap: detail['_register'] && detail['total_amt'] != 0
-                          ? () async {
-                              final DioService dioService = DioService();
-                              try {
-                                var response = await dioService.dio.post(
-                                  '${baseURL}api/dutchpay/payments',
-                                  data: {
-                                    'room_id': widget.roomId,
-                                    'dutchpay_id': detail['dutchpay_id']
-                                  },
-                                );
-                                // API 응답 데이터에서 리스트를 추출
-                                List<dynamic> items = response.data[
-                                    'data']; // 'list'는 예시 키입니다. 실제 응답 구조에 따라 변경해야 합니다.
+                        onTap: detail['_register'] && detail['total_amt'] != 0
+                            ? () async {
+                                final DioService dioService = DioService();
+                                try {
+                                  var response = await dioService.dio.post(
+                                    '${baseURL}api/dutchpay/payments',
+                                    data: {
+                                      'room_id': widget.roomId,
+                                      'dutchpay_id': detail['dutchpay_id']
+                                    },
+                                  );
+                                  // API 응답 데이터에서 리스트를 추출
+                                  List<dynamic> items = response.data[
+                                      'data']; // 'list'는 예시 키입니다. 실제 응답 구조에 따라 변경해야 합니다.
 
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                            '${detail['user_name']} 님의 결제 내역'),
-                                        content: Container(
-                                          width: double
-                                              .maxFinite, // 다이얼로그 너비 최대로 설정
-                                          child: ListView.builder(
-                                            shrinkWrap:
-                                                true, // 다이얼로그 크기에 맞게 ListView 크기 조절
-                                            itemCount: items.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              // 여기서 items[index]는 한 아이템의 데이터입니다.
-                                              // 예제에서는 간단히 문자열로 가정합니다. 실제 데이터 구조에 맞게 조정하세요.
-                                              return Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: 4),
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 16,
-                                                  vertical: 8,
-                                                ),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFFc9c9c9),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                              '${detail['user_name']} 님의 결제 내역'),
+                                          content: Container(
+                                            width: double
+                                                .maxFinite, // 다이얼로그 너비 최대로 설정
+                                            child: ListView.builder(
+                                              shrinkWrap:
+                                                  true, // 다이얼로그 크기에 맞게 ListView 크기 조절
+                                              itemCount: items.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                // 여기서 items[index]는 한 아이템의 데이터입니다.
+                                                // 예제에서는 간단히 문자열로 가정합니다. 실제 데이터 구조에 맞게 조정하세요.
+                                                return Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 4),
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 8,
                                                   ),
-                                                  child: ListTile(
-                                                    title: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Text(
-                                                          items[index][
-                                                              'member_store_name'],
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFF3c3c3c),
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: 17,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xFFc9c9c9),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: ListTile(
+                                                      title: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Text(
+                                                            items[index][
+                                                                'member_store_name'],
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF3c3c3c),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontSize: 17,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Text(
-                                                          '${formatNumber(items[index]['trans_amt'])} 원',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFF3c3c3c),
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: 17,
+                                                          Text(
+                                                            '${formatNumber(items[index]['trans_amt'])} 원',
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF3c3c3c),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontSize: 17,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ), // 'name'은 예시 필드입니다. 실제 필드에 맞게 변경하세요.
+                                                        ],
+                                                      ), // 'name'은 예시 필드입니다. 실제 필드에 맞게 변경하세요.
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          actions: <Widget>[],
+                                        );
+                                      });
+                                } catch (err) {
+                                  print(err);
+                                  // 에러 처리를 위한 다이얼로그 표시
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) {
+                                  //     return AlertDialog(
+                                  //       title: Text('오류 발생'),
+                                  //       content: SingleChildScrollView(
+                                  //         child: ListBody(
+                                  //           children: <Widget>[
+                                  //             Text('API 요청 중 오류가 발생했습니다.'),
+                                  //           ],
+                                  //         ),
+                                  //       ),
+                                  //       actions: <Widget>[
+                                  //         TextButton(
+                                  //           child: Text('닫기'),
+                                  //           onPressed: () {
+                                  //             Navigator.of(context).pop();
+                                  //           },
+                                  //         ),
+                                  //       ],
+                                  //     );
+                                  //   },
+                                  // );
+                                }
+                              }
+                            : () {},
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Get.find<UserController>().getUserId() == widget.managerId &&
+                      _allRegistered() &&
+                      !_allAutoDutchpayed()
+                  ? Container(
+                      width: double.infinity,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Color(0xff568ef8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('정산하기'),
+                                content: const Text('정산을 진행하시겠습니까?'),
+                                actions: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                            vertical: 10,
+                                          ),
+                                          backgroundColor: Color(0xff777777),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                         ),
-                                        actions: <Widget>[],
-                                      );
-                                    });
-                              } catch (err) {
-                                print(err);
-                                // 에러 처리를 위한 다이얼로그 표시
-                                // showDialog(
-                                //   context: context,
-                                //   builder: (BuildContext context) {
-                                //     return AlertDialog(
-                                //       title: Text('오류 발생'),
-                                //       content: SingleChildScrollView(
-                                //         child: ListBody(
-                                //           children: <Widget>[
-                                //             Text('API 요청 중 오류가 발생했습니다.'),
-                                //           ],
-                                //         ),
-                                //       ),
-                                //       actions: <Widget>[
-                                //         TextButton(
-                                //           child: Text('닫기'),
-                                //           onPressed: () {
-                                //             Navigator.of(context).pop();
-                                //           },
-                                //         ),
-                                //       ],
-                                //     );
-                                //   },
-                                // );
-                              }
-                            }
-                          : () {},
-                    ),
-                  );
-                },
-              ),
-            ),
-            Get.find<UserController>().getUserId() == widget.managerId &&
-                    _allRegistered() &&
-                    !_allAutoDutchpayed()
-                ? Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Color(0xff568ef8),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('정산하기'),
-                              content: const Text('정산을 진행하시겠습니까?'),
-                              actions: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 10,
+                                        child: const Text(
+                                          '취소',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
-                                        backgroundColor: Color(0xff777777),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
+                                        onPressed: () {
+                                          // "No"를 선택했을 때의 행동
+                                          Navigator.of(context)
+                                              .pop(); // 대화상자 닫기
+                                        },
                                       ),
-                                      child: const Text(
-                                        '취소',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                            vertical: 10,
+                                          ),
+                                          backgroundColor: Color(0xff568ef8),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
                                         ),
+                                        child: const Text(
+                                          '확인',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          // "Yes"를 선택했을 때의 행동
+                                          final DioService dioService =
+                                              DioService();
+                                          try {
+                                            var response = await dioService.dio
+                                                .patch(
+                                                    '${baseURL}api/dutchpay/${widget.roomId}');
+                                            print(response);
+                                            loadRoomDetails();
+                                          } catch (err) {
+                                            print(err);
+                                          }
+                                          Navigator.of(context)
+                                              .pop(); // 대화상자 닫기
+                                          // 정산 로직을 여기에 구현...
+                                        },
                                       ),
-                                      onPressed: () {
-                                        // "No"를 선택했을 때의 행동
-                                        Navigator.of(context).pop(); // 대화상자 닫기
-                                      },
-                                    ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 10,
-                                        ),
-                                        backgroundColor: Color(0xff568ef8),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        '확인',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      onPressed: () async {
-                                        // "Yes"를 선택했을 때의 행동
-                                        final DioService dioService =
-                                            DioService();
-                                        try {
-                                          var response = await dioService.dio.patch(
-                                              '${baseURL}api/dutchpay/${widget.roomId}');
-                                          print(response);
-                                          loadRoomDetails();
-                                        } catch (err) {
-                                          print(err);
-                                        }
-                                        Navigator.of(context).pop(); // 대화상자 닫기
-                                        // 정산 로직을 여기에 구현...
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: const Text(
-                        '정산하기',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const Text(
+                          '정산하기',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
+                    )
+                  : SizedBox(
+                      width: 0,
                     ),
-                  )
-                : SizedBox(
-                    width: 0,
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );
