@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/form_account_book.dart';
 import 'package:frontend/screens/account_book/widgets/account_book_card.dart';
@@ -91,11 +92,24 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
         ? Container()
         : Scaffold(
             appBar: AppBar(
-                // automaticallyImplyLeading: false,
-                centerTitle: true,
-                title: selectedTabIndex == 0
-                    ? const Text('가계부')
-                    : const Text('통계')),
+              // automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: selectedTabIndex == 0 ? Text('가계부') : Text('통계'),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FormAccountBook(
+                            setData: refreshData,
+                          ); // 여기에 FormAccountBook 위젯을 반환하는 코드를 작성하세요.
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.add))
+              ],
+            ),
             body: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
@@ -332,6 +346,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
 
                               AccountBookCard(
                                 data: filteredData ?? [],
+                                setData: refreshData,
                               )
                             ],
                           )
