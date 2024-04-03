@@ -133,7 +133,7 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff999999),
+                  color: Color(0xff777777),
                 ),
               ),
               TextFormField(
@@ -161,7 +161,7 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff999999),
+                  color: Color(0xff777777),
                 ),
               ),
               TextFormField(
@@ -196,7 +196,7 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff999999),
+                  color: Color(0xff777777),
                 ),
               ),
               Center(
@@ -380,7 +380,7 @@ class _MyCheckboxListState extends State<MyCheckboxList> {
                           const EdgeInsets.only(bottom: 8), // 여기서 간격을 조정합니다.
                       decoration: BoxDecoration(
                         color:
-                            isSelected ? Color(0xff568ef8) : Color(0xffC9C9C9),
+                            isSelected ? Color(0xff568ef8) : Color(0xFFc9c9c9),
                         borderRadius:
                             BorderRadius.circular(15), // 선택적으로 둥근 모서리 추가
                       ),
@@ -398,7 +398,7 @@ class _MyCheckboxListState extends State<MyCheckboxList> {
                               style: TextStyle(
                                 color: isSelected
                                     ? Colors.white
-                                    : Color(0xff919191),
+                                    : Color(0xFF3c3c3c),
                                 fontSize: 23,
                                 fontWeight: FontWeight.w700,
                               ),

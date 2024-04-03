@@ -244,7 +244,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                           style: TextStyle(
                                             color: tabState == 0
                                                 ? Colors.white
-                                                : const Color(0xFF919191),
+                                                : const Color(0xFF3c3c3c),
                                             fontSize: 15,
                                             fontFamily: 'Aggro',
                                             fontWeight: FontWeight.w700,
@@ -280,7 +280,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                           style: TextStyle(
                                             color: tabState == 1
                                                 ? Colors.white
-                                                : const Color(0xFF919191),
+                                                : const Color(0xFF3c3c3c),
                                             fontSize: 15,
                                             fontFamily: 'Aggro',
                                             fontWeight: FontWeight.w700,
@@ -316,7 +316,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
                                           style: TextStyle(
                                             color: tabState == 2
                                                 ? Colors.white
-                                                : const Color(0xFF919191),
+                                                : const Color(0xFF3c3c3c),
                                             fontSize: 15,
                                             fontFamily: 'Aggro',
                                             fontWeight: FontWeight.w700,

@@ -64,7 +64,7 @@ class PieChart2State extends State<PieChartSample2> {
                   const Text(
                     '전체',
                     style: TextStyle(
-                      color: Color(0xFF919191),
+                      color: Color(0xFF3c3c3c),
                       fontSize: 20,
                     ),
                   ),
@@ -72,7 +72,7 @@ class PieChart2State extends State<PieChartSample2> {
                   Text(
                     formatter.format(widget.data['expense_amt']),
                     style: const TextStyle(
-                      color: Color(0xFF919191),
+                      color: Color(0xFF3c3c3c),
                       fontSize: 20,
                     ),
                   )

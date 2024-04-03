@@ -141,7 +141,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                     ? const BorderRadius.vertical(top: Radius.circular(10))
                     : BorderRadius.circular(10),
                 color: requstedFriendsList.isEmpty
-                    ? const Color(0xFFC9C9C9)
+                    ? const Color(0xFFc9c9c9)
                     : const Color(0xFF568EF8),
               ),
               child: Row(
@@ -151,7 +151,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                     "새로운 친구 요청",
                     style: TextStyle(
                       color: requstedFriendsList.isEmpty
-                          ? const Color(0xFF919191)
+                          ? const Color(0xFF3c3c3c)
                           : const Color(0xFFFFFFFF),
                       fontWeight: FontWeight.w900,
                       fontSize: 18,
@@ -160,7 +160,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                   requstedFriendsList.isEmpty
                       ? IconButton(
                           icon: const Icon(Icons.expand_more),
-                          color: const Color(0xFF919191),
+                          color: const Color(0xFF3c3c3c),
                           onPressed: () {},
                         )
                       : IconButton(
@@ -235,7 +235,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                       child: const Text(
                                         '거절',
                                         style: TextStyle(
-                                            color: Color(0xFF919191),
+                                            color: Color(0xFF3c3c3c),
                                             fontSize: 18,
                                             fontWeight: FontWeight.w700),
                                       ),
