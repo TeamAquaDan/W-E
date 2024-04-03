@@ -85,291 +85,299 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
       appBar: AppBar(
         title: const Text('친구 목록'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: filterFriends, // 사용자 입력이 바뀔 때마다 필터링
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      filled: true,
-                      fillColor: const Color(0xFFF8F8F8),
-                      border: InputBorder.none,
-                      hintText: '이름으로 검색',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 0.5),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 0.5),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      contentPadding: const EdgeInsets.all(15),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                IconButton(
-                  onPressed: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return const Dialog(
-                    //       child: ContactsModal(),
-                    //     );
-                    //   },
-                    // );
-                    Get.to(() => const ContactsModal());
-                  },
-                  icon: const Icon(Icons.person_add),
-                  iconSize: 35,
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-              decoration: BoxDecoration(
-                borderRadius: isPanelExpanded == true
-                    ? const BorderRadius.vertical(top: Radius.circular(10))
-                    : BorderRadius.circular(10),
-                color: requstedFriendsList.isEmpty
-                    ? const Color(0xFFc9c9c9)
-                    : const Color(0xFF568EF8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await loadFriends();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Text(
-                    "새로운 친구 요청",
-                    style: TextStyle(
-                      color: requstedFriendsList.isEmpty
-                          ? const Color(0xFF3c3c3c)
-                          : const Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.w900,
-                      fontSize: 18,
+                  Expanded(
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: filterFriends, // 사용자 입력이 바뀔 때마다 필터링
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        filled: true,
+                        fillColor: const Color(0xFFF8F8F8),
+                        border: InputBorder.none,
+                        hintText: '이름으로 검색',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 0.5),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 0.5),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        contentPadding: const EdgeInsets.all(15),
+                      ),
                     ),
                   ),
-                  requstedFriendsList.isEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.expand_more),
-                          color: const Color(0xFF3c3c3c),
-                          onPressed: () {},
-                        )
-                      : IconButton(
-                          icon: Icon(isPanelExpanded
-                              ? Icons.expand_less
-                              : Icons.expand_more),
-                          onPressed: () async {
-                            await loadPendingFriendRequests();
-                            setState(() {
-                              isPanelExpanded = !isPanelExpanded; // 패널 상태 토글
-                            });
-                          },
-                        ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    onPressed: () {
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (BuildContext context) {
+                      //     return const Dialog(
+                      //       child: ContactsModal(),
+                      //     );
+                      //   },
+                      // );
+                      Get.to(() => const ContactsModal());
+                    },
+                    icon: const Icon(Icons.person_add),
+                    iconSize: 35,
+                  ),
                 ],
               ),
-            ),
-            Visibility(
-              visible: isPanelExpanded, // 패널 확장 상태에 따라 보이기/숨기기
-              child: Container(
+              const SizedBox(height: 15),
+              Container(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF568EF8),
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(10),
-                  ),
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: isPanelExpanded == true
+                      ? const BorderRadius.vertical(top: Radius.circular(10))
+                      : BorderRadius.circular(10),
+                  color: requstedFriendsList.isEmpty
+                      ? const Color(0xFFc9c9c9)
+                      : const Color(0xFF568EF8),
                 ),
-                width: double.infinity,
-                child: requstedFriendsList.isEmpty
-                    ? const Center(
-                        // 친구 요청 목록이 비어있을 때
-                        child: Text(
-                          "현재 친구 요청이 없습니다",
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: requstedFriendsList.length,
-                        shrinkWrap: true, // 리스트의 높이를 내용물에 맞추도록 설정
-                        physics:
-                            const NeverScrollableScrollPhysics(), // 스크롤이 발생하지 않도록 설정
-                        itemBuilder: (context, index) {
-                          var request = requstedFriendsList[index];
-                          return Container(
-                            margin: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(10),
-                              child: ListTile(
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                shape: RoundedRectangleBorder(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "새로운 친구 요청",
+                      style: TextStyle(
+                        color: requstedFriendsList.isEmpty
+                            ? const Color(0xFF3c3c3c)
+                            : const Color(0xFFFFFFFF),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                      ),
+                    ),
+                    requstedFriendsList.isEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.expand_more),
+                            color: const Color(0xFF3c3c3c),
+                            onPressed: () {},
+                          )
+                        : IconButton(
+                            icon: Icon(isPanelExpanded
+                                ? Icons.expand_less
+                                : Icons.expand_more),
+                            onPressed: () async {
+                              await loadPendingFriendRequests();
+                              setState(() {
+                                isPanelExpanded = !isPanelExpanded; // 패널 상태 토글
+                              });
+                            },
+                          ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: isPanelExpanded, // 패널 확장 상태에 따라 보이기/숨기기
+                child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF568EF8),
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(10),
+                      ),
+                    ),
+                    width: double.infinity,
+                    child: requstedFriendsList.isEmpty == false
+                        ? ListView.builder(
+                            itemCount: requstedFriendsList.length,
+                            shrinkWrap: true, // 리스트의 높이를 내용물에 맞추도록 설정
+                            physics:
+                                const NeverScrollableScrollPhysics(), // 스크롤이 발생하지 않도록 설정
+                            itemBuilder: (context, index) {
+                              var request = requstedFriendsList[index];
+                              return Container(
+                                margin: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                tileColor: Colors.white,
-                                title: Text(
-                                    '${request['friend_name']} (${request['friend_loginId']})'), // '??' 연산자는 null 체크를 위해 사용됩니다.
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFD9D9D9),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        '거절',
-                                        style: TextStyle(
-                                            color: Color(0xFF3c3c3c),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      onPressed: () async {
-                                        final DioService dioService =
-                                            DioService();
-                                        try {
-                                          // 친구 요청 거절 로직
-                                          var response =
-                                              await dioService.dio.post(
-                                            '${baseURL}api/friend/manage',
-                                            data: {
-                                              'user_id': request['friend_id'],
-                                              'status': 2 // 가정: '2'가 거절을 의미
-                                            },
-                                          );
-                                          if (response.statusCode == 200) {
-                                            // API 호출 성공
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              content: Text('친구 요청을 거절했습니다.'),
-                                            ));
-                                            await loadFriends(); // 친구 목록 다시 로드
-                                            await loadPendingFriendRequests();
-                                          } else {
-                                            // API 호출 실패
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              content:
-                                                  Text('친구 요청 거절에 실패했습니다.'),
-                                            ));
-                                          }
-                                        } catch (e) {
-                                          // 예외 처리
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text('오류가 발생했습니다: $e'),
-                                          ));
-                                        }
-                                      },
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: ListTile(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    const SizedBox(width: 5),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFF568EF8),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                    tileColor: Colors.white,
+                                    title: Text(
+                                        '${request['friend_name']} (${request['friend_loginId']})'), // '??' 연산자는 null 체크를 위해 사용됩니다.
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            backgroundColor:
+                                                const Color(0xFFD9D9D9),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            '거절',
+                                            style: TextStyle(
+                                                color: Color(0xFF3c3c3c),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          onPressed: () async {
+                                            final DioService dioService =
+                                                DioService();
+                                            try {
+                                              // 친구 요청 거절 로직
+                                              var response =
+                                                  await dioService.dio.post(
+                                                '${baseURL}api/friend/manage',
+                                                data: {
+                                                  'user_id':
+                                                      request['friend_id'],
+                                                  'status': 2 // 가정: '2'가 거절을 의미
+                                                },
+                                              );
+                                              if (response.statusCode == 200) {
+                                                // API 호출 성공
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content:
+                                                      Text('친구 요청을 거절했습니다.'),
+                                                ));
+                                                await loadFriends(); // 친구 목록 다시 로드
+                                                await loadPendingFriendRequests();
+                                              } else {
+                                                // API 호출 실패
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content:
+                                                      Text('친구 요청 거절에 실패했습니다.'),
+                                                ));
+                                              }
+                                            } catch (e) {
+                                              // 예외 처리
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text('오류가 발생했습니다: $e'),
+                                              ));
+                                            }
+                                          },
                                         ),
-                                      ),
-                                      child: const Text(
-                                        '수락',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      onPressed: () async {
-                                        final DioService dioService =
-                                            DioService();
-                                        try {
-                                          // 친구 요청 수락 로직
-                                          var response =
-                                              await dioService.dio.post(
-                                            '${baseURL}api/friend/manage',
-                                            data: {
-                                              'user_id': request['friend_id'],
-                                              'status': 1 // 가정: '1'이 수락을 의미
-                                            },
-                                          );
-                                          if (response.statusCode == 200) {
-                                            // API 호출 성공
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              content: Text('친구 요청을 수락했습니다.'),
-                                            ));
-                                            await loadFriends(); // 친구 목록 다시 로드
-                                            await loadPendingFriendRequests();
-                                          } else {
-                                            // API 호출 실패
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              content:
-                                                  Text('친구 요청 수락에 실패했습니다.'),
-                                            ));
-                                          }
-                                        } catch (e) {
-                                          // 예외 처리
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text('오류가 발생했습니다: $e'),
-                                          ));
-                                        }
-                                      },
+                                        const SizedBox(width: 5),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            backgroundColor:
+                                                const Color(0xFF568EF8),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            '수락',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          onPressed: () async {
+                                            final DioService dioService =
+                                                DioService();
+                                            try {
+                                              // 친구 요청 수락 로직
+                                              var response =
+                                                  await dioService.dio.post(
+                                                '${baseURL}api/friend/manage',
+                                                data: {
+                                                  'user_id':
+                                                      request['friend_id'],
+                                                  'status': 1 // 가정: '1'이 수락을 의미
+                                                },
+                                              );
+                                              if (response.statusCode == 200) {
+                                                // API 호출 성공
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content:
+                                                      Text('친구 요청을 수락했습니다.'),
+                                                ));
+                                                await loadPendingFriendRequests();
+                                                await loadFriends(); // 친구 목록 다시 로드
+                                              } else {
+                                                // API 호출 실패
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content:
+                                                      Text('친구 요청 수락에 실패했습니다.'),
+                                                ));
+                                              }
+                                            } catch (e) {
+                                              // 예외 처리
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text('오류가 발생했습니다: $e'),
+                                              ));
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
+                              );
+                            },
+                          )
+                        : null),
+              ),
+              const SizedBox(height: 15),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: filteredFriendsList.length, // 필터링된 목록 사용
+                  itemBuilder: (context, index) {
+                    var friend = filteredFriendsList[index];
+                    return InkWell(
+                      onTap: () {
+                        // 탭 이벤트 핸들러
+                        // 여기에 원하는 작업을 수행하세요. 예: 상세 페이지로 이동
+                        print('${friend['friend_name']} 클릭됨');
+                        // 예를 들어, 친구 상세 페이지로 네비게이트하는 코드를 추가할 수 있습니다.
+                        Get.to(
+                            () => MyProfilePage(userId: friend['friend_id']));
+                      },
+                      child: Friends(
+                        friendId: friend['friend_id'],
+                        friendLoginId: friend['friend_loginid'],
+                        friendName: friend['friend_name'],
+                        friendProfileImg:
+                            friend['friend_profileImg'] ?? '${baseProfileURL}',
+                        friendNickname:
+                            friend['friend_nickname'] ?? friend['friend_name'],
+                        loadFriendsCallback: loadFriends,
                       ),
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 15),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredFriendsList.length, // 필터링된 목록 사용
-                itemBuilder: (context, index) {
-                  var friend = filteredFriendsList[index];
-                  return InkWell(
-                    onTap: () {
-                      // 탭 이벤트 핸들러
-                      // 여기에 원하는 작업을 수행하세요. 예: 상세 페이지로 이동
-                      print('${friend['friend_name']} 클릭됨');
-                      // 예를 들어, 친구 상세 페이지로 네비게이트하는 코드를 추가할 수 있습니다.
-                      Get.to(() => MyProfilePage(userId: friend['friend_id']));
-                    },
-                    child: Friends(
-                      friendId: friend['friend_id'],
-                      friendLoginId: friend['friend_loginid'],
-                      friendName: friend['friend_name'],
-                      friendProfileImg:
-                          friend['friend_profileImg'] ?? '${baseProfileURL}',
-                      friendNickname:
-                          friend['friend_nickname'] ?? friend['friend_name'],
-                      loadFriendsCallback: loadFriends,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

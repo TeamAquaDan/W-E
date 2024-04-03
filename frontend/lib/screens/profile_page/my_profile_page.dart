@@ -457,7 +457,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundImage: NetworkImage(
-                                    comment['writer_img'] ??
+                                    comment['writer_profile_img'] ??
                                         '${baseProfileURL}'),
                                 // '기본_이미지_URL'을 코멘트 작성자의 기본 이미지 URL로 교체하세요.
                               ),
