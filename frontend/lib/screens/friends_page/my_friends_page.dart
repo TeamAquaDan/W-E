@@ -88,6 +88,7 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           await loadFriends();
+          await loadPendingFriendRequests();
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -318,6 +319,9 @@ class _MyFriendsPageState extends State<MyFriendsPage> {
                                                   content:
                                                       Text('친구 요청을 수락했습니다.'),
                                                 ));
+                                                setState(() {
+                                                  isPanelExpanded = false;
+                                                });
                                                 await loadPendingFriendRequests();
                                                 await loadFriends(); // 친구 목록 다시 로드
                                               } else {
