@@ -147,7 +147,13 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                             'nego_reason': _textController.text,
                           },
                         );
-                        Get.to(() => const SalaryListPage());
+                        if (response.statusCode == 200) {
+                          Get.to(() => const SalaryListPage());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("용돈 인상 요청에 성공하였습니다!")),
+                          );
+                        }
+
                         print(response);
                       } catch (e) {
                         print('Error: $e');
