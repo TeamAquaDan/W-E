@@ -167,6 +167,8 @@ public class AccountServiceImpl implements AccountService {
           .build();
     }
 
+    account.get().withdrawParking();
+
     TransferEntity transfer = TransferEntity.createTransfer(account.get().getParkingBalanceAmt(),
         account.get());
 
