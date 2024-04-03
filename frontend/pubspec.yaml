@@ -88,7 +88,6 @@ flutter:
     - assets/images/whale.png
     - assets/images/airplane.png
     - assets/images/indicator.gif
-    - assets/images/splash.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

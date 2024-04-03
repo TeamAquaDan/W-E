@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_keyboard/flutter_secure_keyboard.dart';
 import '../services/auth_service.dart'; // SecurityService 구현을 포함한 파일을 참조하세요.
 import 'pin_login_page.dart'; // PinLoginPage 구현을 포함한 파일을 참조하세요.
 
@@ -17,7 +18,7 @@ class _SetPinPageState extends State<SetPinPage> {
   final AuthService _authService = AuthService();
 
   bool _hasPin = false;
-
+  final _secureKeyboardController = SecureKeyboardController();
   @override
   void initState() {
     super.initState();
@@ -31,7 +32,8 @@ class _SetPinPageState extends State<SetPinPage> {
 
   void _setPin() async {
     // PIN 길이 검증
-    if (_pinController.text.length != 6 || _confirmPinController.text.length != 6) {
+    if (_pinController.text.length != 6 ||
+        _confirmPinController.text.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('PIN은 6자리여야 합니다.')),
       );
@@ -39,7 +41,8 @@ class _SetPinPageState extends State<SetPinPage> {
     }
 
     // 기존 PIN이 있을 경우, 먼저 기존 PIN 확인
-    if (_hasPin && (await _securityService.getPin() != _oldPinController.text)) {
+    if (_hasPin &&
+        (await _securityService.getPin() != _oldPinController.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('기존 PIN이 일치하지 않습니다. 다시 시도해주세요.')),
       );
@@ -49,7 +52,8 @@ class _SetPinPageState extends State<SetPinPage> {
     // 새 PIN과 확인 PIN 일치 검증
     if (_pinController.text == _confirmPinController.text) {
       await _securityService.setPin(_pinController.text);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const PinLoginPage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const PinLoginPage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('PIN이 일치하지 않습니다. 다시 시도해주세요.')),
@@ -60,38 +64,83 @@ class _SetPinPageState extends State<SetPinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('PIN 설정')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            if (_hasPin)
-              TextField(
-                controller: _oldPinController,
-                obscureText: true,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: '기존 PIN 입력'),
-              ),
-            TextField(
-              controller: _pinController,
-              obscureText: true,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: '새 PIN 입력'),
-              maxLength: 6, // 최대 길이를 6으로 설정
+      appBar: AppBar(backgroundColor: Color(0xFF568EF8)),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            // height: 100,
+            decoration: BoxDecoration(color: Color(0xFF568EF8)),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                  child: Text(
+                    'PIN 설정',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontFamily: 'Aggro',
+                      fontWeight: FontWeight.w700,
+                      height: 0,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            TextField(
-              controller: _confirmPinController,
-              obscureText: true,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: '새 PIN 확인'),
-              maxLength: 6, // 최대 길이를 6으로 설정
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                if (_hasPin)
+                  TextField(
+                    controller: _oldPinController,
+                    obscureText: true,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: '기존 PIN 입력'),
+                  ),
+                TextField(
+                  controller: _pinController,
+                  obscureText: true,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: '새 PIN 입력'),
+                  maxLength: 6, // 최대 길이를 6으로 설정
+                ),
+                TextField(
+                  controller: _confirmPinController,
+                  obscureText: true,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: '새 PIN 확인'),
+                  maxLength: 6, // 최대 길이를 6으로 설정
+                ),
+                Container(
+                  width: 300.0,
+                  height: 56.0,
+                  child: ElevatedButton(
+                    onPressed: _setPin,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF568EF8), // 버튼의 배경색
+                    ),
+                    child: const Text(
+                      'PIN 설정',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'Aggro',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: _setPin,
-              child: const Text('PIN 설정'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
