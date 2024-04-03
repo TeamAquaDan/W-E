@@ -106,7 +106,9 @@ class _ChildrenListState extends State<ChildrenList> {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-                    child: NegoListWidget(groupId: children[_current].groupId),
+                    child: NegoListWidget(
+                        groupId: children[_current].groupId,
+                        groupNickname: children[_current].groupNickname),
                   ),
                 ],
               )

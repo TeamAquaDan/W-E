@@ -8,9 +8,11 @@ class NegoDetailPage extends StatefulWidget {
   const NegoDetailPage({
     super.key,
     required this.nego,
+    required this.groupNickname,
   });
 
   final Map<String, dynamic> nego;
+  final String groupNickname;
 
   @override
   State<NegoDetailPage> createState() => _NegoDetailPageState();
@@ -50,9 +52,9 @@ class _NegoDetailPageState extends State<NegoDetailPage> {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '${widget.nego['username']}',
+                        text: '${widget.groupNickname}',
                         style: const TextStyle(
-                          color: Color(0xFF8B7777),
+                          color: const Color(0xFF568EF8),
                           fontSize: 20,
                           fontFamily: 'Aggro',
                           fontWeight: FontWeight.w700,

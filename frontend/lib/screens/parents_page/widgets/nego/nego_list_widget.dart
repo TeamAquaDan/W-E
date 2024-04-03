@@ -4,8 +4,9 @@ import 'package:frontend/screens/parents_page/widgets/nego/nego_card.dart';
 
 class NegoListWidget extends StatefulWidget {
   final int groupId;
-
-  const NegoListWidget({super.key, required this.groupId});
+  final String groupNickname;
+  const NegoListWidget(
+      {super.key, required this.groupId, required this.groupNickname});
 
   @override
   _NegoListWidgetState createState() => _NegoListWidgetState();
@@ -59,7 +60,7 @@ class _NegoListWidgetState extends State<NegoListWidget> {
             itemBuilder: (context, index) {
               // 각 인상 요청 항목을 표시
               Map<String, dynamic> nego = negoList[index];
-              return NegoCard(nego: nego);
+              return NegoCard(nego: nego, groupNickname: widget.groupNickname);
               // ListTile(
               //   title: Text('요청 금액: ${nego}'),
               //   subtitle: Text('요청 일시: ${nego['create_dtm']}'),
