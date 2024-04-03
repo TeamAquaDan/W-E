@@ -55,30 +55,35 @@ class _SalaryListPageState extends State<SalaryListPage> {
         title: const Text('용돈 목록'),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          Expanded(
-            // 스크롤 가능한 리스트를 위해 Expanded 위젯 사용
-            child: ListView.builder(
-              itemCount: salaryList.length, // 리스트의 항목 수
-              itemBuilder: (context, index) {
-                final salary = salaryList[index];
-                return Salary(
-                  isMonthly: salary['is_monthly'],
-                  allowanceAmt: salary['allowance_amt'],
-                  paymentDate: salary['payment_date'],
-                  groupNickname:
-                      salary['group_nickname'] ?? salary['user_name'],
-                  groupId: salary['group_id'],
-                  userId: salary['user_id'],
-                  userName: salary['user_name'],
-                  loadSalarysCallback: loadSalarys,
-                );
-              },
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await loadSalarys();
+        },
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Expanded(
+              // 스크롤 가능한 리스트를 위해 Expanded 위젯 사용
+              child: ListView.builder(
+                itemCount: salaryList.length, // 리스트의 항목 수
+                itemBuilder: (context, index) {
+                  final salary = salaryList[index];
+                  return Salary(
+                    isMonthly: salary['is_monthly'],
+                    allowanceAmt: salary['allowance_amt'],
+                    paymentDate: salary['payment_date'],
+                    groupNickname:
+                        salary['group_nickname'] ?? salary['user_name'],
+                    groupId: salary['group_id'],
+                    userId: salary['user_id'],
+                    userName: salary['user_name'],
+                    loadSalarysCallback: loadSalarys,
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

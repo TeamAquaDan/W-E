@@ -91,87 +91,97 @@ class _MyMissionPageState extends State<MyMissionPage> {
           ),
         ),
         body: selectedTabIndex == 0
-            ? Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '미션으로',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  await loadMissions();
+                },
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '미션으로',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '총 ${formatNumber(totalOngoingMissionReward)}원을 얻을 수 있어요!',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
+                          Text(
+                            '총 ${formatNumber(totalOngoingMissionReward)}원을 얻을 수 있어요!',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: ongoingMissions.length,
-                      itemBuilder: (context, index) {
-                        final mission = ongoingMissions[index];
-                        return Mission(
-                          missionStatus: mission['status'],
-                          missionName: mission['mission_name'],
-                          missionReward: mission['mission_reward'],
-                          deadlineDate: mission['deadline_date'],
-                          userName: mission['user_name'],
-                        );
-                      },
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: ongoingMissions.length,
+                        itemBuilder: (context, index) {
+                          final mission = ongoingMissions[index];
+                          return Mission(
+                            missionStatus: mission['status'],
+                            missionName: mission['mission_name'],
+                            missionReward: mission['mission_reward'],
+                            deadlineDate: mission['deadline_date'],
+                            userName: mission['user_name'],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
-            : Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '미션으로',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+            : RefreshIndicator(
+                onRefresh: () async {
+                  await loadMissions();
+                },
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '미션으로',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '총 ${formatNumber(totalCompletedMissionReward)}원을 얻었어요!',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
+                          Text(
+                            '총 ${formatNumber(totalCompletedMissionReward)}원을 얻었어요!',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: completedMissions.length,
-                      itemBuilder: (context, index) {
-                        final mission = completedMissions[index];
-                        return Mission(
-                          missionStatus: mission['status'],
-                          missionName: mission['mission_name'],
-                          missionReward: mission['mission_reward'],
-                          deadlineDate: mission['deadline_date'],
-                          userName: mission['user_name'],
-                        );
-                      },
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: completedMissions.length,
+                        itemBuilder: (context, index) {
+                          final mission = completedMissions[index];
+                          return Mission(
+                            missionStatus: mission['status'],
+                            missionName: mission['mission_name'],
+                            missionReward: mission['mission_reward'],
+                            deadlineDate: mission['deadline_date'],
+                            userName: mission['user_name'],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
       ),
     );

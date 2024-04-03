@@ -157,21 +157,31 @@ class _MySavingGoalPageState extends State<MySavingGoalPage> {
         body: selectedTabIndex == 0
             ?
             // 현재 진행중인 목표 탭
-            ListView(
-                children: [
-                  SavingGoalPlus(
-                    onAddGoal: reloadGoals,
-                  ),
-                  ...currentGoalWidgets,
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+            RefreshIndicator(
+                onRefresh: () async {
+                  await loadSavingGoals();
+                },
+                child: ListView(
+                  children: [
+                    SavingGoalPlus(
+                      onAddGoal: reloadGoals,
+                    ),
+                    ...currentGoalWidgets,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
               )
-            : ListView(
-                children: [
-                  ...completedGoalWidgets,
-                ],
+            : RefreshIndicator(
+                onRefresh: () async {
+                  await loadSavingGoals();
+                },
+                child: ListView(
+                  children: [
+                    ...completedGoalWidgets,
+                  ],
+                ),
               ),
       ),
     );
