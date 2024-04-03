@@ -96,4 +96,19 @@ public class TransferEntity {
         .recvClientBankCode(account.getBankCode())
         .build();
   }
+
+  public static TransferEntity createTransfer(int parkingBalanceAmt, AccountEntity account) {
+    return TransferEntity
+        .builder()
+        .transType(2)
+        .transAmt(parkingBalanceAmt)
+        .balanceAmt(account.getBalanceAmt())
+        .transMemo("저금하기 종료")
+        .transDtm(LocalDateTime.now())
+        .transDate(LocalDate.now())
+        .recvClientName("저금통")
+        .recvClientAccountNum(account.getAccountNum())
+        .recvClientBankCode(account.getBankCode())
+        .build();
+  }
 }
