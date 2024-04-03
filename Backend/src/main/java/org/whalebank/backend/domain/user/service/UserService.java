@@ -23,4 +23,6 @@ public interface UserService {
   void createGuestBook(String loginId, GuestBookRequestDto request);
 
   void deleteGuestBook(String loginId, int guestBookId);
+
+  void updateLastCardHistoryFetchTime(String loginId);
 }
