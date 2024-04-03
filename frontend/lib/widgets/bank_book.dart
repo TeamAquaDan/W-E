@@ -25,7 +25,9 @@ class _BankBook extends State<BankBook> {
         side: const BorderSide(width: 1, color: Color(0xFFC1C7CE)),
         borderRadius: BorderRadius.circular(12),
       ),
-      color: const Color(0xFFA0CAFD),
+      color: widget.bankData.account_type == 0
+          ? Color(0xFFEB7777)
+          : Color(0xFFA0CAFD),
       // margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         children: [
@@ -95,27 +97,29 @@ class _BankBook extends State<BankBook> {
                   children: [
                     FilledButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0xFF264CB2)),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
                       ),
                       onPressed: () {
                         toBankHistoryPage(context);
                       },
                       child: const Text(
                         '내역',
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                     const SizedBox(width: 12),
                     FilledButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0xFF264CB2)),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
                       ),
                       onPressed: () {
                         toTransferPage(context);
                       },
                       child: const Text(
                         '이체',
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
