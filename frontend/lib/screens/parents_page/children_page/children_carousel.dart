@@ -85,6 +85,7 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
               ),
             ),
             body: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
                   Row(
