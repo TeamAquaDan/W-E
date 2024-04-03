@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/base_profile_url.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
 import 'package:frontend/models/store/user/user_controller.dart';
@@ -194,7 +195,9 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                     ),
                     child: ListTile(
                       leading: detail['profile_image'] == null
-                          ? const CircleAvatar(child: Icon(Icons.person))
+                          ? CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage('${baseProfileURL}'))
                           : CircleAvatar(
                               backgroundImage:
                                   NetworkImage(detail['profile_image'])),

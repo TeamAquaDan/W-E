@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/screens/child_page/child_page.dart';
+import 'package:frontend/screens/salary_page/salary_list_page.dart';
 import 'package:frontend/services/dio_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -146,7 +147,8 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                             'nego_reason': _textController.text,
                           },
                         );
-                        Get.offAll(() => const ChildPage());
+                        Get.to(() => const SalaryListPage());
+                        print(response);
                       } catch (e) {
                         print('Error: $e');
                       }
