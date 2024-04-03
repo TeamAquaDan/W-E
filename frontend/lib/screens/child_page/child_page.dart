@@ -30,10 +30,22 @@ class _ChildPageState extends State<ChildPage> {
     });
   }
 
+  Future<void> _onRefreshTapped() async {
+    int oldIndex = _selectedIndex;
+    setState(() {
+      _selectedIndex = 4;
+    });
+    await Future.delayed(Duration(microseconds: 1));
+    setState(() {
+      _selectedIndex = oldIndex;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: RefreshIndicator(
+        onRefresh: _onRefreshTapped,
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -18,10 +18,10 @@ class _ParentPageState extends State<ParentPage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
-    const ParentHomePage(), //ChildHomePage
-    const AccountBookHomePage(),
-    const ChildrenManagePage2(),
-    const AlarmPage(),
+    ParentHomePage(), //ChildHomePage
+    AccountBookHomePage(),
+    ChildrenManagePage2(),
+    AlarmPage(),
     ParentMenuPage(),
   ];
 
@@ -31,10 +31,22 @@ class _ParentPageState extends State<ParentPage> {
     });
   }
 
+  Future<void> _onRefreshTapped() async {
+    int oldIndex = _selectedIndex;
+    setState(() {
+      _selectedIndex = 4;
+    });
+    await Future.delayed(Duration(microseconds: 1));
+    setState(() {
+      _selectedIndex = oldIndex;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: RefreshIndicator(
+        onRefresh: _onRefreshTapped,
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
