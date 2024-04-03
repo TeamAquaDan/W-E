@@ -9,5 +9,4 @@ public interface AccountRepository extends JpaRepository<AccountEntity, String> 
 
   AccountEntity findByBankCodeAndAccountNum(String bankCode, String accountNum);
 
-  List<AccountEntity> findByUserId(String userId);
 }
