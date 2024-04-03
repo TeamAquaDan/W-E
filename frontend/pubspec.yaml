@@ -91,14 +91,6 @@ flutter:
     - assets/images/indicator.gif
     - assets/images/bgimg.png
     - assets/images/brand.png
-    - assets/images/brand1.png
-    - assets/images/brand2.png
-    - assets/images/brand3.png
-    - assets/images/brand4.png
-    - assets/images/brand5.png
-    - assets/images/brand6.png
-    - assets/images/brand7.png
-    - assets/images/brand8.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -132,7 +124,7 @@ flutter_native_splash:
     # Splash screen background color.
     color: "#1051CE"
 
-    branding: assets/images/brand8.png
+    branding: assets/images/brand.png
 
     # App icon background color.
     #icon_background_color: "#111111"
