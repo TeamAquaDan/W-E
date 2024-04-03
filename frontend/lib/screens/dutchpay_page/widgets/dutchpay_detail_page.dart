@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/base_url.dart';
 import 'package:frontend/models/store/account/account_controller.dart';
+import 'package:frontend/models/store/user/user_controller.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_account_carousel.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_my_payment_page.dart';
 import 'package:frontend/screens/dutchpay_page/widgets/dutchpay_payment_page.dart';
@@ -12,11 +13,13 @@ class DutchPayDetailPage extends StatefulWidget {
       {super.key,
       required this.roomId,
       required this.roomName,
-      required this.dutchpayDate});
+      required this.dutchpayDate,
+      required this.managerId});
 
   final int roomId;
   final String roomName;
   final String dutchpayDate;
+  final int managerId;
 
   @override
   _DutchPayDetailPageState createState() => _DutchPayDetailPageState();
@@ -209,49 +212,158 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                               : const Icon(Icons.close, color: Colors.red),
                         ],
                       ),
+                      onTap: () async {
+                        final DioService dioService = DioService();
+                        try {
+                          var response = await dioService.dio.get(
+                            '${baseURL}api/dutchpay/payments',
+                            data: {
+                              'room_id': widget.roomId,
+                              'dutchpay_id': detail['dutchpay_id']
+                            },
+                          );
+                          // API 응답 데이터에서 리스트를 추출
+                          List<dynamic> items = response.data[
+                              'data']; // 'list'는 예시 키입니다. 실제 응답 구조에 따라 변경해야 합니다.
+
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('응답 데이터 목록'),
+                                content: Container(
+                                  width: double.maxFinite, // 다이얼로그 너비 최대로 설정
+                                  child: ListView.builder(
+                                    shrinkWrap:
+                                        true, // 다이얼로그 크기에 맞게 ListView 크기 조절
+                                    itemCount: items.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      // 여기서 items[index]는 한 아이템의 데이터입니다.
+                                      // 예제에서는 간단히 문자열로 가정합니다. 실제 데이터 구조에 맞게 조정하세요.
+                                      return Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 8,
+                                        ),
+                                        child: ListTile(
+                                          title: Row(
+                                            children: [
+                                              Text(items[index]
+                                                  ['member_store_name']),
+                                              Text(
+                                                  '${items[index]['trans_amt']}'),
+                                            ],
+                                          ), // 'name'은 예시 필드입니다. 실제 필드에 맞게 변경하세요.
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('닫기'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } catch (err) {
+                          print(err);
+                          // 에러 처리를 위한 다이얼로그 표시
+                          // showDialog(
+                          //   context: context,
+                          //   builder: (BuildContext context) {
+                          //     return AlertDialog(
+                          //       title: Text('오류 발생'),
+                          //       content: SingleChildScrollView(
+                          //         child: ListBody(
+                          //           children: <Widget>[
+                          //             Text('API 요청 중 오류가 발생했습니다.'),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //       actions: <Widget>[
+                          //         TextButton(
+                          //           child: Text('닫기'),
+                          //           onPressed: () {
+                          //             Navigator.of(context).pop();
+                          //           },
+                          //         ),
+                          //       ],
+                          //     );
+                          //   },
+                          // );
+                        }
+                      },
                     ),
                   );
                 },
               ),
             ),
-            TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('정산하기'),
-                        content: const Text('정산을 진행하시겠습니까?'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('No'),
-                            onPressed: () {
-                              // "No"를 선택했을 때의 행동
-                              Navigator.of(context).pop(); // 대화상자 닫기
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Yes'),
-                            onPressed: () {
-                              // "Yes"를 선택했을 때의 행동
-                              final DioService dioService = DioService();
-                              try {
-                                var response = dioService.dio.patch(
-                                    '${baseURL}api/dutchpay/${widget.roomId}');
-                                print(response);
-                              } catch (err) {
-                                print(err);
-                              }
-                              Navigator.of(context).pop(); // 대화상자 닫기
-                              // 정산 로직을 여기에 구현...
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: const Text('정산하기'))
+            Get.find<UserController>().getUserId() == widget.managerId
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Color(0xff568ef8),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('정산하기'),
+                              content: const Text('정산을 진행하시겠습니까?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('No'),
+                                  onPressed: () {
+                                    // "No"를 선택했을 때의 행동
+                                    Navigator.of(context).pop(); // 대화상자 닫기
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Yes'),
+                                  onPressed: () {
+                                    // "Yes"를 선택했을 때의 행동
+                                    final DioService dioService = DioService();
+                                    try {
+                                      var response = dioService.dio.patch(
+                                          '${baseURL}api/dutchpay/${widget.roomId}');
+                                      print(response);
+                                    } catch (err) {
+                                      print(err);
+                                    }
+                                    Navigator.of(context).pop(); // 대화상자 닫기
+                                    // 정산 로직을 여기에 구현...
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Text(
+                        '정산하기',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    width: 0,
+                  ),
           ],
         ),
       ),

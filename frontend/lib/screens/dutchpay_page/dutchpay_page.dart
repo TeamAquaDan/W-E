@@ -60,8 +60,45 @@ class _DutchPayPageState extends State<DutchPayPage> {
               child: ListView.builder(
                 itemCount: dutchpayRooms.length + 1,
                 itemBuilder: (context, index) {
-                  if (index < dutchpayRooms.length) {
-                    var room = dutchpayRooms[index];
+                  if (index == 0) {
+                    return Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Color(0xff568EF8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 22, horizontal: 16),
+                        child: Column(
+                          children: [
+                            Text(
+                              '더치페이 시작하기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            SizedBox(height: 15),
+                            IconButton(
+                              onPressed: () async {
+                                var result = await Get.to(() =>
+                                    CreateDutchPayRoom(
+                                        onRoomCreated: reloadRooms));
+                                if (result == true) {
+                                  reloadRooms();
+                                }
+                              },
+                              icon: const Icon(Icons.add_circle_rounded),
+                              color: Color(0xff1051CE),
+                              iconSize: 55,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    var room = dutchpayRooms[index - 1];
                     List<String> profileImages =
                         (room['profile_img'] as List<dynamic>? ?? [])
                             .map((imgUrl) =>
@@ -72,11 +109,13 @@ class _DutchPayPageState extends State<DutchPayPage> {
                       onTap: () {
                         // Place your navigation or action here
                         Get.to(() => DutchPayDetailPage(
-                            roomId: room['room_id'],
-                            roomName: room['room_name'],
-                            dutchpayDate: room['dutchpay_date']
-                                .toString()
-                                .replaceAll('-', '.')));
+                              roomId: room['room_id'],
+                              roomName: room['room_name'],
+                              dutchpayDate: room['dutchpay_date']
+                                  .toString()
+                                  .replaceAll('-', '.'),
+                              managerId: room['manager_id'],
+                            ));
                       },
                       child: Card(
                         margin: const EdgeInsets.all(8), // 카드 주변의 여백을 설정합니다.
@@ -132,43 +171,6 @@ class _DutchPayPageState extends State<DutchPayPage> {
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Card(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Color(0xff568EF8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 22, horizontal: 16),
-                        child: Column(
-                          children: [
-                            Text(
-                              '더치페이 시작하기',
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 100, 85, 85),
-                                fontSize: 30,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            IconButton(
-                              onPressed: () async {
-                                var result = await Get.to(() =>
-                                    CreateDutchPayRoom(
-                                        onRoomCreated: reloadRooms));
-                                if (result == true) {
-                                  reloadRooms();
-                                }
-                              },
-                              icon: const Icon(Icons.add_circle_rounded),
-                              color: Color(0xff1051CE),
-                              iconSize: 55,
-                            )
-                          ],
                         ),
                       ),
                     );
