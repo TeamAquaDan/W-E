@@ -14,6 +14,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'screens/account_book/account_book_home_page.dart';
 import 'screens/alarm_page.dart';
 import 'screens/bank_history_page/bank_history_page.dart';
 import 'screens/bank_history_page/widgets/bank_history_table.dart';
@@ -61,9 +62,12 @@ void handleNotificationClick(RemoteMessage? message, bool isLoggedIn) {
         case '101':
           Get.to(() => const MyFriendsPage());
           break;
-        // case '200':
-        //   Get.to(() => const BankHistoryTable());
-        //   break;
+        case '200':
+          Get.to(() => const AccountBookHomePage());
+          break;
+        case '201':
+          Get.to(() => const AccountBookHomePage());
+          break;
         case '300':
           Get.to(() => const MyMissionPage());
           break;
@@ -115,6 +119,10 @@ void handleNotificationPayload(String payload) {
     Get.to(() => const MyFriendsPage());
   } else if (payload == '101') {
     Get.to(() => const MyFriendsPage());
+  } else if (payload == '200') {
+    Get.to(() => const AccountBookHomePage());
+  } else if (payload == '201') {
+    Get.to(() => const AccountBookHomePage());
   } else if (payload == '300') {
     Get.to(() => const MyMissionPage());
   } else if (payload == '301') {
@@ -251,18 +259,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Aggro',
       ),
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3F62DE)),
-      //   primarySwatch: Colors.blue,
-      //   // 텍스트 필드의 스타일을 정의합니다.
-      //   inputDecorationTheme: const InputDecorationTheme(
-      //     labelStyle: TextStyle(fontSize: 20), // labelText의 크기를 크게 설정합니다.
-      //     border: OutlineInputBorder(), // 외곽에 테두리를 추가합니다.
-      //     // 추가적으로 테두리의 스타일이나 색상을 조정할 수 있습니다.
-      //     // border: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue, width: 2.0)),
-      //     contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      //   ),
-      // ),
       home: FutureBuilder<LoginResult>(
         future: _authService.tryAutoLogin(),
         builder: (context, snapshot) {
@@ -283,23 +279,6 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData && snapshot.data!.isSuccess) {
-            // MyApp 위젯의 빌드가 완료되면, 초기 알림 클릭 처리를 진행
-            // WidgetsBinding.instance.addPostFrameCallback((_) async {
-            //   RemoteMessage? initialMessage =
-            //       await FirebaseMessaging.instance.getInitialMessage();
-            //   if (initialMessage != null) {
-            //     handleNotificationClick(initialMessage, true);
-            //   }
-            // });
-            // // 로그인 성공 시 PIN 로그인 페이지로 이동
-            // Future.delayed(Duration.zero, () async {
-            //   // 알림 데이터에 따른 처리 로직
-            //   RemoteMessage? initialMessage =
-            //       await FirebaseMessaging.instance.getInitialMessage();
-            //   if (initialMessage != null)
-            //     handleNotificationClick(initialMessage);
-            // });
-            // return const PinLoginPage();
             // PIN 정보 확인
             return FutureBuilder<bool>(
               future: _authService.hasPin(), // 수정된 메서드 호출

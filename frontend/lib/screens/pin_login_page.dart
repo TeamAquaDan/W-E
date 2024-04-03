@@ -5,6 +5,7 @@ import '../services/auth_service.dart';
 // import '../widgets/nav_bar.dart';
 import 'package:frontend/screens/login_page.dart';
 import 'dart:developer' as developer;
+import 'account_book/account_book_home_page.dart';
 import 'alarm_page.dart';
 import 'child_page/child_page.dart';
 import 'dailyword.dart';
@@ -93,6 +94,12 @@ class _PinLoginPageState extends State<PinLoginPage> {
             break;
           case '101':
             Get.to(() => const MyFriendsPage());
+            break;
+          case '200':
+            Get.to(() => const AccountBookHomePage());
+            break;
+          case '201':
+            Get.to(() => const AccountBookHomePage());
             break;
           case '300':
             Get.to(() => const MyMissionPage());
@@ -186,7 +193,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                         color: Colors.white,
                         fontSize: 40,
                         fontFamily: 'Aggro',
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w700,
                         height: 0,
                       ),
                     ),
@@ -245,16 +252,6 @@ class _PinLoginPageState extends State<PinLoginPage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                TextButton(
-                  onPressed: _navigatedToPinSetting,
-                  child: const Text(
-                    'PIN 설정',
-                    style: TextStyle(
-                      color: Color(0xFF568EF8),
-                      // fontSize: 16,
-                    ),
-                  ),
-                ),
                 TextButton(
                   onPressed: () async {
                     await _authService.logout(); // 로그아웃 수행

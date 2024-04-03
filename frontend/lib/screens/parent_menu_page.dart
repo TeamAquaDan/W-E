@@ -8,6 +8,7 @@ import 'dutchpay_page/dutchpay_page.dart';
 import 'friends_page/my_friends_page.dart';
 import 'login_page.dart';
 import 'parents_page/children_page/children_carousel.dart';
+import 'pin_setting_page.dart';
 import 'profile_page/my_profile_page.dart';
 import 'salary_page/salary_list_page.dart';
 import 'saving_goal_page/my_saving_goal_page.dart';
@@ -40,6 +41,14 @@ class ParentMenuPage extends StatelessWidget {
               onTap: () {
                 // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
                 Get.to(() => const DailyWord());
+              },
+            ),
+            Divider(color: dividerColor),
+            ListTile(
+              title: const Text('Pin 설정'),
+              onTap: () {
+                // '마이페이지' 메뉴 항목 클릭 시 수행할 동작
+                Get.to(() => const SetPinPage());
               },
             ),
             Divider(color: dividerColor),
