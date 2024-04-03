@@ -282,7 +282,7 @@ public class AccountServiceImpl implements AccountService {
 
     String userId = tokenProvider.getUserId(token).get("sub", String.class);
 
-    List<AccountEntity> accountList = accountRepository.findByUserId(userId);
+    List<AccountEntity> accountList = authRepository.findById(userId).get().getAccountList();
 
     List<TransactionResponse.Transaction> transactions = new ArrayList<>();
 
