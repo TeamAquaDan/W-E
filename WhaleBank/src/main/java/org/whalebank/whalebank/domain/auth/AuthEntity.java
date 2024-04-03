@@ -50,6 +50,11 @@ public class AuthEntity {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "account_id")
   )
+  @Builder.Default
   private List<AccountEntity> accountList = new ArrayList<>();
+
+  public void addAccount(AccountEntity account) {
+    accountList.add(account);
+  }
 
 }
