@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/account_book/account_book_home_page.dart';
 import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/menu_page.dart';
-import 'package:frontend/screens/my_home_page.dart';
-import 'package:frontend/screens/my_mission_page.dart';
-import 'package:frontend/screens/statistics_page.dart';
+import 'package:frontend/screens/mission_page/my_mission_page.dart';
+import 'package:frontend/screens/parents_page/parent_home_page.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -14,12 +14,13 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    MyHomePage(title: 'Whale 서비스명'),
-    StatisticsPage(),
-    AlarmPage(),
-    MenuPage(),
-    MyMissionPage(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    // const MyHomePage(title: 'Whale 서비스명'),
+    const ParentHomePage(), //ChildHomePage
+    const AccountBookHomePage(),
+    const AlarmPage(),
+    const MenuPage(),
+    const MyMissionPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -63,8 +64,8 @@ class _NavBarState extends State<NavBar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF3F62DE),
-        unselectedItemColor: Color(0xFF7A97FF),
+        selectedItemColor: const Color(0xFF3F62DE),
+        unselectedItemColor: const Color(0xFF7A97FF),
         onTap: _onItemTapped,
       ),
     );
