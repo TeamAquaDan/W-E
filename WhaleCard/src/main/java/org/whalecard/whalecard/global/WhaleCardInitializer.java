@@ -10,6 +10,7 @@ import org.whalecard.whalecard.domain.auth.repository.AuthRepository;
 import org.whalecard.whalecard.domain.card.CardEntity;
 import org.whalecard.whalecard.domain.card.repository.CardRepository;
 
+/*
 @Component
 @RequiredArgsConstructor
 public class WhaleCardInitializer {
@@ -215,3 +216,5 @@ public class WhaleCardInitializer {
   }
 
 }
+
+ */
