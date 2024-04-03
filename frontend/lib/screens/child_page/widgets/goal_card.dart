@@ -50,13 +50,15 @@ class _GoalCardState extends State<GoalCard> {
         },
         child: SavingGoal(
           goalId: goal['goal_id'],
-          goalName: goal['goal_name'],
+          goalName: goal['goal_name'] ?? '',
           goalAmt: goal['goal_amt'],
           status: goal['status'],
-          startDate: goal['start_date'],
+          startDate: goal['start_date'] ?? '',
           withdrawDate: goal['withdraw_date'] ?? '',
-          endDate: goal['end_date'],
+          goalDate: goal['end_date'] ?? '',
           percentage: goal['percentage'],
+          withdrawAmt: goal['withdraw_amt'],
+          category: goal['category'] ?? '',
           savedAmt: goal['saved_amt'],
         ),
       );

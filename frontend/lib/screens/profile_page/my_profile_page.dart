@@ -557,12 +557,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 TextField(
                   controller: commentController,
                   style: const TextStyle(
-                    color: Color(0xFF919191),
+                    color: Color(0xFF3c3c3c),
                     fontSize: 20,
                   ),
                   decoration: InputDecoration(
                     hintText: "댓글을 입력하세요",
-                    hintStyle: const TextStyle(color: Color(0xFF919191)),
+                    hintStyle: const TextStyle(color: Color(0xFF3c3c3c)),
                     fillColor: const Color.fromARGB(255, 218, 214, 214),
                     filled: true,
                     border: OutlineInputBorder(

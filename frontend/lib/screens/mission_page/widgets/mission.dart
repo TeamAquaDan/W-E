@@ -118,7 +118,7 @@ class Mission extends StatelessWidget {
                     Text(
                       missionName,
                       style: const TextStyle(
-                        color: Color(0xFF919191),
+                        color: Color(0xFF3c3c3c),
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
                       ),
@@ -126,11 +126,11 @@ class Mission extends StatelessWidget {
                     missionStatus == 1
                         ? Icon(
                             Icons.check,
-                            color: Color(0xFF919191),
+                            color: Color(0xFF3c3c3c),
                           )
                         : Icon(
                             Icons.close,
-                            color: Color(0xFF919191),
+                            color: Color(0xFF3c3c3c),
                           )
                   ],
                 ),
@@ -140,7 +140,7 @@ class Mission extends StatelessWidget {
                     Text(
                       '${formatNumber(missionReward)}원',
                       style: const TextStyle(
-                        color: Color(0xFF919191),
+                        color: Color(0xFF3c3c3c),
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
                       ),
@@ -148,7 +148,7 @@ class Mission extends StatelessWidget {
                     Text(
                       '종료',
                       style: const TextStyle(
-                        color: Color(0xFF919191),
+                        color: Color(0xFF3c3c3c),
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),

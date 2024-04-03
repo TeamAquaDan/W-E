@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/api/base_url.dart';
@@ -91,7 +92,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                     '목표 이름',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color(0xff999999),
+                      color: Color(0xff777777),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -108,7 +109,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                     '저축할 금액',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color(0xff999999),
+                      color: Color(0xff777777),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -261,7 +262,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                     minHeight: 5,
                   ),
                   const SizedBox(height: 50),
-                  goalDetails['status'] != 100
+                  goalDetails['percentage'] != 100
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -285,7 +286,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                                                   vertical: 10,
                                                 ),
                                                 backgroundColor:
-                                                    Color(0xff999999),
+                                                    Color(0xff777777),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
@@ -395,6 +396,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                           ],
                         )
                       : Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
                               onPressed: () {
@@ -405,17 +407,77 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                                       title: const Text('출금하기'),
                                       content: const Text('출금 하시겠습니까?'),
                                       actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('취소'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('출금하기'),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 30,
+                                                  vertical: 10,
+                                                ),
+                                                backgroundColor:
+                                                    Color(0xff777777),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                '취소',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 30,
+                                                  vertical: 10,
+                                                ),
+                                                backgroundColor:
+                                                    Color(0xff568ef8),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                final DioService dioService =
+                                                    DioService();
+                                                try {
+                                                  var response =
+                                                      await dioService.dio.patch(
+                                                          '${baseURL}api/goal',
+                                                          data: {
+                                                        'goal_id': goalDetails[
+                                                            'goal_id'],
+                                                        'status': 1,
+                                                      });
+                                                  print(
+                                                      '출금성공 $response'); // '출금 성공!
+                                                } catch (e) {
+                                                  print(e);
+                                                }
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                '출금',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     );
@@ -427,7 +489,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
-                                backgroundColor: const Color(0xff31B675),
+                                backgroundColor: const Color(0xff568EF8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ), // 배경 색상
@@ -435,7 +497,7 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
                               child: const Text(
                                 '출금하기',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
                                 ),

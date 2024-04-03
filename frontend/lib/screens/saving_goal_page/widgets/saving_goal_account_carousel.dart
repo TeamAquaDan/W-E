@@ -36,17 +36,56 @@ class _SavingGoalAccountCarouselState extends State<SavingGoalAccountCarousel> {
             title: const Text('계좌 선택'),
             content: const Text('이 계좌를 선택하시겠습니까?'),
             actions: <Widget>[
-              TextButton(
-                child: const Text('취소'),
-                onPressed: () => Navigator.of(context).pop(false),
-              ),
-              TextButton(
-                child: const Text('확인'),
-                onPressed: () {
-                  widget.onSelectAccount(
-                      accountId, accountName, accountNum); // 콜백 함수 호출
-                  Navigator.of(context).pop(true); // 확인 후 다이얼로그 닫기
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 10,
+                      ),
+                      backgroundColor: Color(0xff777777),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 10,
+                      ),
+                      backgroundColor: Color(0xff568ef8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: () {
+                      widget.onSelectAccount(
+                          accountId, accountName, accountNum); // 콜백 함수 호출
+                      Navigator.of(context).pop(true); // 확인 후 다이얼로그 닫기
+                    },
+                  ),
+                ],
               ),
             ],
           );
