@@ -3,6 +3,7 @@ import 'package:frontend/api/account_book/account_book_api.dart';
 import 'package:frontend/screens/account_book/form_account_book.dart';
 import 'package:frontend/screens/account_book/widgets/account_book_card.dart';
 import 'package:frontend/screens/chart_page/chart_page.dart';
+import 'package:frontend/widgets/custom_tab_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -23,7 +24,7 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
   bool _isLoading = true;
   int tabState = 0;
   List<dynamic>? filteredData;
-
+  int selectedTabIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -58,6 +59,12 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
     fetchData(year, month);
   }
 
+  void onTabChanged(int index) {
+    setState(() {
+      selectedTabIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (responseData['data'] != null) {
@@ -82,261 +89,272 @@ class _AccountBookHomePageState extends State<AccountBookHomePage> {
     }
     return _isLoading
         ? Container()
-        : Scaffold(
-            appBar: AppBar(
-              // automaticallyImplyLeading: false,
-              centerTitle: true,
-              title: Row(
-                children: [
-                  const Spacer(),
-                  const Text('가계부'),
-                  const Spacer(),
-                  TextButton(
-                      onPressed: () {
-                        Get.to(() => const ChartPage());
-                      },
-                      child: const Text(
-                        '통계',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 22,
-                        ),
-                      )),
-                  // const ChartPage(),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        Get.to(() => FormAccountBook(
-                              setData: refreshData,
-                            ));
-                      },
-                      icon: const Icon(Icons.add)),
-                ],
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    color: const Color(0xFF568EF8),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            showMonthPicker(
-                              context: context,
-                              firstDate: DateTime(DateTime.now().year - 1, 1),
-                              lastDate: DateTime(DateTime.now().year + 1, 12),
-                              initialDate: DateTime.now(),
-                            ).then((date) {
-                              if (date != null) {
-                                year = date.year;
-                                month = date.month;
-                                refreshData(); // 데이터 갱신
-                              }
-                            });
+        : selectedTabIndex == 0
+            ? Scaffold(
+                appBar: AppBar(
+                  // automaticallyImplyLeading: false,
+                  centerTitle: true,
+                  title: Row(
+                    children: [
+                      const Spacer(),
+                      const Text('가계부'),
+                      const Spacer(),
+                      TextButton(
+                          onPressed: () {
+                            Get.to(() => const ChartPage());
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 24),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '$year년',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontFamily: 'Aggro',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                Text(
-                                  '$month월',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 33,
-                                    fontFamily: 'Aggro',
-                                    fontWeight: FontWeight.w700,
-                                    height: 0,
-                                  ),
-                                ),
-                              ],
+                          child: const Text(
+                            '통계',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 22,
                             ),
-                          ),
-                        ),
-                        Container(
-                          width: 1.5, // 원하는 너비로 설정
-                          height: 70,
-                          color: Colors.white,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '수입: ${formatter.format(responseData['data']['income_amt'])}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'Aggro',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0,
-                                ),
-                              ),
-                              Text(
-                                '지출: ${formatter.format(responseData['data']['expense_amt'])}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'Aggro',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                          )),
+                      // const ChartPage(),
+                      const Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            Get.to(() => FormAccountBook(
+                                  setData: refreshData,
+                                ));
+                          },
+                          icon: const Icon(Icons.add)),
+                    ],
                   ),
-                  // AccountBookChart(data: responseChartData),
-                  const SizedBox(height: 8),
-                  // Text(responseData.toString()),
-                  // AccountBookTable(
-                  //   data: responseData,
-                  //   setData: refreshData,
-                  // ),
-                  Container(
-                    height: 41,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.all(0),
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFD9D9D9),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                ),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CustomTabBar(
+                          selectedTabIndex: selectedTabIndex,
+                          onTabChanged: onTabChanged,
+                          tabLabels: ['가계부', '통계']),
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        color: const Color(0xFF568EF8),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                showMonthPicker(
+                                  context: context,
+                                  firstDate:
+                                      DateTime(DateTime.now().year - 1, 1),
+                                  lastDate:
+                                      DateTime(DateTime.now().year + 1, 12),
+                                  initialDate: DateTime.now(),
+                                ).then((date) {
+                                  if (date != null) {
+                                    year = date.year;
+                                    month = date.month;
+                                    refreshData(); // 데이터 갱신
+                                  }
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 24),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '$year년',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontFamily: 'Aggro',
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    Text(
+                                      '$month월',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 33,
+                                        fontFamily: 'Aggro',
+                                        fontWeight: FontWeight.w700,
+                                        height: 0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 1.5, // 원하는 너비로 설정
+                              height: 70,
+                              color: Colors.white,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '수입: ${formatter.format(responseData['data']['income_amt'])}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: 'Aggro',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                  Text(
+                                    '지출: ${formatter.format(responseData['data']['expense_amt'])}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: 'Aggro',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: FilledButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  tabState == 0
-                                      ? const Color(0xFF568EF8)
-                                      : const Color(0xFFD9D9D9)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(14), // 원하는 반경으로 변경
+                      // AccountBookChart(data: responseChartData),
+                      const SizedBox(height: 8),
+                      // Text(responseData.toString()),
+                      // AccountBookTable(
+                      //   data: responseData,
+                      //   setData: refreshData,
+                      // ),
+                      Container(
+                        height: 41,
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(0),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: FilledButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          tabState == 0
+                                              ? const Color(0xFF568EF8)
+                                              : const Color(0xFFD9D9D9)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          14), // 원하는 반경으로 변경
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    tabState = 0;
+                                  });
+                                },
+                                child: Text(
+                                  '전체 내역',
+                                  style: TextStyle(
+                                    color: tabState == 0
+                                        ? Colors.white
+                                        : const Color(0xFF919191),
+                                    fontSize: 15,
+                                    fontFamily: 'Aggro',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0.07,
+                                    letterSpacing: 0.40,
+                                  ),
                                 ),
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                tabState = 0;
-                              });
-                            },
-                            child: Text(
-                              '전체 내역',
-                              style: TextStyle(
-                                color: tabState == 0
-                                    ? Colors.white
-                                    : const Color(0xFF919191),
-                                fontSize: 15,
-                                fontFamily: 'Aggro',
-                                fontWeight: FontWeight.w700,
-                                height: 0.07,
-                                letterSpacing: 0.40,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: FilledButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  tabState == 1
-                                      ? const Color(0xFF568EF8)
-                                      : const Color(0xFFD9D9D9)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(14), // 원하는 반경으로 변경
+                            Expanded(
+                              child: FilledButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          tabState == 1
+                                              ? const Color(0xFF568EF8)
+                                              : const Color(0xFFD9D9D9)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          14), // 원하는 반경으로 변경
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    tabState = 1;
+                                  });
+                                },
+                                child: Text(
+                                  '수입',
+                                  style: TextStyle(
+                                    color: tabState == 1
+                                        ? Colors.white
+                                        : const Color(0xFF919191),
+                                    fontSize: 15,
+                                    fontFamily: 'Aggro',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0.07,
+                                    letterSpacing: 0.40,
+                                  ),
                                 ),
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                tabState = 1;
-                              });
-                            },
-                            child: Text(
-                              '수입',
-                              style: TextStyle(
-                                color: tabState == 1
-                                    ? Colors.white
-                                    : const Color(0xFF919191),
-                                fontSize: 15,
-                                fontFamily: 'Aggro',
-                                fontWeight: FontWeight.w700,
-                                height: 0.07,
-                                letterSpacing: 0.40,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: FilledButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  tabState == 2
-                                      ? const Color(0xFF568EF8)
-                                      : const Color(0xFFD9D9D9)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(14), // 원하는 반경으로 변경
+                            Expanded(
+                              child: FilledButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          tabState == 2
+                                              ? const Color(0xFF568EF8)
+                                              : const Color(0xFFD9D9D9)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          14), // 원하는 반경으로 변경
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    tabState = 2;
+                                  });
+                                },
+                                child: Text(
+                                  '지출',
+                                  style: TextStyle(
+                                    color: tabState == 2
+                                        ? Colors.white
+                                        : const Color(0xFF919191),
+                                    fontSize: 15,
+                                    fontFamily: 'Aggro',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0.07,
+                                    letterSpacing: 0.40,
+                                  ),
                                 ),
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                tabState = 2;
-                              });
-                            },
-                            child: Text(
-                              '지출',
-                              style: TextStyle(
-                                color: tabState == 2
-                                    ? Colors.white
-                                    : const Color(0xFF919191),
-                                fontSize: 15,
-                                fontFamily: 'Aggro',
-                                fontWeight: FontWeight.w700,
-                                height: 0.07,
-                                letterSpacing: 0.40,
-                              ),
-                            ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
 
-                  AccountBookCard(
-                    data: filteredData ?? [],
-                  )
-                ],
-              ),
-            ),
-          );
+                      AccountBookCard(
+                        data: filteredData ?? [],
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : ChartPage();
   }
 }

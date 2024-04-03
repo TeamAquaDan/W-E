@@ -44,15 +44,17 @@ class _ChildrenManagePage2State extends State<ChildrenManagePage2> {
       List<Child> res = await getChildren();
       print('통신결과: $res');
       setState(() {
-        itemList = [
-          //계좌 목록 조회 17
-          for (int i = 0; i < res.length; i++)
-            ChildCard(
-                groupId: res[i].groupId,
-                userId: res[i].userId,
-                groupNickname: res[i].groupNickname),
-        ];
-        children = res;
+        if (res.isNotEmpty) {
+          itemList = [
+            //계좌 목록 조회 17
+            for (int i = 0; i < res.length; i++)
+              ChildCard(
+                  groupId: res[i].groupId,
+                  userId: res[i].userId,
+                  groupNickname: res[i].groupNickname),
+          ];
+          children = res;
+        }
       });
     } catch (error) {
       // 에러가 발생한 경우 에러 처리를 수행합니다.

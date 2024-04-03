@@ -18,6 +18,16 @@ Future<List<Child>> getChildren() async {
       List<dynamic> responseData = response.data['data'];
       List<Child> children =
           responseData.map((data) => Child.fromJson(data)).toList();
+      if (children.isEmpty) {
+        return [
+          Child(
+            userId: 0,
+            groupId: 0,
+            profileImage: 'string profileImage',
+            groupNickname: '자녀가 없어요',
+          )
+        ];
+      }
       return children;
     } else {
       return [
