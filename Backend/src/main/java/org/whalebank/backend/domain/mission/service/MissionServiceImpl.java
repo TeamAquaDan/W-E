@@ -92,9 +92,12 @@ public class MissionServiceImpl implements MissionService {
     UserEntity child = findMemberInGroup(group, "CHILD");
     if (reqDto.getStatus() == 1) { // 성공
       // 송금
+      if(child.getAccountNum()==null) {
+        throw new CustomException(ResponseCode.MAIN_ACCOUNT_NOT_REGISTERED);
+      }
       accountService.withdraw(loginId,
-          WithdrawRequestDto.of(group.getAutoPaymentEntity(), mission,
-              currentUser.getUserName()));
+          WithdrawRequestDto.missionOf(group.getAutoPaymentEntity(), mission,
+              child));
       // 푸시 알림
       fcmUtils.sendNotificationByToken(child,
           FCMRequestDto.of("미션 성공!", String.format("'%s' 미션을 성공했어요!", mission.getMissionName()),

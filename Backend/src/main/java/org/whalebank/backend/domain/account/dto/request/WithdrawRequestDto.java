@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.whalebank.backend.domain.dutchpay.DutchpayEntity;
 import org.whalebank.backend.domain.allowance.AutoPaymentEntity;
 import org.whalebank.backend.domain.mission.MissionEntity;
+import org.whalebank.backend.domain.user.UserEntity;
 
 @Getter
 @Setter
@@ -57,16 +58,16 @@ public class WithdrawRequestDto {
         .build();
   }
 
-  public static WithdrawRequestDto of(AutoPaymentEntity entity, MissionEntity mission, String parentName) {
+  public static WithdrawRequestDto missionOf(AutoPaymentEntity entity, MissionEntity mission, UserEntity child) {
     return WithdrawRequestDto.builder()
         .tran_amt(mission.getMissionReward())
         .req_account_id(entity.getParentAccountId())
         .req_account_num(entity.getParentAccountNum())
         .req_account_password(entity.getParentAccountPassword())
         .recv_client_bank_code("103")
-        .recv_client_account_num(entity.getRecvAccountNum())
-        .recv_client_name(entity.getChildName())
-        .req_trans_memo(entity.getChildName()+"님 " + mission.getMissionName()+ " 미션 성공 보상금액")
+        .recv_client_account_num(child.getAccountNum())
+        .recv_client_name(child.getUserName())
+        .req_trans_memo(child.getUserName()+"님 " + mission.getMissionName()+ " 미션 성공 보상금액")
         .recv_trans_memo(mission.getMissionName() + " 미션 성공 보상 금액")
         .build();
   }

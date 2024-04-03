@@ -12,6 +12,7 @@ import org.whalebank.whalebank.domain.transfer.repository.TransferRepository;
 import org.whalebank.whalebank.global.bank.CodeEntity;
 import org.whalebank.whalebank.global.bank.CodeRepository;
 
+  /*
 @Component
 @RequiredArgsConstructor
 public class WhaleBankInitializer {
@@ -20,6 +21,7 @@ public class WhaleBankInitializer {
   private final AuthRepository authRepository;
   private final TransferRepository transferRepository;
   private final CodeRepository codeRepository;
+
 
   @PostConstruct
   public void init() {
@@ -279,3 +281,4 @@ public class WhaleBankInitializer {
   }
 
 }
+  */

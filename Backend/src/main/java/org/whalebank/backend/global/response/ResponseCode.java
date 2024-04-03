@@ -24,6 +24,7 @@ public enum ResponseCode {
   ALREADY_MAIN_ACCOUNT(HttpStatus.CONFLICT.value(), "이미 주계좌로 등록된 계좌입니다"),
   WRONG_LOGIN_PASSWORD(HttpStatus.UNAUTHORIZED.value(), "비밀번호가 일치하지 않습니다"),
   USER_ALREADY_SIGNUP(HttpStatus.CONFLICT.value(), "이미 등록된 계정입니다."),
+  MAIN_ACCOUNT_NOT_REGISTERED(HttpStatus.NOT_FOUND.value(), "주계좌가 등록되어 있지 않습니다"),
 
   // 친구
   FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "친구 요청이 존재하지 않습니다"),
