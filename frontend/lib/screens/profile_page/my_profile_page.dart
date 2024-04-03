@@ -501,6 +501,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           setState(() {
                                             loadProfiles();
                                           });
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                    Text("방명록 삭제에 성공하였습니다!")),
+                                          );
                                         } catch (err) {
                                           print(err);
                                         }
@@ -638,6 +644,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             },
                           );
                           print(response);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("방명록 등록에 성공하였습니다!")),
+                          );
                           setState(() {
                             loadProfiles();
                           });
