@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import httpx, asyncio
 import pandas as pd
@@ -59,3 +60,8 @@ async def chat(input_data: UserInput):
     async with httpx.AsyncClient(timeout=180.0) as client:
         response = await client.post(gpu_server_url, json=data)
         return JSONResponse(status_code=response.status_code, content=response.json())
+    
+@app.get("/fastapi/download-apk")
+async def download_apk():
+    file_path = "app-release.apk"  # APK 파일의 경로
+    return FileResponse(path=file_path, filename="w-e.apk", media_type='application/vnd.android.package-archive')
