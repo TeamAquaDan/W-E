@@ -6,6 +6,7 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,6 +122,7 @@ public class DutchpayServiceImpl implements DutchpayService {
               .collect(Collectors.toList());
           return DutchpayRoomResponseDto.from(dutchpay.getRoom(), profileImg);
         })
+        .sorted(Comparator.comparing(DutchpayRoomResponseDto::getDutchpay_date).reversed()) // dutchpay_date 필드를 기준으로 정렬
         .collect(Collectors.toList());
   }
 

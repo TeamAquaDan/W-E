@@ -51,5 +51,10 @@ public class AuthEntity {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "card_id")
   )
+  @Builder.Default
   private List<CardEntity> cardList = new ArrayList<>();
+
+  public void addCard(CardEntity card) {
+    cardList.add(card);
+  }
 }
