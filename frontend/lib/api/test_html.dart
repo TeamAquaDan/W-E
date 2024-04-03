@@ -6,10 +6,9 @@ final dio = Dio();
 Future<String> requestTest() async {
   print('${baseURL}test/hello');
   Response response;
-  // response = await dio.get('https://j10e103.p.ssafy.io/api/hello');
+
   response = await dio.get('${baseURL}fastapi/dailyword');
-  // response = await dio.post('http://j10e103.p.ssafy.io:8282/fastapi/chatbot',
-  // data: {'user_input': 'AI는 뭘로 구성했어?'});
+
   print(response.data.toString());
 
   return response.data; // hello world
@@ -18,7 +17,7 @@ Future<String> requestTest() async {
 void request1() async {
   print('${baseURL}test/hello');
   Response response;
-  // response = await dio.get('https://j10e103.p.ssafy.io/api/insert-test');
+
   response = await dio.post('${baseURL}api/insert-test');
   print(response);
   // The below request is the same as above.

@@ -12,8 +12,8 @@ class BankHistoryCard extends StatelessWidget {
       color: const Color.fromARGB(255, 255, 255, 255),
       surfaceTintColor: Colors.white,
       elevation: 0,
-      shape:
-          const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
+      shape: const BeveledRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.zero)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -31,7 +31,8 @@ class BankHistoryCard extends StatelessWidget {
               children: [
                 Text(
                   data.trans_memo,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w700),
                 ),
                 const Spacer(),
                 Text(
