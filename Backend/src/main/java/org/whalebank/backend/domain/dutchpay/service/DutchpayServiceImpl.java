@@ -161,14 +161,8 @@ public class DutchpayServiceImpl implements DutchpayService {
   @Transactional
   public void registerPayments(String loginId, RegisterPaymentRequestDto request) {
 
-    log.info("register payment 입장~");
-    //System.out.println("register payment 입장~ ");
-
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
-
-    log.info("User name: " + user.getUserName());
-//    System.out.println("User name: " + user.getUserName());
 
     // 계좌 비밀번호 확인
     if (!bankAccessUtil.verifyAccountPassword(user.getBankAccessToken(), request.getAccount_id(),
@@ -206,13 +200,17 @@ public class DutchpayServiceImpl implements DutchpayService {
 
     dutchpayRepository.save(dutchpay);
 
-    log.info("내역 등록 성공");
-//    System.out.println("내역 등록 성공 ");
-
     if (dutchpayRoom.getSetAmtCount() == dutchpayRepository.findByRoom(dutchpayRoom).size()) {
 
       UserEntity manager = authRepository.findById(dutchpayRoom.getManagerId())
           .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+      // 더치페이 방에 등록된 모든 결제내역
+      List<SelectedPaymentEntity> selectedPaymentList = selectedPaymentRepository.findByRoomId(
+          dutchpayRoom.getRoomId());
+
+      // 카테고리별 정산 함수
+      categoryCalculate(selectedPaymentList);
 
       fcmUtils.sendNotificationByToken(manager, FCMRequestDto.of("정산을 시작해볼까요?",
           dutchpayRoom.getRoomName() + "의 모든 참여자들이 정산 내역을 등록했어요",
@@ -287,12 +285,12 @@ public class DutchpayServiceImpl implements DutchpayService {
       throw new CustomException(ResponseCode.UNREGISTERED_MEMBERS);
     }
 
-    // 더치페이 방에 등록된 모든 결제 내역 리스트
-    List<SelectedPaymentEntity> selectedPaymentList = selectedPaymentRepository.findByRoomId(
-        dutchpayRoom.getRoomId());
+//    // 더치페이 방에 등록된 모든 결제 내역 리스트
+//    List<SelectedPaymentEntity> selectedPaymentList = selectedPaymentRepository.findByRoomId(
+//        dutchpayRoom.getRoomId());
 
-    // 카테고리별 정산 함수
-    categoryCalculate(selectedPaymentList);
+//    // 카테고리별 정산 함수
+//    categoryCalculate(selectedPaymentList);
 
     // 개인별 정산 금액 계산하는 함수
     calculateDutchpayAmount(dutchpayList);
