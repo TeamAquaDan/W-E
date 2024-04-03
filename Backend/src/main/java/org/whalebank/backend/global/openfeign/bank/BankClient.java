@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.whalebank.backend.global.config.OpenFeignConfig;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.DepositListRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
 import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
@@ -113,6 +114,13 @@ public interface BankClient {
   ResponseEntity<VerifyResponseDto> verifyAccountPassword(
       @RequestHeader("Authorization") String token,
       @RequestBody VerifyRequestDto request
+  );
+
+  // 입금 내역 조회
+  @PostMapping("/accounts/deposit/list")
+  ResponseEntity<TransactionResponse> getDepositListAfterLastFetchTime(
+      @RequestHeader("Authorization") String token,
+      @RequestBody DepositListRequestDto request
   );
 
 

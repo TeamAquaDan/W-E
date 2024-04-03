@@ -30,6 +30,7 @@ import org.whalebank.backend.global.openfeign.bank.request.TransactionRequest;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto;
 import org.whalebank.backend.global.openfeign.bank.response.AccountListResponseDto.AccountInfo;
 import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse;
+import org.whalebank.backend.global.openfeign.bank.response.TransactionResponse.Transaction;
 import org.whalebank.backend.global.openfeign.card.CardAccessUtil;
 import org.whalebank.backend.global.openfeign.card.response.CardHistoryResponse;
 import org.whalebank.backend.global.response.ResponseCode;
@@ -65,22 +66,12 @@ public class AccountBookServiceImpl implements AccountBookService {
   }
 
   private void saveIncomeHistory(UserEntity user) {
-    List<AccountBookEntity> incomeList = new ArrayList<>();
-    // 내 모든 계좌 불러오기
-    AccountListResponseDto resFromBank = bankAccessUtil.getAccountInfo(
-        user.getBankAccessToken());
+    List<Transaction> depositList = bankAccessUtil.getDepositList(user.getBankAccessToken(),
+        user.getLastCardHistoryFetchTime()).getTrans_list();
 
-    // 각 계좌의 거래내역 중 입금 내역만 불러옴
-    for (AccountInfo accountInfo : resFromBank.getAccount_list()) {
-      TransactionResponse bankHistory = bankAccessUtil.getTransactionHistory(
-          user.getBankAccessToken(),
-          TransactionRequest.of(accountInfo.account_id, user.getLastCardHistoryFetchTime()));
-
-      incomeList.addAll(bankHistory.getTrans_list().stream()
-          .filter(transaction -> transaction.getTrans_type() == 3) // 거래 유형이 입금인 것만 필터링
-          .map(h -> AccountBookEntity.fromAccountHistory(h, user))
-          .toList());
-    }
+    List<AccountBookEntity> incomeList = new ArrayList<>(depositList.stream()
+        .map(h -> AccountBookEntity.fromAccountHistory(h, user))
+        .toList());
     // 저장
     bulkRepository.saveAll(incomeList);
   }

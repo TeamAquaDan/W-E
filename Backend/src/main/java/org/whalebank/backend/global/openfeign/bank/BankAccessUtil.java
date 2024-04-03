@@ -1,11 +1,13 @@
 package org.whalebank.backend.global.openfeign.bank;
 
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.global.exception.CustomException;
 import org.whalebank.backend.global.openfeign.bank.request.AccountIdRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.CheckUserRequestDto;
+import org.whalebank.backend.global.openfeign.bank.request.DepositListRequestDto;
 import org.whalebank.backend.global.openfeign.bank.request.DepositRequest;
 import org.whalebank.backend.global.openfeign.bank.request.InquiryRequest;
 import org.whalebank.backend.global.openfeign.bank.request.ParkingRequest;
@@ -168,6 +170,18 @@ public class BankAccessUtil {
     } else {
       throw new CustomException(ResponseCode.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  // 최근 입금내역 조회
+  public TransactionResponse getDepositList(String bankAccessToken, LocalDateTime lastFetchTime) {
+    TransactionResponse res = bankClient.getDepositListAfterLastFetchTime(bankAccessToken,
+            DepositListRequestDto.from(lastFetchTime))
+        .getBody();
+
+    if (res.getRsp_code() == 404) {
+      throw new CustomException(ResponseCode.ACCOUNT_NOT_FOUND);
+    }
+    return res;
   }
 
 }

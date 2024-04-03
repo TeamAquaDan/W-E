@@ -1,6 +1,7 @@
 package org.whalebank.whalebank.domain.account.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,14 @@ public class AccountController {
     return new ResponseEntity<>(
         accountService.getTransactions(request, transactionRequest),
         HttpStatus.OK);
+  }
+
+  @PostMapping("/deposit/list")
+  public ResponseEntity<TransactionResponse> getDepositList(HttpServletRequest request,
+      @RequestBody Map<String, LocalDateTime> timestamp) {
+
+    return new ResponseEntity<>(
+        accountService.getDepositList(request, timestamp.get("search_timestamp")), HttpStatus.OK);
   }
 
   @PostMapping("/password-verify")
