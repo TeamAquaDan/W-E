@@ -196,6 +196,19 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> _categoryImoge = {
+      "001": "🎁",
+      "002": "📱",
+      "003": "📎",
+      "004": "👕",
+      "005": "🎮",
+      "006": "🏠",
+      "007": "🍔",
+      "008": "📚",
+      "009": "💍",
+      "010": "💄",
+      "000": "🐳"
+    };
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -226,19 +239,34 @@ class _SavingGoalDetailState extends State<SavingGoalDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${goalDetails["goal_name"]} 까지',
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '${formatNumber(toSaveAmount)}원',
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            '${goalDetails["goal_name"]} 까지',
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '${formatNumber(toSaveAmount)}원',
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        _categoryImoge[goalDetails['category']],
+                        style: const TextStyle(
+                          fontSize: 45,
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(height: 20),
                   Row(

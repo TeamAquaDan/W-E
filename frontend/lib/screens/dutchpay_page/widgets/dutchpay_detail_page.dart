@@ -246,7 +246,7 @@ class _DutchPayDetailPageState extends State<DutchPayDetailPage> {
                                   color: Color.fromARGB(255, 118, 24, 17)),
                         ],
                       ),
-                      onTap: detail['_register']
+                      onTap: detail['_register'] && detail['total_amt'] != 0
                           ? () async {
                               final DioService dioService = DioService();
                               try {

@@ -36,6 +36,19 @@ class SavingGoal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> _categoryImoge = {
+      "001": "🎁",
+      "002": "📱",
+      "003": "📎",
+      "004": "👕",
+      "005": "🎮",
+      "006": "🏠",
+      "007": "🍔",
+      "008": "📚",
+      "009": "💍",
+      "010": "💄",
+      "000": "🐳"
+    };
     return status == 0
         ? Column(
             children: [
@@ -54,6 +67,7 @@ class SavingGoal extends StatelessWidget {
                   children: [
                     SizedBox(height: 5), // 상단과 제목 사이의 간격 (상단에는 빈 공간이 있어서 5로 설정
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           goalName,
@@ -63,6 +77,12 @@ class SavingGoal extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
+                        Text(
+                          _categoryImoge[category],
+                          style: const TextStyle(
+                            fontSize: 25,
+                          ),
+                        )
                       ],
                     ),
                     const SizedBox(height: 5), // 제목과 진행 바 사이의 간격
@@ -153,6 +173,7 @@ class SavingGoal extends StatelessWidget {
                   children: [
                     SizedBox(height: 5), // 상단과 제목 사이의 간격 (상단에는 빈 공간이 있어서 5로 설정
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           goalName,
@@ -162,6 +183,12 @@ class SavingGoal extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
+                        Text(
+                          _categoryImoge[category],
+                          style: const TextStyle(
+                            fontSize: 25,
+                          ),
+                        )
                       ],
                     ),
                     const SizedBox(height: 5), // 제목과 진행 바 사이의 간격

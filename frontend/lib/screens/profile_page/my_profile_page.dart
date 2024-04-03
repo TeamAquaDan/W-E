@@ -277,282 +277,290 @@ class _MyProfilePageState extends State<MyProfilePage> {
         title: const Text('프로필 페이지'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: myProfileList.isNotEmpty
-            ? Column(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, // 컨텐츠를 위에서부터 시작하도록 설정
-                children: [
-                  const SizedBox(height: 15), // 상단 여백
-                  GestureDetector(
-                    onTap: () {
-                      if (myProfileList[0]['editable'] == true) {
-                        _showImagePickerModal(context);
-                      } // 이미지 선택 모달 표시
-                    },
-                    child: Center(
-                      child: Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1),
-                          image: DecorationImage(
-                            image: NetworkImage(myProfileList[0]
-                                    ['profile_img'] ??
-                                '${baseProfileURL}'),
-                            fit: BoxFit.fill,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await loadProfiles();
+        },
+        child: SingleChildScrollView(
+          child: myProfileList.isNotEmpty
+              ? Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.start, // 컨텐츠를 위에서부터 시작하도록 설정
+                  children: [
+                    const SizedBox(height: 15), // 상단 여백
+                    GestureDetector(
+                      onTap: () {
+                        if (myProfileList[0]['editable'] == true) {
+                          _showImagePickerModal(context);
+                        } // 이미지 선택 모달 표시
+                      },
+                      child: Center(
+                        child: Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 1),
+                            image: DecorationImage(
+                              image: NetworkImage(myProfileList[0]
+                                      ['profile_img'] ??
+                                  '${baseProfileURL}'),
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(100), // 원형 이미지로 만들기
                           ),
-                          borderRadius:
-                              BorderRadius.circular(100), // 원형 이미지로 만들기
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    myProfileList[0]['username'],
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 32,
-                      fontFamily: 'Aggro',
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(height: 3),
+                    Text(
+                      myProfileList[0]['username'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 32,
+                        fontFamily: 'Aggro',
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '@${myProfileList[0]['login_id']}',
-                    style: const TextStyle(
-                      color: Colors.black, // 색상 코드 수정
-                      fontSize: 23,
-                      fontFamily: 'Aggro',
-                      fontWeight: FontWeight.w400,
+                    Text(
+                      '@${myProfileList[0]['login_id']}',
+                      style: const TextStyle(
+                        color: Colors.black, // 색상 코드 수정
+                        fontSize: 23,
+                        fontFamily: 'Aggro',
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 5),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF4F6FB),
-                      border: Border.all(
-                          color: const Color(0xFF616161), width: 0.5),
-                      borderRadius: BorderRadius.circular(17),
-                    ),
-                    // 한 줄 소개 표시/편집 컨테이너
-                    child: isEditing
-                        ? TextField(
-                            controller: bioController,
-                            decoration: InputDecoration(
-                              hintText: '여기에 한 줄 소개를 입력하세요',
-                              border: InputBorder.none,
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.save),
-                                onPressed: toggleEdit,
+                    const SizedBox(height: 5),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF4F6FB),
+                        border: Border.all(
+                            color: const Color(0xFF616161), width: 0.5),
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+                      // 한 줄 소개 표시/편집 컨테이너
+                      child: isEditing
+                          ? TextField(
+                              controller: bioController,
+                              decoration: InputDecoration(
+                                hintText: '여기에 한 줄 소개를 입력하세요',
+                                border: InputBorder.none,
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.save),
+                                  onPressed: toggleEdit,
+                                ),
+                              ),
+                              maxLength: 20,
+                            )
+                          : Container(
+                              child: InkWell(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      myProfileList[0]['sentence'] ??
+                                          '한 줄 소개가 설정되지 않았습니다.',
+                                      style: const TextStyle(
+                                        color: Colors.black, // 색상 코드 수정
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    myProfileList[0]['editable'] == true
+                                        ? IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isEditing = true;
+                                              });
+                                            },
+                                            icon: const Icon(Icons.edit))
+                                        : const SizedBox(width: 0, height: 0),
+                                  ],
+                                ),
                               ),
                             ),
-                            maxLength: 20,
-                          )
-                        : Container(
-                            child: InkWell(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    myProfileList[0]['sentence'] ??
-                                        '한 줄 소개가 설정되지 않았습니다.',
-                                    style: const TextStyle(
+                    ),
+
+                    const SizedBox(height: 20),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
+                      child: const Divider(
+                        height: 1,
+                        thickness: 2,
+                      ),
+                    ), // 구분선
+                    const SizedBox(height: 5), // 버튼과 하단 여백
+                    // 필요한 경우 여기에 추가적인 위젯 배치
+                    if (myProfileList[0]['editable'])
+                      const SizedBox(
+                        height: 5,
+                      ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(30, 0, 20, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            '방명록',
+                            style: TextStyle(
+                              color: Colors.black, // 색상 코드 수정
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          myProfileList[0]['editable'] == false
+                              ? TextButton(
+                                  onPressed: () {
+                                    _showWriteCommentModal();
+                                  },
+                                  child: const Text(
+                                    '＋ 작성하기',
+                                    style: TextStyle(
                                       color: Colors.black, // 색상 코드 수정
                                       fontSize: 16,
                                     ),
                                   ),
-                                  myProfileList[0]['editable'] == true
-                                      ? IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              isEditing = true;
-                                            });
-                                          },
-                                          icon: const Icon(Icons.edit))
-                                      : const SizedBox(width: 0, height: 0),
-                                ],
-                              ),
-                            ),
-                          ),
-                  ),
+                                )
+                              : const SizedBox(width: 0, height: 0),
+                        ],
+                      ),
+                    ),
+                    if (myProfileList[0]['editable'])
+                      const SizedBox(
+                        height: 7,
+                      ),
 
-                  const SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    child: const Divider(
-                      height: 1,
-                      thickness: 2,
-                    ),
-                  ), // 구분선
-                  const SizedBox(height: 5), // 버튼과 하단 여백
-                  // 필요한 경우 여기에 추가적인 위젯 배치
-                  if (myProfileList[0]['editable'])
-                    const SizedBox(
-                      height: 5,
-                    ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(30, 0, 20, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          '방명록',
-                          style: TextStyle(
-                            color: Colors.black, // 색상 코드 수정
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        myProfileList[0]['editable'] == false
-                            ? TextButton(
-                                onPressed: () {
-                                  _showWriteCommentModal();
-                                },
-                                child: const Text(
-                                  '＋ 작성하기',
-                                  style: TextStyle(
-                                    color: Colors.black, // 색상 코드 수정
-                                    fontSize: 16,
+                    if (myProfileList.isNotEmpty &&
+                        myProfileList[0]['guestbook_list'] != null)
+                      ListView.builder(
+                        shrinkWrap: true, // 내용의 크기에 맞게 ListView의 크기를 조정합니다.
+                        // physics:
+                        //     const NeverScrollableScrollPhysics(), // 스크롤을 막습니다.
+                        itemCount: myProfileList[0]['guestbook_list'].length,
+                        itemBuilder: (context, index) {
+                          var comment =
+                              myProfileList[0]['guestbook_list'][index];
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                            child: ListTile(
+                              contentPadding:
+                                  const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                              tileColor: const Color(0xFF568EF8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              leading: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: NetworkImage(
+                                    comment['writer_img'] ??
+                                        '${baseProfileURL}'),
+                                // '기본_이미지_URL'을 코멘트 작성자의 기본 이미지 URL로 교체하세요.
+                              ),
+                              title: Container(
+                                child: Text(
+                                  comment['writer_name'],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                  ),
+
+                                  overflow: TextOverflow
+                                      .ellipsis, // 이름이 길 경우 생략 기호 처리
+                                ),
+                              ),
+                              subtitle: Container(
+                                child: Text(
+                                  comment['content'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
                                   ),
                                 ),
-                              )
-                            : const SizedBox(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                  if (myProfileList[0]['editable'])
-                    const SizedBox(
-                      height: 7,
-                    ),
-
-                  if (myProfileList.isNotEmpty &&
-                      myProfileList[0]['guestbook_list'] != null)
-                    ListView.builder(
-                      shrinkWrap: true, // 내용의 크기에 맞게 ListView의 크기를 조정합니다.
-                      // physics:
-                      //     const NeverScrollableScrollPhysics(), // 스크롤을 막습니다.
-                      itemCount: myProfileList[0]['guestbook_list'].length,
-                      itemBuilder: (context, index) {
-                        var comment = myProfileList[0]['guestbook_list'][index];
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 5),
-                          child: ListTile(
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(20, 5, 10, 5),
-                            tileColor: const Color(0xFF568EF8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            leading: CircleAvatar(
-                              radius: 25,
-                              backgroundImage: NetworkImage(
-                                  comment['writer_img'] ?? '${baseProfileURL}'),
-                              // '기본_이미지_URL'을 코멘트 작성자의 기본 이미지 URL로 교체하세요.
-                            ),
-                            title: Container(
-                              child: Text(
-                                comment['writer_name'],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
-
-                                overflow:
-                                    TextOverflow.ellipsis, // 이름이 길 경우 생략 기호 처리
                               ),
+                              trailing: (myProfileList[0]['editable'] == true ||
+                                      comment['writer_id'] ==
+                                          Get.find<UserController>()
+                                              .getUserId())
+                                  ? IconButton(
+                                      icon: const Icon(Icons.delete,
+                                          color: Colors.red),
+                                      onPressed: () async {
+                                        final DioService dioService =
+                                            DioService();
+                                        try {
+                                          var response =
+                                              await dioService.dio.delete(
+                                            '${baseURL}api/user/guestbook/${comment['guestbook_id']}',
+                                          );
+                                          setState(() {
+                                            loadProfiles();
+                                          });
+                                        } catch (err) {
+                                          print(err);
+                                        }
+                                      },
+                                    )
+                                  : null, // 조건이 거짓일 때 null을 반환하여 아무것도 표시하지 않음
                             ),
-                            subtitle: Container(
-                              child: Text(
-                                comment['content'],
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            trailing: (myProfileList[0]['editable'] == true ||
-                                    comment['writer_id'] ==
-                                        Get.find<UserController>().getUserId())
-                                ? IconButton(
-                                    icon: const Icon(Icons.delete,
-                                        color: Colors.red),
-                                    onPressed: () async {
-                                      final DioService dioService =
-                                          DioService();
-                                      try {
-                                        var response =
-                                            await dioService.dio.delete(
-                                          '${baseURL}api/user/guestbook/${comment['guestbook_id']}',
-                                        );
-                                        setState(() {
-                                          loadProfiles();
-                                        });
-                                      } catch (err) {
-                                        print(err);
-                                      }
-                                    },
-                                  )
-                                : null, // 조건이 거짓일 때 null을 반환하여 아무것도 표시하지 않음
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      ),
 
-                  // 코멘트 입력 필드와 게시 버튼
-                  // myProfileList[0]['editable'] == false
-                  //     ? Padding(
-                  //         padding: const EdgeInsets.symmetric(
-                  //             horizontal: 8.0, vertical: 20),
-                  //         child: Row(
-                  //           children: [
-                  //             Expanded(
-                  //               child: TextField(
-                  //                 controller: commentController,
-                  //                 decoration: const InputDecoration(
-                  //                   hintText: '코멘트를 입력하세요...',
-                  //                   border: OutlineInputBorder(),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             const SizedBox(width: 8),
-                  //             ElevatedButton(
-                  //               onPressed: () async {
-                  //                 final DioService dioService = DioService();
-                  //                 try {
-                  //                   var response = await dioService.dio.post(
-                  //                     '${baseURL}api/user/guestbook',
-                  //                     data: {
-                  //                       'user_id': widget.userId,
-                  //                       'content': commentController.text,
-                  //                     },
-                  //                   );
-                  //                   print(response);
-                  //                   setState(() {
-                  //                     loadProfiles();
-                  //                   });
-                  //                 } catch (err) {
-                  //                   print(err);
-                  //                 }
-                  //               },
-                  //               child: const Text('게시'),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       )
-                  //     : const SizedBox(height: 0, width: 0),
-                ],
-              )
-            : const Center(
-                child:
-                    CircularProgressIndicator(), // 데이터가 로드되지 않았을 경우 로딩 인디케이터 표시
-              ),
+                    // 코멘트 입력 필드와 게시 버튼
+                    // myProfileList[0]['editable'] == false
+                    //     ? Padding(
+                    //         padding: const EdgeInsets.symmetric(
+                    //             horizontal: 8.0, vertical: 20),
+                    //         child: Row(
+                    //           children: [
+                    //             Expanded(
+                    //               child: TextField(
+                    //                 controller: commentController,
+                    //                 decoration: const InputDecoration(
+                    //                   hintText: '코멘트를 입력하세요...',
+                    //                   border: OutlineInputBorder(),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             const SizedBox(width: 8),
+                    //             ElevatedButton(
+                    //               onPressed: () async {
+                    //                 final DioService dioService = DioService();
+                    //                 try {
+                    //                   var response = await dioService.dio.post(
+                    //                     '${baseURL}api/user/guestbook',
+                    //                     data: {
+                    //                       'user_id': widget.userId,
+                    //                       'content': commentController.text,
+                    //                     },
+                    //                   );
+                    //                   print(response);
+                    //                   setState(() {
+                    //                     loadProfiles();
+                    //                   });
+                    //                 } catch (err) {
+                    //                   print(err);
+                    //                 }
+                    //               },
+                    //               child: const Text('게시'),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       )
+                    //     : const SizedBox(height: 0, width: 0),
+                  ],
+                )
+              : const Center(
+                  child:
+                      CircularProgressIndicator(), // 데이터가 로드되지 않았을 경우 로딩 인디케이터 표시
+                ),
+        ),
       ),
     );
   }
