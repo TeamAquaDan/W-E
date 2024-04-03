@@ -93,6 +93,10 @@ public class GoalServiceImpl implements GoalService {
           ParkingBalanceResponse parkingBalance = bankAccessUtil.getParkingBalance(
               user.getBankAccessToken(), AccountIdRequestDto.create(g.getAccountId()));
 
+          double savedAmt = parkingBalance.getParking_balance_amt() * 1.0;
+
+          double percentage = savedAmt / g.getGoalAmt() * 100;
+
           return new Goal(
               g.getGoalID(),
               g.getGoalName(),
@@ -101,7 +105,7 @@ public class GoalServiceImpl implements GoalService {
               g.getStartDate().toString(),
               withdrawDate,
               g.getGoalDate().toString(),
-              (g.getWithdrawAmt() * 1.0 / g.getGoalAmt()) * 100,
+              percentage,
               g.getWithdrawAmt(),
               g.getCategory(),
               parkingBalance.getParking_balance_amt()
