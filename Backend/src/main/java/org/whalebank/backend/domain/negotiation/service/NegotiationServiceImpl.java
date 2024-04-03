@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.allowance.GroupEntity;
+import org.whalebank.backend.domain.allowance.RoleEntity;
 import org.whalebank.backend.domain.allowance.repository.GroupRepository;
+import org.whalebank.backend.domain.allowance.repository.RoleRepository;
 import org.whalebank.backend.domain.negotiation.NegotiationEntity;
 import org.whalebank.backend.domain.negotiation.dto.request.NegoManageRequestDto;
 import org.whalebank.backend.domain.negotiation.dto.request.NegoRequestDto;
@@ -19,6 +21,7 @@ import org.whalebank.backend.domain.negotiation.repository.NegotiationRepository
 import org.whalebank.backend.domain.notification.FCMCategory;
 import org.whalebank.backend.domain.notification.dto.request.FCMRequestDto;
 import org.whalebank.backend.domain.notification.service.FcmUtils;
+import org.whalebank.backend.domain.user.Role;
 import org.whalebank.backend.domain.user.UserEntity;
 import org.whalebank.backend.domain.user.repository.AuthRepository;
 import org.whalebank.backend.global.exception.CustomException;
@@ -30,6 +33,7 @@ public class NegotiationServiceImpl implements NegotiationService {
 
   private final NegotiationRepository negotiationRepository;
   private final GroupRepository groupRepository;
+  private final RoleRepository roleRepository;
   private final FcmUtils fcmUtils;
   private final AuthRepository userRepository;
   static NumberFormat numberFormat = NumberFormat.getInstance();
@@ -59,8 +63,19 @@ public class NegotiationServiceImpl implements NegotiationService {
     GroupEntity group = groupRepository.findById(groupId)
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
 
+    UserEntity user = group.getMemberEntityList()
+        .stream()
+        .filter(r -> r.getRole().equals(Role.CHILD))
+        .findFirst()
+        .get()
+        .getUser();
+
+    RoleEntity roleEntity = roleRepository.findByUserGroupAndUser(group, user)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
+
     return negotiationRepository.findAllByGroupOrderByCreateDtmDesc(group)
-        .stream().map(NegoListResponseDto::from)
+        .stream()
+        .map(n -> NegoListResponseDto.from(n, user.getUserName(), roleEntity.getGroupNickname()))
         .collect(Collectors.toList());
   }
 

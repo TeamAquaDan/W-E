@@ -19,8 +19,10 @@ public class NegoListResponseDto {
   public String comment; // 승인/거절 사유
   public int allowance_amt; // 요청 당시 용돈 금액
   public String nego_reason; // 용돈 인상 요청 이유
+  public String req_username; // 용돈 인상 요청자 실명
+  public String req_nickname;
 
-  public static NegoListResponseDto from(NegotiationEntity entity) {
+  public static NegoListResponseDto from(NegotiationEntity entity, String req_username, String req_nickname) {
     return NegoListResponseDto.builder()
         .nego_id(entity.getNegoId())
         .nego_amt(entity.getNegoAmt())
@@ -30,6 +32,8 @@ public class NegoListResponseDto {
         .comment((entity.getStatus()==0) ? null : entity.getNegoComment())
         .allowance_amt(entity.getCurrentAllowanceAmt())
         .nego_reason(entity.getNegoReason())
+        .req_username(req_username)
+        .req_nickname(req_nickname)
         .build();
   }
 
