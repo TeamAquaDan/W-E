@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/account_book/account_book_home_page.dart';
 import 'package:frontend/screens/alarm_page.dart';
-import 'package:frontend/screens/menu_page.dart';
-import 'package:frontend/screens/mission_page/my_mission_page.dart';
+import 'package:frontend/screens/parent_menu_page.dart';
+import 'package:frontend/screens/parents_page/children_page/children_carousel.dart';
 import 'package:frontend/screens/parents_page/parent_home_page.dart';
 
 import '../chat_page/chat_page.dart';
@@ -19,10 +19,10 @@ class _ParentPageState extends State<ParentPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
     const ParentHomePage(), //ChildHomePage
+    const ChildrenManagePage2(),
     const AccountBookHomePage(),
     const AlarmPage(),
-    const MenuPage(),
-    const MyMissionPage(),
+    ParentMenuPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -41,12 +41,17 @@ class _ParentPageState extends State<ParentPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: '홈',
             // backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.auto_graph),
-            label: '통계',
+            icon: Icon(Icons.family_restroom),
+            label: '아이 관리',
+            // backgroundColor: Colors.pink,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.monetization_on),
+            label: '가계부',
             // backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
@@ -57,11 +62,6 @@ class _ParentPageState extends State<ParentPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: '전체 메뉴',
-            // backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note),
-            label: '미션 페이지',
             // backgroundColor: Colors.pink,
           ),
         ],
