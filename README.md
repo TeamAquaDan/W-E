@@ -53,8 +53,7 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 
 
 #### Frontend
-
-
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=Flutter&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white)
 
 <br>
 
@@ -63,9 +62,13 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)  
 ![SpringBoot](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![SpringSecurity](https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)  
-![AmazonS3](https://img.shields.io/badge/AmazonS3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=white) ![mysql](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)  
+![AmazonS3](https://img.shields.io/badge/AmazonS3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=white) ![mysql](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![Redis](https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 
 <br>
+
+#### Chat Bot
+![FastAPI](https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white) ![meta](https://img.shields.io/badge/meta-0467DF?style=for-the-badge&logo=meta&logoColor=white)
+
 
 #### DevOPS
 
@@ -74,6 +77,8 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 <br>
 
 ## 🏢 아키텍처
+<img src="./docs/img/E103 아키텍처.png">
+
 
 
 ## 📂 프로젝트 파일 구조
@@ -82,7 +87,173 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 <summary><b>FrontEnd</b></summary>
 
 ```
-
+📦lib
+ ┣ 📂api
+ ┃ ┣ 📂account
+ ┃ ┃ ┣ 📜account_list_api.dart
+ ┃ ┃ ┣ 📜main_account.dart
+ ┃ ┃ ┗ 📜transfer_api.dart
+ ┃ ┣ 📂account_book
+ ┃ ┃ ┣ 📜account_book_api.dart
+ ┃ ┃ ┗ 📜account_book_model.dart
+ ┃ ┣ 📂allowance
+ ┃ ┃ ┣ 📜add_child_api.dart
+ ┃ ┃ ┣ 📜allowance_patch_api.dart
+ ┃ ┃ ┣ 📜children_api.dart
+ ┃ ┃ ┗ 📜child_model.dart
+ ┃ ┣ 📂mission
+ ┃ ┃ ┣ 📜add_mission_api.dart
+ ┃ ┃ ┗ 📜mission_list_api.dart
+ ┃ ┣ 📂nego
+ ┃ ┃ ┗ 📜nego_list_api.dart
+ ┃ ┣ 📂save
+ ┃ ┃ ┣ 📜goal_add_api.dart
+ ┃ ┃ ┣ 📜goal_detail_api.dart
+ ┃ ┃ ┗ 📜goal_list_api.dart
+ ┃ ┣ 📂statistics
+ ┃ ┃ ┗ 📜month_account_api.dart
+ ┃ ┣ 📜base_url.dart
+ ┃ ┗ 📜test_html.dart
+ ┣ 📂models
+ ┃ ┣ 📂account
+ ┃ ┃ ┣ 📜account_list_data.dart
+ ┃ ┃ ┣ 📜bank_code.dart
+ ┃ ┃ ┣ 📜dummy_data_account.dart
+ ┃ ┃ ┗ 📜transfer_data.dart
+ ┃ ┣ 📂mission
+ ┃ ┃ ┗ 📜mission_model.dart
+ ┃ ┣ 📂save
+ ┃ ┃ ┣ 📜goal_add.dart
+ ┃ ┃ ┗ 📜goal_list.dart
+ ┃ ┣ 📂statistics
+ ┃ ┃ ┗ 📜account_month_model.dart
+ ┃ ┣ 📂store
+ ┃ ┃ ┣ 📂account
+ ┃ ┃ ┃ ┗ 📜account_controller.dart
+ ┃ ┃ ┣ 📂saving_goal
+ ┃ ┃ ┃ ┗ 📜goal_list_controller.dart
+ ┃ ┃ ┣ 📂user
+ ┃ ┃ ┃ ┣ 📜user.dart
+ ┃ ┃ ┃ ┗ 📜user_controller.dart
+ ┃ ┃ ┗ 📂userRole
+ ┃ ┃ ┃ ┗ 📜user_role.dart
+ ┃ ┣ 📜mission_data.dart
+ ┃ ┗ 📜signup_request.dart
+ ┣ 📂screens
+ ┃ ┣ 📂account_book
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜chart.dart
+ ┃ ┃ ┃ ┣ 📜chart2.dart
+ ┃ ┃ ┃ ┣ 📜table.dart
+ ┃ ┃ ┃ ┗ 📜table_card.dart
+ ┃ ┃ ┣ 📜account_book_home_page.dart
+ ┃ ┃ ┗ 📜form_account_book.dart
+ ┃ ┣ 📂bank_history_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜bank_history_card.dart
+ ┃ ┃ ┃ ┣ 📜bank_history_table.dart
+ ┃ ┃ ┃ ┣ 📜bank_top_container.dart
+ ┃ ┃ ┃ ┗ 📜trans_type_button.dart
+ ┃ ┃ ┗ 📜bank_history_page.dart
+ ┃ ┣ 📂chat_page
+ ┃ ┃ ┗ 📜chat_page.dart
+ ┃ ┣ 📂child_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜goal_card.dart
+ ┃ ┃ ┃ ┣ 📜goal_section_bar.dart
+ ┃ ┃ ┃ ┣ 📜mission_list.dart
+ ┃ ┃ ┃ ┗ 📜mission_section_bar.dart
+ ┃ ┃ ┣ 📜child_home_page.dart
+ ┃ ┃ ┗ 📜child_page.dart
+ ┃ ┣ 📂dutchpay_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜create_room.dart
+ ┃ ┃ ┃ ┣ 📜dutchpay_detail_page.dart
+ ┃ ┃ ┃ ┣ 📜dutchpay_my_payment_page.dart
+ ┃ ┃ ┃ ┗ 📜dutchpay_payment_page.dart
+ ┃ ┃ ┗ 📜dutchpay_page.dart
+ ┃ ┣ 📂friends_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜change_nickname_friends.dart
+ ┃ ┃ ┃ ┣ 📜contacts_modal.dart
+ ┃ ┃ ┃ ┣ 📜friends.dart
+ ┃ ┃ ┃ ┗ 📜friends_request_modal.dart
+ ┃ ┃ ┗ 📜my_friends_page.dart
+ ┃ ┣ 📂mission_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜mission.dart
+ ┃ ┃ ┃ ┗ 📜mission_none.dart
+ ┃ ┃ ┗ 📜my_mission_page.dart
+ ┃ ┣ 📂parents_page
+ ┃ ┃ ┣ 📂children_page
+ ┃ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┃ ┣ 📂mission
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜mission_add_card.dart
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜mission_card.dart
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜mission_list.dart
+ ┃ ┃ ┃ ┃ ┗ 📜add_child_form.dart
+ ┃ ┃ ┃ ┣ 📜children_carousel.dart
+ ┃ ┃ ┃ ┗ 📜child_info.dart
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📂nego
+ ┃ ┃ ┃ ┃ ┣ 📜nego_card.dart
+ ┃ ┃ ┃ ┃ ┣ 📜nego_detail_page.dart
+ ┃ ┃ ┃ ┃ ┗ 📜nego_list_widget.dart
+ ┃ ┃ ┃ ┣ 📜allowance_info_form.dart
+ ┃ ┃ ┃ ┣ 📜children_list.dart
+ ┃ ┃ ┃ ┣ 📜child_card.dart
+ ┃ ┃ ┃ ┗ 📜section_bar.dart
+ ┃ ┃ ┣ 📜parent_home_page.dart
+ ┃ ┃ ┗ 📜parent_page.dart
+ ┃ ┣ 📂profile_page
+ ┃ ┃ ┗ 📜my_profile_page.dart
+ ┃ ┣ 📂salary_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜change_nickname_parents.dart
+ ┃ ┃ ┃ ┗ 📜salary.dart
+ ┃ ┃ ┣ 📜salary_increase_form_page.dart
+ ┃ ┃ ┣ 📜salary_increase_page.dart
+ ┃ ┃ ┗ 📜salary_list_page.dart
+ ┃ ┣ 📂saving_goal_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜saving_goal.dart
+ ┃ ┃ ┃ ┣ 📜saving_goal_account_carousel.dart
+ ┃ ┃ ┃ ┣ 📜saving_goal_detail.dart
+ ┃ ┃ ┃ ┣ 📜saving_goal_none.dart
+ ┃ ┃ ┃ ┣ 📜saving_goal_none_noadd.dart
+ ┃ ┃ ┃ ┗ 📜saving_goal_plus.dart
+ ┃ ┃ ┣ 📜goal_add_form(no use).dart
+ ┃ ┃ ┣ 📜my_saving_goal_form.dart
+ ┃ ┃ ┗ 📜my_saving_goal_page.dart
+ ┃ ┣ 📂transfer_page
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜bank_code_button.dart
+ ┃ ┃ ┃ ┣ 📜input_format.dart
+ ┃ ┃ ┃ ┗ 📜transfet_password_form.dart
+ ┃ ┃ ┣ 📜gruop_transfer_page.dart
+ ┃ ┃ ┗ 📜transfer_page.dart
+ ┃ ┣ 📜alarm_page.dart
+ ┃ ┣ 📜login_page.dart
+ ┃ ┣ 📜menu_page.dart
+ ┃ ┣ 📜my_home_page.dart
+ ┃ ┣ 📜pin_login_page.dart
+ ┃ ┣ 📜pin_setting_page.dart
+ ┃ ┣ 📜signup_page.dart
+ ┃ ┗ 📜TODO.md
+ ┣ 📂services
+ ┃ ┣ 📜auth_interceptor.dart
+ ┃ ┣ 📜auth_service.dart
+ ┃ ┗ 📜dio_service.dart
+ ┣ 📂widgets
+ ┃ ┣ 📜bank_book.dart
+ ┃ ┣ 📜bank_detail.dart
+ ┃ ┣ 📜carousel_with_indicator.dart
+ ┃ ┣ 📜my_img.dart
+ ┃ ┣ 📜nav_bar.dart
+ ┃ ┣ 📜pin_money.dart
+ ┃ ┗ 📜TODO.md
+ ┣ 📜firebase_options.dart
+ ┗ 📜main.dart
 ```
 
 </details>
@@ -365,16 +536,18 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 </details>
 
 ## 📑 프로젝트 산출물
+- [아키텍처](./docs/E103-Architecture.pdf)
 - [기능 명세서](./document/기능명세서.pdf)
 - [API 명세서](./docs/API명세서.pdf)
 - [와이어프레임](./docs/와이어프레임.pdf)
 - [ER Diagram](./docs/erd.png)
 - [UCC](./docs/ploud_ucc.mp4)
-- [포팅메뉴얼](./PortingManual.md)
+- [포팅메뉴얼](./exec/E103-PortingManual.md)
 
 
 ## 👨‍👨‍👧👨‍👨‍👧 팀원
-|박나린|김가영|신현중|유영준|윤태우|이재진|
+|BE|BE|FE|FE|FE|Infra|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| <img src="./docs/member/rin.jpg" style="height: 100px"> | <img src="./docs/member/kky.jpg" style="height: 100px"> | <img src="./docs/member/kky.jpg" style="height: 100px"> | <img src="./docs/member/yyj.jpg" style="height: 100px"> | <img src="./docs/member/ytw.jpg" style="height: 100px"> | <img src="./docs/member/kky.jpg" style="height: 100px"> |
+|**박나린**|**김가영**|**신현중**|**유영준**|**윤태우**|**이재진**|
+| <img src="./docs/member/rin.jpg" style="height: 100px"> | <img src="./docs/member/kky.jpg" style="height: 100px"> | <img src="./docs/member/shj.jpg" style="height: 100px"> | <img src="./docs/member/yyj.jpg" style="height: 100px"> | <img src="./docs/member/ytw.jpg" style="height: 100px"> | <img src="./docs/member/ljj.jpg" style="height: 100px"> |
 | Backend <br/>| BankEnd <br/> | FrontEnd <br/>  | FrontEnd <br/>  | Frontend <br/>  | CI/CD <br/> 챗봇 |
