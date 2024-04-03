@@ -18,7 +18,7 @@ spring.application.name=Backend
 # DB
 # jdbc Driver / url / username / password
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://j10e103.p.ssafy.io:59152/we?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
+spring.datasource.url=jdbc:mysql://j10e103.p.ssafy.io:{port}/we?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
 spring.datasource.username=root
 spring.datasource.password=*******
 # JPA
@@ -28,18 +28,18 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 #spring.jpa.properties.hibernate.format_sql=true
 logging.level.org.hibernate.type.descriptor.sql=trace
 # JWT
-spring.jwt.secret=bmiiofjnawesdiokjlvpqmzrmoserdlkjlaeitejmpoaegdfxjgifmog
+spring.jwt.secret=****
 spring.jwt.refreshTokenExpiration=1209600000
 spring.jwt.accessTokenExpiration=3600000
 # Redis
 spring.data.redis.host=j10e103.p.ssafy.io
 spring.data.redis.port={port}
-spring.data.redis.password=*******
+spring.data.redis.password=****
 whale.bank.url=http://j10e103.p.ssafy.io:{port}
 whale.card.url=http://j10e103.p.ssafy.io:{port}
 # S3
-cloud.aws.credentials.accessKey=AKIA6GBMGSEIOHCUT3JG
-cloud.aws.credentials.secretKey=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
+cloud.aws.credentials.accessKey=****
+cloud.aws.credentials.secretKey=****
 cloud.aws.region.static=ap-northeast-2
 cloud.aws.s3.bucket=whale-we
 spring.servlet.multipart.max-file-size=500MB
@@ -51,7 +51,7 @@ spring.application.name=WhaleBank
 # DB
 # jdbc Driver / url / username / password
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://j10e103.p.ssafy.io:59153/whalebank?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
+spring.datasource.url=jdbc:mysql://j10e103.p.ssafy.io:{port}/whalebank?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
 spring.datasource.username=root
 spring.datasource.password=*******
 # JPA
@@ -61,7 +61,7 @@ spring.jpa.properties.hibernate.show_sql=true
 spring.jpa.properties.hibernate.format_sql=true
 logging.level.org.hibernate.type.descriptor.sql=trace
 # JWT
-spring.jwt.secret=bmiiofjnawesdiokjlvmoisopdefkjrmsbixdfojmpoaegdfxjgifmogjfioga
+spring.jwt.secret=****
 spring.jwt.refreshTokenExperation=60480000000
 spring.jwt.accessTokenExperation=8640000000
 ```
@@ -73,7 +73,7 @@ spring.application.name=WhaleCard
 # DB
 # jdbc Driver / url / username / password
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://j10e103.p.ssafy.io:59154/whalecard?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
+spring.datasource.url=jdbc:mysql://j10e103.p.ssafy.io:{port}/whalecard?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
 spring.datasource.username=root
 spring.datasource.password=*******
 # JPA
@@ -83,7 +83,7 @@ spring.jpa.properties.hibernate.show_sql=true
 spring.jpa.properties.hibernate.format_sql=true
 logging.level.org.hibernate.type.descriptor.sql=trace
 # JWT
-spring.jwt.secret=bmiiofjnawesdiokjlvmoisopdefkjrmsbixdfojmpoaegdfxjgifmogjfioga
+spring.jwt.secret=****
 spring.jwt.refreshTokenExperation=604800000
 spring.jwt.accessTokenExperation=86400000
 ```
