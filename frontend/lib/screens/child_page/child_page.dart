@@ -19,8 +19,8 @@ class _ChildPageState extends State<ChildPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
     const ChildHomePage(), //ChildHomePage
-    const DutchPayPage(),
     const AccountBookHomePage(),
+    const DutchPayPage(),
     const AlarmPage(),
     ChildMenuPage(),
   ];
@@ -44,12 +44,12 @@ class _ChildPageState extends State<ChildPage> {
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.groups_2),
-            label: '더치 페이',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.monetization_on),
             label: '가계부',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.groups_2),
+            label: '더치 페이',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),

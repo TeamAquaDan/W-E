@@ -19,8 +19,8 @@ class _ParentPageState extends State<ParentPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     // const MyHomePage(title: 'Whale 서비스명'),
     const ParentHomePage(), //ChildHomePage
-    const ChildrenManagePage2(),
     const AccountBookHomePage(),
+    const ChildrenManagePage2(),
     const AlarmPage(),
     ParentMenuPage(),
   ];
@@ -45,14 +45,14 @@ class _ParentPageState extends State<ParentPage> {
             // backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.family_restroom),
-            label: '아이 관리',
-            // backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.monetization_on),
             label: '가계부',
             // backgroundColor: Colors.green,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.family_restroom),
+            label: '아이 관리',
+            // backgroundColor: Colors.pink,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
