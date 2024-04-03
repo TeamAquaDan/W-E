@@ -75,6 +75,9 @@ Future<String?> showChangeNicknameParentsDialog(BuildContext context,
                     );
                     // 요청이 성공적으로 완료되면 응답을 콘솔에 출력
                     print(response.data);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("별칭 변경에 성공하였습니다!")),
+                    );
                     onSuccess();
                   } catch (e) {
                     print(e);

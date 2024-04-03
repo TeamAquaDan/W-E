@@ -289,6 +289,9 @@ class _CreateDutchPayRoomState extends State<CreateDutchPayRoom> {
                           members: members);
                       if (result != null && result["status"] == 200) {
                         widget.onRoomCreated?.call();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("더치페이 방 생성에 성공하였습니다!")),
+                        );
                         Navigator.pop(
                             context, true); // 변경: 성공적으로 방을 생성하고 나서 true를 반환합니다.
                       }
