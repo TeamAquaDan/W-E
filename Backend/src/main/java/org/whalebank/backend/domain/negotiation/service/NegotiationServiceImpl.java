@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.whalebank.backend.domain.allowance.GroupEntity;
 import org.whalebank.backend.domain.allowance.RoleEntity;
@@ -29,6 +30,7 @@ import org.whalebank.backend.global.response.ResponseCode;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NegotiationServiceImpl implements NegotiationService {
 
   private final NegotiationRepository negotiationRepository;
@@ -63,16 +65,13 @@ public class NegotiationServiceImpl implements NegotiationService {
     GroupEntity group = groupRepository.findById(groupId)
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
 
-    UserEntity user = group.getMemberEntityList()
-        .stream()
-        .filter(r -> r.getRole().equals(Role.CHILD))
-        .findFirst()
-        .get()
-        .getUser();
+    UserEntity user = findUserInGroupByRole(group, "CHILD");
+    log.info("인상 요청자: "+user.getUserName());
 
     RoleEntity roleEntity = roleRepository.findByUserGroupAndUser(group, user)
         .orElseThrow(() -> new CustomException(ResponseCode.GROUP_ROLE_NOT_FOUND));
-
+    log.info("인상 요청자 닉네임: "+roleEntity.getGroupNickname());
+    
     return negotiationRepository.findAllByGroupOrderByCreateDtmDesc(group)
         .stream()
         .map(n -> NegoListResponseDto.from(n, user.getUserName(), roleEntity.getGroupNickname()))
