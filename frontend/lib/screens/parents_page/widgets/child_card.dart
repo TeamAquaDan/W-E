@@ -86,7 +86,6 @@ class _ChildCardState extends State<ChildCard> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 30,
-                              fontFamily: 'Aggro',
                               fontWeight: FontWeight.w400,
                             ),
                           ),

@@ -29,7 +29,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
 
   late bool _isMonthly;
   late int _allowanceAmt;
-  late int _paymentDate;
+  late int _paymentDate = 1;
 
   late TextEditingController _allowanceAmtController;
   late TextEditingController _paymentDateController;
@@ -106,6 +106,7 @@ class _AllowanceInfoFormState extends State<AllowanceInfoForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           _isMonthly = value!;
+                          _paymentDate = 1;
                         });
                       },
                       decoration: const InputDecoration(labelText: '용돈 주기'),
