@@ -125,7 +125,8 @@ public class DutchpayServiceImpl implements DutchpayService {
               .collect(Collectors.toList());
           return DutchpayRoomResponseDto.from(dutchpay.getRoom(), profileImg);
         })
-        .sorted(Comparator.comparing(DutchpayRoomResponseDto::getDutchpay_date).reversed()) // dutchpay_date 필드를 기준으로 정렬
+        .sorted(Comparator.comparing(DutchpayRoomResponseDto::getDutchpay_date)
+            .reversed()) // dutchpay_date 필드를 기준으로 정렬
         .collect(Collectors.toList());
   }
 
@@ -166,7 +167,7 @@ public class DutchpayServiceImpl implements DutchpayService {
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
 
-    log.info("User name: "+user.getUserName());
+    log.info("User name: " + user.getUserName());
 //    System.out.println("User name: " + user.getUserName());
 
     // 계좌 비밀번호 확인
@@ -312,6 +313,8 @@ public class DutchpayServiceImpl implements DutchpayService {
 
       dutchpayRoom.setCompleted(true);
     }
+
+    dutchpayRoom.setAutoDutchpay(true);
 
     return dutchpayList.stream()
         .map(dutchpay -> DutchpayDetailResponseDto.from(dutchpay, user, dutchpayList.size()))

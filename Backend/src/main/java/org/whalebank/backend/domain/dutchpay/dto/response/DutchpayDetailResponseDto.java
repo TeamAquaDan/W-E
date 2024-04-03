@@ -22,7 +22,8 @@ public class DutchpayDetailResponseDto {
   private int member_num; // 총 인원 수
   private int set_amt_count;  // 총 금액 등록 인원 수
 
-  public static DutchpayDetailResponseDto from(DutchpayEntity dutchpay, UserEntity user, int memberNum) {
+  public static DutchpayDetailResponseDto from(DutchpayEntity dutchpay, UserEntity user,
+      int memberNum) {
     return DutchpayDetailResponseDto
         .builder()
         .dutchpay_id(dutchpay.getDutchpayId())
@@ -31,7 +32,7 @@ public class DutchpayDetailResponseDto {
         .total_amt(dutchpay.getTotalAmt())
         .is_completed(dutchpay.isCompleted())
         .is_register(dutchpay.isRegister())
-        .auto_dutchpay(true)
+        .auto_dutchpay(dutchpay.getRoom().isAutoDutchpay())
         .is_login_user(dutchpay.getUser().equals(user))
         .member_num(memberNum)
         .set_amt_count(dutchpay.getRoom().getSetAmtCount())

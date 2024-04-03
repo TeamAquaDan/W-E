@@ -46,6 +46,9 @@ public class DutchpayRoomEntity {
   @ColumnDefault("0")
   private int completed_count;  // 정산 완료 인원수
 
+  @ColumnDefault("false")
+  private boolean autoDutchpay; // 자동정산 여부
+
   public static DutchpayRoomEntity createRoom(DutchpayRoomRequestDto request, UserEntity user) {
     return DutchpayRoomEntity
         .builder()
