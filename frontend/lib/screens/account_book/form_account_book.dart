@@ -120,120 +120,125 @@ class _FormAccountBookState extends State<FormAccountBook> {
       appBar: AppBar(
         title: const Text('거래내역 추가하기'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: '제목'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _amountController,
-                decoration: const InputDecoration(labelText: '금액'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an amount';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: TextEditingController(
-                          text: DateFormat('yyyy-MM-dd').format(_selectedDate)),
-                      readOnly: true,
-                      onTap: () async {
-                        final DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: _selectedDate,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
-                        );
-                        if (pickedDate != null && pickedDate != _selectedDate) {
-                          setState(() {
-                            _selectedDate = pickedDate;
-                          });
-                        }
-                      },
-                      decoration: const InputDecoration(labelText: '날짜'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a date';
-                        }
-                        return null;
-                      },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextFormField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(labelText: '제목'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a title';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _amountController,
+                  decoration: const InputDecoration(labelText: '금액'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an amount';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: TextEditingController(
+                            text:
+                                DateFormat('yyyy-MM-dd').format(_selectedDate)),
+                        readOnly: true,
+                        onTap: () async {
+                          final DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: _selectedDate,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101),
+                          );
+                          if (pickedDate != null &&
+                              pickedDate != _selectedDate) {
+                            setState(() {
+                              _selectedDate = pickedDate;
+                            });
+                          }
+                        },
+                        decoration: const InputDecoration(labelText: '날짜'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a date';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: TextEditingController(
-                          text: DateFormat('HH:mm').format(DateTime(2024, 3, 12,
-                              _selectedTime.hour, _selectedTime.minute))),
-                      readOnly: true,
-                      onTap: () async {
-                        final TimeOfDay? pickedTime = await showTimePicker(
-                          context: context,
-                          initialTime: _selectedTime,
-                        );
-                        if (pickedTime != null && pickedTime != _selectedTime) {
-                          setState(() {
-                            _selectedTime = pickedTime;
-                          });
-                        }
-                      },
-                      decoration: const InputDecoration(labelText: '시간'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a time';
-                        }
-                        return null;
-                      },
+                    Expanded(
+                      child: TextFormField(
+                        controller: TextEditingController(
+                            text: DateFormat('HH:mm').format(DateTime(2024, 3,
+                                12, _selectedTime.hour, _selectedTime.minute))),
+                        readOnly: true,
+                        onTap: () async {
+                          final TimeOfDay? pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: _selectedTime,
+                          );
+                          if (pickedTime != null &&
+                              pickedTime != _selectedTime) {
+                            setState(() {
+                              _selectedTime = pickedTime;
+                            });
+                          }
+                        },
+                        decoration: const InputDecoration(labelText: '시간'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a time';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                value: _selectedCategory,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedCategory = newValue;
-                  });
-                },
-                items: category,
-                decoration: const InputDecoration(labelText: '카테고리'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a category';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _submitForm();
-                  }
-                },
-                child: const Text('Submit'),
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedCategory = newValue;
+                    });
+                  },
+                  items: category,
+                  decoration: const InputDecoration(labelText: '카테고리'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a category';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _submitForm();
+                    }
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

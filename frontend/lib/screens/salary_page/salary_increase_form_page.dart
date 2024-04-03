@@ -147,7 +147,7 @@ class _SalaryIncreaseFormPageState extends State<SalaryIncreaseFormPage> {
                             'nego_reason': _textController.text,
                           },
                         );
-                        Get.to(() => const SalaryListPage());
+                        Get.offAll(() => const ChildPage());
                         print(response);
                       } catch (e) {
                         print('Error: $e');
