@@ -152,10 +152,15 @@ public class DutchpayServiceImpl implements DutchpayService {
   }
 
   @Override
+  @Transactional
   public void registerPayments(String loginId, RegisterPaymentRequestDto request) {
+
+    System.out.println("register payment 입장~ ");
 
     UserEntity user = authRepository.findByLoginId(loginId)
         .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+
+    System.out.println("User name: " + user.getUserName());
 
     // 계좌 비밀번호 확인
     if (!bankAccessUtil.verifyAccountPassword(user.getBankAccessToken(), request.getAccount_id(),
@@ -192,6 +197,8 @@ public class DutchpayServiceImpl implements DutchpayService {
     dutchpayRoom.setSetAmtCount(dutchpayRoom.getSetAmtCount() + 1);
 
     dutchpayRepository.save(dutchpay);
+
+    System.out.println("내역 등록 성공 ");
 
     if (dutchpayRoom.getSetAmtCount() == dutchpayRepository.findByRoom(dutchpayRoom).size()) {
 
