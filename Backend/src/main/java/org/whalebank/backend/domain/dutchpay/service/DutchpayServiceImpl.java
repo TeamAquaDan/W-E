@@ -6,6 +6,7 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,7 @@ public class DutchpayServiceImpl implements DutchpayService {
 
       fcmUtils.sendNotificationByToken(member, FCMRequestDto.of("더치페이 방에 초대되었어요!",
           "더치페이 방 " + dutchpayRoom.getRoomName() + "이 만들어졌어요",
-          FCMCategory.INCREASE_REQUEST_RESULT));
+          FCMCategory.DUTCHPAY_ROOM_CREATE));
     }
 
     // 요청으로 들어온 친구 목록의 프로필 사진이 리턴값에 포함
@@ -121,6 +122,7 @@ public class DutchpayServiceImpl implements DutchpayService {
               .collect(Collectors.toList());
           return DutchpayRoomResponseDto.from(dutchpay.getRoom(), profileImg);
         })
+        .sorted(Comparator.comparing(DutchpayRoomResponseDto::getDutchpay_date).reversed()) // dutchpay_date 필드를 기준으로 정렬
         .collect(Collectors.toList());
   }
 

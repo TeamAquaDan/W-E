@@ -21,7 +21,7 @@ public class NotiResponseDto {
         .noti_id(entity.getNotiId())
         .name(entity.getNotiName())
         .content(entity.getNotiContent())
-        .category(entity.getNotiContent())
+        .category(entity.getNotiCategory())
         .is_read(entity.isRead())
         .build();
   }

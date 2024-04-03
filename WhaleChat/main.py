@@ -2,20 +2,48 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import httpx, asyncio
+import pandas as pd
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
+import datetime
 
 app = FastAPI()
+scheduler = AsyncIOScheduler()
 
+file_path = 'words_file.xls'
+words = pd.read_excel(file_path)
+words_random = words.sample(frac=1).reset_index(drop=True)
+word_num = 0
 
 class UserInput(BaseModel):
     user_input: str
 
-@app.get("/fastapi/test")
-async def test():
-    async with httpx.AsyncClient(timeout=180.0) as client:
-        response = await client.get("http://222.107.238.75:8000/gpu/test")
-        return JSONResponse(status_code=response.status_code, content=response.json())
-    return "fastapi 성공"
+def next_word():
+    # 여기에 원하는 작업을 구현합니다. 예를 들어:
+    if word_num + 1 >= len(word_num):
+        word_num = 0
+    else:
+        word_num += 1
+    print(f"{datetime.datetime.now()} : 단어 인덱스 f{word_num}")
 
+@app.on_event("startup")
+def schedule_jobs():
+    # 매일 오전 8시에 'morning_job' 함수를 실행합니다.
+    scheduler.add_job(next_word, CronTrigger(hour=8, minute=0))
+    scheduler.start()
+
+@app.get("/fastapi/num")
+def check_word_num():
+    return {"오늘의 단어 숫자" : word_num}
+
+@app.get("/fastapi/dailyword")
+def daily_word():
+    word = words_random.iloc[word_num]['inputs']
+    response = words_random.iloc[word_num]['response']
+    data = {"word": word,
+            "response": response,
+            }
+    return JSONResponse(status_code=200, content=data)
 
 @app.post("/fastapi/chatbot")
 async def chat(input_data: UserInput):

@@ -27,7 +27,10 @@ public enum FCMCategory {
   // 더치페이
   DUTCHPAY_ROOM_CREATE("500", "더치페이 방에 입장함"),
   START_DUTCHPAY("501", "정산하기를 눌러 정산을 완료해보세요"),
-  DUTCHPAY_COMPLETED("502", "더치페이 완료");
+  DUTCHPAY_COMPLETED("502", "더치페이 완료"),
+
+  // 오늘의 단어 알림
+  TODAY_WORD("800", "오늘의 금융 단어 알림 보내기");
 
   public final String code;
   public final String description;

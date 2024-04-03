@@ -12,6 +12,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.whalebank.backend.domain.accountbook.service.AccountBookService;
 import org.whalebank.backend.domain.friend.FriendEntity;
 import org.whalebank.backend.domain.friend.FriendId;
 import org.whalebank.backend.domain.friend.repository.FriendRepository;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
   private final AmazonS3Client amazonS3Client;
   private final FriendRepository friendRepository;
   private final GuestBookRepository guestBookRepository;
+  private final AccountBookService accountBookService;
 
   @Value("${cloud.aws.s3.bucket}")
   private String bucket;
@@ -207,5 +209,14 @@ public class UserServiceImpl implements UserService {
     }
 
     user.updateMainAccount(reqDto.getAccount_id(), reqDto.getAccount_num());
+  }
+
+  @Override
+  @Transactional
+  public void updateLastCardHistoryFetchTime(String loginId) {
+    UserEntity user = repository.findByLoginId(loginId)
+        .orElseThrow(() -> new CustomException(ResponseCode.USER_NOT_FOUND));
+    accountBookService.saveAccountAndCardHistory(user);
+    user.updateCardFetchTime();
   }
 }

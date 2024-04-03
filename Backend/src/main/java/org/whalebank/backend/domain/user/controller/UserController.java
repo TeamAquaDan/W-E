@@ -2,12 +2,12 @@ package org.whalebank.backend.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -95,6 +95,13 @@ public class UserController {
 
     service.deleteGuestBook(loginUser.getUsername(), guestBookId);
     return ApiResponse.ok("방명록 삭제 성공");
+  }
+
+  @Operation(summary = "수입/지출 내역 업데이트 시간 최신화")
+  @GetMapping("/update")
+  public ApiResponse<?> updateLastCardHistoryFetchTime(@AuthenticationPrincipal UserDetails loginUser) {
+    service.updateLastCardHistoryFetchTime(loginUser.getUsername());
+    return ApiResponse.ok("시간 업데이트 성공");
   }
 
 }
