@@ -10,6 +10,7 @@ class BankHistoryCard extends StatelessWidget {
     var moneyFormat = data.trans_type == 2
         ? NumberFormat('- ###,###,###,### 원')
         : NumberFormat('+ ###,###,###,### 원');
+    var moneyFormat2 = NumberFormat('###,###,###,### 원');
     return Card(
       color: const Color.fromARGB(255, 255, 255, 255),
       surfaceTintColor: Colors.white,
@@ -52,7 +53,7 @@ class BankHistoryCard extends StatelessWidget {
               children: [
                 const Spacer(),
                 Text(
-                  moneyFormat.format(data.balance_amt),
+                  moneyFormat2.format(data.balance_amt),
                   style: const TextStyle(fontSize: 20, color: Colors.black54),
                 ),
               ],
