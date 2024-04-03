@@ -32,33 +32,40 @@ class AccountBookCard extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  Container(
-                    width: 20,
-                    height: 20,
-                    color: colors,
-                  ),
-                  Text(
-                    x['account_book_dtm'].substring(5, 10),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'Aggro',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
+                  Flexible(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 20,
+                          height: 20,
+                          color: colors,
+                        ),
+                        Text(
+                          x['account_book_dtm'].substring(5, 10),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Aggro',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            x['account_book_title'],
+                            style: const TextStyle(
+                              color: Color(0xFF0C0C0C),
+                              fontSize: 16,
+                              fontFamily: 'Aggro',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Text(
-                    x['account_book_title'],
-                    style: const TextStyle(
-                      color: Color(0xFF0C0C0C),
-                      fontSize: 16,
-                      fontFamily: 'Aggro',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const Spacer(),
                   Text(
                     x['account_book_category'] == '100'
                         ? '+ ${formatter.format((x['account_book_amt']))}'
