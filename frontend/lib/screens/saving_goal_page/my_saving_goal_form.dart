@@ -44,6 +44,20 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
     "000": "기타"
   };
 
+  final Map<String, dynamic> _categoryImoge = {
+    "001": "🎁",
+    "002": "📱",
+    "003": "📎",
+    "004": "👕",
+    "005": "🎮",
+    "006": "🏠",
+    "007": "🍔",
+    "008": "📚",
+    "009": "💍",
+    "010": "💄",
+    "000": "🐳"
+  };
+
   @override
   void initState() {
     super.initState();
@@ -215,17 +229,58 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                           )),
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: _showAccountSelection,
-                            icon: Icon(Icons.payment),
-                          ),
-                          Text(
-                            _selectedAccountNum ?? '계좌를 선택하세요',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                          _selectedAccountNum == null
+                              ? TextButton(
+                                  onPressed: _showAccountSelection,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.payment,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        '계좌를 선택하세요',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : TextButton(
+                                  onPressed: _showAccountSelection,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.payment,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        '${_selectedAccountNum}',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          // IconButton(
+                          //   onPressed: _showAccountSelection,
+                          //   icon: Icon(Icons.payment),
+                          // ),
+                          // Text(
+                          //   _selectedAccountNum ?? '계좌를 선택하세요',
+                          //   style: TextStyle(
+                          //     fontSize: 15,
+                          //     fontWeight: FontWeight.w700,
+                          //   ),
+                          // ),
                         ],
                       )
                     ],
@@ -252,19 +307,46 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: _presentDatePicker,
-                            icon: Icon(Icons.date_range),
-                          ),
-                          Text(
-                            _selectedDate == null
-                                ? '목표 기간을 선택하세요'
-                                : '목표 기간: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                          _selectedDate == null
+                              ? TextButton(
+                                  onPressed: _presentDatePicker,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.date_range,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        '목표 기간을 선택하세요',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : TextButton(
+                                  onPressed: _presentDatePicker,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.date_range,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        '목표 기간: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                )
                         ],
                       ),
                     ],
@@ -285,6 +367,10 @@ class _MySavingGoalFormState extends State<MySavingGoalForm> {
                       TextField(
                         controller: _amountController,
                         keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ],
                   ),
