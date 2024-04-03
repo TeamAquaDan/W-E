@@ -11,7 +11,7 @@ class BankHistoryCard extends StatelessWidget {
     return Card(
       color: const Color.fromARGB(255, 255, 255, 255),
       surfaceTintColor: Colors.white,
-      elevation: 3,
+      elevation: 0,
       shape:
           const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
       child: Padding(
