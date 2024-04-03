@@ -31,8 +31,21 @@ class _ChildPageState extends State<ChildPage> {
   }
 
   Future<void> _onRefreshTapped() async {
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {});
+    // 현재 _selectedIndex 값을 임시 변수에 저장합니다.
+    int previousIndex = _selectedIndex;
+
+    // _selectedIndex를 4로 변경합니다.
+    setState(() {
+      _selectedIndex = 4;
+    });
+
+    // 일정 시간을 기다립니다.
+    // await Future.delayed(Duration(seconds: 1));
+
+    // _selectedIndex를 원래 값으로 복원합니다.
+    setState(() {
+      _selectedIndex = previousIndex;
+    });
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:frontend/api/allowance/child_model.dart';
 import 'package:frontend/api/allowance/children_api.dart';
 import 'package:frontend/screens/parents_page/widgets/child_card.dart';
 import 'package:frontend/screens/parents_page/widgets/nego/nego_list_widget.dart';
+import 'package:frontend/screens/parents_page/widgets/no_child_card.dart';
 
 class ChildrenList extends StatefulWidget {
   const ChildrenList({super.key});
@@ -31,17 +32,19 @@ class _ChildrenListState extends State<ChildrenList> {
         _isLoading = true;
       });
       List<Child> loadedChildren = await getChildren();
-      setState(() {
-        itemList = [
-          //계좌 목록 조회 17
-          for (int i = 0; i < loadedChildren.length; i++)
-            ChildCard(
-                groupId: loadedChildren[i].groupId,
-                userId: loadedChildren[i].userId,
-                groupNickname: loadedChildren[i].groupNickname),
-        ];
-        children = loadedChildren;
-      });
+      if (loadedChildren.isNotEmpty) {
+        setState(() {
+          itemList = [
+            //계좌 목록 조회 17
+            for (int i = 0; i < loadedChildren.length; i++)
+              ChildCard(
+                  groupId: loadedChildren[i].groupId,
+                  userId: loadedChildren[i].userId,
+                  groupNickname: loadedChildren[i].groupNickname),
+          ];
+          children = loadedChildren;
+        });
+      }
     } catch (error) {
       // 에러가 발생한 경우 에러 처리를 수행합니다.
       print('Error: $error');
@@ -107,6 +110,6 @@ class _ChildrenListState extends State<ChildrenList> {
                   ),
                 ],
               )
-            : Container();
+            : NoChildCard();
   }
 }

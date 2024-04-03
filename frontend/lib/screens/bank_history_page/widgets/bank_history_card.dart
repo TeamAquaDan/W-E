@@ -31,12 +31,14 @@ class BankHistoryCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Text(
-                  data.trans_memo,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w700),
+                Expanded(
+                  child: Text(
+                    data.trans_memo,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                const Spacer(),
                 Text(
                   moneyFormat.format(data.trans_amt),
                   style: TextStyle(

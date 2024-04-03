@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/api/account/account_list_api.dart';
 import 'package:frontend/api/allowance/add_child_api.dart';
 import 'package:frontend/models/account/account_list_data.dart';
+import 'package:frontend/screens/parents_page/parent_page.dart';
+import 'package:get/get.dart';
 
 class AddChildForm extends StatefulWidget {
   const AddChildForm({super.key});
@@ -13,7 +16,9 @@ class AddChildForm extends StatefulWidget {
 class _AddChildFormState extends State<AddChildForm> {
   final _formKey = GlobalKey<FormState>();
 
-  late int _groupId;
+  // late int _groupId;
+  late String _phoneNum;
+  late String _userName;
   late String _groupNickname;
   late bool _isMonthly = false;
   late int _allowanceAmt;
@@ -50,17 +55,45 @@ class _AddChildFormState extends State<AddChildForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              // TextFormField(
+              //   keyboardType: TextInputType.number,
+              //   decoration: const InputDecoration(labelText: '아이의 아이디'),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return '아이의 아이디를 입력하세요';
+              //     }
+              //     return null;
+              //   },
+              //   onSaved: (value) {
+              //     _groupId = int.parse(value!);
+              //   },
+              // ),
               TextFormField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: '아이의 아이디'),
+                decoration: const InputDecoration(labelText: '아이 이름'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '아이의 아이디를 입력하세요';
+                    return '아이 이름을 입력하세요';
                   }
                   return null;
                 },
                 onSaved: (value) {
-                  _groupId = int.parse(value!);
+                  _userName = value!;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: '아이 전화번호'),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '아이의 전화 번호를 입력하세요';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _phoneNum = value.toString();
                 },
               ),
               const SizedBox(height: 12),
@@ -68,7 +101,7 @@ class _AddChildFormState extends State<AddChildForm> {
                 decoration: const InputDecoration(labelText: '그룹 별칭'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '그룹 별칭을 입력하세요';
+                    return '아이 별칭을 입력하세요';
                   }
                   return null;
                 },
@@ -211,6 +244,8 @@ class _AddChildFormState extends State<AddChildForm> {
 
   void _submitForm() async {
     try {
+      int _groupId =
+          await SearchChild(phoneNum: _phoneNum, userName: _userName);
       await addChild(
         userId: _groupId,
         groupNickname: _groupNickname,
@@ -224,6 +259,7 @@ class _AddChildFormState extends State<AddChildForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('아이 정보가 성공적으로 추가되었습니다.')),
       );
+      Get.to(ParentPage());
     } catch (error) {
       print('아이 정보 추가 에러: $error');
       ScaffoldMessenger.of(context).showSnackBar(

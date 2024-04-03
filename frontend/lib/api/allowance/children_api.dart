@@ -19,37 +19,16 @@ Future<List<Child>> getChildren() async {
       List<Child> children =
           responseData.map((data) => Child.fromJson(data)).toList();
       if (children.isEmpty) {
-        return [
-          Child(
-            userId: 0,
-            groupId: 0,
-            profileImage: 'string profileImage',
-            groupNickname: '자녀가 없어요',
-          )
-        ];
+        return [];
       }
       return children;
     } else {
-      return [
-        Child(
-          userId: 0,
-          groupId: 0,
-          profileImage: 'string profileImage',
-          groupNickname: 'string groupNickname',
-        )
-      ];
+      return [];
     }
   } catch (error) {
     // Handle error
     print('getChildren get 에러: $error');
-    return [
-      Child(
-        userId: 0,
-        groupId: 0,
-        profileImage: 'string profileImage',
-        groupNickname: 'string groupNickname',
-      )
-    ];
+    return [];
   }
 }
 

@@ -204,9 +204,9 @@ class PieChart2State extends State<PieChartSample2> {
   Color getColorByCategory(String category) {
     switch (category) {
       case '001':
-        return Colors.blue;
+        return Colors.deepOrange;
       case '002':
-        return Colors.yellow;
+        return Colors.orange;
       case '003':
         return Colors.purple;
       case '004':
@@ -214,9 +214,9 @@ class PieChart2State extends State<PieChartSample2> {
       case '005':
         return Colors.red;
       case '006':
-        return Colors.orange;
+        return Colors.pink;
       case '007':
-        return Colors.indigo;
+        return Colors.pinkAccent;
       case '008':
         return Colors.teal;
       case '009':
@@ -226,17 +226,17 @@ class PieChart2State extends State<PieChartSample2> {
       case '011':
         return Colors.amber;
       case '012':
-        return Colors.lime;
+        return Colors.yellow;
       case '013':
         return Colors.lightGreen;
       case '014':
-        return Colors.deepOrange;
+        return Colors.red;
       case '015':
-        return Colors.pink;
+        return Colors.blueGrey;
       case '000':
         return Colors.grey;
       case '100':
-        return Colors.brown;
+        return Colors.green;
       default:
         return Colors.grey;
     }
