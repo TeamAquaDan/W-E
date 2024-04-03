@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
     String loginId = loginIdController.text.trim();
     String password = passwordController.text.trim();
     String? fcmToken = globalFCMToken;
-    // "eb1ef9fUTEaJUPcJNeg8Xs:APA91bH2j63I6CkFecrF3Psr9YjrvC36vXo4agOSBQzZTa1AHeRLE_vF4hI_Q8ROatDom74L4Vmwaj8qssK120ixSuWnDBIzZrX0a5QcK9GqrXj1WNef2WRIpQYUYs3sbrCPGWjXBJ9i";
     if (fcmToken == null) {
       print("FCM 토큰이 없습니다.");
       return;
@@ -156,9 +155,10 @@ class _LoginPageState extends State<LoginPage> {
                     '로그인',
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      fontFamily: 'Aggro',
                       color: Colors.white,
                       fontSize: 40,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w700,
                       height: 0,
                     ),
                   ),
@@ -198,6 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text(
                       '로그인',
                       style: TextStyle(
+                        fontFamily: 'Aggro',
                         color: Colors.white,
                         fontSize: 30,
                       ),
