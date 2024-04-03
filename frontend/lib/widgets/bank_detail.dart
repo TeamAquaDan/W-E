@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/account/account_list_api.dart';
 import 'package:frontend/models/account/account_list_data.dart';
 import 'package:frontend/screens/bank_history_page/widgets/bank_top_container.dart';
+import 'package:intl/intl.dart';
 
 class BankDetail extends StatefulWidget {
   const BankDetail({super.key, required this.bankData});
@@ -49,6 +50,7 @@ class _BankDetailState extends State<BankDetail> {
 
   @override
   Widget build(BuildContext context) {
+    var moneyFormat = NumberFormat('###,###,###,### 원');
     return _isLoading
         ? const SizedBox(
             height: 192,
@@ -71,22 +73,28 @@ class _BankDetailState extends State<BankDetail> {
                       children: [
                         Row(
                           children: [
-                            const Text('생성일자 : ', style: TextStyle(fontSize: 20)),
+                            const Text('생성일자 : ',
+                                style: TextStyle(fontSize: 20)),
                             Text(res?.issue_date ?? 'N/A',
                                 style: const TextStyle(fontSize: 20)),
                           ],
                         ),
                         Row(
                           children: [
-                            const Text('일일 결제 한도 : ', style: TextStyle(fontSize: 20)),
-                            Text(res?.day_limit_amt.toString() ?? 'N/A',
+                            const Text('일일 결제 한도 : ',
+                                style: TextStyle(fontSize: 20)),
+                            Text(
+                                moneyFormat.format(res?.day_limit_amt) ?? 'N/A',
                                 style: const TextStyle(fontSize: 20)),
                           ],
                         ),
                         Row(
                           children: [
-                            const Text('1회 결제 한도 : ', style: TextStyle(fontSize: 20)),
-                            Text(res?.once_limit_amt.toString() ?? 'N/A',
+                            const Text('1회 결제 한도 : ',
+                                style: TextStyle(fontSize: 20)),
+                            Text(
+                                moneyFormat.format(res?.once_limit_amt) ??
+                                    'N/A',
                                 style: const TextStyle(fontSize: 20))
                           ],
                         ),

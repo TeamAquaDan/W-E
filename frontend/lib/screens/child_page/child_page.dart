@@ -17,8 +17,7 @@ class ChildPage extends StatefulWidget {
 class _ChildPageState extends State<ChildPage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    // const MyHomePage(title: 'Whale 서비스명'),
-    const ChildHomePage(), //ChildHomePage
+    const ChildHomePage(),
     const AccountBookHomePage(),
     const DutchPayPage(),
     const AlarmPage(),
