@@ -100,7 +100,7 @@ public class TransferEntity {
   public static TransferEntity createTransfer(int parkingBalanceAmt, AccountEntity account) {
     return TransferEntity
         .builder()
-        .transType(2)
+        .transType(3)
         .transAmt(parkingBalanceAmt)
         .balanceAmt(account.getBalanceAmt())
         .transMemo("저금하기 종료")
