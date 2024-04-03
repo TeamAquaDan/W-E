@@ -56,7 +56,8 @@ public class NegotiationServiceImpl implements NegotiationService {
 
   @Override
   public List<NegoListResponseDto> findAllNegoList(int groupId, String loginId) {
-    GroupEntity group = verifyUserGroup(groupId, loginId);
+    GroupEntity group = groupRepository.findById(groupId)
+        .orElseThrow(() -> new CustomException(ResponseCode.GROUP_NOT_FOUND));
 
     return negotiationRepository.findAllByGroupOrderByCreateDtmDesc(group)
         .stream().map(NegoListResponseDto::from)
