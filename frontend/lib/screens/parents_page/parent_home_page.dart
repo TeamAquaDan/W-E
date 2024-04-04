@@ -17,7 +17,7 @@ class ParentHomePage extends StatelessWidget {
               'assets/images/whale.png',
               height: 32,
             ),
-            const Text('부모 페이지'),
+            const Text('W-E'),
             const Spacer(),
             const MyProfileIcon(),
           ],

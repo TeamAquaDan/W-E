@@ -282,6 +282,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           await loadProfiles();
         },
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: myProfileList.isNotEmpty
               ? Column(
                   mainAxisAlignment:
