@@ -573,5 +573,5 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 |BE|BE|FE|FE|FE|Infra|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |**박나린**|**김가영**|**신현중**|**유영준**|**윤태우**|**이재진**|
-| <img src="./docs/member/rin.jpg" style="height: 100px"> | <img src="./docs/member/kky.jpg" style="height: 100px"> | <img src="./docs/member/shj.jpg" style="height: 100px"> | <img src="./docs/member/yyj.jpg" style="height: 100px"> | <img src="./docs/member/ytw.jpg" style="height: 100px"> | <img src="./docs/member/ljj.jpg" style="height: 100px"> |
+| <img src="./docs/member/rin.jpg" style="height: 100px; width: 75px;"> | <img src="./docs/member/kky.jpg" style="height: 100px; width: 75px;"> | <img src="./docs/member/shj.jpg" style="height: 100px; width: 75px;"> | <img src="./docs/member/yyj.jpg" style="height: 100px; width: 75px;"> | <img src="./docs/member/ytw.jpg" style="height: 100px; width: 75px;"> | <img src="./docs/member/ljj.jpg" style="height: 100px; width: 75px;"> |
 | Backend <br/>| BankEnd <br/> | FrontEnd <br/>  | FrontEnd <br/>  | Frontend <br/>  | CI/CD <br/> 챗봇 |
