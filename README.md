@@ -45,13 +45,12 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 ## 📱 서비스 화면
 
 <br>
-<img src="./docs/gif/저축목표등록.gif">
-<img src="./docs/gif/저축목표완료.gif">
+<img src="./docs/gif/친구추가방명록.gif" width="200px" height="400px">
+<img src="./docs/gif/저축목표등록.gif" width="200px" height="400px">
+<img src="./docs/gif/저축목표완료.gif" width="200px" height="400px">
 <br>
-<img src="./docs/gif/친구추가방명록.gif">
-<img src="./docs/gif/더치페이.gif">
-<br>
-<img src="./docs/gif/용돈미션.gif">
+<img src="./docs/gif/더치페이.gif" width="200px" height="400px">
+<img src="./docs/gif/용돈미션.gif" width="200px" height="400px">
 <br>
 
 ## 👩‍💻 개발 환경
