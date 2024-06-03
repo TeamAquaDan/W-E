@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "234142846054",
+    "firebase_url": "https://whale-f56e3-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "whale-f56e3",
+    "storage_bucket": "whale-f56e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234142846054:android:f8cf8cf6ef9ec02e29f1a7",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvpPzJwBHZ6l3f_MqKsW9nnqUmfNu0Wb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

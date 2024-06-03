@@ -565,7 +565,7 @@ W-E와 함께 **자산 관리를 시작해볼까요?**
 - [ER Diagram - W-E](./docs/E103_ERD서비스.png)  
 - [ER Diagram - WhaleBank](./docs/E103_ERD은행.png)  
 - [ER Diagram - WhaleCard](./docs/E103_ERD카드.png)
-- [UCC](./docs/ploud_ucc.mp4)
+- [UCC](https://youtu.be/oe08FxC-iIA)
 - [포팅메뉴얼](./exec/E103-PortingManual.md)
 
 
